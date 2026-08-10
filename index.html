@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<script>(function(){try{var l=localStorage.getItem('zf-lang');if(l==='en'){document.documentElement.classList.add('zf-en-init');}else if(l==='ur'){document.documentElement.classList.add('zf-ur-init');}}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-en="Zaan Farzaan — Ghazals &amp; Nazms" data-ur="زان فرزاں — غزلیں اور نظمیں">ज़ान फ़रज़ान — ग़ज़लें और नज़्में</title>
+<meta name="description" content="ज़ान फ़रज़ान की ग़ज़लें, नज़्में और अदबी तहरीरें — एक जगह संकलित।">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="home">
+
+<nav>
+  <a href="index.html" class="brand" data-en="Zaan Farzaan &lt;span&gt;Shaayar · Poet&lt;/span&gt;" data-ur="زان فرزاں &lt;span&gt;Shaayar · Poet&lt;/span&gt;">ज़ान फ़रज़ान <span>Shaayar · Poet</span></a>
+  <div class="nav-right">
+    <div class="navlinks" id="nav-links">
+      <a href="index.html" data-page="home" data-en="Home" data-ur="ہوم">होम</a>
+      <a href="about.html" data-page="about" data-en="About" data-ur="تعارف">परिचय</a>
+      <a href="ghazals.html" data-page="ghazals" data-en="Ghazals" data-ur="غزلیں">ग़ज़लें</a>
+      <a href="nazms.html" data-page="nazms" data-en="Nazms" data-ur="نظمیں">नज़्में</a>
+      <a href="profiles.html" data-page="profiles" data-en="Profiles" data-ur="پروفائل">प्रोफ़ाइल</a>
+      <a href="feedback.html" data-page="feedback" data-en="Feedback" data-ur="فیڈبیک">फ़ीडबैक</a>
+      <a href="contact.html" data-page="contact" data-en="Contact" data-ur="رابطہ">संपर्क</a>
+    </div>
+    <button type="button" class="lang-toggle" id="lang-toggle" role="group" aria-label="Switch to English / अंग्रेज़ी में बदलें">
+      <span class="lang-thumb"></span>
+      <span class="lang-opt active" data-lang-option="hi" aria-selected="true">हिं</span>
+      <span class="lang-opt" data-lang-option="en" aria-selected="false">EN</span>
+      <span class="lang-opt" data-lang-option="ur" aria-selected="false">اردو</span>
+    </button>
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="मेन्यू खोलें" data-en-aria-label="Open menu" data-ur-aria-label="مینو کھولیں">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<main>
+<section class="hero">
+  <div class="eyebrow" data-en="A Collection of Ghazals &amp; Nazms" data-ur="غزلوں اور نظموں کا مجموعہ">ग़ज़लों और नज़्मों का संग्रह</div>
+  <h1 data-en="Zaan Farzaan" data-ur="زان فرزاں">ज़ान फ़रज़ान</h1>
+  <div class="sher">
+    <span class="line" data-en="Ik aarzoo ho gar to hon hazaar kaavishen" data-ur="اک آرزو ہو گر تو ہوں ہزار کاوشیں">इक आरज़ू हो गर तो हों हज़ार काविशें</span>
+    <span class="line" data-en="Kise mila hai kuchh yahaan pe sirf chaah se" data-ur="کسے ملا ہے کچھ یہاں پہ صرف چاہ سے">किसे मिला है कुछ यहाँ पे सिर्फ़ चाह से</span>
+  </div>
+  <div class="attribution" data-en="— Zaan Farzaan" data-ur="— زان فرزاں">— ज़ान फ़रज़ान</div>
+</section>
+
+<section class="sher-widget reveal">
+  <div class="sher-widget-head">
+    <div class="tag">Ek Sher</div>
+    <h2 data-en="How about a sher?" data-ur="ایک شعر کیسا رہے؟">एक शेर हो जाए?</h2>
+  </div>
+
+  <div class="sher-card" id="sher-card" aria-live="polite">
+    <p class="sher-placeholder" id="sher-placeholder" data-en="Tap below — a different sher, every time." data-ur="نیچے دبائیں — ہر بار ایک نیا شعر۔">नीचे टैप कीजिए — हर बार एक अलग शेर।</p>
+    <div class="sher-content" id="sher-content" hidden>
+      <div class="sher-lines" id="sher-lines"></div>
+      <a href="ghazals.html" class="sher-source" id="sher-source">
+        <span class="sher-source-prefix" data-en="From the ghazal" data-ur="اس غزل سے">इस ग़ज़ल से</span>
+        <span class="sher-source-label" id="sher-source-label"></span>
+        <span class="sher-source-arrow" data-en="Read full ghazal →" data-ur="← مکمل غزل پڑھیں">पूरी ग़ज़ल पढ़ें →</span>
+      </a>
+    </div>
+  </div>
+
+  <button type="button" class="sher-btn" id="sher-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+    <span data-en="Show me a sher" data-ur="ایک شعر دکھائیں">कोई शेर सुनाइए</span>
+  </button>
+</section>
+
+<div class="nav-cards">
+  <a href="about.html" class="nav-card reveal">
+    <div class="nav-card-tag" data-en="About" data-ur="تعارف">Ta'arruf</div>
+    <h3 data-en="About" data-ur="تعارف">परिचय</h3>
+    <p data-en="Learn about Zaan Farzaan's life, his journey in poetry, and the way he sees the world." data-ur="زان فرزاں کی زندگی، شاعری کے سفر اور دنیا کو دیکھنے کے ان کے انداز کے بارے میں جانیں۔">ज़ान फ़रज़ान की ज़िंदगी, शायरी का सफ़र और उनकी सोच के बारे में जानें।</p>
+    <div class="nav-card-arrow" data-en="Read →" data-ur="← پڑھیں">पढ़ें →</div>
+  </a>
+  <a href="ghazals.html" class="nav-card reveal">
+    <div class="nav-card-tag">Ghazals</div>
+    <h3 data-en="Ghazals" data-ur="غزلیں">ग़ज़लें</h3>
+    <p data-en="A collection of 40 ghazals — filled with love, longing, faith, and the many moods of life." data-ur="چالیس غزلوں کا مجموعہ — محبت، جدائی، عقیدت اور زندگی کے کئی رنگوں سے بھرا ہوا۔">40 ग़ज़लों का संग्रह — मोहब्बत, हिज्र, ईमान और ज़िंदगी की कैफ़ियतों से भरा।</p>
+    <div class="nav-card-arrow" data-en="Read →" data-ur="← پڑھیں">पढ़ें →</div>
+  </a>
+  <a href="nazms.html" class="nav-card reveal">
+    <div class="nav-card-tag">Nazms</div>
+    <h3 data-en="Nazms" data-ur="نظمیں">नज़्में</h3>
+    <p data-en="A collection of nazms that speak of everyday life and deeper emotions." data-ur="ایسی نظموں کا مجموعہ جو روزمرہ زندگی اور گہرے جذبات کی بات کرتی ہیں۔">रोज़मर्रा की ज़िंदगी और गहरे एहसासात को बयान करती नज़्मों का संग्रह।</p>
+    <div class="nav-card-arrow" data-en="Read →" data-ur="← پڑھیں">पढ़ें →</div>
+  </a>
+  <a href="profiles.html" class="nav-card reveal">
+    <div class="nav-card-tag" data-en="Profiles" data-ur="پروفائل">Profiles</div>
+    <h3 data-en="Profiles" data-ur="پروفائل">प्रोफ़ाइल</h3>
+    <p data-en="Read Zaan Farzaan on Rekhta and Poetistic too — find him on other platforms." data-ur="زان فرزاں کو ریختہ اور Poetistic پر بھی پڑھیں — انہیں دیگر پلیٹ فارمز پر بھی تلاش کریں۔">Rekhta और Poetistic पर भी ज़ान फ़रज़ान को पढ़ें — दूसरे प्लेटफ़ॉर्म्स पर भी मौजूद।</p>
+    <div class="nav-card-arrow" data-en="View →" data-ur="← دیکھیں">देखें →</div>
+  </a>
+  <a href="feedback.html" class="nav-card reveal">
+    <div class="nav-card-tag" data-en="Feedback" data-ur="فیڈبیک">Feedback</div>
+    <h3 data-en="Feedback" data-ur="فیڈبیک">फ़ीडबैक</h3>
+    <p data-en="Loved a sher, or have a suggestion? Share your feedback with Zaan Farzaan." data-ur="کوئی شعر پسند آیا، یا کوئی تجویز ہے؟ اپنی رائے زان فرزاں کے ساتھ بانٹیں۔">कोई शेर पसंद आया, या कोई सुझाव है? ज़ान फ़रज़ान के साथ अपना फ़ीडबैक साझा करें।</p>
+    <div class="nav-card-arrow" data-en="Share →" data-ur="← شیئر کریں">साझा करें →</div>
+  </a>
+  <a href="contact.html" class="nav-card reveal">
+    <div class="nav-card-tag" data-en="Contact" data-ur="رابطہ">Sampark</div>
+    <h3 data-en="Contact" data-ur="رابطہ">संपर्क करें</h3>
+    <p data-en="For readings, collaborations, or just to talk poetry — get in touch." data-ur="قرأت، تعاون یا محض شاعری پر بات کرنے کے لیے — رابطہ کریں۔">Readings, collaborations, ya bas shayari pe baat karne ke liye सम्पर्क करें।</p>
+    <div class="nav-card-arrow" data-en="Go →" data-ur="← جائیں">जाएँ →</div>
+  </a>
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="fineprint" data-en="© 2026 Zaan Farzaan · Collection" data-ur="© 2026 زان فرزاں · مجموعہ">© 2026 ज़ान फ़रज़ान · संग्रह</div>
+  <div class="foot-links">
+    <a href="mailto:zaanfarzaan1@gmail.com">Email</a>
+    <a href="https://instagram.com/zaanfarzaan" target="_blank" rel="noopener">Instagram</a>
+  </div>
+</footer>
+
+<script src="ghazals-data.js"></script>
+<script src="ur-translit.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+<script src="random-sher.js"></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+/* ===================================================================
+   ZAAN FARZAAN — TRILINGUAL TOGGLE ENGINE (i18n.js)
+   Site chrome (nav, headings, about/contact prose etc.) is TRANSLATED
+   into English or Urdu. Ghazals & Nazms (the actual poems) are
+   TRANSLITERATED — the words stay Hindi/Urdu, only the script changes:
+   Roman for English (item.*En fields in collection.js), Nastaliq/Urdu
+   script for Urdu (computed live by ur-translit.js). This file only
+   drives: language state, the toggle button, translating every
+   [data-en]/[data-ur] element on the page, and a small shared string
+   table for JS-generated UI text (toasts, share sheet, aria-labels).
+   =================================================================== */
+
+/* ---- language state --------------------------------------------- */
+var ZF_LANGS = ['hi', 'en', 'ur'];
+function zfGetLang(){
+  try{
+    var l = localStorage.getItem('zf-lang');
+    if(ZF_LANGS.indexOf(l) !== -1) return l;
+  }catch(e){}
+  return 'hi';
+}
+window.ZF_LANG = zfGetLang();
+
+/* ---- shared UI string table (used by app.js / collection.js) ----- */
+var ZF_UI_STRINGS = {
+  brandName:        { hi: 'ज़ान फ़रज़ान', en: 'Zaan Farzaan', ur: 'زان فرزاں' },
+  defaultKind:       { hi: 'रचना', en: 'this piece', ur: 'تحریر' },
+  shareTextPrefix:   { hi: 'ज़ान फ़रज़ान की यह रचना पढ़ें — ', en: 'Read this piece by Zaan Farzaan — ', ur: 'زان فرزاں کی یہ تحریر پڑھیں — ' },
+  linkCopied:        { hi: 'लिंक कॉपी हो गया', en: 'Link copied', ur: 'لنک کاپی ہو گیا' },
+  copyPrompt:        { hi: 'इस लिंक को कॉपी करें:', en: 'Copy this link:', ur: 'اس لنک کو کاپی کریں:' },
+  downloadFailed:    { hi: 'डाउनलोड नहीं हो पाया, दोबारा कोशिश करें', en: 'Download failed, please try again', ur: 'ڈاؤن لوڈ نہیں ہو پایا، دوبارہ کوشش کریں' },
+  shareAria:         { hi: 'यह रचना साझा करें', en: 'Share this piece', ur: 'یہ تحریر شیئر کریں' },
+  downloadAria:      { hi: 'यह रचना इमेज के रूप में डाउनलोड करें', en: 'Download this piece as an image', ur: 'یہ تحریر تصویر کی صورت میں ڈاؤن لوڈ کریں' }
+};
+window.ZF_T = function(key){
+  var entry = ZF_UI_STRINGS[key];
+  if(!entry) return '';
+  return entry[window.ZF_LANG] || entry.hi || '';
+};
+
+/* ---- apply translations to every static [data-en]/[data-ur] element */
+function zfApplyStaticTranslations(lang){
+  document.querySelectorAll('[data-en]').forEach(function(el){
+    if(el.getAttribute('data-hi') === null){
+      el.setAttribute('data-hi', el.innerHTML);
+    }
+    if(lang === 'en'){
+      el.innerHTML = el.getAttribute('data-en');
+    }else if(lang === 'ur' && el.getAttribute('data-ur') !== null){
+      el.innerHTML = el.getAttribute('data-ur');
+    }else{
+      el.innerHTML = el.getAttribute('data-hi');
+    }
+  });
+  document.querySelectorAll('[data-en-placeholder]').forEach(function(el){
+    if(el.getAttribute('data-hi-placeholder') === null){
+      el.setAttribute('data-hi-placeholder', el.getAttribute('placeholder') || '');
+    }
+    if(lang === 'en'){
+      el.setAttribute('placeholder', el.getAttribute('data-en-placeholder'));
+    }else if(lang === 'ur' && el.getAttribute('data-ur-placeholder') !== null){
+      el.setAttribute('placeholder', el.getAttribute('data-ur-placeholder'));
+    }else{
+      el.setAttribute('placeholder', el.getAttribute('data-hi-placeholder'));
+    }
+  });
+  document.querySelectorAll('[data-en-aria-label]').forEach(function(el){
+    if(el.getAttribute('data-hi-aria-label') === null){
+      el.setAttribute('data-hi-aria-label', el.getAttribute('aria-label') || '');
+    }
+    if(lang === 'en'){
+      el.setAttribute('aria-label', el.getAttribute('data-en-aria-label'));
+    }else if(lang === 'ur' && el.getAttribute('data-ur-aria-label') !== null){
+      el.setAttribute('aria-label', el.getAttribute('data-ur-aria-label'));
+    }else{
+      el.setAttribute('aria-label', el.getAttribute('data-hi-aria-label'));
+    }
+  });
+}
+
+var ZF_LANG_LABELS = {
+  hi: 'हिंदी में बदलें',
+  en: 'Switch to English',
+  ur: 'اردو میں بدلیں'
+};
+
+function zfUpdateToggleUI(lang){
+  var btn = document.getElementById('lang-toggle');
+  if(!btn) return;
+  btn.classList.remove('is-en', 'is-ur', 'is-hi');
+  btn.classList.add('is-' + lang);
+  var idx = ZF_LANGS.indexOf(lang);
+  var nextLang = ZF_LANGS[(idx + 1) % ZF_LANGS.length];
+  btn.setAttribute('aria-label', (ZF_LANG_LABELS[nextLang] || '') + ' / ' + (ZF_LANG_LABELS[lang] || ''));
+  btn.querySelectorAll('.lang-opt').forEach(function(opt){
+    var isActive = opt.getAttribute('data-lang-option') === lang;
+    opt.classList.toggle('active', isActive);
+    opt.setAttribute('aria-selected', isActive ? 'true' : 'false');
+  });
+}
+
+function zfApplyLang(lang){
+  zfApplyStaticTranslations(lang);
+  document.documentElement.setAttribute('lang', lang);
+  document.documentElement.setAttribute('dir', lang === 'ur' ? 'rtl' : 'ltr');
+  document.body.classList.toggle('lang-en', lang === 'en');
+  document.body.classList.toggle('lang-ur', lang === 'ur');
+  zfUpdateToggleUI(lang);
+  if(typeof window.ZF_rerenderCollection === 'function'){
+    window.ZF_rerenderCollection();
+  }
+}
+
+function zfSetLang(lang){
+  try{ localStorage.setItem('zf-lang', lang); }catch(e){}
+  window.ZF_LANG = lang;
+  zfApplyLang(lang);
+}
+
+function zfNextLang(){
+  var idx = ZF_LANGS.indexOf(window.ZF_LANG);
+  return ZF_LANGS[(idx + 1) % ZF_LANGS.length];
+}
+
+/* ---- init: runs immediately (script sits at the end of body, so
+   the whole page is already parsed by the time this executes) ----- */
+(function zfInit(){
+  zfApplyLang(window.ZF_LANG);
+
+  var btn = document.getElementById('lang-toggle');
+  if(btn){
+    btn.addEventListener('click', function(){
+      zfSetLang(zfNextLang());
+    });
+    btn.querySelectorAll('.lang-opt').forEach(function(opt){
+      opt.addEventListener('click', function(e){
+        e.stopPropagation();
+        var chosen = opt.getAttribute('data-lang-option');
+        if(chosen) zfSetLang(chosen);
+      });
+    });
+  }
+
+  /* reveal body now that the correct language is painted (avoids a
+     flash of Hindi content when English/Urdu was the saved preference) */
+  document.documentElement.classList.remove('zf-en-init');
+  document.documentElement.classList.remove('zf-ur-init');
+})();

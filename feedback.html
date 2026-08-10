@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<script>(function(){try{var l=localStorage.getItem('zf-lang');if(l==='en'){document.documentElement.classList.add('zf-en-init');}else if(l==='ur'){document.documentElement.classList.add('zf-ur-init');}}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-en="Feedback — Zaan Farzaan" data-ur="فیڈبیک — زان فرزاں">फ़ीडबैक — ज़ान फ़रज़ान</title>
+<meta name="description" content="ज़ान फ़रज़ान की शायरी पर अपनी राय, सुझाव या पसंदीदा शेर साझा करें।">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="feedback">
+
+<nav>
+  <a href="index.html" class="brand" data-en="Zaan Farzaan &lt;span&gt;Shaayar · Poet&lt;/span&gt;" data-ur="زان فرزاں &lt;span&gt;Shaayar · Poet&lt;/span&gt;">ज़ान फ़रज़ान <span>Shaayar · Poet</span></a>
+  <div class="nav-right">
+    <div class="navlinks" id="nav-links">
+      <a href="index.html" data-page="home" data-en="Home" data-ur="ہوم">होम</a>
+      <a href="about.html" data-page="about" data-en="About" data-ur="تعارف">परिचय</a>
+      <a href="ghazals.html" data-page="ghazals" data-en="Ghazals" data-ur="غزلیں">ग़ज़लें</a>
+      <a href="nazms.html" data-page="nazms" data-en="Nazms" data-ur="نظمیں">नज़्में</a>
+      <a href="profiles.html" data-page="profiles" data-en="Profiles" data-ur="پروفائل">प्रोफ़ाइल</a>
+      <a href="feedback.html" data-page="feedback" data-en="Feedback" data-ur="فیڈبیک">फ़ीडबैक</a>
+      <a href="contact.html" data-page="contact" data-en="Contact" data-ur="رابطہ">संपर्क</a>
+    </div>
+    <button type="button" class="lang-toggle" id="lang-toggle" role="group" aria-label="Switch to English / अंग्रेज़ी में बदलें">
+      <span class="lang-thumb"></span>
+      <span class="lang-opt active" data-lang-option="hi" aria-selected="true">हिं</span>
+      <span class="lang-opt" data-lang-option="en" aria-selected="false">EN</span>
+      <span class="lang-opt" data-lang-option="ur" aria-selected="false">اردو</span>
+    </button>
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="मेन्यू खोलें" data-en-aria-label="Open menu" data-ur-aria-label="مینو کھولیں">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<main>
+<div class="page-header">
+  <div class="tag">Feedback</div>
+  <h1 data-en="Your Feedback" data-ur="آپ کی رائے">आपकी राय</h1>
+  <p data-en="Loved a sher? Have a suggestion? Tell Zaan Farzaan what you think — every word is read." data-ur="کوئی شعر پسند آیا؟ کوئی تجویز ہے؟ زان فرزاں کو اپنی رائے بتائیں — ہر لفظ پڑھا جاتا ہے۔">कोई शेर पसंद आया? कोई सुझाव है? ज़ान फ़रज़ान को अपनी राय बताइए — हर लफ़्ज़ पढ़ा जाता है।</p>
+</div>
+
+<div class="feedback-page">
+  <form class="feedback-form reveal" id="feedback-form" action="https://formspree.io/f/xdenerqe" method="POST">
+
+    <div class="form-group">
+      <label for="fb-name" data-en="Name (optional)" data-ur="نام (اختیاری)">नाम (वैकल्पिक)</label>
+      <input type="text" id="fb-name" name="name" data-en-placeholder="Your name" data-ur-placeholder="آپ کا نام" placeholder="आपका नाम">
+    </div>
+
+    <div class="form-group">
+      <label for="fb-email" data-en="Email (optional)" data-ur="ای میل (اختیاری)">ईमेल (वैकल्पिक)</label>
+      <input type="email" id="fb-email" name="email" data-en-placeholder="you@example.com" data-ur-placeholder="you@example.com" placeholder="you@example.com">
+    </div>
+
+    <div class="form-group">
+      <label for="fb-message" data-en="Your Feedback" data-ur="آپ کی رائے">आपका फ़ीडबैक</label>
+      <textarea id="fb-message" name="message" rows="6" required data-en-placeholder="Write your thoughts, favourite sher, or a suggestion..." data-ur-placeholder="اپنے خیالات، پسندیدہ شعر یا کوئی تجویز لکھیں..." placeholder="अपनी राय, पसंदीदा शेर या कोई सुझाव यहाँ लिखें..."></textarea>
+    </div>
+
+    <button type="submit" class="sher-btn feedback-submit" id="fb-submit">
+      <span data-en="Send Feedback" data-ur="فیڈبیک بھیجیں">फ़ीडबैक भेजें</span>
+    </button>
+
+    <p class="form-note" id="fb-error" hidden data-en="Something went wrong — please try again, or email us directly." data-ur="کچھ غلط ہو گیا — براہِ کرم دوبارہ کوشش کریں، یا براہِ راست ای میل کریں۔">कुछ गड़बड़ हो गई — कृपया दोबारा कोशिश करें, या सीधे ईमेल करें।</p>
+  </form>
+
+  <div class="feedback-success" id="feedback-success" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
+    <h3 data-en="Shukriya!" data-ur="شکریہ!">शुक्रिया!</h3>
+    <p data-en="Your feedback has been sent. Zaan Farzaan appreciates you taking the time." data-ur="آپ کی رائے بھیج دی گئی ہے۔ زان فرزاں آپ کے وقت کی قدر کرتے ہیں۔">आपका फ़ीडबैक भेज दिया गया है। ज़ान फ़रज़ान आपके इस वक़्त की क़द्र करते हैं।</p>
+  </div>
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="fineprint" data-en="© 2026 Zaan Farzaan · Collection" data-ur="© 2026 زان فرزاں · مجموعہ">© 2026 ज़ान फ़रज़ान · संग्रह</div>
+  <div class="foot-links">
+    <a href="mailto:zaanfarzaan1@gmail.com">Email</a>
+    <a href="https://instagram.com/zaanfarzaan" target="_blank" rel="noopener">Instagram</a>
+  </div>
+</footer>
+
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+<script>
+(function(){
+  var form = document.getElementById('feedback-form');
+  var errorNote = document.getElementById('fb-error');
+  var successBox = document.getElementById('feedback-success');
+  var submitBtn = document.getElementById('fb-submit');
+  if(!form) return;
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    errorNote.hidden = true;
+    submitBtn.classList.add('loading');
+    submitBtn.disabled = true;
+
+    var data = new FormData(form);
+    fetch('https://formspree.io/f/xdenerqe', {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    }).then(function(res){
+      if(!res.ok) throw new Error('failed');
+      form.hidden = true;
+      successBox.hidden = false;
+    }).catch(function(){
+      errorNote.hidden = false;
+      submitBtn.classList.remove('loading');
+      submitBtn.disabled = false;
+    });
+  });
+})();
+</script>
+</body>
+</html>
