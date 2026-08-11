@@ -86,6 +86,9 @@ nav{
 }
 .brand{font-size:1.35rem; letter-spacing:0.02em; color:var(--gold-soft); font-weight:700; text-decoration:none; display:block;}
 .brand span{color:var(--text-muted); font-family:'Lora'; font-size:0.68rem; letter-spacing:0.2em; display:block; text-transform:uppercase; margin-top:2px; font-weight:400;}
+.brand-group{display:flex; align-items:center; gap:0.7rem;}
+.brand-logo-link{display:block; flex:none; line-height:0;}
+.brand-logo{display:block; height:44px; width:44px; object-fit:contain;}
 .nav-right{display:flex; align-items:center; gap:1.8rem;}
 .navlinks{display:flex; gap:1.8rem; font-size:1rem;}
 .navlinks a{text-decoration:none; color:var(--text-muted); transition:color .25s; position:relative; padding-bottom:4px;}
@@ -138,6 +141,8 @@ nav{
 
 @media (max-width:400px){
   .brand{font-size:1.12rem;}
+  .brand-logo{height:34px; width:34px;}
+  .brand-group{gap:0.5rem;}
 }
 
 section{position:relative; z-index:1;}
