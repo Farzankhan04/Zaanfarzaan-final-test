@@ -79,17 +79,18 @@ body::before{
 nav{
   position:sticky; top:0; left:0; right:0; z-index:50;
   display:flex; justify-content:space-between; align-items:center;
+  gap:0.75rem;
   padding:18px 5vw;
   background:linear-gradient(to bottom, rgba(20,17,31,0.97), rgba(20,17,31,0.9) 85%, rgba(20,17,31,0.85));
   backdrop-filter:blur(6px);
   border-bottom:1px solid rgba(201,162,75,0.12);
 }
-.brand{font-size:1.35rem; letter-spacing:0.02em; color:var(--gold-soft); font-weight:700; text-decoration:none; display:block;}
+.brand{font-size:1.35rem; letter-spacing:0.02em; color:var(--gold-soft); font-weight:700; text-decoration:none; display:block; min-width:0;}
 .brand span{color:var(--text-muted); font-family:'Lora'; font-size:0.68rem; letter-spacing:0.2em; display:block; text-transform:uppercase; margin-top:2px; font-weight:400;}
-.brand-group{display:flex; align-items:center; gap:0.7rem;}
+.brand-group{display:flex; align-items:center; gap:0.7rem; min-width:0;}
 .brand-logo-link{display:block; flex:none; line-height:0;}
 .brand-logo{display:block; height:44px; width:44px; object-fit:contain;}
-.nav-right{display:flex; align-items:center; gap:1.8rem;}
+.nav-right{display:flex; align-items:center; gap:1.8rem; flex:none;}
 .navlinks{display:flex; gap:1.8rem; font-size:1rem;}
 .navlinks a{text-decoration:none; color:var(--text-muted); transition:color .25s; position:relative; padding-bottom:4px;}
 .navlinks a:hover{color:var(--gold-soft);}
@@ -97,7 +98,7 @@ nav{
 .navlinks a.active::after{
   content:""; position:absolute; left:0; right:0; bottom:-4px; height:2px; background:var(--gold);
 }
-.nav-toggle{display:none; background:none; border:none; color:var(--gold-soft); width:34px; height:34px; cursor:pointer;}
+.nav-toggle{display:none; flex:none; background:none; border:none; color:var(--gold-soft); width:34px; height:34px; cursor:pointer;}
 .nav-toggle svg{width:22px; height:22px;}
 
 /* LANGUAGE TOGGLE */
@@ -135,14 +136,39 @@ nav{
   .navlinks a.active::after{display:none;}
   .navlinks a.active{background:rgba(201,162,75,0.08);}
   .nav-toggle{display:flex; align-items:center; justify-content:center;}
+  nav{gap:0.6rem;}
   .nav-right{gap:0.9rem;}
   .lang-toggle .lang-opt{padding:0.4rem 0.65rem; font-size:0.68rem; min-width:28px;}
 }
 
-@media (max-width:400px){
-  .brand{font-size:1.12rem;}
-  .brand-logo{height:34px; width:34px;}
+/* Narrow phones — brand block and the lang toggle are fighting for the same
+   row here, so both sides give a little: the toggle's hit-targets shrink
+   and the brand text steps down, while nav's gap (above) guarantees they
+   never touch regardless of exactly how wide "Zaan Farzaan" renders. */
+@media (max-width:480px){
+  nav{padding:16px 4vw; gap:0.5rem;}
+  .brand{font-size:1.16rem;}
+  .brand span{font-size:0.62rem; letter-spacing:0.13em;}
   .brand-group{gap:0.5rem;}
+  .brand-logo{height:38px; width:38px;}
+  .nav-right{gap:0.5rem;}
+  .lang-toggle .lang-opt{padding:0.36rem 0.55rem; font-size:0.64rem; min-width:25px;}
+  .lang-toggle .lang-opt[data-lang-option="ur"]{font-size:0.82rem; padding-top:0.26rem;}
+  .nav-toggle{width:30px; height:30px;}
+  .nav-toggle svg{width:20px; height:20px;}
+}
+
+@media (max-width:400px){
+  nav{padding:14px 3.5vw; gap:0.4rem;}
+  .brand{font-size:1.02rem;}
+  .brand span{font-size:0.56rem; letter-spacing:0.09em;}
+  .brand-logo{height:32px; width:32px;}
+  .brand-group{gap:0.4rem;}
+  .nav-right{gap:0.4rem;}
+  .lang-toggle .lang-opt{padding:0.32rem 0.46rem; font-size:0.59rem; min-width:22px;}
+  .lang-toggle .lang-opt[data-lang-option="ur"]{font-size:0.74rem; padding-top:0.24rem;}
+  .nav-toggle{width:27px; height:27px;}
+  .nav-toggle svg{width:18px; height:18px;}
 }
 
 section{position:relative; z-index:1;}
