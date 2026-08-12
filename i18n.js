@@ -21,6 +21,32 @@ function zfGetLang(){
 }
 window.ZF_LANG = zfGetLang();
 
+/* ---- language-aware share URL --------------------------------------
+   Keeps the address bar (and therefore anything the user shares — the
+   in-page Share button, or the browser/OS's own "share this page")
+   pointing at a URL that matches whatever language is on screen: the
+   plain canonical URL for Hindi (default, unchanged), and a sibling
+   "-en" / "-ur" file for English/Urdu. Those sibling files carry no
+   content of their own — they only exist so link-preview crawlers
+   (WhatsApp, Facebook, iMessage, etc., none of which run this script)
+   can read correct-language og:title/og:description; for a real
+   visitor they just restore this exact page in the right language.
+   Hash-based ghazal/nazm routing (#id) is untouched either way. ----- */
+var ZF_CANONICAL_PATH = window.location.pathname;
+function zfLangUrlFor(lang){
+  if(lang !== 'en' && lang !== 'ur') return ZF_CANONICAL_PATH;
+  var base = (ZF_CANONICAL_PATH === '/' || ZF_CANONICAL_PATH === '') ? '/index.html' : ZF_CANONICAL_PATH;
+  return base.replace(/\.html$/, '-' + lang + '.html');
+}
+function zfSyncLangUrl(lang){
+  try{
+    if(!window.history || !window.history.replaceState) return;
+    var target = zfLangUrlFor(lang);
+    if(window.location.pathname === target) return;
+    history.replaceState(history.state, '', target + window.location.search + window.location.hash);
+  }catch(e){}
+}
+
 /* ---- shared UI string table (used by app.js / collection.js) ----- */
 var ZF_UI_STRINGS = {
   brandName:        { hi: 'ज़ान फ़रज़ान', en: 'Zaan Farzaan', ur: 'زان فرزاں' },
@@ -109,6 +135,7 @@ function zfApplyLang(lang){
   if(typeof window.ZF_rerenderCollection === 'function'){
     window.ZF_rerenderCollection();
   }
+  zfSyncLangUrl(lang);
 }
 
 function zfSetLang(lang){
