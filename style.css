@@ -454,6 +454,13 @@ body.lang-en .sher-lines{font-family:'Cormorant Garamond','Lora', serif; font-st
 }
 .share-btn{right:1.6rem;}
 .download-btn{right:3.9rem;}
+
+/* In Urdu mode the card kind label ("NAZM #1"/"GHAZAL #1") sits right-aligned
+   because of direction:rtl, which puts it under these buttons. English and
+   Hindi stay left-aligned so they don't collide — only shift for Urdu. */
+body.lang-ur .share-btn{right:auto; left:1.6rem;}
+body.lang-ur .download-btn{right:auto; left:3.9rem;}
+
 .share-btn:hover, .download-btn:hover{background:var(--rose); border-color:var(--rose); color:var(--paper); transform:scale(1.06);}
 .share-btn svg, .download-btn svg{width:14px; height:14px;}
 .download-btn.loading{pointer-events:none; opacity:0.6;}
@@ -534,4 +541,5 @@ footer.site-footer .foot-links a:hover{color:var(--gold-soft);}
   .poem-item{padding:1.2rem 1.3rem;}
   .poem-item .poem-item-line{font-size:1.05rem;}
   .download-btn{right:3.7rem;}
+  body.lang-ur .download-btn{right:auto; left:3.7rem;}
 }
