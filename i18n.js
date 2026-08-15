@@ -13,6 +13,10 @@
 /* ---- language state --------------------------------------------- */
 var ZF_LANGS = ['hi', 'en', 'ur'];
 function zfGetLang(){
+  if(ZF_LANGS.indexOf(window.ZF_FORCE_LANG) !== -1){
+    try{ localStorage.setItem('zf-lang', window.ZF_FORCE_LANG); }catch(e){}
+    return window.ZF_FORCE_LANG;
+  }
   try{
     var l = localStorage.getItem('zf-lang');
     if(ZF_LANGS.indexOf(l) !== -1) return l;
