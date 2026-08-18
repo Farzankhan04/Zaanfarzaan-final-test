@@ -106,6 +106,23 @@ function zfApplyStaticTranslations(lang){
       el.setAttribute('aria-label', el.getAttribute('data-hi-aria-label'));
     }
   });
+  /* internal nav / in-page links: keep them pointed at the sibling page
+     in whichever language is currently on screen (index.html <-> index-en.html
+     <-> index-ur.html etc.), so clicking around the site — and a search
+     engine crawling the rendered page — never gets bounced back to the
+     Hindi page from an English/Urdu one. */
+  document.querySelectorAll('[data-en-href]').forEach(function(el){
+    if(el.getAttribute('data-hi-href') === null){
+      el.setAttribute('data-hi-href', el.getAttribute('href') || '');
+    }
+    if(lang === 'en'){
+      el.setAttribute('href', el.getAttribute('data-en-href'));
+    }else if(lang === 'ur' && el.getAttribute('data-ur-href') !== null){
+      el.setAttribute('href', el.getAttribute('data-ur-href'));
+    }else{
+      el.setAttribute('href', el.getAttribute('data-hi-href'));
+    }
+  });
 }
 
 var ZF_LANG_LABELS = {
