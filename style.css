@@ -448,6 +448,15 @@ body.lang-en .sher-lines{font-family:'Cormorant Garamond','Lora', serif; font-st
 .poem-nav-buttons a:hover{background:var(--gold); color:var(--ink-deep); border-color:var(--gold);}
 .poem-nav-buttons a.disabled{opacity:0.3; pointer-events:none;}
 
+/* CTA on static per-ghazal SEO pages, linking back to the full
+   interactive experience on ghazals.html#ghazal-N */
+.seo-cta a{
+  display:inline-block; padding:0.85rem 1.4rem; border:1px solid rgba(201,162,75,0.5);
+  color:var(--gold-soft); text-decoration:none; border-radius:2px; font-size:0.92rem;
+  letter-spacing:0.02em; transition:all .2s ease;
+}
+.seo-cta a:hover{background:var(--gold); color:var(--ink-deep); border-color:var(--gold);}
+
 /* SHARE + DOWNLOAD BUTTONS */
 .share-btn, .download-btn{
   position:absolute; top:1.5rem; z-index:2;
