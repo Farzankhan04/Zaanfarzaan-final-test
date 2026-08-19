@@ -63,18 +63,33 @@
     return isRtl ? '&rarr;' : '&larr;';
   }
 
+  /* Search index for one item, in every script the site can display it in:
+     Devanagari (Hindi, the source data), Roman (the *En fields), and Urdu
+     (Nastaliq — computed live via ur-translit.js, same as what's shown on
+     screen in Urdu mode). Without the Urdu-script text here, someone typing
+     an Urdu-script query in Urdu mode would never match anything, since the
+     underlying data is only ever stored in Devanagari/Roman. Cached on the
+     item itself since none of this changes between renders. */
+  function itemHaystack(item){
+    if(item._zfHaystack) return item._zfHaystack;
+    const haystack = (
+      item.kind + ' ' +
+      (item.title || '') + ' ' + (item.titleEn || '') + ' ' + urText(item.title || '') + ' ' +
+      (item.firstLine || '') + ' ' + (item.firstLineEn || '') + ' ' + urText(item.firstLine || '') + ' ' +
+      item.versesHtml.join(' ') + ' ' +
+      (item.versesHtmlEn ? item.versesHtmlEn.join(' ') : '') + ' ' +
+      item.versesHtml.map(urHtml).join(' ')
+    ).toLowerCase().normalize('NFC');
+    item._zfHaystack = haystack;
+    return haystack;
+  }
+
   function renderList(filter){
     const q = (filter || '').trim().toLowerCase().normalize('NFC');
     listEl.innerHTML = '';
     let matches = 0;
     ITEMS.forEach(function(item){
-      const haystack = (
-        item.kind + ' ' +
-        (item.title || '') + ' ' + (item.titleEn || '') + ' ' +
-        (item.firstLine || '') + ' ' + (item.firstLineEn || '') + ' ' +
-        item.versesHtml.join(' ') + ' ' +
-        (item.versesHtmlEn ? item.versesHtmlEn.join(' ') : '')
-      ).toLowerCase().normalize('NFC');
+      const haystack = itemHaystack(item);
       if(q !== '' && !haystack.includes(q)) return;
       matches++;
       const a = document.createElement('a');
