@@ -125,6 +125,19 @@ function downloadCard(card, btn){
   });
 }
 
+/* SUPPORT PAGE — copy UPI ID to clipboard (same fallback chain as shareCard) */
+function copyUpiId(upiId, btn){
+  function done(){
+    showToast(window.ZF_T('upiIdCopied'));
+    if(btn){ btn.classList.add('copied'); setTimeout(function(){ btn.classList.remove('copied'); }, 1600); }
+  }
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(upiId).then(done).catch(function(){ window.prompt(window.ZF_T('copyPrompt'), upiId); });
+  } else {
+    window.prompt(window.ZF_T('copyPrompt'), upiId);
+  }
+}
+
 /* Attach share + download buttons to every .manuscript card found on the page */
 function attachCardActions(root){
   (root || document).querySelectorAll('.manuscript').forEach(function(card){

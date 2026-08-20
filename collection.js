@@ -120,6 +120,13 @@
     return -1;
   }
 
+  function supportUrl(){
+    const l = lang();
+    if(l === 'en') return 'support-en.html';
+    if(l === 'ur') return 'support-ur.html';
+    return 'support.html';
+  }
+
   function renderDetail(item, idx){
     const prevItem = ITEMS[idx - 1];
     const nextItem = ITEMS[idx + 1];
@@ -133,6 +140,9 @@
       '<div class="poem-nav-buttons">' +
         (prevItem ? ('<a href="#' + prevItem.id + '" id="prev-link">' + arrow('back') + ' ' + configLabel('prevLabel') + '</a>') : '<span class="disabled"></span>') +
         (nextItem ? ('<a href="#' + nextItem.id + '" id="next-link">' + configLabel('nextLabel') + ' ' + arrow('forward') + '</a>') : '<span class="disabled"></span>') +
+      '</div>' +
+      '<div class="support-cta">' +
+        '<a href="' + supportUrl() + '">&#10084; ' + (window.ZF_T ? window.ZF_T('supportCta') : '') + '</a>' +
       '</div>';
 
     const backLink = document.getElementById('back-link');
