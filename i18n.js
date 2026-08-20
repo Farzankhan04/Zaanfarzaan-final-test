@@ -61,7 +61,6 @@ var ZF_UI_STRINGS = {
   downloadFailed:    { hi: 'डाउनलोड नहीं हो पाया, दोबारा कोशिश करें', en: 'Download failed, please try again', ur: 'ڈاؤن لوڈ نہیں ہو پایا، دوبارہ کوشش کریں' },
   shareAria:         { hi: 'यह रचना साझा करें', en: 'Share this piece', ur: 'یہ تحریر شیئر کریں' },
   downloadAria:      { hi: 'यह रचना इमेज के रूप में डाउनलोड करें', en: 'Download this piece as an image', ur: 'یہ تحریر تصویر کی صورت میں ڈاؤن لوڈ کریں' },
-  supportCta:        { hi: 'यह रचना पसंद आई? सहयोग करें', en: 'Loved this piece? Support the poet', ur: 'یہ تحریر پسند آئی؟ حمایت کریں' },
   upiIdCopied:       { hi: 'UPI ID कॉपी हो गई', en: 'UPI ID copied', ur: 'UPI ID کاپی ہو گئی' }
 };
 window.ZF_T = function(key){

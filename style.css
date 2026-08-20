@@ -524,25 +524,9 @@ body.lang-ur .download-btn{right:auto; left:3.9rem;}
 .contact-links a:hover{background:var(--gold); color:var(--ink-deep); border-color:var(--gold);}
 .contact-links svg{width:16px; height:16px;}
 
-/* SUPPORT-THE-POET CTA — small pill under every ghazal/nazm (SPA detail
-   view + static SEO per-poem pages), and the "seo-cta" sibling styling
-   reused so it visually belongs to the same family of post-poem links. */
-.support-cta{margin:1.2rem 0 0; text-align:center;}
-.support-cta a{
-  display:inline-block; padding:0.85rem 1.4rem; border:1px solid rgba(161,92,92,0.45);
-  color:var(--rose); text-decoration:none; border-radius:2px; font-size:0.92rem;
-  letter-spacing:0.02em; transition:all .2s ease;
-}
-.support-cta a:hover{background:var(--rose); color:var(--paper); border-color:var(--rose);}
-
 /* SUPPORT PAGE */
 .support-page{max-width:600px; margin:0 auto; padding:2vh 6vw 14vh; text-align:center;}
 .support-page p{color:var(--text-muted); max-width:480px; margin:0 auto 2.2rem; font-size:1.05rem;}
-.support-qr{
-  display:inline-block; padding:14px; background:var(--paper); border-radius:8px;
-  box-shadow:0 8px 30px rgba(0,0,0,0.35); margin-bottom:1.8rem;
-}
-.support-qr img{display:block; width:100%; max-width:260px; border-radius:4px;}
 .upi-id-row{
   display:inline-flex; align-items:center; gap:0.7rem; border:1px solid rgba(201,162,75,0.4);
   border-radius:2px; padding:0.75rem 1.1rem; margin-bottom:1.6rem; flex-wrap:wrap; justify-content:center;
@@ -556,7 +540,7 @@ body.lang-ur .download-btn{right:auto; left:3.9rem;}
 .upi-copy-btn:hover{background:var(--gold); color:var(--ink-deep); border-color:var(--gold);}
 .upi-copy-btn svg{width:13px; height:13px;}
 .upi-copy-btn.copied{background:var(--gold); color:var(--ink-deep); border-color:var(--gold);}
-.support-actions{display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-bottom:1rem;}
+.support-actions{display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-bottom:1.6rem;}
 .upi-pay-btn{
   border:1px solid rgba(201,162,75,0.4); padding:0.9rem 2rem; border-radius:2px;
   text-decoration:none; font-size:0.95rem; letter-spacing:0.05em;
@@ -564,6 +548,38 @@ body.lang-ur .download-btn{right:auto; left:3.9rem;}
 }
 .upi-pay-btn:hover{background:var(--gold); color:var(--ink-deep); border-color:var(--gold);}
 .upi-pay-btn svg{width:16px; height:16px;}
+
+/* QR — collapsed behind a toggle button by default. Dropping a big raw
+   screenshot straight into the page reads as an afterthought; tucking it
+   behind a deliberate "Show QR code" action makes it feel like a designed
+   choice instead, and keeps the page short for anyone who just wants to
+   tap "Pay via UPI app" and be done. */
+.qr-toggle-btn{
+  display:inline-flex; align-items:center; gap:0.55rem; margin-bottom:1.2rem;
+  border:1px solid rgba(201,162,75,0.4); background:transparent; color:var(--gold-soft);
+  border-radius:2px; padding:0.75rem 1.3rem; font-size:0.88rem; letter-spacing:0.03em;
+  cursor:pointer; transition:all .2s ease; font-family:'Lora',serif;
+}
+.qr-toggle-btn:hover{background:rgba(201,162,75,0.12); border-color:var(--gold);}
+.qr-toggle-btn.active{color:var(--gold); border-color:var(--gold);}
+.qr-toggle-btn .qr-toggle-icon{width:15px; height:15px; flex-shrink:0;}
+.qr-toggle-btn .qr-chevron{width:13px; height:13px; flex-shrink:0; transition:transform .3s ease;}
+.qr-toggle-btn.active .qr-chevron{transform:rotate(180deg);}
+.qr-toggle-btn .qr-hide-label{display:none;}
+.qr-toggle-btn.active .qr-show-label{display:none;}
+.qr-toggle-btn.active .qr-hide-label{display:inline;}
+body.lang-ur .qr-toggle-btn{font-family:'Noto Nastaliq Urdu', serif;}
+
+.qr-reveal{
+  max-height:0; overflow:hidden; opacity:0;
+  transition:max-height .45s cubic-bezier(.2,.8,.3,1), opacity .35s ease, margin-bottom .45s ease;
+}
+.qr-reveal.open{max-height:420px; opacity:1; margin-bottom:1.8rem;}
+.support-qr{
+  display:inline-block; padding:14px; background:var(--paper); border-radius:8px;
+  box-shadow:0 8px 30px rgba(0,0,0,0.35);
+}
+.support-qr img{display:block; width:100%; max-width:230px; border-radius:4px;}
 .support-note{font-size:0.82rem; color:var(--text-muted); opacity:0.75;}
 
 /* FOOTER */

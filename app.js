@@ -138,6 +138,20 @@ function copyUpiId(upiId, btn){
   }
 }
 
+/* SUPPORT PAGE — click-to-reveal QR. Toggles a max-height class on the
+   panel and an "active" class on the button; the two label spans inside
+   the button (qr-show-label / qr-hide-label) are shown/hidden purely by
+   that "active" class in CSS, never by touching their innerHTML — so the
+   language engine's own data-en/data-ur swap on each span keeps working
+   regardless of which one is currently visible. */
+function toggleQr(btn){
+  const panel = document.getElementById('qr-reveal');
+  if(!panel) return;
+  const isOpen = panel.classList.toggle('open');
+  btn.classList.toggle('active', isOpen);
+  btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+
 /* Attach share + download buttons to every .manuscript card found on the page */
 function attachCardActions(root){
   (root || document).querySelectorAll('.manuscript').forEach(function(card){
