@@ -53,9 +53,9 @@ function zfSyncLangUrl(lang){
 
 /* ---- shared UI string table (used by app.js / collection.js) ----- */
 var ZF_UI_STRINGS = {
-  brandName:        { hi: 'ज़ान फ़रज़ान', en: 'Zaan Farzaan', ur: 'زان فرزاں' },
+  brandName:        { hi: 'ज़ान फ़रज़ान', en: 'Zaan Farzaan', ur: 'زان فرزان' },
   defaultKind:       { hi: 'रचना', en: 'this piece', ur: 'تحریر' },
-  shareTextPrefix:   { hi: 'ज़ान फ़रज़ान की यह रचना पढ़ें — ', en: 'Read this piece by Zaan Farzaan — ', ur: 'زان فرزاں کی یہ تحریر پڑھیں — ' },
+  shareTextPrefix:   { hi: 'ज़ान फ़रज़ान की यह रचना पढ़ें — ', en: 'Read this piece by Zaan Farzaan — ', ur: 'زان فرزان کی یہ تحریر پڑھیں — ' },
   linkCopied:        { hi: 'लिंक कॉपी हो गया', en: 'Link copied', ur: 'لنک کاپی ہو گیا' },
   copyPrompt:        { hi: 'इस लिंक को कॉपी करें:', en: 'Copy this link:', ur: 'اس لنک کو کاپی کریں:' },
   downloadFailed:    { hi: 'डाउनलोड नहीं हो पाया, दोबारा कोशिश करें', en: 'Download failed, please try again', ur: 'ڈاؤن لوڈ نہیں ہو پایا، دوبارہ کوشش کریں' },
