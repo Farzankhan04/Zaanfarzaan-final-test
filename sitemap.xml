@@ -37,6 +37,15 @@
     <loc>https://zaanfarzaan.site/nazms-ur.html</loc>
   </url>
   <url>
+    <loc>https://zaanfarzaan.site/ebook.html</loc>
+  </url>
+  <url>
+    <loc>https://zaanfarzaan.site/ebook-en.html</loc>
+  </url>
+  <url>
+    <loc>https://zaanfarzaan.site/ebook-ur.html</loc>
+  </url>
+  <url>
     <loc>https://zaanfarzaan.site/profiles.html</loc>
   </url>
   <url>
@@ -226,4 +235,10 @@
     <loc>https://zaanfarzaan.site/nazms/nazm-10.html</loc>
   </url>
   <!-- END individual nazm pages -->
+  <url>
+    <loc>https://zaanfarzaan.site/terms.html</loc>
+  </url>
+  <url>
+    <loc>https://zaanfarzaan.site/refund-policy.html</loc>
+  </url>
 </urlset>

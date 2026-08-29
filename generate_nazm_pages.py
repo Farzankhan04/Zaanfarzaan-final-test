@@ -150,6 +150,7 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
       <a href="../about.html" data-page="about">परिचय</a>
       <a href="../ghazals.html" data-page="ghazals">ग़ज़लें</a>
       <a href="../nazms.html" data-page="nazms">नज़्में</a>
+      <a href="../ebook.html" data-page="ebook">किताब</a>
       <a href="../profiles.html" data-page="profiles">प्रोफ़ाइल</a>
       <a href="../feedback.html" data-page="feedback">फ़ीडबैक</a>
       <a href="../contact.html" data-page="contact">संपर्क</a>
