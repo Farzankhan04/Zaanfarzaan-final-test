@@ -72,6 +72,12 @@ window.ZF_T = function(key){
 /* ---- apply translations to every static [data-en]/[data-ur] element */
 function zfApplyStaticTranslations(lang){
   document.querySelectorAll('[data-en]').forEach(function(el){
+    /* Skip wrapper elements that merely contain another [data-en] element
+       (e.g. a button with both its own data-en AND an inner <span data-en>
+       plus an <svg> icon). Only the innermost element should have its
+       innerHTML replaced — doing it on the wrapper too would blow away
+       the icon/markup inside it. */
+    if(el.querySelector('[data-en]')) return;
     if(el.getAttribute('data-hi') === null){
       el.setAttribute('data-hi', el.innerHTML);
     }
