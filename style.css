@@ -85,8 +85,15 @@ nav{
   backdrop-filter:blur(6px);
   border-bottom:1px solid rgba(220,220,214,0.12);
 }
-.brand{font-size:1.35rem; letter-spacing:0.02em; color:var(--gold-soft); font-weight:700; text-decoration:none; display:block; min-width:0; white-space:nowrap; line-height:1.2;}
-.brand span{color:var(--text-muted); font-family:'Lora'; font-size:0.68rem; letter-spacing:0.2em; display:block; text-transform:uppercase; margin-top:4px; font-weight:400; white-space:nowrap; line-height:1.2;}
+.brand{font-size:1.35rem; letter-spacing:0.02em; color:var(--gold-soft); font-weight:700; text-decoration:none; display:block; min-width:0; white-space:nowrap; line-height:1;}
+.brand span{color:var(--text-muted); font-family:'Lora'; font-size:0.68rem; letter-spacing:0.2em; display:block; text-transform:uppercase; margin-top:4px; font-weight:400; white-space:nowrap; line-height:1;}
+/* Hindi's Devanagari metrics run tighter here than English's Latin type at
+   the same ratio, and Urdu's Nastaliq needs noticeably more room than both
+   (it always does on this site — see the hero/verse rules above) — so each
+   script gets its own value instead of sharing one line-height. */
+body.lang-en .brand, body.lang-en .brand span{line-height:1.2;}
+body.lang-ur .brand{line-height:1.6;}
+body.lang-ur .brand span{line-height:1.6; margin-top:6px;}
 .brand-group{display:flex; align-items:center; gap:0.7rem; min-width:0;}
 .brand-logo-link{display:block; flex:none; line-height:0;}
 .brand-logo{display:block; height:44px; width:44px; object-fit:contain;}
