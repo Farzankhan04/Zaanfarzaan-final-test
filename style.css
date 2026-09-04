@@ -682,3 +682,94 @@ body.lang-ur .faq-item h3{font-family:'Noto Nastaliq Urdu', serif;}
   .book-stat{padding:0 1.2rem;}
   .book-stat-num{font-size:1.7rem;}
 }
+
+/* ================================================================
+   HOME PAGE — INTERACTIVE ENHANCEMENTS
+   ================================================================ */
+
+/* ---- 1. Living Hero: staggered entrance + quiet background drift ---- */
+.hero .eyebrow, .hero h1, .hero .sher .line, .hero .attribution{
+  opacity:0; animation:fadeUp .85s ease forwards;
+}
+.hero .eyebrow{animation-delay:.05s;}
+.hero h1{animation-delay:.22s;}
+.hero .sher .line:nth-of-type(1){animation-delay:.42s;}
+.hero .sher .line:nth-of-type(2){animation-delay:.58s;}
+.hero .attribution{animation-delay:.8s;}
+@media (prefers-reduced-motion: reduce){
+  .hero .eyebrow, .hero h1, .hero .sher .line, .hero .attribution{animation:none; opacity:1;}
+}
+
+body::before{animation:driftDots 90s linear infinite;}
+@keyframes driftDots{from{background-position:0 0;} to{background-position:140px 140px;}}
+@media (prefers-reduced-motion: reduce){ body::before{animation:none;} }
+
+/* ---- 2. Sher card: crossfade + today/shuffle actions + mood tags ---- */
+.sher-content{transition:opacity .18s ease;}
+.sher-content.sher-fade-out{opacity:0;}
+.sher-content.sher-fade-in{animation:fadeUp .32s ease;}
+
+.mood-tags{display:flex; flex-wrap:wrap; justify-content:center; gap:0.6rem; margin:1.8rem 0 0.4rem;}
+.mood-tag{
+  padding:0.45rem 1.15rem; border:1px solid rgba(220,220,214,0.28); border-radius:999px;
+  background:transparent; color:var(--text-muted); font-family:'Lora',serif; font-size:0.84rem;
+  letter-spacing:0.03em; cursor:pointer; transition:background .25s ease, color .25s ease, border-color .25s ease;
+}
+.mood-tag:hover{border-color:var(--gold-soft); color:var(--gold-soft);}
+.mood-tag.active{background:var(--gold); color:var(--ink-deep); border-color:var(--gold);}
+body.lang-ur .mood-tag{font-family:'Noto Nastaliq Urdu', serif; font-size:0.95rem;}
+
+.sher-actions{display:flex; align-items:center; justify-content:center; gap:1rem; flex-wrap:wrap; margin-top:1.6rem;}
+.sher-today-btn{
+  background:none; border:none; color:var(--text-muted); font-family:'Lora',serif; font-size:0.85rem;
+  text-decoration:underline; text-underline-offset:3px; text-decoration-color:rgba(220,220,214,0.35);
+  cursor:pointer; letter-spacing:0.02em;
+}
+.sher-today-btn:hover{color:var(--gold-soft);}
+
+.read-progress-badge{
+  display:flex; align-items:center; justify-content:center; gap:0.6rem; margin-top:1.4rem;
+  font-size:0.78rem; color:var(--text-muted); letter-spacing:0.03em;
+}
+.read-progress-badge .read-badge-bar{width:70px; height:3px; background:rgba(220,220,214,0.18); border-radius:2px; overflow:hidden;}
+.read-progress-badge .read-badge-fill{height:100%; background:var(--gold); transition:width .5s ease;}
+
+/* ---- 3. Cards that come alive: hover preview, tilt, count-up stats ---- */
+.nav-card{transition:transform .25s ease, box-shadow .25s ease;}
+.nav-card{will-change:transform;}
+.nav-card-preview{
+  font-style:italic; color:var(--text-muted); font-size:0.82rem; line-height:1.6;
+  max-height:0; opacity:0; overflow:hidden; transition:max-height .35s ease, opacity .35s ease, margin .35s ease;
+}
+.nav-card:hover .nav-card-preview, .nav-card:focus-visible .nav-card-preview{
+  max-height:70px; opacity:1; margin-top:0.6rem;
+}
+@media (hover:none){
+  .nav-card-preview{display:none;} /* touch devices: no hover state to reveal it, skip reserving space */
+}
+
+.stat-strip{display:flex; justify-content:center; gap:0; flex-wrap:wrap; margin:5vh 0;}
+.stat-strip .stat{padding:0 2.2rem; text-align:center; border-right:1px solid rgba(220,220,214,0.18);}
+.stat-strip .stat:last-child{border-right:none;}
+body.lang-ur .stat-strip .stat{border-right:none; border-left:1px solid rgba(220,220,214,0.18);}
+body.lang-ur .stat-strip .stat:last-child{border-left:none;}
+.stat-strip .stat-num{font-size:2rem; font-weight:700; color:var(--gold-soft); font-family:'Cormorant Garamond','Noto Serif Devanagari',serif;}
+.stat-strip .stat-label{font-size:0.76rem; color:var(--text-muted); letter-spacing:0.08em; text-transform:uppercase; margin-top:0.3rem;}
+@media (max-width:480px){ .stat-strip .stat{padding:0 1.1rem;} .stat-strip .stat-num{font-size:1.5rem;} }
+
+/* ---- 4. Quiet premium touches ---- */
+@media (hover:hover) and (pointer:fine){
+  html{cursor:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22'><circle cx='11' cy='11' r='3' fill='%23e5e5df'/><circle cx='11' cy='11' r='9' fill='none' stroke='%23e5e5df' stroke-width='1' opacity='0.5'/></svg>") 11 11, auto;}
+  a, button, .mood-tag, .lang-opt, .nav-toggle{cursor:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'><circle cx='13' cy='13' r='4' fill='%23f2f1ec'/><circle cx='13' cy='13' r='11' fill='none' stroke='%23f2f1ec' stroke-width='1.2' opacity='0.6'/></svg>") 13 13, pointer;}
+}
+
+.upi-pay-btn, .buy-btn, .sher-btn, .contact-links a, .qr-toggle-btn{position:relative; overflow:hidden;}
+.upi-pay-btn::before, .buy-btn::before, .sher-btn::before, .contact-links a::before, .qr-toggle-btn::before{
+  content:""; position:absolute; top:0; left:-60%; width:40%; height:100%;
+  background:linear-gradient(120deg, transparent, rgba(255,255,255,0.14), transparent);
+  transform:skewX(-20deg); transition:left .6s ease; pointer-events:none;
+}
+.upi-pay-btn:hover::before, .buy-btn:hover::before, .sher-btn:hover::before, .contact-links a:hover::before, .qr-toggle-btn:hover::before{left:130%;}
+
+html.zf-transitioning body{opacity:0; transition:opacity .22s ease;}
+body{opacity:1; transition:opacity .22s ease;}

@@ -104,62 +104,94 @@
 
 <section class="sher-widget reveal">
   <div class="sher-widget-head">
-    <div class="tag">Ek Sher</div>
-    <h2 data-en="How about a sher?" data-hi="एक शेर हो जाए?" data-ur="ایک شعر کیسا رہے؟">एक शेर हो जाए?</h2>
+    <div class="tag">Aaj Ka Sher</div>
+    <h2 data-en="Today's Sher" data-hi="आज का शेर" data-ur="آج کا شعر">Today's Sher</h2>
   </div>
 
   <div class="sher-card" id="sher-card" aria-live="polite">
-    <p class="sher-placeholder" id="sher-placeholder" data-en="Tap below — a different sher, every time." data-hi="नीचे टैप कीजिए — हर बार एक अलग शेर।" data-ur="نیچے دبائیں — ہر بار ایک نیا شعر۔">नीचे टैप कीजिए — हर बार एक अलग शेर।</p>
+    <p class="sher-placeholder" id="sher-placeholder" data-en="Loading a sher…" data-hi="एक शेर लाया जा रहा है…" data-ur="ایک شعر لایا جا رہا ہے…">Loading a sher…</p>
     <div class="sher-content" id="sher-content" hidden>
       <div class="sher-lines" id="sher-lines"></div>
       <a href="ghazals.html" data-en-href="ghazals-en.html" data-ur-href="ghazals-ur.html" class="sher-source" id="sher-source">
-        <span class="sher-source-prefix" data-en="From the ghazal" data-hi="इस ग़ज़ल से" data-ur="اس غزل سے">इस ग़ज़ल से</span>
+        <span class="sher-source-prefix" data-en="From" data-hi="से" data-ur="از">From</span>
         <span class="sher-source-label" id="sher-source-label"></span>
-        <span class="sher-source-arrow" data-en="Read full ghazal →" data-hi="पूरी ग़ज़ल पढ़ें →" data-ur="← مکمل غزل پڑھیں">पूरी ग़ज़ल पढ़ें →</span>
+        <span class="sher-source-arrow" data-en="Read the full piece →" data-hi="पूरी रचना पढ़ें →" data-ur="← مکمل تحریر پڑھیں">Read the full piece →</span>
       </a>
     </div>
   </div>
 
-  <button type="button" class="sher-btn" id="sher-btn">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-    <span data-en="Show me a sher" data-hi="कोई शेर सुनाइए" data-ur="ایک شعر دکھائیں">कोई शेर सुनाइए</span>
-  </button>
+  <div class="mood-tags" id="mood-tags"></div>
+
+  <div class="sher-actions">
+    <button type="button" class="sher-btn" id="sher-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      <span data-en="Show me another" data-hi="कोई और सुनाएँ" data-ur="کوئی اور دکھائیں">Show me another</span>
+    </button>
+    <button type="button" class="sher-today-btn" id="sher-today-btn" data-en="Back to today's sher" data-hi="आज के शेर पर वापस" data-ur="آج کے شعر پر واپس">Back to today's sher</button>
+  </div>
+
+  <div class="read-progress-badge" id="read-progress-badge" hidden>
+    <span id="read-badge-text"></span>
+    <span class="read-badge-bar"><span class="read-badge-fill"></span></span>
+  </div>
 </section>
+
+<div class="stat-strip reveal">
+  <div class="stat">
+    <div class="stat-num" data-count="40">0</div>
+    <div class="stat-label" data-en="Ghazals" data-hi="ग़ज़लें" data-ur="غزلیں">Ghazals</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" data-count="10">0</div>
+    <div class="stat-label" data-en="Nazms" data-hi="नज़्में" data-ur="نظمیں">Nazms</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" data-count="3">0</div>
+    <div class="stat-label" data-en="Languages" data-hi="भाषाएँ" data-ur="زبانیں">Languages</div>
+  </div>
+</div>
 
 <div class="nav-cards">
   <a href="about.html" data-en-href="about-en.html" data-ur-href="about-ur.html" class="nav-card reveal">
     <div class="nav-card-tag hide-on-en">About</div>
-    <h3 data-en="About" data-hi="परिचय" data-ur="تعارف">परिचय</h3>
-    <p data-en="Learn about Zaan Farzaan's life, his journey in poetry, and the way he sees the world." data-hi="ज़ान फ़रज़ान की ज़िंदगी, शायरी का सफ़र और उनकी सोच के बारे में जानें।" data-ur="زان فرزان کی زندگی، شاعری کے سفر اور دنیا کو دیکھنے کے ان کے انداز کے بارے میں جانیں۔">ज़ान फ़रज़ान की ज़िंदगी, शायरी का सफ़र और उनकी सोच के बारे में जानें।</p>
-    <div class="nav-card-arrow" data-en="Read →" data-hi="पढ़ें →" data-ur="← پڑھیں">पढ़ें →</div>
+    <h3 data-en="About" data-hi="परिचय" data-ur="تعارف">About</h3>
+    <p data-en="Learn about Zaan Farzaan's life, his journey in poetry, and the way he sees the world." data-hi="ज़ान फ़रज़ान की ज़िंदगी, शायरी का सफ़र और उनकी सोच के बारे में जानें।" data-ur="زان فرزان کی زندگی، شاعری کے سفر اور دنیا کو دیکھنے کے ان کے انداز کے بارے میں جانیں۔">Learn about Zaan Farzaan's life, his journey in poetry, and the way he sees the world.</p>
+    <div class="nav-card-arrow" data-en="Read →" data-hi="पढ़ें →" data-ur="← پڑھیں">Read →</div>
   </a>
   <a href="ghazals.html" data-en-href="ghazals-en.html" data-ur-href="ghazals-ur.html" class="nav-card reveal">
     <div class="nav-card-tag hide-on-en">Ghazals</div>
-    <h3 data-en="Ghazals" data-hi="ग़ज़लें" data-ur="غزلیں">ग़ज़लें</h3>
-    <p data-en="A collection of 40 ghazals — filled with love, longing, faith, and the many moods of life." data-hi="40 ग़ज़लों का संग्रह — मोहब्बत, हिज्र, ईमान और ज़िंदगी की कैफ़ियतों से भरा।" data-ur="چالیس غزلوں کا مجموعہ — محبت، جدائی، عقیدت اور زندگی کے کئی رنگوں سے بھرا ہوا۔">40 ग़ज़लों का संग्रह — मोहब्बत, हिज्र, ईमान और ज़िंदगी की कैफ़ियतों से भरा।</p>
-    <div class="nav-card-arrow" data-en="Read →" data-hi="पढ़ें →" data-ur="← پڑھیں">पढ़ें →</div>
+    <h3 data-en="Ghazals" data-hi="ग़ज़लें" data-ur="غزلیں">Ghazals</h3>
+    <p data-en="A collection of 40 ghazals — filled with love, longing, faith, and the many moods of life." data-hi="40 ग़ज़लों का संग्रह — मोहब्बत, हिज्र, ईमान और ज़िंदगी की कैफ़ियतों से भरा।" data-ur="چالیس غزلوں کا مجموعہ — محبت، جدائی، عقیدت اور زندگی کے کئی رنگوں سے بھرا ہوا۔">A collection of 40 ghazals — filled with love, longing, faith, and the many moods of life.</p>
+    <div class="nav-card-preview" data-en="Agarche the to dono hi ghalat allah jaane hai…" data-hi="अगरचे थे तो दोनों ही ग़लत अल्लाह जाने है…" data-ur="اگرچہ تھے تو دونوں ہی غلط اللہ جانے ہے…">Agarche the to dono hi ghalat allah jaane hai…</div>
+    <div class="nav-card-arrow" data-en="Read →" data-hi="पढ़ें →" data-ur="← پڑھیں">Read →</div>
   </a>
   <a href="nazms.html" data-en-href="nazms-en.html" data-ur-href="nazms-ur.html" class="nav-card reveal">
     <div class="nav-card-tag hide-on-en">Nazms</div>
-    <h3 data-en="Nazms" data-hi="नज़्में" data-ur="نظمیں">नज़्में</h3>
-    <p data-en="A collection of nazms that speak of everyday life and deeper emotions." data-hi="रोज़मर्रा की ज़िंदगी और गहरे एहसासात को बयान करती नज़्मों का संग्रह।" data-ur="ایسی نظموں کا مجموعہ جو روزمرہ زندگی اور گہرے جذبات کی بات کرتی ہیں۔">रोज़मर्रा की ज़िंदगी और गहरे एहसासात को बयान करती नज़्मों का संग्रह।</p>
-    <div class="nav-card-arrow" data-en="Read →" data-hi="पढ़ें →" data-ur="← پڑھیں">पढ़ें →</div>
+    <h3 data-en="Nazms" data-hi="नज़्में" data-ur="نظمیں">Nazms</h3>
+    <p data-en="A collection of nazms that speak of everyday life and deeper emotions." data-hi="रोज़मर्रा की ज़िंदगी और गहरे एहसासात को बयान करती नज़्मों का संग्रह।" data-ur="ایسی نظموں کا مجموعہ جو روزمرہ زندگی اور گہرے جذبات کی بات کرتی ہیں۔">A collection of nazms that speak of everyday life and deeper emotions.</p>
+    <div class="nav-card-arrow" data-en="Read →" data-hi="पढ़ें →" data-ur="← پڑھیں">Read →</div>
+  </a>
+  <a href="ebook.html" data-en-href="ebook-en.html" data-ur-href="ebook-ur.html" class="nav-card reveal">
+    <div class="nav-card-tag hide-on-en">eBook</div>
+    <h3 data-en="Book" data-hi="किताब" data-ur="کتاب">Book</h3>
+    <p data-en="All 40 ghazals and 10 nazms, together as one PDF book you can keep and read offline — ₹99." data-hi="सभी 40 ग़ज़लें और 10 नज़्में, एक PDF किताब की सूरत में — ₹99 में।" data-ur="تمام 40 غزلیں اور 10 نظمیں، ایک PDF کتاب کی صورت میں — ₹99 میں۔">All 40 ghazals and 10 nazms, together as one PDF book you can keep and read offline — ₹99.</p>
+    <div class="nav-card-arrow" data-en="Buy →" data-hi="ख़रीदें →" data-ur="← خریدیں">Buy →</div>
   </a>
   <a href="profiles.html" data-en-href="profiles-en.html" data-ur-href="profiles-ur.html" class="nav-card reveal">
     <div class="nav-card-tag hide-on-en">Profiles</div>
-    <h3 data-en="Profiles" data-hi="प्रोफ़ाइल" data-ur="پروفائل">प्रोफ़ाइल</h3>
-    <p data-en="Read Zaan Farzaan on Rekhta and Poetistic too — find him on other platforms." data-hi="Rekhta और Poetistic पर भी ज़ान फ़रज़ान को पढ़ें — दूसरे प्लेटफ़ॉर्म्स पर भी मौजूद।" data-ur="زان فرزان کو ریختہ اور Poetistic پر بھی پڑھیں — انہیں دیگر پلیٹ فارمز پر بھی تلاش کریں۔">Rekhta और Poetistic पर भी ज़ान फ़रज़ान को पढ़ें — दूसरे प्लेटफ़ॉर्म्स पर भी मौजूद।</p>
-    <div class="nav-card-arrow" data-en="View →" data-hi="देखें →" data-ur="← دیکھیں">देखें →</div>
+    <h3 data-en="Profiles" data-hi="प्रोफ़ाइल" data-ur="پروفائل">Profiles</h3>
+    <p data-en="Read Zaan Farzaan on Rekhta and Poetistic too — find him on other platforms." data-hi="Rekhta और Poetistic पर भी ज़ान फ़रज़ान को पढ़ें — दूसरे प्लेटफ़ॉर्म्स पर भी मौजूद।" data-ur="زان فرزان کو ریختہ اور Poetistic پر بھی پڑھیں — انہیں دیگر پلیٹ فارمز پر بھی تلاش کریں۔">Read Zaan Farzaan on Rekhta and Poetistic too — find him on other platforms.</p>
+    <div class="nav-card-arrow" data-en="View →" data-hi="देखें →" data-ur="← دیکھیں">View →</div>
   </a>
   <a href="feedback.html" data-en-href="feedback-en.html" data-ur-href="feedback-ur.html" class="nav-card reveal">
     <div class="nav-card-tag hide-on-en">Feedback</div>
-    <h3 data-en="Feedback" data-hi="फ़ीडबैक" data-ur="فیڈبیک">फ़ीडबैक</h3>
-    <p data-en="Loved a sher, or have a suggestion? Share your feedback with Zaan Farzaan." data-hi="कोई शेर पसंद आया, या कोई सुझाव है? ज़ान फ़रज़ान के साथ अपना फ़ीडबैक साझा करें।" data-ur="کوئی شعر پسند آیا، یا کوئی تجویز ہے؟ اپنی رائے زان فرزان کے ساتھ بانٹیں۔">कोई शेर पसंद आया, या कोई सुझाव है? ज़ान फ़रज़ान के साथ अपना फ़ीडबैक साझा करें।</p>
-    <div class="nav-card-arrow" data-en="Share →" data-hi="साझा करें →" data-ur="← شیئر کریں">साझा करें →</div>
+    <h3 data-en="Feedback" data-hi="फ़ीडबैक" data-ur="فیڈبیک">Feedback</h3>
+    <p data-en="Loved a sher, or have a suggestion? Share your feedback with Zaan Farzaan." data-hi="कोई शेर पसंद आया, या कोई सुझाव है? ज़ान फ़रज़ान के साथ अपना फ़ीडबैक साझा करें।" data-ur="کوئی شعر پسند آیا، یا کوئی تجویز ہے؟ اپنی رائے زان فرزان کے ساتھ بانٹیں۔">Loved a sher, or have a suggestion? Share your feedback with Zaan Farzaan.</p>
+    <div class="nav-card-arrow" data-en="Share →" data-hi="साझा करें →" data-ur="← شیئر کریں">Share →</div>
   </a>
   <a href="contact.html" data-en-href="contact-en.html" data-ur-href="contact-ur.html" class="nav-card reveal">
     <div class="nav-card-tag hide-on-en">Contact</div>
-    <h3 data-en="Contact" data-hi="संपर्क करें" data-ur="رابطہ">संपर्क करें</h3>
+    <h3 data-en="Contact" data-hi="संपर्क करें" data-ur="رابطہ">Contact</h3>
     <p data-en="For readings, collaborations, or just to talk poetry — get in touch." data-hi="रीडिंग्स, कोलैबोरेशन या बस शायरी पे बात करने के लिए — सम्पर्क करें।" data-ur="قرأت، تعاون یا محض شاعری پر بات کرنے کے لیے — رابطہ کریں۔">For readings, collaborations, or just to talk poetry — get in touch.</p>
     <div class="nav-card-arrow" data-en="Go →" data-hi="जाएँ →" data-ur="← جائیں">Go →</div>
   </a>
@@ -186,6 +218,6 @@
 <script src="ur-translit.js"></script>
 <script src="i18n.js"></script>
 <script src="app.js"></script>
-<script src="random-sher.js"></script>
+<script src="home-features.js"></script>
 </body>
 </html>

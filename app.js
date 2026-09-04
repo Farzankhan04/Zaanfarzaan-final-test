@@ -173,3 +173,88 @@ function attachCardActions(root){
     card.appendChild(dlBtn);
   });
 }
+
+/* READING PROGRESS — mark a ghazal/nazm detail page as "read" the moment
+   someone opens it. Storage-only here (shared on every page via app.js);
+   the home page's badge that DISPLAYS the count lives in home-features.js
+   and reads the same 'zf-read-poems' key. Nothing is sent anywhere. */
+(function(){
+  var m = window.location.pathname.match(/\/(ghazals|nazms)\/(ghazal|nazm)-(\d+)\.html$/);
+  if(!m) return;
+  var id = m[2] + '-' + m[3];
+  try{
+    var read = JSON.parse(localStorage.getItem('zf-read-poems') || '[]');
+    if(read.indexOf(id) === -1){
+      read.push(id);
+      localStorage.setItem('zf-read-poems', JSON.stringify(read));
+    }
+  }catch(e){}
+})();
+
+/* PAGE TRANSITIONS — a soft fade when moving between pages on this site,
+   instead of the usual hard cut. Only intercepts plain left-clicks on
+   same-origin links that will actually navigate the whole page (not
+   "#anchor" jumps, not new-tab/modifier clicks, not links the site
+   already treats specially like the lang-toggle options, which swap
+   content in place rather than navigating). */
+(function(){
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.addEventListener('click', function(e){
+    if(e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest('a[href]');
+    if(!a || a.target === '_blank' || a.hasAttribute('download')) return;
+    if(a.classList.contains('lang-opt')) return;
+    var href = a.getAttribute('href') || '';
+    if(!href || href.charAt(0) === '#' || href.indexOf('mailto:') === 0 || href.indexOf('tel:') === 0 || href.indexOf('upi:') === 0) return;
+    var url;
+    try{ url = new URL(href, window.location.href); }catch(err){ return; }
+    if(url.origin !== window.location.origin) return;
+    if(url.pathname === window.location.pathname && url.hash) return;
+    e.preventDefault();
+    document.documentElement.classList.add('zf-transitioning');
+    window.setTimeout(function(){ window.location.href = url.href; }, 200);
+  });
+  window.addEventListener('pageshow', function(e){
+    if(e.persisted) document.documentElement.classList.remove('zf-transitioning');
+  });
+})();
+
+/* NAV CARDS — gentle tilt toward the cursor, desktop/mouse only. */
+(function(){
+  if(!window.matchMedia || !window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  document.querySelectorAll('.nav-card').forEach(function(card){
+    card.addEventListener('mousemove', function(e){
+      var r = card.getBoundingClientRect();
+      var px = (e.clientX - r.left) / r.width - 0.5;
+      var py = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = 'perspective(700px) rotateX(' + (py * -6) + 'deg) rotateY(' + (px * 6) + 'deg) translateY(-2px)';
+    });
+    card.addEventListener('mouseleave', function(){ card.style.transform = ''; });
+  });
+})();
+
+/* COUNT-UP — animates any [data-count] number upward once it scrolls
+   into view (used by the homepage stat strip). */
+(function(){
+  var els = document.querySelectorAll('.stat-num[data-count]');
+  if(!els.length) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(!entry.isIntersecting) return;
+      io.unobserve(entry.target);
+      var target = parseInt(entry.target.getAttribute('data-count'), 10) || 0;
+      var start = null;
+      var duration = 1100;
+      function step(ts){
+        if(start === null) start = ts;
+        var progress = Math.min((ts - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - progress, 3);
+        entry.target.textContent = Math.round(eased * target);
+        if(progress < 1) requestAnimationFrame(step);
+        else entry.target.textContent = target;
+      }
+      requestAnimationFrame(step);
+    });
+  }, {threshold:0.4});
+  els.forEach(function(el){ io.observe(el); });
+})();

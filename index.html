@@ -104,27 +104,52 @@
 
 <section class="sher-widget reveal">
   <div class="sher-widget-head">
-    <div class="tag">Ek Sher</div>
-    <h2 data-en="How about a sher?" data-ur="ایک شعر کیسا رہے؟">एक शेर हो जाए?</h2>
+    <div class="tag">Aaj Ka Sher</div>
+    <h2 data-en="Today's Sher" data-ur="آج کا شعر">आज का शेर</h2>
   </div>
 
   <div class="sher-card" id="sher-card" aria-live="polite">
-    <p class="sher-placeholder" id="sher-placeholder" data-en="Tap below — a different sher, every time." data-ur="نیچے دبائیں — ہر بار ایک نیا شعر۔">नीचे टैप कीजिए — हर बार एक अलग शेर।</p>
+    <p class="sher-placeholder" id="sher-placeholder" data-en="Loading a sher…" data-ur="ایک شعر لایا جا رہا ہے…">एक शेर लाया जा रहा है…</p>
     <div class="sher-content" id="sher-content" hidden>
       <div class="sher-lines" id="sher-lines"></div>
       <a href="ghazals.html" data-en-href="ghazals-en.html" data-ur-href="ghazals-ur.html" class="sher-source" id="sher-source">
-        <span class="sher-source-prefix" data-en="From the ghazal" data-ur="اس غزل سے">इस ग़ज़ल से</span>
+        <span class="sher-source-prefix" data-en="From" data-ur="از">से</span>
         <span class="sher-source-label" id="sher-source-label"></span>
-        <span class="sher-source-arrow" data-en="Read full ghazal →" data-ur="← مکمل غزل پڑھیں">पूरी ग़ज़ल पढ़ें →</span>
+        <span class="sher-source-arrow" data-en="Read the full piece →" data-ur="← مکمل تحریر پڑھیں">पूरी रचना पढ़ें →</span>
       </a>
     </div>
   </div>
 
-  <button type="button" class="sher-btn" id="sher-btn">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-    <span data-en="Show me a sher" data-ur="ایک شعر دکھائیں">कोई शेर सुनाइए</span>
-  </button>
+  <div class="mood-tags" id="mood-tags"></div>
+
+  <div class="sher-actions">
+    <button type="button" class="sher-btn" id="sher-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      <span data-en="Show me another" data-ur="کوئی اور دکھائیں">कोई और सुनाएँ</span>
+    </button>
+    <button type="button" class="sher-today-btn" id="sher-today-btn" data-en="Back to today's sher" data-ur="آج کے شعر پر واپس">आज के शेर पर वापस</button>
+  </div>
+
+  <div class="read-progress-badge" id="read-progress-badge" hidden>
+    <span id="read-badge-text"></span>
+    <span class="read-badge-bar"><span class="read-badge-fill"></span></span>
+  </div>
 </section>
+
+<div class="stat-strip reveal">
+  <div class="stat">
+    <div class="stat-num" data-count="40">0</div>
+    <div class="stat-label" data-en="Ghazals" data-ur="غزلیں">ग़ज़लें</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" data-count="10">0</div>
+    <div class="stat-label" data-en="Nazms" data-ur="نظمیں">नज़्में</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" data-count="3">0</div>
+    <div class="stat-label" data-en="Languages" data-ur="زبانیں">भाषाएँ</div>
+  </div>
+</div>
 
 <div class="nav-cards">
   <a href="about.html" data-en-href="about-en.html" data-ur-href="about-ur.html" class="nav-card reveal">
@@ -137,6 +162,7 @@
     <div class="nav-card-tag hide-on-en">Ghazals</div>
     <h3 data-en="Ghazals" data-ur="غزلیں">ग़ज़लें</h3>
     <p data-en="A collection of 40 ghazals — filled with love, longing, faith, and the many moods of life." data-ur="چالیس غزلوں کا مجموعہ — محبت، جدائی، عقیدت اور زندگی کے کئی رنگوں سے بھرا ہوا۔">40 ग़ज़लों का संग्रह — मोहब्बत, हिज्र, ईमान और ज़िंदगी की कैफ़ियतों से भरा।</p>
+    <div class="nav-card-preview" data-en="Agarche the to dono hi ghalat allah jaane hai…" data-ur="اگرچہ تھے تو دونوں ہی غلط اللہ جانے ہے…">अगरचे थे तो दोनों ही ग़लत अल्लाह जाने है…</div>
     <div class="nav-card-arrow" data-en="Read →" data-ur="← پڑھیں">पढ़ें →</div>
   </a>
   <a href="nazms.html" data-en-href="nazms-en.html" data-ur-href="nazms-ur.html" class="nav-card reveal">
@@ -144,6 +170,12 @@
     <h3 data-en="Nazms" data-ur="نظمیں">नज़्में</h3>
     <p data-en="A collection of nazms that speak of everyday life and deeper emotions." data-ur="ایسی نظموں کا مجموعہ جو روزمرہ زندگی اور گہرے جذبات کی بات کرتی ہیں۔">रोज़मर्रा की ज़िंदगी और गहरे एहसासात को बयान करती नज़्मों का संग्रह।</p>
     <div class="nav-card-arrow" data-en="Read →" data-ur="← پڑھیں">पढ़ें →</div>
+  </a>
+  <a href="ebook.html" data-en-href="ebook-en.html" data-ur-href="ebook-ur.html" class="nav-card reveal">
+    <div class="nav-card-tag hide-on-en">eBook</div>
+    <h3 data-en="Book" data-ur="کتاب">किताब</h3>
+    <p data-en="All 40 ghazals and 10 nazms, together as one PDF book you can keep and read offline — ₹99." data-ur="تمام 40 غزلیں اور 10 نظمیں، ایک PDF کتاب کی صورت میں — ₹99 میں۔">सभी 40 ग़ज़लें और 10 नज़्में, एक PDF किताब की सूरत में — ₹99 में।</p>
+    <div class="nav-card-arrow" data-en="Buy →" data-ur="← خریدیں">ख़रीदें →</div>
   </a>
   <a href="profiles.html" data-en-href="profiles-en.html" data-ur-href="profiles-ur.html" class="nav-card reveal">
     <div class="nav-card-tag hide-on-en">Profiles</div>
@@ -186,6 +218,6 @@
 <script src="ur-translit.js"></script>
 <script src="i18n.js"></script>
 <script src="app.js"></script>
-<script src="random-sher.js"></script>
+<script src="home-features.js"></script>
 </body>
 </html>
