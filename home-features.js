@@ -109,6 +109,7 @@
       void content.offsetWidth;
       content.classList.add('sher-fade-in');
       window.setTimeout(function(){ content.classList.remove('sher-fade-in'); }, 320);
+      syncHomeFavoriteBtn();
     }
 
     if(opts.instant || content.hidden){
@@ -147,7 +148,107 @@
     setActiveMoodTag(moodKey);
   }
 
-  /* ---- Reading-progress badge (private, localStorage only) ---- */
+  function syncHomeFavoriteBtn(){
+    var favBtn = document.getElementById('sher-favorite-btn');
+    if(!favBtn || !currentEntry || typeof window.ZF_isFavorite !== 'function') return;
+    var on = window.ZF_isFavorite(currentEntry.item.id);
+    favBtn.classList.toggle('active', on);
+  }
+  window.ZF_toggleHomeSherFavorite = function(btn){
+    if(!currentEntry || typeof window.ZF_toggleFavorite !== 'function') return;
+    window.ZF_toggleFavorite(currentEntry.item.id);
+    syncHomeFavoriteBtn();
+  };
+
+  var GENERIC_KIND = {hi:'एक शेर', en:'A Sher', ur:'ایک شعر'};
+  function currentKindLabel(){
+    var activeTag = moodRow ? moodRow.querySelector('.mood-tag.active') : null;
+    if(activeTag) return activeTag.textContent.trim();
+    return GENERIC_KIND[lang()];
+  }
+
+  /* Builds the same '.export-card' markup used for ghazal/nazm cards
+     (see app.js buildExportCard), so a sher shared from the homepage
+     looks identical to one shared from its own ghazal/nazm page. */
+  function buildHomeExportCard(){
+    var wrap = document.createElement('div');
+    wrap.className = 'export-card';
+
+    var kindDiv = document.createElement('div');
+    kindDiv.className = 'export-kind';
+    kindDiv.textContent = currentKindLabel();
+    wrap.appendChild(kindDiv);
+
+    var titleText = sourceLabel ? sourceLabel.textContent.trim() : '';
+    if(titleText){
+      var h = document.createElement('div');
+      h.className = 'export-title';
+      h.textContent = titleText;
+      wrap.appendChild(h);
+    }
+
+    var body = document.createElement('div');
+    body.className = 'export-body';
+    var verseClone = linesEl.cloneNode(true);
+    verseClone.className = 'export-verse';
+    body.appendChild(verseClone);
+    wrap.appendChild(body);
+
+    var footer = document.createElement('div');
+    footer.className = 'export-footer';
+    var brandName = (typeof window.ZF_T === 'function') ? window.ZF_T('brandName') : 'Zaan Farzaan';
+    footer.innerHTML = '<span class="export-brand">' + brandName + '</span><span class="export-tag">Shaayar &middot; Poet</span>';
+    wrap.appendChild(footer);
+
+    return wrap;
+  }
+
+  function downloadHomeSher(btn){
+    if(typeof html2canvas === 'undefined' || !currentEntry) return;
+    if(btn) btn.classList.add('loading');
+    var stage = document.createElement('div');
+    stage.className = 'export-stage';
+    var exportCard = buildHomeExportCard();
+    stage.appendChild(exportCard);
+    document.body.appendChild(stage);
+
+    html2canvas(exportCard, {backgroundColor:'#f7f7f4', scale:2, useCORS:true, width:760, windowWidth:760}).then(function(canvas){
+      document.body.removeChild(stage);
+      if(btn) btn.classList.remove('loading');
+      var link = document.createElement('a');
+      link.download = 'zaan-farzaan-sher.png';
+      link.href = canvas.toDataURL('image/png');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }).catch(function(){
+      if(document.body.contains(stage)) document.body.removeChild(stage);
+      if(btn) btn.classList.remove('loading');
+      if(typeof showToast === 'function' && typeof window.ZF_T === 'function') showToast(window.ZF_T('downloadFailed'));
+    });
+  }
+
+  function shareHomeSher(){
+    if(!currentEntry) return;
+    var url;
+    try{ url = new URL(currentEntry.source + '#' + currentEntry.item.id, window.location.href).href; }
+    catch(e){ url = window.location.href; }
+    var titleText = sourceLabel ? sourceLabel.textContent.trim() : '';
+    var brandName = (typeof window.ZF_T === 'function') ? window.ZF_T('brandName') : 'Zaan Farzaan';
+    var prefix = (typeof window.ZF_T === 'function') ? window.ZF_T('shareTextPrefix') : '';
+    var shareData = {title: brandName, text: (prefix || '') + titleText, url: url};
+    if(navigator.share){
+      navigator.share(shareData).catch(function(){});
+    }else if(navigator.clipboard){
+      navigator.clipboard.writeText(url).then(function(){
+        if(typeof showToast === 'function' && typeof window.ZF_T === 'function') showToast(window.ZF_T('linkCopied'));
+      }).catch(function(){ window.prompt((typeof window.ZF_T === 'function') ? window.ZF_T('copyPrompt') : 'Copy:', url); });
+    }else{
+      window.prompt((typeof window.ZF_T === 'function') ? window.ZF_T('copyPrompt') : 'Copy:', url);
+    }
+  }
+  window.ZF_downloadHomeSher = downloadHomeSher;
+  window.ZF_shareHomeSher = shareHomeSher;
   var READ_KEY = 'zf-read-poems';
   function getReadSet(){
     try{ return JSON.parse(localStorage.getItem(READ_KEY) || '[]'); }catch(e){ return []; }

@@ -56,6 +56,27 @@ function shareCard(card){
 /* DOWNLOAD AS IMAGE */
 const shareIconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><line x1="8.3" y1="10.6" x2="15.6" y2="6.4"/><line x1="8.3" y1="13.4" x2="15.6" y2="17.6"/></svg>';
 const downloadIconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>';
+const heartIconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>';
+
+/* FAVORITES — a private "पसंद" list, stored only on this device. Shared
+   key/format with the reading-progress tracker's id style ('ghazal-5',
+   'nazm-3'), so the My Favorites page can look each id straight up in
+   GHAZAL_ITEMS / NAZM_ITEMS. */
+var ZF_FAV_KEY = 'zf-favorite-poems';
+function zfGetFavorites(){
+  try{ return JSON.parse(localStorage.getItem(ZF_FAV_KEY) || '[]'); }catch(e){ return []; }
+}
+function zfIsFavorite(id){ return zfGetFavorites().indexOf(id) !== -1; }
+function zfToggleFavorite(id){
+  var favs = zfGetFavorites();
+  var idx = favs.indexOf(id);
+  if(idx === -1) favs.push(id); else favs.splice(idx, 1);
+  try{ localStorage.setItem(ZF_FAV_KEY, JSON.stringify(favs)); }catch(e){}
+  if(typeof window.ZF_onFavoriteToggled === 'function') window.ZF_onFavoriteToggled(id);
+  return idx === -1; /* true if it just became a favorite */
+}
+window.ZF_isFavorite = zfIsFavorite;
+window.ZF_toggleFavorite = zfToggleFavorite;
 
 function buildExportCard(card){
   const kindEl = card.querySelector('.kind');
@@ -103,7 +124,7 @@ function downloadCard(card, btn){
   stage.appendChild(exportCard);
   document.body.appendChild(stage);
 
-  html2canvas(exportCard, { backgroundColor: '#f3ecdd', scale: 2, useCORS: true, width: 760, windowWidth: 760 }).then(function(canvas){
+  html2canvas(exportCard, { backgroundColor: '#f7f7f4', scale: 2, useCORS: true, width: 760, windowWidth: 760 }).then(function(canvas){
     document.body.removeChild(stage);
     if(btn) btn.classList.remove('loading');
 
@@ -171,6 +192,25 @@ function attachCardActions(root){
     dlBtn.innerHTML = downloadIconSvg;
     dlBtn.addEventListener('click', function(e){ e.stopPropagation(); downloadCard(card, dlBtn); });
     card.appendChild(dlBtn);
+
+    if(card.id){
+      const favBtn = document.createElement('button');
+      favBtn.type = 'button';
+      favBtn.className = 'favorite-btn';
+      favBtn.innerHTML = heartIconSvg;
+      function syncFavBtn(){
+        var on = zfIsFavorite(card.id);
+        favBtn.classList.toggle('active', on);
+        favBtn.setAttribute('aria-label', window.ZF_T(on ? 'unfavoriteAria' : 'favoriteAria'));
+      }
+      syncFavBtn();
+      favBtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        zfToggleFavorite(card.id);
+        syncFavBtn();
+      });
+      card.appendChild(favBtn);
+    }
   });
 }
 

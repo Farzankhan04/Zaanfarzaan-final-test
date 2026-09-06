@@ -61,7 +61,9 @@ var ZF_UI_STRINGS = {
   downloadFailed:    { hi: 'डाउनलोड नहीं हो पाया, दोबारा कोशिश करें', en: 'Download failed, please try again', ur: 'ڈاؤن لوڈ نہیں ہو پایا، دوبارہ کوشش کریں' },
   shareAria:         { hi: 'यह रचना साझा करें', en: 'Share this piece', ur: 'یہ تحریر شیئر کریں' },
   downloadAria:      { hi: 'यह रचना इमेज के रूप में डाउनलोड करें', en: 'Download this piece as an image', ur: 'یہ تحریر تصویر کی صورت میں ڈاؤن لوڈ کریں' },
-  upiIdCopied:       { hi: 'UPI ID कॉपी हो गई', en: 'UPI ID copied', ur: 'UPI ID کاپی ہو گئی' }
+  upiIdCopied:       { hi: 'UPI ID कॉपी हो गई', en: 'UPI ID copied', ur: 'UPI ID کاپی ہو گئی' },
+  favoriteAria:      { hi: 'पसंद में जोड़ें', en: 'Add to favourites', ur: 'پسند میں شامل کریں' },
+  unfavoriteAria:    { hi: 'पसंद से हटाएँ', en: 'Remove from favourites', ur: 'پسند سے ہٹائیں' }
 };
 window.ZF_T = function(key){
   var entry = ZF_UI_STRINGS[key];

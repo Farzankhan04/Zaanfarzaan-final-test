@@ -109,6 +109,15 @@
   </div>
 
   <div class="sher-card" id="sher-card" aria-live="polite">
+    <button type="button" class="share-btn" id="sher-share-btn" aria-label="Share this sher" data-en-aria-label="Share this sher" data-ur-aria-label="یہ شعر شیئر کریں" onclick="event.stopPropagation(); window.ZF_shareHomeSher();">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><line x1="8.3" y1="10.6" x2="15.6" y2="6.4"/><line x1="8.3" y1="13.4" x2="15.6" y2="17.6"/></svg>
+    </button>
+    <button type="button" class="download-btn" id="sher-download-btn" aria-label="Download this sher as an image" data-en-aria-label="Download this sher as an image" data-ur-aria-label="یہ شعر بطور تصویر ڈاؤن لوڈ کریں" onclick="event.stopPropagation(); window.ZF_downloadHomeSher(this);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>
+    </button>
+    <button type="button" class="favorite-btn" id="sher-favorite-btn" aria-label="Add to favourites" data-en-aria-label="Add to favourites" data-ur-aria-label="پسند میں شامل کریں" onclick="event.stopPropagation(); window.ZF_toggleHomeSherFavorite(this);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+    </button>
     <p class="sher-placeholder" id="sher-placeholder" data-en="Loading a sher…" data-hi="एक शेर लाया जा रहा है…" data-ur="ایک شعر لایا جا رہا ہے…">Loading a sher…</p>
     <div class="sher-content" id="sher-content" hidden>
       <div class="sher-lines" id="sher-lines"></div>
@@ -209,11 +218,13 @@
   <div class="foot-links">
     <a href="mailto:zaanfarzaan1@gmail.com">Email</a>
     <a href="https://instagram.com/zaanfarzaan" target="_blank" rel="noopener">Instagram</a>
+    <a href="favorites.html" data-en-href="favorites-en.html" data-ur-href="favorites-ur.html">Favourites</a>
     <a href="terms.html">Terms</a>
     <a href="refund-policy.html">Refund Policy</a>
   </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="ghazals-data.js"></script>
 <script src="ur-translit.js"></script>
 <script src="i18n.js"></script>
