@@ -1,10 +1,21 @@
 /* Renders the "My Favourites" page from whatever is saved in
    localStorage (see zfToggleFavorite/zfIsFavorite in app.js). Needs
    GHAZAL_ITEMS and NAZM_ITEMS (ghazals-data.js / nazms-data.js) loaded
-   first to look up the full text for each saved id. */
+   first to look up the full text for each saved id.
+
+   Mirrors the list -> detail pattern used on ghazals.html/nazms.html
+   (see collection.js): each favourite first shows as a compact
+   first-line preview, and tapping it swaps just that entry for the
+   full manuscript card (verses + share/download/heart, heart shown
+   active since everything here is already a favourite). Tapping the
+   open card again — or opening a different favourite — collapses it
+   back to a preview. */
 (function(){
   function lang(){ return (window.ZF_LANG === 'en' || window.ZF_LANG === 'ur') ? window.ZF_LANG : 'hi'; }
   function urHtml(s){ return (s && typeof window.ZF_UR_transliterateHtml === 'function') ? window.ZF_UR_transliterateHtml(s) : s; }
+  function urText(s){ return (s && typeof window.ZF_UR_transliterateText === 'function') ? window.ZF_UR_transliterateText(s) : s; }
+
+  var openId = null; /* id of the one favourite currently expanded, if any */
 
   function findItem(id){
     if(id.indexOf('ghazal-') === 0 && typeof GHAZAL_ITEMS !== 'undefined'){
@@ -17,9 +28,34 @@
     return null;
   }
 
-  function cardHtml(id){
-    var found = findItem(id);
-    if(!found) return '';
+  /* Same "what represents this piece in one line" logic as
+     collection.js's itemLabel(): a nazm shows its title, a ghazal
+     shows its opening line. */
+  function previewLabel(item, type){
+    var l = lang();
+    if(type === 'nazm'){
+      if(l === 'en') return item.titleEn || item.title;
+      if(l === 'ur') return urText(item.title);
+      return item.title;
+    }
+    if(l === 'en') return item.firstLineEn || item.firstLine;
+    if(l === 'ur') return urText(item.firstLine);
+    return item.firstLine;
+  }
+
+  function previewHtml(id, found){
+    var item = found.item;
+    var prefix = found.type === 'ghazal' ? 'ghazals/' : 'nazms/';
+    return '<a href="' + prefix + id + '.html" class="poem-item" data-fav-id="' + id + '">' +
+        '<div class="poem-item-text">' +
+          '<div class="poem-item-num">' + item.kind + '</div>' +
+          '<div class="poem-item-line">' + previewLabel(item, found.type) + '</div>' +
+        '</div>' +
+        '<div class="poem-item-go">&rarr;</div>' +
+      '</a>';
+  }
+
+  function fullCardHtml(id, found){
     var item = found.item, l = lang();
     var kind = item.kind;
     var verses = item.versesHtml;
@@ -29,10 +65,18 @@
       title = item.titleEn || item.title;
     }else if(l === 'ur'){
       verses = item.versesHtml.map(urHtml);
-      title = title ? window.ZF_UR_transliterateText(title) : title;
+      title = title ? urText(title) : title;
     }
     var titleHtml = title ? ('<h3>' + title + '</h3>') : '';
-    return '<div class="card manuscript" id="' + item.id + '"><div class="kind">' + kind + '</div>' + titleHtml + verses.join('') + '</div>';
+    return '<div class="card manuscript" id="' + item.id + '" data-fav-id="' + id + '">' +
+      '<div class="kind">' + kind + '</div>' + titleHtml + verses.join('') +
+    '</div>';
+  }
+
+  function entryHtml(id){
+    var found = findItem(id);
+    if(!found) return '';
+    return id === openId ? fullCardHtml(id, found) : previewHtml(id, found);
   }
 
   function render(){
@@ -44,11 +88,29 @@
     if(!ids.length){
       list.hidden = true;
       if(empty) empty.hidden = false;
+      openId = null;
       return;
     }
+    if(openId && ids.indexOf(openId) === -1) openId = null; /* unfavourited elsewhere */
     if(empty) empty.hidden = true;
     list.hidden = false;
-    list.innerHTML = ids.map(cardHtml).join('');
+    list.innerHTML = ids.map(entryHtml).join('');
+
+    list.querySelectorAll('.poem-item[data-fav-id]').forEach(function(a){
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        openId = a.getAttribute('data-fav-id');
+        render();
+      });
+    });
+    var openCard = list.querySelector('.card.manuscript[data-fav-id]');
+    if(openCard){
+      openCard.addEventListener('click', function(){
+        openId = null;
+        render();
+      });
+    }
+
     if(typeof attachCardActions === 'function') attachCardActions(list);
   }
 

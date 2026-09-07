@@ -174,19 +174,6 @@
     var wrap = document.createElement('div');
     wrap.className = 'export-card';
 
-    var kindDiv = document.createElement('div');
-    kindDiv.className = 'export-kind';
-    kindDiv.textContent = currentKindLabel();
-    wrap.appendChild(kindDiv);
-
-    var titleText = sourceLabel ? sourceLabel.textContent.trim() : '';
-    if(titleText){
-      var h = document.createElement('div');
-      h.className = 'export-title';
-      h.textContent = titleText;
-      wrap.appendChild(h);
-    }
-
     var body = document.createElement('div');
     body.className = 'export-body';
     var verseClone = linesEl.cloneNode(true);

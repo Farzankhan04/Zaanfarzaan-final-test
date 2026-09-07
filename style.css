@@ -257,7 +257,7 @@ body.lang-en .hide-on-en{display:none;}
 .sher-widget-head h2{font-size:clamp(1.6rem,4vw,2.2rem); color:var(--gold-soft); font-weight:700; margin-top:0.6rem;}
 
 .sher-card{
-  background:var(--paper); border-radius:2px; margin:2.2rem 0 1.8rem; padding:2.6rem 2.2rem;
+  background:var(--paper); border-radius:2px; margin:2.2rem 0 1.8rem; padding:4.6rem 2.2rem 2.6rem;
   position:relative; border:1px solid var(--paper-dark); box-shadow:0 20px 40px rgba(0,0,0,0.3);
   min-height:120px; display:flex; align-items:center; justify-content:center;
 }
@@ -294,7 +294,7 @@ body.lang-en .sher-lines{font-family:'Cormorant Garamond','Lora', serif; font-st
 .sher-btn svg{width:16px; height:16px; flex:none; transition:transform .5s ease;}
 
 @media (max-width:600px){
-  .sher-card{padding:2.1rem 1.5rem;}
+  .sher-card{padding:4.4rem 1.5rem 2.1rem;}
 }
 
 /* FEEDBACK PAGE */
@@ -600,8 +600,8 @@ footer.site-footer{
   border-top:1px solid rgba(220,220,214,0.1);
 }
 footer.site-footer .fineprint{font-size:0.75rem; color:#5c5c58; letter-spacing:0.1em; margin-bottom:0.6rem;}
-footer.site-footer .foot-links{display:flex; justify-content:center; gap:1.2rem; font-size:0.8rem;}
-footer.site-footer .foot-links a{color:var(--text-muted); text-decoration:none;}
+footer.site-footer .foot-links{display:flex; flex-wrap:wrap; justify-content:center; gap:0.6rem 1.2rem; font-size:0.8rem;}
+footer.site-footer .foot-links a{color:var(--text-muted); text-decoration:none; white-space:nowrap;}
 footer.site-footer .foot-links a:hover{color:var(--gold-soft);}
 
 /* TOAST */
