@@ -81,6 +81,18 @@ function zfToggleFavorite(id){
 window.ZF_isFavorite = zfIsFavorite;
 window.ZF_toggleFavorite = zfToggleFavorite;
 
+/* INK-SEAL POP — a small ripple played once on a favorite button right
+   when a poem is freshly favorited (see style.css .seal-pop). Removing
+   then re-adding the class (with a reflow in between) lets it replay
+   on repeated favorite/unfavorite/favorite clicks, not just the first. */
+function zfSealPop(btn){
+  if(!btn) return;
+  btn.classList.remove('seal-pop');
+  void btn.offsetWidth;
+  btn.classList.add('seal-pop');
+}
+window.ZF_sealPop = zfSealPop;
+
 function buildExportCard(card){
   const kindEl = card.querySelector('.kind');
   const titleEl = card.querySelector('h3');
@@ -209,8 +221,9 @@ function attachCardActions(root){
       syncFavBtn();
       favBtn.addEventListener('click', function(e){
         e.stopPropagation();
-        zfToggleFavorite(card.id);
+        var justFavorited = zfToggleFavorite(card.id);
         syncFavBtn();
+        if(justFavorited) zfSealPop(favBtn);
       });
       card.appendChild(favBtn);
     }
@@ -300,4 +313,46 @@ function attachCardActions(root){
     });
   }, {threshold:0.4});
   els.forEach(function(el){ io.observe(el); });
+})();
+
+/* QUILL TRAIL — a soft trail of ink-blot marks follows the cursor as it
+   moves, like a dipped quill dragged lightly across the page (see
+   style.css .ink-trail-dot). Desktop/mouse only — same gate as the
+   nav-card tilt effect above — and skipped entirely under
+   prefers-reduced-motion, so the listener is never even attached on
+   touch devices or when motion is turned down. A new dot only spawns
+   once the cursor has actually moved a small distance, so the trail's
+   density follows how fast someone is moving the mouse rather than
+   how often the browser fires the event. */
+(function(){
+  if(!window.matchMedia || !window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var lastX = null, lastY = null, liveDots = 0;
+  var MIN_DIST = 24, MAX_DOTS = 16;
+
+  function spawnDot(x, y, size){
+    if(liveDots >= MAX_DOTS) return;
+    liveDots++;
+    var dot = document.createElement('div');
+    dot.className = 'ink-trail-dot';
+    dot.setAttribute('aria-hidden', 'true');
+    dot.style.left = x + 'px';
+    dot.style.top = y + 'px';
+    dot.style.width = size + 'px';
+    dot.style.height = size + 'px';
+    document.body.appendChild(dot);
+    dot.addEventListener('animationend', function(){
+      if(dot.parentNode) dot.parentNode.removeChild(dot);
+      liveDots--;
+    });
+  }
+
+  document.addEventListener('mousemove', function(e){
+    if(lastX === null){ lastX = e.clientX; lastY = e.clientY; return; }
+    var dx = e.clientX - lastX, dy = e.clientY - lastY;
+    if((dx*dx + dy*dy) < MIN_DIST*MIN_DIST) return;
+    lastX = e.clientX; lastY = e.clientY;
+    spawnDot(e.clientX, e.clientY, 6 + Math.random()*7);
+  });
 })();

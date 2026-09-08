@@ -112,8 +112,9 @@
   }
   window.ZF_toggleHomeSherFavorite = function(btn){
     if(!currentEntry || typeof window.ZF_toggleFavorite !== 'function') return;
-    window.ZF_toggleFavorite(currentEntry.item.id);
+    var justFavorited = window.ZF_toggleFavorite(currentEntry.item.id);
     syncHomeFavoriteBtn();
+    if(justFavorited && typeof window.ZF_sealPop === 'function') window.ZF_sealPop(btn);
   };
 
   /* Builds the same '.export-card' markup used for ghazal/nazm cards

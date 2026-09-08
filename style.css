@@ -934,3 +934,107 @@ body{opacity:1; transition:opacity .22s ease;}
 }
 .poem-nav-buttons a:hover::before, .seo-cta a:hover::before, .upi-copy-btn:hover::before{left:130%;}
 
+/* ================================================================
+   MANUSCRIPT & INK ENHANCEMENTS
+   A second, more deliberate pass — grounded in the quill-and-seal
+   mark from the site's own logo rather than adding more of the
+   fade-up language already used above. Four pieces, each earning its
+   own moment: (1) a signature-style flourish drawn under the poet's
+   name the instant the homepage opens, (2) the poem card itself
+   settling into place like a page being laid open, underneath the
+   existing verse-by-verse cascade, (3) a quiet ink trail that
+   follows the cursor while reading/browsing (desktop only), and
+   (4) a one-off ink-seal ring when a poem is freshly favourited.
+   Same two habits as the rest of this file: every motion has a
+   prefers-reduced-motion fallback, and nothing here depends on JS
+   running to reach a sane, fully-visible state.
+   ================================================================ */
+
+/* ---- 1. Hero signature flourish — a quill stroke drawn beneath the
+   poet's name, like a signature under a manuscript title. True SVG
+   draw-on via stroke-dasharray/-dashoffset (not a faked wipe), timed
+   to begin right as the name above finishes its own fadeUp. Mirrors
+   in Urdu (RTL) so the stroke's motion reads in the same direction
+   as the page's own flow. ---- */
+.signature-flourish{
+  display:block; width:150px; height:auto; margin:0.3rem 0 1.5rem;
+  overflow:visible; opacity:0;
+  animation:sigWrapIn .4s ease forwards 1s;
+}
+.signature-flourish path{
+  fill:none; stroke:var(--gold); stroke-width:1.8; stroke-linecap:round;
+  stroke-dasharray:320; stroke-dashoffset:320;
+  animation:sigDraw 1.3s cubic-bezier(.65,0,.35,1) forwards 1.05s;
+}
+body.lang-ur .signature-flourish{transform:scaleX(-1);}
+@keyframes sigWrapIn{to{opacity:1;}}
+@keyframes sigDraw{to{stroke-dashoffset:0;}}
+@media (max-width:480px){.signature-flourish{width:120px;}}
+@media (prefers-reduced-motion: reduce){
+  .signature-flourish{animation:none; opacity:1;}
+  .signature-flourish path{animation:none; stroke-dashoffset:0;}
+}
+
+/* ---- 2. Manuscript unfurl — the poem card settles into place (a
+   soft scale + rise) as it mounts, like a page being laid open.
+   Plays identically whether the card was server-rendered (the 50
+   static SEO pages) or freshly built by collection.js/favorites.js —
+   a plain CSS animation with no JS/scroll dependency, same guarantee
+   as the verse cascade it pairs with. ---- */
+.manuscript{
+  animation:manuscriptUnfurl .7s cubic-bezier(.22,.61,.36,1) both;
+  transform-origin:center top;
+}
+@keyframes manuscriptUnfurl{
+  0%{transform:scale(0.965) translateY(16px);}
+  100%{transform:scale(1) translateY(0);}
+}
+@media (prefers-reduced-motion: reduce){.manuscript{animation:none;}}
+
+/* ---- 3. Quill trail — a soft trail of ink-blot marks follows the
+   cursor as it moves (see app.js), like a dipped quill dragged
+   lightly across the page. Desktop/mouse only, same gate as the
+   nav-card tilt effect above; skipped entirely under
+   prefers-reduced-motion. mix-blend-mode:difference against the
+   --rose token keeps each dot legible over both the site's dark ink
+   background and its lighter paper cards without needing to know
+   which one is underneath. Sits just below nav's z-index so the
+   trail never draws over the header chrome. ---- */
+.ink-trail-dot{
+  position:fixed; z-index:40; border-radius:50%;
+  pointer-events:none; mix-blend-mode:difference;
+  background:radial-gradient(circle, rgba(156,156,149,0.9) 0%, rgba(156,156,149,0.5) 45%, rgba(156,156,149,0) 75%);
+  transform:translate(-50%,-50%);
+  animation:inkFade .85s ease-out forwards;
+}
+@keyframes inkFade{
+  0%{opacity:0.85; transform:translate(-50%,-50%) scale(1);}
+  100%{opacity:0; transform:translate(-50%,-50%) scale(0.35);}
+}
+
+/* ---- 4. Ink-seal pop — plays once on a favourite button right when
+   a poem is freshly favourited (see zfSealPop in app.js, called from
+   attachCardActions here and ZF_toggleHomeSherFavorite in
+   home-features.js), echoing the quill-and-seal mark in the site's
+   own logo. Never plays on un-favouriting or on initial render. ---- */
+.favorite-btn.seal-pop::after{
+  content:""; position:absolute; inset:0; border-radius:50%;
+  border:1.5px solid var(--gold); pointer-events:none;
+  animation:sealRing .55s ease-out forwards;
+}
+@keyframes sealRing{
+  0%{transform:scale(0.7); opacity:0.95;}
+  100%{transform:scale(2.1); opacity:0;}
+}
+@media (prefers-reduced-motion: reduce){.favorite-btn.seal-pop::after{animation:none; display:none;}}
+
+/* ---- 5. Export-image brand mark — the same corner "❦" already used
+   on nav-card, added to the downloadable sher/ghazal/nazm image
+   (see buildExportCard/buildHomeExportCard in app.js/home-features.js)
+   so a piece shared off-site still carries the site's own mark. ---- */
+.export-card::after{
+  content:"❦"; position:absolute; right:26px; bottom:22px;
+  font-size:1.5rem; color:var(--rose); opacity:0.22;
+  font-family:'Cormorant Garamond', serif; pointer-events:none;
+}
+
