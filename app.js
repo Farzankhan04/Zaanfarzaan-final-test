@@ -13,9 +13,12 @@
   });
 })();
 
-/* REVEAL ON SCROLL */
+/* REVEAL ON SCROLL — .reveal covers the original home page elements;
+   the extra selectors extend the exact same fade-up-once-visible
+   treatment to the rest of the site (about/contact/support pages, the
+   footer) without needing that class added to every page by hand. */
 (function(){
-  const revealEls = document.querySelectorAll('.reveal');
+  const revealEls = document.querySelectorAll('.reveal, .about-page, .contact-page, .support-page, footer.site-footer');
   const io = new IntersectionObserver(function(entries){
     entries.forEach(function(e){
       if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }

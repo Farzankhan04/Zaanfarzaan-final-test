@@ -1,27 +1,13 @@
-/* Homepage "sher" experience — replaces the older random-sher.js with one
-   unified system: shows a deterministic "sher of the day" on load, lets
-   visitors filter by mood, or ask for a fully random one, all painted
-   into the same #sher-card with a soft crossfade between changes.
+/* Homepage "sher" experience — shows a deterministic "sher of the day" on
+   load, or lets visitors ask for a fully random one, painted into the
+   same #sher-card with a soft crossfade between changes.
    Shares GHAZAL_ITEMS/NAZM_ITEMS with ghazals.html/nazms.html (loaded via
    ghazals-data.js / nazms-data.js) so there is one source of truth for
    the poems themselves. Also runs the small private reading-progress
    badge (localStorage only, nothing sent anywhere). */
 (function(){
 
-  /* Each poem is tagged with a single dominant mood, arrived at by
-     reading the full text of every ghazal and nazm. Numbers refer to
-     GHAZAL_ITEMS[i].num / NAZM_ITEMS[i].num. */
-  var MOOD_MAP = {
-    ishq:     { hi:'इश्क़',   en:'Ishq',    ur:'عشق',    ghazals:[6,7,8,27,39],         nazms:[6,9] },
-    judaai:   { hi:'जुदाई',   en:'Judaai',  ur:'جدائی',  ghazals:[1,4,11,14,20,21,38],  nazms:[7] },
-    ummeed:   { hi:'उम्मीद',  en:'Ummeed',  ur:'امید',   ghazals:[10,15,16,19,28,29,30],nazms:[5,8] },
-    tanhai:   { hi:'तन्हाई',  en:'Tanhai',  ur:'تنہائی', ghazals:[22,25,31,34,36,37],   nazms:[] },
-    shikayat: { hi:'शिकायत',  en:'Shikayat',ur:'شکایت',  ghazals:[9,12,13,18,24,33,40], nazms:[3,4] },
-    zindagi:  { hi:'ज़िंदगी', en:'Zindagi', ur:'زندگی',  ghazals:[2,3,5,17,23,26,32,35],nazms:[1,2,10] }
-  };
-  var MOOD_ORDER = ['ishq','judaai','ummeed','tanhai','shikayat','zindagi'];
-
-  var btn, card, placeholder, content, linesEl, sourceLink, sourceLabel, moodRow, todayBtn, readBadge;
+  var btn, card, placeholder, content, linesEl, sourceLink, sourceLabel, todayBtn, readBadge;
   var currentEntry = null;
   var spins = 0;
 
@@ -36,20 +22,6 @@
     if(typeof NAZM_ITEMS === 'undefined') return null;
     for(var i=0;i<NAZM_ITEMS.length;i++){ if(NAZM_ITEMS[i].num === num) return NAZM_ITEMS[i]; }
     return null;
-  }
-
-  function poolForMood(moodKey){
-    var mood = MOOD_MAP[moodKey], pool = [];
-    if(!mood) return pool;
-    mood.ghazals.forEach(function(n){
-      var g = findGhazal(n);
-      if(g) for(var v=0; v<g.versesHtml.length; v++) pool.push({item:g, verseIdx:v, source:'ghazals.html', sourceEn:'ghazals-en.html', sourceUr:'ghazals-ur.html'});
-    });
-    mood.nazms.forEach(function(n){
-      var g = findNazm(n);
-      if(g) for(var v=0; v<g.versesHtml.length; v++) pool.push({item:g, verseIdx:v, source:'nazms.html', sourceEn:'nazms-en.html', sourceUr:'nazms-ur.html'});
-    });
-    return pool;
   }
 
   function fullPool(){
@@ -74,12 +46,6 @@
   function seededIndex(seed, max){
     var x = Math.sin(seed) * 10000;
     return Math.floor((x - Math.floor(x)) * max);
-  }
-
-  function setActiveMoodTag(moodKey){
-    if(!moodRow) return;
-    var tags = moodRow.querySelectorAll('.mood-tag');
-    tags.forEach(function(t){ t.classList.toggle('active', t.getAttribute('data-mood') === moodKey); });
   }
 
   function paintEntry(entry, opts){
@@ -126,7 +92,6 @@
     if(!pool.length) return;
     var idx = seededIndex(daySeed(), pool.length);
     paintEntry(pool[idx], {instant: instant});
-    setActiveMoodTag(null);
   }
 
   function showRandomSher(){
@@ -137,15 +102,6 @@
       tries++;
     }while(currentEntry && pool[idx].item === currentEntry.item && pool[idx].verseIdx === currentEntry.verseIdx && tries < 15);
     paintEntry(pool[idx]);
-    setActiveMoodTag(null);
-  }
-
-  function showMoodSher(moodKey){
-    var pool = poolForMood(moodKey);
-    if(!pool.length) return;
-    var idx = Math.floor(Math.random() * pool.length);
-    paintEntry(pool[idx]);
-    setActiveMoodTag(moodKey);
   }
 
   function syncHomeFavoriteBtn(){
@@ -159,13 +115,6 @@
     window.ZF_toggleFavorite(currentEntry.item.id);
     syncHomeFavoriteBtn();
   };
-
-  var GENERIC_KIND = {hi:'एक शेर', en:'A Sher', ur:'ایک شعر'};
-  function currentKindLabel(){
-    var activeTag = moodRow ? moodRow.querySelector('.mood-tag.active') : null;
-    if(activeTag) return activeTag.textContent.trim();
-    return GENERIC_KIND[lang()];
-  }
 
   /* Builds the same '.export-card' markup used for ghazal/nazm cards
      (see app.js buildExportCard), so a sher shared from the homepage
@@ -271,27 +220,10 @@
     linesEl = document.getElementById('sher-lines');
     sourceLink = document.getElementById('sher-source');
     sourceLabel = document.getElementById('sher-source-label');
-    moodRow = document.getElementById('mood-tags');
     todayBtn = document.getElementById('sher-today-btn');
     readBadge = document.getElementById('read-progress-badge');
 
     if(!card || typeof GHAZAL_ITEMS === 'undefined' || !GHAZAL_ITEMS.length) return;
-
-    if(moodRow){
-      MOOD_ORDER.forEach(function(key){
-        var mood = MOOD_MAP[key];
-        var mbtn = document.createElement('button');
-        mbtn.type = 'button';
-        mbtn.className = 'mood-tag';
-        mbtn.setAttribute('data-mood', key);
-        mbtn.setAttribute('data-en', mood.en);
-        mbtn.setAttribute('data-ur', mood.ur);
-        var l0 = lang();
-        mbtn.textContent = l0 === 'en' ? mood.en : (l0 === 'ur' ? mood.ur : mood.hi);
-        mbtn.addEventListener('click', function(){ showMoodSher(key); });
-        moodRow.appendChild(mbtn);
-      });
-    }
 
     if(btn){
       btn.addEventListener('click', function(){
@@ -308,12 +240,6 @@
   });
 
   window.ZF_rerenderCollection = function(){
-    if(moodRow){
-      moodRow.querySelectorAll('.mood-tag').forEach(function(t){
-        var l = lang();
-        t.textContent = l === 'en' ? t.getAttribute('data-en') : (l === 'ur' ? t.getAttribute('data-ur') : MOOD_MAP[t.getAttribute('data-mood')].hi);
-      });
-    }
     if(currentEntry) paintEntry(currentEntry, {instant:true});
     renderReadBadge();
   };

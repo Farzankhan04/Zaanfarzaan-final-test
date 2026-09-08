@@ -84,13 +84,14 @@
     return haystack;
   }
 
-  function renderList(filter){
+  function renderList(filter, animateEntrance){
     const q = (filter || '').trim().toLowerCase().normalize('NFC');
     listEl.innerHTML = '';
     let matches = 0;
     ITEMS.forEach(function(item){
       const haystack = itemHaystack(item);
       if(q !== '' && !haystack.includes(q)) return;
+      const shownIndex = matches;
       matches++;
       const a = document.createElement('a');
       /* Real, crawlable href to the item's static SEO page when one exists
@@ -99,7 +100,12 @@
          below and handled as an instant SPA-style detail open via #hash,
          so normal users never actually navigate there. */
       a.href = CONFIG.detailUrlPrefix ? (CONFIG.detailUrlPrefix + item.id + '.html') : ('#' + item.id);
-      a.className = 'poem-item';
+      /* poem-item-enter (see style.css) gives the list a one-time cascading
+         entrance. Only ever passed true for the page's very first render —
+         see the plain renderList('') calls below — so typing in the search
+         box or an i18n re-render never replays it mid-use. */
+      a.className = 'poem-item' + (animateEntrance ? ' poem-item-enter' : '');
+      if(animateEntrance) a.style.setProperty('--i', Math.min(shownIndex, 12));
       a.innerHTML =
         '<div class="poem-item-text">' +
           '<div class="poem-item-num">' + item.kind + '</div>' +
@@ -185,7 +191,7 @@
     }
   };
 
-  renderList('');
+  renderList('', true);
 
   const initialId = window.location.hash.replace('#', '');
   if(initialId && findIndexById(initialId) !== -1){

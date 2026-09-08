@@ -16,6 +16,11 @@
   function urText(s){ return (s && typeof window.ZF_UR_transliterateText === 'function') ? window.ZF_UR_transliterateText(s) : s; }
 
   var openId = null; /* id of the one favourite currently expanded, if any */
+  /* True once the list has rendered at least once with items in it — lets
+     render() give only its very first paint the poem-item-enter cascade
+     (see style.css), so toggling a favourite or expanding a card later
+     never replays it and flickers the rest of the list. */
+  var mounted = false;
 
   function findItem(id){
     if(id.indexOf('ghazal-') === 0 && typeof GHAZAL_ITEMS !== 'undefined'){
@@ -43,10 +48,12 @@
     return item.firstLine;
   }
 
-  function previewHtml(id, found){
+  function previewHtml(id, found, index, animate){
     var item = found.item;
     var prefix = found.type === 'ghazal' ? 'ghazals/' : 'nazms/';
-    return '<a href="' + prefix + id + '.html" class="poem-item" data-fav-id="' + id + '">' +
+    var cls = 'poem-item' + (animate ? ' poem-item-enter' : '');
+    var style = animate ? (' style="--i:' + Math.min(index, 12) + '"') : '';
+    return '<a href="' + prefix + id + '.html" class="' + cls + '" data-fav-id="' + id + '"' + style + '>' +
         '<div class="poem-item-text">' +
           '<div class="poem-item-num">' + item.kind + '</div>' +
           '<div class="poem-item-line">' + previewLabel(item, found.type) + '</div>' +
@@ -73,10 +80,10 @@
     '</div>';
   }
 
-  function entryHtml(id){
+  function entryHtml(id, index, animate){
     var found = findItem(id);
     if(!found) return '';
-    return id === openId ? fullCardHtml(id, found) : previewHtml(id, found);
+    return id === openId ? fullCardHtml(id, found) : previewHtml(id, found, index, animate);
   }
 
   function render(){
@@ -94,7 +101,9 @@
     if(openId && ids.indexOf(openId) === -1) openId = null; /* unfavourited elsewhere */
     if(empty) empty.hidden = true;
     list.hidden = false;
-    list.innerHTML = ids.map(entryHtml).join('');
+    var animate = !mounted && !openId;
+    list.innerHTML = ids.map(function(id, i){ return entryHtml(id, i, animate); }).join('');
+    mounted = true;
 
     list.querySelectorAll('.poem-item[data-fav-id]').forEach(function(a){
       a.addEventListener('click', function(e){
