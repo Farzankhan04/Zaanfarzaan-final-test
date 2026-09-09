@@ -950,29 +950,32 @@ body{opacity:1; transition:opacity .22s ease;}
    running to reach a sane, fully-visible state.
    ================================================================ */
 
-/* ---- 1. Hero signature flourish — a quill stroke drawn beneath the
-   poet's name, like a signature under a manuscript title. True SVG
-   draw-on via stroke-dasharray/-dashoffset (not a faked wipe), timed
-   to begin right as the name above finishes its own fadeUp. Mirrors
-   in Urdu (RTL) so the stroke's motion reads in the same direction
-   as the page's own flow. ---- */
+/* ---- 1. Hero signature flourish — a small pen-nib traces a stroke
+   beneath the poet's name, then stops and stays right there, like a
+   signature just finished under a manuscript title. Driven by
+   requestAnimationFrame (see app.js) rather than a plain CSS
+   animation, because the pen's position/rotation and the line's own
+   reveal have to stay in lockstep — the pen is always exactly at the
+   leading edge of the ink, not just moving alongside it. Mirrors in
+   Urdu (RTL) so the stroke reads in the same direction as the page's
+   own flow; the JS itself never needs to know which direction that
+   is, since it only ever draws in the path's natural coordinate
+   order and the mirror below flips the whole finished picture, pen
+   included. ---- */
 .signature-flourish{
   display:block; width:150px; height:auto; margin:0.3rem 0 1.5rem;
-  overflow:visible; opacity:0;
-  animation:sigWrapIn .4s ease forwards 1s;
+  overflow:visible;
 }
-.signature-flourish path{
+.signature-flourish .sig-line{
   fill:none; stroke:var(--gold); stroke-width:1.8; stroke-linecap:round;
-  stroke-dasharray:320; stroke-dashoffset:320;
-  animation:sigDraw 1.3s cubic-bezier(.65,0,.35,1) forwards 1.05s;
+  stroke-dasharray:175; stroke-dashoffset:175;
 }
+.signature-flourish .sig-pen{fill:var(--gold); opacity:0;}
 body.lang-ur .signature-flourish{transform:scaleX(-1);}
-@keyframes sigWrapIn{to{opacity:1;}}
-@keyframes sigDraw{to{stroke-dashoffset:0;}}
 @media (max-width:480px){.signature-flourish{width:120px;}}
 @media (prefers-reduced-motion: reduce){
-  .signature-flourish{animation:none; opacity:1;}
-  .signature-flourish path{animation:none; stroke-dashoffset:0;}
+  .signature-flourish .sig-line{stroke-dashoffset:0;}
+  .signature-flourish .sig-pen{opacity:1;}
 }
 
 /* ---- 2. Manuscript unfurl — the poem card settles into place (a

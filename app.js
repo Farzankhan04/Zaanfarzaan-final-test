@@ -11,6 +11,48 @@
   });
 })();
 
+/* SIGNATURE FLOURISH — a small pen-nib traces the stroke beneath the
+   poet's name on the homepage hero, then stops and stays right where
+   the line ends (see .signature-flourish/.sig-line/.sig-pen in
+   style.css). Driven by requestAnimationFrame rather than a plain CSS
+   animation so the pen's position + rotation and the line's own
+   reveal are always computed from the exact same "how far along the
+   path" number, frame by frame — a separate CSS animation on each
+   couldn't guarantee they'd stay perfectly in step. Runs once; skipped
+   under prefers-reduced-motion, where the CSS above already shows the
+   finished line with the pen parked at the end, no animation. */
+(function(){
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var svg = document.querySelector('.signature-flourish');
+  if(!svg) return;
+  var line = svg.querySelector('.sig-line');
+  var pen = svg.querySelector('.sig-pen');
+  if(!line || !pen) return;
+
+  var total = line.getTotalLength();
+  line.style.strokeDasharray = total;
+  line.style.strokeDashoffset = total;
+
+  var DURATION = 1150, DELAY = 1000, startTime = null;
+  function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
+
+  function frame(ts){
+    if(startTime === null) startTime = ts;
+    var elapsed = ts - startTime - DELAY;
+    if(elapsed < 0){ requestAnimationFrame(frame); return; }
+    var t = Math.min(elapsed / DURATION, 1);
+    var dist = easeOutCubic(t) * total;
+    line.style.strokeDashoffset = total - dist;
+    pen.style.opacity = 1;
+    var pt = line.getPointAtLength(dist);
+    var behind = line.getPointAtLength(Math.max(0, dist - 0.6));
+    var angle = Math.atan2(pt.y - behind.y, pt.x - behind.x) * 180 / Math.PI;
+    pen.setAttribute('transform', 'translate(' + pt.x + ',' + pt.y + ') rotate(' + angle + ')');
+    if(t < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
 /* NAV: mobile toggle + active link highlight */
 (function(){
   const toggle = document.getElementById('nav-toggle');
