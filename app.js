@@ -1,3 +1,16 @@
+/* SPLASH CLEANUP — the opening "ज़ान फ़रज़ान" splash (see #zf-splash in
+   style.css and the top of <body> on every page) shows and hides itself
+   on a pure CSS animation, so the page works even if this script is
+   blocked. This just removes the element once that animation ends, so
+   it isn't left sitting invisibly in the DOM. */
+(function(){
+  var splash = document.getElementById('zf-splash');
+  if(!splash) return;
+  splash.addEventListener('animationend', function(){
+    if(splash.parentNode) splash.parentNode.removeChild(splash);
+  });
+})();
+
 /* NAV: mobile toggle + active link highlight */
 (function(){
   const toggle = document.getElementById('nav-toggle');
@@ -103,7 +116,9 @@ function buildExportCard(card){
 
   const kindDiv = document.createElement('div');
   kindDiv.className = 'export-kind';
-  kindDiv.textContent = kindEl ? kindEl.textContent.trim() : '';
+  /* "Ghazal · #12" -> "Ghazal" — drop the catalog number for the
+     shared image, keep it on the live page (untouched above). */
+  kindDiv.textContent = kindEl ? kindEl.textContent.trim().split('·')[0].trim() : '';
   wrap.appendChild(kindDiv);
 
   if(titleEl){
@@ -124,7 +139,7 @@ function buildExportCard(card){
 
   const footer = document.createElement('div');
   footer.className = 'export-footer';
-  footer.innerHTML = '<span class="export-brand">' + window.ZF_T('brandName') + '</span><span class="export-tag">Shaayar &middot; Poet</span>';
+  footer.innerHTML = '<span class="export-brand">' + window.ZF_T('brandName') + '</span><span class="export-site">zaanfarzaan.site</span>';
   wrap.appendChild(footer);
 
   return wrap;
@@ -271,7 +286,11 @@ function attachCardActions(root){
     window.setTimeout(function(){ window.location.href = url.href; }, 200);
   });
   window.addEventListener('pageshow', function(e){
-    if(e.persisted) document.documentElement.classList.remove('zf-transitioning');
+    if(e.persisted){
+      document.documentElement.classList.remove('zf-transitioning');
+      var s = document.getElementById('zf-splash');
+      if(s && s.parentNode) s.parentNode.removeChild(s);
+    }
   });
 })();
 

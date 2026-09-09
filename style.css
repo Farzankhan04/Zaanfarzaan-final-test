@@ -522,7 +522,7 @@ body.lang-ur .favorite-btn{right:auto; left:6.2rem;}
   display:flex; justify-content:space-between; align-items:baseline;
 }
 .export-brand{font-size:19px; color:var(--text-dark); font-weight:700; letter-spacing:0.02em;}
-.export-tag{font-size:12px; letter-spacing:0.22em; text-transform:uppercase; color:var(--rose); font-family:'Lora'; font-weight:600;}
+.export-site{font-size:14px; letter-spacing:0.02em; color:var(--rose); font-family:'Lora'; font-weight:600;}
 
 /* CONTACT PAGE */
 .contact-page{max-width:600px; margin:0 auto; padding:2vh 6vw 14vh; text-align:center;}
@@ -1036,5 +1036,43 @@ body.lang-ur .signature-flourish{transform:scaleX(-1);}
   content:"❦"; position:absolute; right:26px; bottom:22px;
   font-size:1.5rem; color:var(--rose); opacity:0.22;
   font-family:'Cormorant Garamond', serif; pointer-events:none;
+}
+
+/* ---- 6. Opening splash — "ज़ान फ़रज़ान" shown briefly on the site's
+   own ink background before each page reveals itself, the way a
+   manuscript's title leaf is turned before the text begins. This is
+   the first thing in <body> on every page (see the top of each
+   .html file), so it's already painted with nothing to flash before
+   it — no JS needed to show it. The fade-out is a plain CSS
+   animation with fill-mode:forwards, so the page un-covers itself on
+   a fixed schedule even if JS never runs at all; app.js only tidies
+   the element out of the DOM afterwards (see "SPLASH CLEANUP"
+   there). Same idea as the manuscript unfurl above: never depend on
+   JS to reach a working, visible page. ---- */
+#zf-splash{
+  position:fixed; inset:0; z-index:9999;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--ink);
+  animation:zfSplashOut .45s ease forwards .75s;
+}
+#zf-splash span{
+  font-family:'Cormorant Garamond','Noto Serif Devanagari', serif;
+  font-weight:600; font-size:clamp(1.5rem, 5vw, 2.3rem);
+  color:var(--gold-soft);
+  opacity:0;
+  animation:zfSplashTextIn .5s ease forwards .08s;
+}
+@keyframes zfSplashTextIn{
+  0%{opacity:0; letter-spacing:0.3em;}
+  100%{opacity:1; letter-spacing:0.05em;}
+}
+@keyframes zfSplashOut{
+  0%{opacity:1; visibility:visible;}
+  99%{opacity:0; visibility:visible;}
+  100%{opacity:0; visibility:hidden; pointer-events:none;}
+}
+@media (prefers-reduced-motion: reduce){
+  #zf-splash{animation-duration:.01s; animation-delay:0s;}
+  #zf-splash span{animation:none; opacity:1; letter-spacing:0.05em;}
 }
 

@@ -134,7 +134,7 @@
     var footer = document.createElement('div');
     footer.className = 'export-footer';
     var brandName = (typeof window.ZF_T === 'function') ? window.ZF_T('brandName') : 'Zaan Farzaan';
-    footer.innerHTML = '<span class="export-brand">' + brandName + '</span><span class="export-tag">Shaayar &middot; Poet</span>';
+    footer.innerHTML = '<span class="export-brand">' + brandName + '</span><span class="export-site">zaanfarzaan.site</span>';
     wrap.appendChild(footer);
 
     return wrap;
