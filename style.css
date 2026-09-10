@@ -220,7 +220,14 @@ main{position:relative; z-index:1; min-height:60vh;}
   display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:1.8rem;
 }
 .nav-card{
-  background:linear-gradient(155deg, #fbfbf9 0%, #f5f5f2 55%, #e9e9e5 100%);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse 60% 50% at 80% 15%, rgba(255,244,214,0.4), transparent 65%),
+    linear-gradient(155deg, #fbfbf9 0%, #f5f5f2 55%, #e9e9e5 100%);
+  background-size:180px 180px, 150% 150%, auto;
+  background-repeat:repeat, no-repeat, no-repeat;
+  background-position:0 0, 75% 20%, 0 0;
+  animation:paperGlowDriftNav 16s ease-in-out infinite;
   color:var(--text-dark); border-radius:10px;
   padding:2.6rem 2.1rem; text-decoration:none; position:relative; overflow:hidden;
   border:1px solid rgba(220,220,214,0.35);
@@ -257,8 +264,16 @@ body.lang-en .hide-on-en{display:none;}
 .sher-widget-head h2{font-size:clamp(1.6rem,4vw,2.2rem); color:var(--gold-soft); font-weight:700; margin-top:0.6rem;}
 
 .sher-card{
-  background:var(--paper); border-radius:2px; margin:2.2rem 0 1.8rem; padding:4.6rem 2.2rem 2.6rem;
-  position:relative; border:1px solid var(--paper-dark); box-shadow:0 20px 40px rgba(0,0,0,0.3);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse 60% 50% at 25% 20%, rgba(255,244,214,0.4), transparent 65%),
+    linear-gradient(165deg, #fbfbf9 0%, var(--paper) 55%, #ececE8 100%);
+  background-size:180px 180px, 150% 150%, auto;
+  background-repeat:repeat, no-repeat, no-repeat;
+  background-position:0 0, 20% 20%, 0 0;
+  animation:paperGlowDriftSher 16s ease-in-out infinite;
+  border-radius:2px; margin:2.2rem 0 1.8rem; padding:4.6rem 2.2rem 2.6rem;
+  position:relative; overflow:hidden; border:1px solid var(--paper-dark); box-shadow:0 20px 40px rgba(0,0,0,0.3);
   min-height:120px; display:flex; align-items:center; justify-content:center;
 }
 .sher-card::before{
@@ -412,13 +427,20 @@ body.lang-en .sher-lines{font-family:'Cormorant Garamond','Lora', serif; font-st
 }
 .back-link:hover{gap:0.8rem;}
 .card{
-  background:
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E"),
     radial-gradient(circle at 12% 8%, rgba(255,255,255,0.55), transparent 40%),
+    radial-gradient(ellipse 60% 50% at 20% 20%, rgba(255,244,214,0.45), transparent 65%),
     linear-gradient(165deg, #fbfbf9 0%, #f5f5f2 45%, #e8e8e5 100%);
+  background-size:180px 180px, auto, 150% 150%, auto;
+  background-repeat:repeat, no-repeat, no-repeat, no-repeat;
+  background-position:0 0, 0 0, 20% 20%, 0 0;
+  animation:paperGlowDrift 16s ease-in-out infinite;
   color:var(--text-dark);
   border-radius:6px;
   padding:3.4rem 3.2rem;
   position:relative;
+  overflow:hidden;
   box-shadow:0 6px 16px rgba(0,0,0,0.2), 0 30px 60px rgba(0,0,0,0.38);
   border:1px solid rgba(220,220,214,0.3);
 }
@@ -985,7 +1007,7 @@ body.lang-ur .signature-flourish{transform:scaleX(-1);}
    a plain CSS animation with no JS/scroll dependency, same guarantee
    as the verse cascade it pairs with. ---- */
 .manuscript{
-  animation:manuscriptUnfurl .7s cubic-bezier(.22,.61,.36,1) both;
+  animation:manuscriptUnfurl .7s cubic-bezier(.22,.61,.36,1) both, paperGlowDrift 16s ease-in-out infinite;
   transform-origin:center top;
 }
 @keyframes manuscriptUnfurl{
@@ -1077,5 +1099,41 @@ body.lang-ur .signature-flourish{transform:scaleX(-1);}
 @media (prefers-reduced-motion: reduce){
   #zf-splash{animation-duration:.01s; animation-delay:0s;}
   #zf-splash span{animation:none; opacity:1; letter-spacing:0.05em;}
+}
+
+/* ---- 7. Paper texture + drifting light — the flat cream fill on
+   .card/.manuscript, .nav-card and .sher-card gets a fine grain (a
+   tiny repeating noise tile, see the data-URI background-image on
+   each) plus a soft warm glow that drifts very slowly across the
+   surface, like light shifting over a page. One shared keyframe
+   (below) animates each card's own extra gradient layer via
+   background-position — cheap to run, and it composes safely with
+   each card's own base gradient since it's just one more layer in
+   the same background-image list rather than a separate element.
+   .manuscript combines this with its own entrance unfurl (see above)
+   in one animation property, since a second, separate rule setting
+   animation on the same element would have silently replaced it
+   rather than adding to it. Kept slow (16s) and low-contrast on
+   purpose — this sits behind poetry someone is trying to read, so it
+   should feel like ambient light, not motion competing for
+   attention. nav-card's copies are offset with negative delays so a
+   row of them drifts out of sync with each other, not in lockstep. */
+@keyframes paperGlowDrift{
+  0%,100%{background-position:0 0, 0 0, 15% 20%, 0 0;}
+  50%{background-position:0 0, 0 0, 80% 65%, 0 0;}
+}
+@keyframes paperGlowDriftNav{
+  0%,100%{background-position:0 0, 75% 15%, 0 0;}
+  50%{background-position:0 0, 15% 70%, 0 0;}
+}
+.nav-card:nth-of-type(3n+1){animation-delay:-3s;}
+.nav-card:nth-of-type(3n+2){animation-delay:-7s;}
+.nav-card:nth-of-type(3n+3){animation-delay:-11s;}
+@keyframes paperGlowDriftSher{
+  0%,100%{background-position:0 0, 20% 20%, 0 0;}
+  50%{background-position:0 0, 78% 68%, 0 0;}
+}
+@media (prefers-reduced-motion: reduce){
+  .card, .manuscript, .nav-card, .sher-card{animation:none;}
 }
 
