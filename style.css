@@ -1078,10 +1078,10 @@ body.lang-ur .signature-flourish{transform:scaleX(-1);}
   position:fixed; inset:0; z-index:9999;
   display:flex; align-items:center; justify-content:center;
   background:var(--ink);
-  animation:zfSplashOut .45s ease forwards .75s;
+  animation:zfSplashOut .5s ease forwards 1.5s;
 }
 #zf-splash span{
-  font-family:'Cormorant Garamond','Noto Serif Devanagari', serif;
+  font-family:'Cormorant Garamond', serif;
   font-weight:600; font-size:clamp(1.5rem, 5vw, 2.3rem);
   color:var(--gold-soft);
   opacity:0;
