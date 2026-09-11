@@ -389,6 +389,12 @@ body.lang-en .sher-lines{font-family:'Cormorant Garamond','Lora', serif; font-st
 }
 .about-photo img{width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(15%);}
 .about-page p{color:var(--text-muted); font-size:1.08rem; margin-bottom:1.2rem;}
+.about-event-photo{margin:0.6rem auto 2.2rem; text-align:center;}
+.about-event-photo img{
+  display:block; width:100%; max-width:480px; margin:0 auto;
+  border-radius:4px; border:1px solid rgba(220,220,214,0.3);
+  box-shadow:0 18px 40px rgba(0,0,0,0.45);
+}
 
 /* SEARCH BAR (collection pages) */
 .collection-search{
