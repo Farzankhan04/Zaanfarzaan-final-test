@@ -165,10 +165,15 @@
   });
 
   /* Re-run with whatever's currently typed when the language toggle
-     flips (see i18n.js -> zfApplyLang). Same hook collection.js uses
-     on the Ghazals/Nazms pages — safe to reuse here since this page
-     never loads collection.js. */
+     flips (see i18n.js -> zfApplyLang). home-features.js sets this same
+     hook first (to repaint the "Today's Sher" widget), so this CHAINS
+     onto whatever was already there instead of replacing it — same
+     pattern favorites.js uses for the same reason. Overwriting it
+     outright previously broke the sher widget's language switching,
+     since this script loads after home-features.js. */
+  var prevRerender = window.ZF_rerenderCollection;
   window.ZF_rerenderCollection = function(){
+    if(typeof prevRerender === 'function') prevRerender();
     render(input.value);
   };
 })();

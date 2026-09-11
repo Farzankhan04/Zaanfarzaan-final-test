@@ -1,10 +1,10 @@
 /* Homepage "sher" experience — shows a deterministic "sher of the day" on
    load, or lets visitors ask for a fully random one, painted into the
-   same #sher-card with a soft crossfade between changes.
-   Shares GHAZAL_ITEMS/NAZM_ITEMS with ghazals.html/nazms.html (loaded via
-   ghazals-data.js / nazms-data.js) so there is one source of truth for
-   the poems themselves. Also runs the small private reading-progress
-   badge (localStorage only, nothing sent anywhere). */
+   same #sher-card with a soft crossfade between changes. The sher pool
+   itself is ghazals only (see fullPool below); GHAZAL_ITEMS/NAZM_ITEMS
+   are shared with ghazals.html/nazms.html (loaded via ghazals-data.js /
+   nazms-data.js) so there is one source of truth for the poems
+   themselves, and the reading-progress badge below counts both. */
 (function(){
 
   var btn, card, placeholder, content, linesEl, sourceLink, sourceLabel, todayBtn, readBadge;
@@ -24,16 +24,16 @@
     return null;
   }
 
+  /* Ghazals only, by design — a "sher" here specifically means a ghazal
+     couplet. NAZM_ITEMS is loaded on this page too (for search.js), but
+     must stay out of this pool: nazms are longer continuous poems, not
+     couplets, and mixing in a single nazm line as if it were a sher
+     doesn't read right out of context. */
   function fullPool(){
     var pool = [];
     if(typeof GHAZAL_ITEMS !== 'undefined'){
       GHAZAL_ITEMS.forEach(function(g){
         for(var v=0; v<g.versesHtml.length; v++) pool.push({item:g, verseIdx:v, source:'ghazals.html', sourceEn:'ghazals-en.html', sourceUr:'ghazals-ur.html'});
-      });
-    }
-    if(typeof NAZM_ITEMS !== 'undefined'){
-      NAZM_ITEMS.forEach(function(g){
-        for(var v=0; v<g.versesHtml.length; v++) pool.push({item:g, verseIdx:v, source:'nazms.html', sourceEn:'nazms-en.html', sourceUr:'nazms-ur.html'});
       });
     }
     return pool;
