@@ -98,24 +98,15 @@ nav{
   border-bottom:1px solid rgba(220,220,214,0.12);
 }
 /* ---- Smooth-scroll perf — a sticky nav re-blurring everything behind it
-   on every scroll frame, plus .card/.manuscript/.nav-card/.sher-card each
-   continuously repainting their tiled-noise+gradient background (see
-   paperGlowDrift and friends further down), is what made touch-scrolling
-   feel stuttery — worst on a ghazal/nazm page, where .manuscript is the
-   large element filling most of the screen. app.js toggles .is-scrolling
-   on <html> for ~200ms after the last scroll event; nothing here changes
-   how the page looks at rest, only mid-scroll, and it's the same trade a
-   lot of sites make (pause decoration while the frame budget is tight,
-   resume the instant it isn't). */
+   on every scroll frame was contributing to touch-scroll stutter (the
+   other, bigger contributor was the .card/.manuscript/.nav-card/
+   .sher-card texture+animation removed in section 7 below — that's gone
+   at the source now, not just paused). app.js toggles .is-scrolling on
+   <html> for ~200ms after the last scroll event; this only drops the
+   nav's blur for that window and restores it once scrolling settles. */
 html.is-scrolling nav{
   backdrop-filter:none;
   background:linear-gradient(to bottom, rgba(21,21,21,0.98), rgba(21,21,21,0.97) 85%, rgba(21,21,21,0.96));
-}
-html.is-scrolling .card,
-html.is-scrolling .manuscript,
-html.is-scrolling .nav-card,
-html.is-scrolling .sher-card{
-  animation-play-state:paused;
 }
 .brand{font-size:1.35rem; letter-spacing:0.02em; color:var(--gold-soft); font-weight:700; text-decoration:none; display:block; min-width:0; white-space:nowrap; line-height:1;}
 .brand span{color:var(--text-muted); font-family:'Lora'; font-size:0.68rem; letter-spacing:0.2em; display:block; text-transform:uppercase; margin-top:4px; font-weight:400; white-space:nowrap; line-height:1;}
@@ -252,14 +243,7 @@ main{position:relative; z-index:1; min-height:60vh;}
   display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:1.8rem;
 }
 .nav-card{
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E"),
-    radial-gradient(ellipse 60% 50% at 80% 15%, rgba(255,244,214,0.4), transparent 65%),
-    linear-gradient(155deg, #fbfbf9 0%, #f5f5f2 55%, #e9e9e5 100%);
-  background-size:180px 180px, 150% 150%, auto;
-  background-repeat:repeat, no-repeat, no-repeat;
-  background-position:0 0, 75% 20%, 0 0;
-  animation:paperGlowDriftNav 16s ease-in-out infinite;
+  background:linear-gradient(155deg, #fbfbf9 0%, #f5f5f2 55%, #e9e9e5 100%);
   color:var(--text-dark); border-radius:10px;
   padding:2.6rem 2.1rem; text-decoration:none; position:relative; overflow:hidden;
   border:1px solid rgba(220,220,214,0.35);
@@ -296,14 +280,7 @@ body.lang-en .hide-on-en{display:none;}
 .sher-widget-head h2{font-size:clamp(1.6rem,4vw,2.2rem); color:var(--gold-soft); font-weight:700; margin-top:0.6rem;}
 
 .sher-card{
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E"),
-    radial-gradient(ellipse 60% 50% at 25% 20%, rgba(255,244,214,0.4), transparent 65%),
-    linear-gradient(165deg, #fbfbf9 0%, var(--paper) 55%, #ececE8 100%);
-  background-size:180px 180px, 150% 150%, auto;
-  background-repeat:repeat, no-repeat, no-repeat;
-  background-position:0 0, 20% 20%, 0 0;
-  animation:paperGlowDriftSher 16s ease-in-out infinite;
+  background:linear-gradient(165deg, #fbfbf9 0%, var(--paper) 55%, #ececE8 100%);
   border-radius:2px; margin:2.2rem 0 1.8rem; padding:4.6rem 2.2rem 2.6rem;
   position:relative; overflow:hidden; border:1px solid var(--paper-dark); box-shadow:0 20px 40px rgba(0,0,0,0.3);
   min-height:120px; display:flex; align-items:center; justify-content:center;
@@ -459,15 +436,7 @@ body.lang-en .sher-lines{font-family:'Cormorant Garamond','Lora', serif; font-st
 }
 .back-link:hover{gap:0.8rem;}
 .card{
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E"),
-    radial-gradient(circle at 12% 8%, rgba(255,255,255,0.55), transparent 40%),
-    radial-gradient(ellipse 60% 50% at 20% 20%, rgba(255,244,214,0.45), transparent 65%),
-    linear-gradient(165deg, #fbfbf9 0%, #f5f5f2 45%, #e8e8e5 100%);
-  background-size:180px 180px, auto, 150% 150%, auto;
-  background-repeat:repeat, no-repeat, no-repeat, no-repeat;
-  background-position:0 0, 0 0, 20% 20%, 0 0;
-  animation:paperGlowDrift 16s ease-in-out infinite;
+  background:linear-gradient(165deg, #fbfbf9 0%, #f5f5f2 45%, #e8e8e5 100%);
   color:var(--text-dark);
   border-radius:6px;
   padding:3.4rem 3.2rem;
@@ -1040,7 +1009,7 @@ body.lang-ur .signature-flourish{transform:scaleX(-1);}
    a plain CSS animation with no JS/scroll dependency, same guarantee
    as the verse cascade it pairs with. ---- */
 .manuscript{
-  animation:manuscriptUnfurl .7s cubic-bezier(.22,.61,.36,1) both, paperGlowDrift 16s ease-in-out infinite;
+  animation:manuscriptUnfurl .7s cubic-bezier(.22,.61,.36,1) both;
   transform-origin:center top;
 }
 @keyframes manuscriptUnfurl{
@@ -1147,39 +1116,18 @@ body.lang-ur .signature-flourish{transform:scaleX(-1);}
   #zf-splash span{animation:none; opacity:1; letter-spacing:0.05em;}
 }
 
-/* ---- 7. Paper texture + drifting light — the flat cream fill on
-   .card/.manuscript, .nav-card and .sher-card gets a fine grain (a
-   tiny repeating noise tile, see the data-URI background-image on
-   each) plus a soft warm glow that drifts very slowly across the
-   surface, like light shifting over a page. One shared keyframe
-   (below) animates each card's own extra gradient layer via
-   background-position — cheap to run, and it composes safely with
-   each card's own base gradient since it's just one more layer in
-   the same background-image list rather than a separate element.
-   .manuscript combines this with its own entrance unfurl (see above)
-   in one animation property, since a second, separate rule setting
-   animation on the same element would have silently replaced it
-   rather than adding to it. Kept slow (16s) and low-contrast on
-   purpose — this sits behind poetry someone is trying to read, so it
-   should feel like ambient light, not motion competing for
-   attention. nav-card's copies are offset with negative delays so a
-   row of them drifts out of sync with each other, not in lockstep. */
-@keyframes paperGlowDrift{
-  0%,100%{background-position:0 0, 0 0, 15% 20%, 0 0;}
-  50%{background-position:0 0, 0 0, 80% 65%, 0 0;}
-}
-@keyframes paperGlowDriftNav{
-  0%,100%{background-position:0 0, 75% 15%, 0 0;}
-  50%{background-position:0 0, 15% 70%, 0 0;}
-}
-.nav-card:nth-of-type(3n+1){animation-delay:-3s;}
-.nav-card:nth-of-type(3n+2){animation-delay:-7s;}
-.nav-card:nth-of-type(3n+3){animation-delay:-11s;}
-@keyframes paperGlowDriftSher{
-  0%,100%{background-position:0 0, 20% 20%, 0 0;}
-  50%{background-position:0 0, 78% 68%, 0 0;}
-}
-@media (prefers-reduced-motion: reduce){
-  .card, .manuscript, .nav-card, .sher-card{animation:none;}
-}
+/* ---- 7. (Removed) Paper texture + drifting light — .card/.manuscript,
+   .nav-card and .sher-card used to carry a fine noise-tile
+   background-image (an feTurbulence SVG data-URI) plus a slowly
+   animated glow layer. Taken out entirely on 2026-09-11: it was the
+   cause of the scroll stutter reported on ghazal/nazm pages (where
+   .manuscript is the large, dominant element) — a mobile GPU repainting
+   a tiled SVG filter under a continuous background-position animation,
+   on the exact element that fills most of the screen while reading, is
+   expensive regardless of whether the animation is paused during
+   scroll or not. The three background layers were simplified to just
+   each card's own base gradient (still set directly on .card/.nav-card/
+   .sher-card above). If a textured look is wanted again later, prefer
+   a single small static raster PNG (no filter, no animation) over an
+   SVG feTurbulence tile — same visual idea, none of the repaint cost. */
 
