@@ -116,6 +116,17 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
   <div class="attribution" data-en="— Zaan Farzaan" data-hi="— ज़ान फ़रज़ान" data-ur="— زان فرزان">— ज़ान फ़रज़ान</div>
 </section>
 
+<section class="site-search-section reveal">
+  <div class="tag" data-en="Search" data-hi="खोजें" data-ur="تلاش کریں">खोजें</div>
+  <h2 data-en="Find Anything" data-hi="कुछ भी ढूँढें" data-ur="کچھ بھی تلاش کریں">कुछ भी ढूँढें</h2>
+  <div class="collection-search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="site-search-input" placeholder="ग़ज़ल, नज़्म या पेज खोजें…" data-en-placeholder="Search a ghazal, nazm, or page…" data-ur-placeholder="غزل، نظم یا صفحہ تلاش کریں…" autocomplete="off">
+  </div>
+  <div class="no-results" id="site-search-no-results" data-en="No matches found" data-hi="कुछ नहीं मिला" data-ur="کچھ نہیں ملا">कुछ नहीं मिला</div>
+  <div class="poem-list" id="site-search-results"></div>
+</section>
+
 <div class="flourish" aria-hidden="true"><span>❦</span></div>
 
 <section class="sher-widget reveal">
@@ -241,9 +252,11 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="ghazals-data.js"></script>
+<script src="nazms-data.js"></script>
 <script src="ur-translit.js"></script>
 <script src="i18n.js"></script>
 <script src="app.js"></script>
 <script src="home-features.js"></script>
+<script src="search.js"></script>
 </body>
 </html>

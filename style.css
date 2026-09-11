@@ -275,6 +275,16 @@ body.lang-en .hide-on-en{display:none;}
 .nav-card:hover .nav-card-arrow{transform:translateX(4px);}
 
 /* HOME: RANDOM SHER WIDGET */
+/* HOME PAGE SITE SEARCH — heading styling only; the search box, result
+   rows and no-results message below it reuse .collection-search /
+   .poem-list / .poem-item / .no-results as-is (see collection.js's
+   comment block near those rules), so results look identical to the
+   ones on the Ghazals/Nazms pages. Sized to match .sher-widget-head
+   just below, since the two sections sit back to back. */
+.site-search-section{max-width:640px; margin:0 auto; padding:1vh 6vw 1vh; text-align:center;}
+.site-search-section .tag{color:var(--rose); text-transform:uppercase; letter-spacing:0.3em; font-size:0.75rem; font-family:'Lora'; font-weight:600;}
+.site-search-section h2{font-size:clamp(1.6rem,4vw,2.2rem); color:var(--gold-soft); font-weight:700; margin:0.6rem 0 2rem;}
+
 .sher-widget{max-width:640px; margin:0 auto; padding:0 6vw 9vh; text-align:center;}
 .sher-widget-head .tag{color:var(--rose); text-transform:uppercase; letter-spacing:0.3em; font-size:0.75rem; font-family:'Lora'; font-weight:600;}
 .sher-widget-head h2{font-size:clamp(1.6rem,4vw,2.2rem); color:var(--gold-soft); font-weight:700; margin-top:0.6rem;}
