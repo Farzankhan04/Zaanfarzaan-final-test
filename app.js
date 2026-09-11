@@ -1,4 +1,4 @@
-/* SPLASH CLEANUP — the opening "ज़ान फ़रज़ान" splash (see #zf-splash in
+/* SPLASH CLEANUP — the opening "Zaan Farzaan" splash (see #zf-splash in
    style.css and the top of <body> on every page) shows and hides itself
    on a pure CSS animation, so the page works even if this script is
    blocked. This just removes the element once that animation ends, so
@@ -9,6 +9,22 @@
   splash.addEventListener('animationend', function(){
     if(splash.parentNode) splash.parentNode.removeChild(splash);
   });
+})();
+
+/* SCROLL PERF FLAG — adds .is-scrolling to <html> while the page is
+   actively being scrolled and removes it ~200ms after scrolling stops.
+   style.css uses this to pause the nav's backdrop-blur and the
+   poem-card background drift (see "Smooth-scroll perf" there), which is
+   what was making scroll feel stuttery, especially on ghazal/nazm pages.
+   Passive + a single trailing timeout, so this adds no real cost of its
+   own on the scroll path. */
+(function(){
+  var root = document.documentElement, t = null;
+  window.addEventListener('scroll', function(){
+    if(!root.classList.contains('is-scrolling')) root.classList.add('is-scrolling');
+    clearTimeout(t);
+    t = setTimeout(function(){ root.classList.remove('is-scrolling'); }, 200);
+  }, {passive:true});
 })();
 
 /* SIGNATURE FLOURISH — a small pen-nib traces the stroke beneath the

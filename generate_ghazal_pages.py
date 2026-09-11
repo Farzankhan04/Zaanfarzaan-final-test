@@ -125,6 +125,15 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
+<style>/* Critical splash CSS, inlined so it paints instantly (no flash of
+Hindi text while style.css/fonts are still loading on a slow connection).
+Mirrors the #zf-splash rules in style.css -- keep both in sync. */
+#zf-splash{position:fixed;inset:0;z-index:9999;visibility:visible;display:flex;align-items:center;justify-content:center;background:#151515;animation:zfSplashOut .5s ease forwards 2s}
+#zf-splash span{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.5rem,5vw,2.3rem);color:#f2f1ec;opacity:0;animation:zfSplashTextIn .5s ease forwards .08s}
+@keyframes zfSplashTextIn{0%{opacity:0;letter-spacing:.3em}100%{opacity:1;letter-spacing:.05em}}
+@keyframes zfSplashOut{0%{opacity:1;visibility:visible}99%{opacity:0;visibility:visible}100%{opacity:0;visibility:hidden;pointer-events:none}}
+html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
+@media (prefers-reduced-motion:reduce){#zf-splash{animation-duration:.01s;animation-delay:0s}#zf-splash span{animation:none;opacity:1;letter-spacing:.05em}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title}</title>
 <meta name="description" content="{description}">
