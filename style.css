@@ -957,9 +957,19 @@ body{opacity:1; transition:opacity .22s ease;}
 .feedback-form.reveal.in .form-group:nth-child(1){opacity:1; transform:translateY(0); transition-delay:.05s;}
 .feedback-form.reveal.in .form-group:nth-child(2){opacity:1; transform:translateY(0); transition-delay:.14s;}
 .feedback-form.reveal.in .form-group:nth-child(3){opacity:1; transform:translateY(0); transition-delay:.23s;}
+
+/* ---- About-page event photo — nested under .about-page.in (the same
+   class app.js's IntersectionObserver already adds to .about-page), so
+   it holds back and pops in a beat after the paragraph above it settles,
+   instead of appearing flush with the rest of the block all at once.
+   Same fade-up-and-settle curve as the refined .reveal above. */
+.about-event-photo{opacity:0; transform:translateY(22px) scale(.985); transition:opacity .7s cubic-bezier(.16,.84,.44,1), transform .7s cubic-bezier(.16,.84,.44,1);}
+.about-page.in .about-event-photo{opacity:1; transform:translateY(0) scale(1); transition-delay:.2s;}
+
 @media (prefers-reduced-motion: reduce){
   .stat-strip.reveal .stat, .book-stats.reveal .book-stat,
-  .book-faq.reveal .faq-item, .feedback-form.reveal .form-group{opacity:1; transform:none; transition:none;}
+  .book-faq.reveal .faq-item, .feedback-form.reveal .form-group,
+  .about-event-photo{opacity:1; transform:none; transition:none;}
 }
 
 /* ---- Sheen hover — extends the existing shimmer (used on the pay/buy/
