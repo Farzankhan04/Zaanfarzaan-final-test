@@ -94,6 +94,7 @@
       const shownIndex = matches;
       matches++;
       const a = document.createElement('a');
+      a.dataset.id = item.id;
       /* Real, crawlable href to the item's static SEO page when one exists
          (CONFIG.detailUrlPrefix), so search engines can follow/index it —
          e.g. ghazals/ghazal-5.html. In-page clicks are still intercepted
@@ -191,7 +192,31 @@
     }
   };
 
-  renderList('', true);
+  /* If the list already has real, statically pre-rendered <a class="poem-item">
+     items (baked in ahead of time so search engines and no-JS visitors see
+     the full list immediately, instead of an empty div JS has to fill in),
+     just wire up click behaviour on that existing markup instead of wiping
+     it and rebuilding from scratch. Keeps the very first paint identical to
+     what's actually sitting in the HTML, and avoids redoing work that's
+     already correct. Falls back to a normal full render if no static items
+     are present (e.g. a future page that isn't pre-baked yet). */
+  function hydrateStaticList(){
+    const existing = listEl.querySelectorAll('a.poem-item[data-id]');
+    if(!existing.length) return false;
+    existing.forEach(function(a){
+      const id = a.dataset.id;
+      if(findIndexById(id) === -1) return;
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        openDetail(id);
+      });
+    });
+    return true;
+  }
+
+  if(!hydrateStaticList()){
+    renderList('', true);
+  }
 
   const initialId = window.location.hash.replace('#', '');
   if(initialId && findIndexById(initialId) !== -1){
