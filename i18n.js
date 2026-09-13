@@ -35,12 +35,33 @@ window.ZF_LANG = zfGetLang();
    (WhatsApp, Facebook, iMessage, etc., none of which run this script)
    can read correct-language og:title/og:description; for a real
    visitor they just restore this exact page in the right language.
-   Hash-based ghazal/nazm routing (#id) is untouched either way. ----- */
-var ZF_CANONICAL_PATH = window.location.pathname;
+   Hash-based ghazal/nazm routing (#id) is untouched either way.
+
+   Landing directly on an -en/-ur URL (a shared link, a bookmark, or a
+   search result — increasingly likely now that those pages are meant
+   to be indexed on their own) must not be treated as if that were the
+   canonical page: the suffix is stripped back off first, so the base
+   this is built from is always the plain hi filename regardless of
+   which language URL was actually loaded. Without this, toggling away
+   from a page loaded as e.g. /support-ur.html re-suffixed that same
+   "-ur.html" instead of replacing it (-> "/support-ur-en.html"), and
+   switching back to Hindi never dropped the suffix at all. ----- */
+function zfCanonicalBase(pathname){
+  var p = (pathname === '/' || pathname === '') ? '/index.html' : pathname;
+  return p.replace(/-(en|ur)\.html$/, '.html');
+}
+var ZF_CANONICAL_PATH = zfCanonicalBase(window.location.pathname);
+/* Only these top-level pages actually ship -en.html/-ur.html sibling
+   files. Individual ghazal/nazm pages and single-file utility pages
+   (404, terms, refund-policy) don't have one, so their URL is left
+   exactly as-is no matter what language is toggled. */
+var ZF_LANG_URL_PAGES = ['index','about','contact','ebook','favorites','feedback','ghazals','nazms','profiles','support'];
 function zfLangUrlFor(lang){
+  var m = /\/([a-z0-9-]+)\.html$/.exec(ZF_CANONICAL_PATH);
+  var page = m ? m[1] : '';
+  if(ZF_LANG_URL_PAGES.indexOf(page) === -1) return window.location.pathname;
   if(lang !== 'en' && lang !== 'ur') return ZF_CANONICAL_PATH;
-  var base = (ZF_CANONICAL_PATH === '/' || ZF_CANONICAL_PATH === '') ? '/index.html' : ZF_CANONICAL_PATH;
-  return base.replace(/\.html$/, '-' + lang + '.html');
+  return ZF_CANONICAL_PATH.replace(/\.html$/, '-' + lang + '.html');
 }
 function zfSyncLangUrl(lang){
   try{
