@@ -131,6 +131,34 @@ function shareCard(card){
 const shareIconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><line x1="8.3" y1="10.6" x2="15.6" y2="6.4"/><line x1="8.3" y1="13.4" x2="15.6" y2="17.6"/></svg>';
 const downloadIconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>';
 const heartIconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>';
+const copyIconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="1.5"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>';
+
+/* COPY AS TEXT — pulls the plain-text lines out of a .manuscript card
+   (same verse source buildExportCard reads) and puts them on the
+   clipboard, signed the same way a shared link is. Same fallback chain
+   as shareCard/copyUpiId for browsers without the Clipboard API. */
+function cardPlainText(card){
+  const verses = card.querySelectorAll('.verse');
+  const lines = [];
+  verses.forEach(function(v, i){
+    if(i > 0) lines.push('');
+    v.querySelectorAll('.line').forEach(function(l){ lines.push(l.textContent.trim()); });
+  });
+  const brandName = window.ZF_T('brandName');
+  return lines.join('\n') + '\n\n— ' + brandName + '\nzaanfarzaan.site';
+}
+function copyCardText(card, btn){
+  const text = cardPlainText(card);
+  function done(){
+    showToast(window.ZF_T('copiedToClipboard'));
+    if(btn){ btn.classList.add('copied'); setTimeout(function(){ btn.classList.remove('copied'); }, 1600); }
+  }
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(done).catch(function(){ window.prompt(window.ZF_T('copyPrompt'), text); });
+  } else {
+    window.prompt(window.ZF_T('copyPrompt'), text);
+  }
+}
 
 /* FAVORITES — a private "पसंद" list, stored only on this device. Shared
    key/format with the reading-progress tracker's id style ('ghazal-5',
@@ -280,6 +308,14 @@ function attachCardActions(root){
     dlBtn.innerHTML = downloadIconSvg;
     dlBtn.addEventListener('click', function(e){ e.stopPropagation(); downloadCard(card, dlBtn); });
     card.appendChild(dlBtn);
+
+    const copyBtn = document.createElement('button');
+    copyBtn.type = 'button';
+    copyBtn.className = 'copy-btn';
+    copyBtn.setAttribute('aria-label', window.ZF_T('copyAria'));
+    copyBtn.innerHTML = copyIconSvg;
+    copyBtn.addEventListener('click', function(e){ e.stopPropagation(); copyCardText(card, copyBtn); });
+    card.appendChild(copyBtn);
 
     if(card.id){
       const favBtn = document.createElement('button');

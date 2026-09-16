@@ -184,8 +184,28 @@
       window.prompt((typeof window.ZF_T === 'function') ? window.ZF_T('copyPrompt') : 'Copy:', url);
     }
   }
+  /* COPY AS TEXT — mirrors app.js's copyCardText, but reads straight off
+     the live sher-card DOM (linesEl) since the homepage widget isn't a
+     '.manuscript' card and so isn't covered by attachCardActions. */
+  function copyHomeSher(btn){
+    if(!linesEl || !currentEntry) return;
+    var lines = [];
+    linesEl.querySelectorAll('.line').forEach(function(l){ lines.push(l.textContent.trim()); });
+    var brandName = (typeof window.ZF_T === 'function') ? window.ZF_T('brandName') : 'Zaan Farzaan';
+    var text = lines.join('\n') + '\n\n— ' + brandName + '\nzaanfarzaan.site';
+    function done(){
+      if(typeof showToast === 'function' && typeof window.ZF_T === 'function') showToast(window.ZF_T('copiedToClipboard'));
+      if(btn){ btn.classList.add('copied'); setTimeout(function(){ btn.classList.remove('copied'); }, 1600); }
+    }
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(text).then(done).catch(function(){ window.prompt((typeof window.ZF_T === 'function') ? window.ZF_T('copyPrompt') : 'Copy:', text); });
+    }else{
+      window.prompt((typeof window.ZF_T === 'function') ? window.ZF_T('copyPrompt') : 'Copy:', text);
+    }
+  }
   window.ZF_downloadHomeSher = downloadHomeSher;
   window.ZF_shareHomeSher = shareHomeSher;
+  window.ZF_copyHomeSher = copyHomeSher;
   var READ_KEY = 'zf-read-poems';
   function getReadSet(){
     try{ return JSON.parse(localStorage.getItem(READ_KEY) || '[]'); }catch(e){ return []; }

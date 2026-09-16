@@ -30,7 +30,7 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=2">
+<link rel="stylesheet" href="style.css?v=3">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
@@ -145,6 +145,9 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
     <button type="button" class="favorite-btn" id="sher-favorite-btn" aria-label="Add to favourites" data-en-aria-label="Add to favourites" data-ur-aria-label="پسند میں شامل کریں" onclick="event.stopPropagation(); window.ZF_toggleHomeSherFavorite(this);">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
     </button>
+    <button type="button" class="copy-btn" id="sher-copy-btn" aria-label="यह रचना कॉपी करें" data-en-aria-label="Copy this piece" data-ur-aria-label="یہ تحریر کاپی کریں" onclick="event.stopPropagation(); window.ZF_copyHomeSher(this);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="1.5"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
+    </button>
     <p class="sher-placeholder" id="sher-placeholder" data-en="Loading a sher…" data-ur="ایک شعر لایا جا رہا ہے…">एक शेर लाया जा रहा है…</p>
     <div class="sher-content" id="sher-content" hidden>
       <div class="sher-lines" id="sher-lines"></div>
@@ -169,6 +172,25 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
     <span id="read-badge-text"></span>
     <span class="read-badge-bar"><span class="read-badge-fill"></span></span>
   </div>
+</section>
+
+<section class="sher-gallery reveal">
+  <div class="sher-gallery-head">
+    <div class="tag" data-en="Five Daily Shers" data-ur="روزانہ پانچ شعر">रोज़ाना पाँच शेर</div>
+    <h2 data-en="Today's Glimpses" data-ur="آج کی جھلکیاں">आज की झलकियाँ</h2>
+  </div>
+  <div class="sher-carousel">
+    <div class="sher-carousel-viewport">
+      <div class="sher-carousel-track" id="sher-carousel-track"></div>
+    </div>
+    <button type="button" class="sher-carousel-nav prev" id="sher-carousel-prev" aria-label="पिछली झलक" data-en-aria-label="Previous glimpse" data-ur-aria-label="پچھلی جھلک">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button type="button" class="sher-carousel-nav next" id="sher-carousel-next" aria-label="अगली झलक" data-en-aria-label="Next glimpse" data-ur-aria-label="اگلی جھلک">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
+  <div class="sher-carousel-dots" id="sher-carousel-dots"></div>
 </section>
 
 <div class="stat-strip reveal">
@@ -254,9 +276,10 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
 <script src="ghazals-data.js"></script>
 <script src="nazms-data.js"></script>
 <script src="ur-translit.js"></script>
-<script src="i18n.js?v=2"></script>
-<script src="app.js?v=2"></script>
-<script src="home-features.js"></script>
+<script src="i18n.js?v=3"></script>
+<script src="app.js?v=3"></script>
+<script src="home-features.js?v=2"></script>
+<script src="home-carousel.js?v=1"></script>
 <script src="search.js"></script>
 </body>
 </html>

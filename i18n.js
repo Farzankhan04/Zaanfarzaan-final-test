@@ -84,7 +84,13 @@ var ZF_UI_STRINGS = {
   downloadAria:      { hi: 'यह रचना इमेज के रूप में डाउनलोड करें', en: 'Download this piece as an image', ur: 'یہ تحریر تصویر کی صورت میں ڈاؤن لوڈ کریں' },
   upiIdCopied:       { hi: 'UPI ID कॉपी हो गई', en: 'UPI ID copied', ur: 'UPI ID کاپی ہو گئی' },
   favoriteAria:      { hi: 'पसंद में जोड़ें', en: 'Add to favourites', ur: 'پسند میں شامل کریں' },
-  unfavoriteAria:    { hi: 'पसंद से हटाएँ', en: 'Remove from favourites', ur: 'پسند سے ہٹائیں' }
+  unfavoriteAria:    { hi: 'पसंद से हटाएँ', en: 'Remove from favourites', ur: 'پسند سے ہٹائیں' },
+  copyAria:          { hi: 'यह रचना कॉपी करें', en: 'Copy this piece', ur: 'یہ تحریر کاپی کریں' },
+  copiedToClipboard: { hi: 'शेर कॉपी हो गया', en: 'Copied to clipboard', ur: 'شعر کاپی ہو گیا' },
+  copyFailed:        { hi: 'कॉपी नहीं हो पाया, दोबारा कोशिश करें', en: 'Copy failed, please try again', ur: 'کاپی نہیں ہو پایا، دوبارہ کوشش کریں' },
+  galleryTag:        { hi: 'रोज़ाना पाँच शेर', en: 'Five Daily Shers', ur: 'روزانہ پانچ شعر' },
+  galleryHeading:    { hi: 'आज की झलकियाँ', en: "Today's Glimpses", ur: 'آج کی جھلکیاں' },
+  galleryReadMore:   { hi: 'पूरी ग़ज़ल पढ़ें', en: 'Read the full ghazal', ur: 'مکمل غزل پڑھیں' }
 };
 window.ZF_T = function(key){
   var entry = ZF_UI_STRINGS[key];

@@ -503,8 +503,8 @@ body.lang-en .sher-lines{font-family:'Cormorant Garamond','Lora', serif; font-st
 }
 .seo-cta a:hover{background:var(--gold); color:var(--ink-deep); border-color:var(--gold);}
 
-/* SHARE + DOWNLOAD BUTTONS */
-.share-btn, .download-btn, .favorite-btn{
+/* SHARE + DOWNLOAD + COPY BUTTONS */
+.share-btn, .download-btn, .favorite-btn, .copy-btn{
   position:absolute; top:1.5rem; z-index:2;
   width:32px; height:32px; border-radius:50%; padding:0;
   border:1px solid rgba(156,156,149,0.28); background:transparent; color:var(--rose);
@@ -514,6 +514,7 @@ body.lang-en .sher-lines{font-family:'Cormorant Garamond','Lora', serif; font-st
 .share-btn{right:1.6rem;}
 .download-btn{right:3.9rem;}
 .favorite-btn{right:6.2rem;}
+.copy-btn{right:8.5rem;}
 
 /* In Urdu mode the card kind label ("NAZM #1"/"GHAZAL #1") sits right-aligned
    because of direction:rtl, which puts it under these buttons. English and
@@ -521,13 +522,33 @@ body.lang-en .sher-lines{font-family:'Cormorant Garamond','Lora', serif; font-st
 body.lang-ur .share-btn{right:auto; left:1.6rem;}
 body.lang-ur .download-btn{right:auto; left:3.9rem;}
 body.lang-ur .favorite-btn{right:auto; left:6.2rem;}
+body.lang-ur .copy-btn{right:auto; left:8.5rem;}
 
-.share-btn:hover, .download-btn:hover, .favorite-btn:hover{background:var(--rose); border-color:var(--rose); color:var(--paper); transform:scale(1.06);}
-.share-btn svg, .download-btn svg, .favorite-btn svg{width:14px; height:14px;}
+.share-btn:hover, .download-btn:hover, .favorite-btn:hover, .copy-btn:hover{background:var(--rose); border-color:var(--rose); color:var(--paper); transform:scale(1.06);}
+.share-btn svg, .download-btn svg, .favorite-btn svg, .copy-btn svg{width:14px; height:14px;}
 .download-btn.loading{pointer-events:none; opacity:0.6;}
 .favorite-btn.active{background:var(--rose); border-color:var(--rose); color:var(--paper);}
 .favorite-btn.active svg{fill:currentColor;}
 .favorite-btn.active:hover{transform:scale(1.12);}
+.copy-btn.copied{background:var(--gold); border-color:var(--gold); color:var(--ink-deep);}
+
+/* Narrow cards — four action buttons plus a short "kind" label (e.g.
+   "ग़ज़ल #12") need to share the same top row without ever overlapping,
+   in any of the three scripts (Devanagari/Roman/Nastaliq run different
+   widths). Below 480px the buttons shrink and pull in closer together
+   so there's always room for the label on the opposite side. */
+@media (max-width:480px){
+  .share-btn, .download-btn, .favorite-btn, .copy-btn{width:27px; height:27px; top:1.2rem;}
+  .share-btn svg, .download-btn svg, .favorite-btn svg, .copy-btn svg{width:12px; height:12px;}
+  .share-btn{right:1.2rem;}
+  .download-btn{right:3.1rem;}
+  .favorite-btn{right:5rem;}
+  .copy-btn{right:6.9rem;}
+  body.lang-ur .share-btn{right:auto; left:1.2rem;}
+  body.lang-ur .download-btn{right:auto; left:3.1rem;}
+  body.lang-ur .favorite-btn{right:auto; left:5rem;}
+  body.lang-ur .copy-btn{right:auto; left:6.9rem;}
+}
 
 /* EXPORT TEMPLATE (off-screen, used only for image generation) */
 /* Same physical-offset/RTL concern as .hp-field above, but this element
@@ -656,7 +677,7 @@ footer.site-footer .foot-links a:hover{color:var(--gold-soft);}
 .reveal{opacity:0; transform:translateY(20px); transition:opacity .6s ease, transform .6s ease;}
 .reveal.in{opacity:1; transform:translateY(0);}
 
-.icon-btn:focus-visible, .share-btn:focus-visible, .download-btn:focus-visible, .collection-search input:focus-visible, .nav-card:focus-visible, .poem-item:focus-visible, .sher-btn:focus-visible, .sher-source:focus-visible{
+.icon-btn:focus-visible, .share-btn:focus-visible, .download-btn:focus-visible, .copy-btn:focus-visible, .favorite-btn:focus-visible, .collection-search input:focus-visible, .nav-card:focus-visible, .poem-item:focus-visible, .sher-btn:focus-visible, .sher-source:focus-visible, .sher-carousel-slide:focus-visible, .sher-carousel-nav:focus-visible, .sher-carousel-dot:focus-visible{
   outline:2px solid var(--gold); outline-offset:2px;
 }
 
@@ -665,8 +686,10 @@ footer.site-footer .foot-links a:hover{color:var(--gold-soft);}
   .poem-item .poem-item-line{font-size:1.05rem;}
   .download-btn{right:3.7rem;}
   .favorite-btn{right:5.8rem;}
+  .copy-btn{right:7.9rem;}
   body.lang-ur .download-btn{right:auto; left:3.7rem;}
   body.lang-ur .favorite-btn{right:auto; left:5.8rem;}
+  body.lang-ur .copy-btn{right:auto; left:7.9rem;}
 }
 
 /* EBOOK PAGE */
@@ -770,6 +793,120 @@ body::before{animation:driftDots 90s linear infinite;}
 }
 .read-progress-badge .read-badge-bar{width:70px; height:3px; background:rgba(220,220,214,0.18); border-radius:2px; overflow:hidden;}
 .read-progress-badge .read-badge-fill{height:100%; background:var(--gold); transition:width .5s ease;}
+
+/* ---- HOME: FIVE DAILY SHERS GALLERY ----
+   A small carousel of 5 "designed cards" beneath the Aaj Ka Sher widget.
+   Each slide cycles through 5 distinct visual skins (.sgc-1..sgc-5) built
+   from the site's own palette/ornaments, so it reads as five different
+   card designs rather than five repeats of one layout. Content itself
+   comes from home-carousel.js (day-seeded ghazal couplets). */
+.sher-gallery{max-width:760px; margin:0 auto; padding:0 6vw 8vh; text-align:center;}
+.sher-gallery-head .tag{color:var(--rose); text-transform:uppercase; letter-spacing:0.3em; font-size:0.75rem; font-family:'Lora'; font-weight:600;}
+.sher-gallery-head h2{font-size:clamp(1.5rem,3.6vw,2rem); color:var(--gold-soft); font-weight:700; margin:0.6rem 0 2rem;}
+
+.sher-carousel{position:relative; display:flex; align-items:center; gap:0.6rem;}
+.sher-carousel-nav.prev{order:-1;}
+.sher-carousel-viewport{flex:1; overflow:hidden; border-radius:4px;}
+.sher-carousel-track{display:flex; transition:transform .45s cubic-bezier(.4,0,.2,1);}
+
+.sher-carousel-slide{
+  flex:0 0 100%; min-width:100%; box-sizing:border-box;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  min-height:220px; padding:2.6rem 2rem 2rem; position:relative; overflow:hidden;
+  text-decoration:none; color:inherit; cursor:pointer;
+}
+.sgc-mark{
+  font-family:'Cormorant Garamond', serif; font-size:3.4rem; line-height:1;
+  opacity:.28; margin-bottom:0.2rem; display:block;
+}
+.sgc-lines{font-family:'Noto Serif Devanagari','Lora', serif; font-size:1.15rem; line-height:1.9; max-width:34rem;}
+.sgc-lines .line{display:block;}
+.sgc-lines .verse{margin-bottom:0.4rem;}
+.sgc-lines .verse:last-child{margin-bottom:0;}
+body.lang-ur .sgc-lines{font-family:'Noto Nastaliq Urdu', serif; line-height:2.2; font-size:1.25rem;}
+.sgc-foot{display:flex; align-items:center; gap:0.8rem; margin-top:1.4rem; font-size:0.74rem; letter-spacing:0.08em;}
+.sgc-kind{text-transform:uppercase; letter-spacing:0.2em; opacity:.65; font-family:'Lora'; font-weight:600;}
+.sgc-read{opacity:.8; font-weight:600; transition:opacity .2s ease, transform .2s ease;}
+.sher-carousel-slide:hover .sgc-read{opacity:1; transform:translateX(3px);}
+body.lang-ur .sher-carousel-slide:hover .sgc-read{transform:translateX(-3px);}
+
+/* Design 1 — Ink & Gold Frame: dark card, gold corner brackets, faint gold mark. */
+.sgc-1{
+  background:linear-gradient(165deg, var(--ink) 0%, var(--ink-deep) 100%);
+  color:var(--text-light); border:1px solid rgba(220,220,214,0.16);
+}
+.sgc-1 .sgc-mark{color:var(--gold-soft);}
+.sgc-1 .sgc-kind, .sgc-1 .sgc-read{color:var(--gold-soft);}
+.sgc-1::before, .sgc-1::after{
+  content:""; position:absolute; width:30px; height:30px; pointer-events:none;
+  border:1px solid rgba(220,220,214,0.45);
+}
+.sgc-1::before{top:12px; left:12px; border-right:none; border-bottom:none;}
+.sgc-1::after{bottom:12px; right:12px; border-left:none; border-top:none;}
+body.lang-ur .sgc-1::before{left:auto; right:12px; border-right:1px solid rgba(220,220,214,0.45); border-left:none;}
+body.lang-ur .sgc-1::after{right:auto; left:12px; border-left:1px solid rgba(220,220,214,0.45); border-right:none;}
+
+/* Design 2 — Rose Manuscript: paper tone, thin rose border, rose top bar. */
+.sgc-2{
+  background:linear-gradient(165deg, #fbfbf9 0%, var(--paper) 55%, #ececE8 100%);
+  color:var(--text-dark); border:1px solid var(--rose);
+}
+.sgc-2::before{content:""; position:absolute; top:0; left:0; right:0; height:4px; background:var(--rose);}
+.sgc-2 .sgc-mark{color:var(--rose);}
+.sgc-2 .sgc-kind, .sgc-2 .sgc-read{color:#6f6f68;}
+
+/* Design 3 — Seal Edition: dark card, circular seal ring in one corner. */
+.sgc-3{
+  background:radial-gradient(circle at 78% 22%, #232323 0%, var(--ink-deep) 68%);
+  color:var(--text-light); border:1px solid rgba(220,220,214,0.14);
+}
+.sgc-3::before{
+  content:""; position:absolute; top:16px; right:16px; width:52px; height:52px;
+  border:1px solid rgba(220,220,214,0.4); border-radius:50%;
+}
+body.lang-ur .sgc-3::before{right:auto; left:16px;}
+.sgc-3 .sgc-mark{color:var(--gold-soft);}
+.sgc-3 .sgc-kind, .sgc-3 .sgc-read{color:var(--gold-soft);}
+
+/* Design 4 — Minimal Rule: flat paper card, thin top/bottom gold rules only. */
+.sgc-4{background:var(--paper); color:var(--text-dark); border:none;}
+.sgc-4::before, .sgc-4::after{content:""; position:absolute; left:14%; right:14%; height:1px; background:rgba(156,156,149,0.55);}
+.sgc-4::before{top:14px;}
+.sgc-4::after{bottom:14px;}
+.sgc-4 .sgc-mark{color:var(--rose); opacity:.4;}
+.sgc-4 .sgc-kind, .sgc-4 .sgc-read{color:#6f6f68;}
+
+/* Design 5 — Vignette Bloom: dark radial vignette with the site's flourish glyph. */
+.sgc-5{
+  background:radial-gradient(ellipse at center, #1c1c1c 0%, var(--ink-deep) 78%);
+  color:var(--text-light); border:1px solid rgba(220,220,214,0.14);
+}
+.sgc-5 .sgc-mark{display:none;}
+.sgc-5 .sgc-kind, .sgc-5 .sgc-read{color:var(--gold-soft);}
+.sgc-5-bloom{font-family:'Cormorant Garamond', serif; font-size:1.4rem; color:var(--gold); opacity:.55; margin-bottom:0.6rem;}
+
+.sher-carousel-nav{
+  flex:0 0 auto; width:34px; height:34px; border-radius:50%; padding:0;
+  border:1px solid rgba(220,220,214,0.28); background:transparent; color:var(--rose);
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  transition:background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
+}
+.sher-carousel-nav:hover{background:var(--rose); border-color:var(--rose); color:var(--paper); transform:scale(1.06);}
+.sher-carousel-nav svg{width:16px; height:16px;}
+body.lang-ur .sher-carousel-nav.prev svg, body.lang-ur .sher-carousel-nav.next svg{transform:scaleX(-1);}
+
+.sher-carousel-dots{display:flex; justify-content:center; gap:0.5rem; margin-top:1.2rem;}
+.sher-carousel-dot{width:7px; height:7px; border-radius:50%; padding:0; border:none; background:rgba(220,220,214,0.28); cursor:pointer; transition:background .2s ease, transform .2s ease;}
+.sher-carousel-dot.active{background:var(--gold); transform:scale(1.3);}
+
+@media (max-width:640px){
+  .sher-carousel-slide{min-height:190px; padding:2.2rem 1.4rem 1.6rem;}
+  .sgc-lines{font-size:1.02rem;}
+  .sgc-mark{font-size:2.8rem;}
+}
+@media (prefers-reduced-motion: reduce){
+  .sher-carousel-track{transition:none;}
+}
 
 /* ---- 3. Cards that come alive: hover preview, tilt, count-up stats ---- */
 .nav-card{transition:transform .25s ease, box-shadow .25s ease;}
