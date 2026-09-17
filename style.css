@@ -796,7 +796,8 @@ body::before{animation:driftDots 90s linear infinite;}
 
 /* ---- HOME: FIVE DAILY SHERS GALLERY ----
    A horizontal photo carousel beneath the Aaj Ka Sher widget. Each of the
-   5 slides is one of 5 fixed background photos (assets/gallery/sher-1..5
+   5 slides is one of 5 fixed background photos (sher-1.jpg..sher-5.jpg,
+   sitting in the site's root folder alongside index.html/style.css
    .jpg — all dark/night shots, so the couplet is always set in white with
    a soft shadow for legibility, plus a bottom gradient as extra insurance
    over brighter patches of a photo). Content itself comes from
@@ -825,11 +826,11 @@ body::before{animation:driftDots 90s linear infinite;}
   content:""; position:absolute; inset:0; pointer-events:none;
   background:linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.28) 42%, rgba(0,0,0,0) 68%);
 }
-.sgc-1{background-image:url('assets/gallery/sher-1.jpg');}
-.sgc-2{background-image:url('assets/gallery/sher-2.jpg');}
-.sgc-3{background-image:url('assets/gallery/sher-3.jpg');}
-.sgc-4{background-image:url('assets/gallery/sher-4.jpg');}
-.sgc-5{background-image:url('assets/gallery/sher-5.jpg');}
+.sgc-1{background-image:url('sher-1.jpg');}
+.sgc-2{background-image:url('sher-2.jpg');}
+.sgc-3{background-image:url('sher-3.jpg');}
+.sgc-4{background-image:url('sher-4.jpg');}
+.sgc-5{background-image:url('sher-5.jpg');}
 
 .sgc-body{position:relative; z-index:1; color:#fdfdfb; max-width:32rem;}
 .sgc-lines{font-family:'Noto Serif Devanagari','Lora', serif; font-size:1.12rem; line-height:1.85; text-shadow:0 2px 10px rgba(0,0,0,0.55);}
