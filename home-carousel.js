@@ -1,14 +1,14 @@
-/* Homepage "Five Daily Shers" gallery — a small image-style carousel that
-   sits below the "Aaj Ka Sher" widget. Each of the 5 slides is a distinct
-   CSS "card design" (ink & gold, rose manuscript, seal edition, minimal
-   rule, vignette bloom — see the .sgc-1..5 rules in style.css) so the
-   gallery reads as five different designed cards rather than five copies
-   of the same layout. The five couplets themselves are picked from the
-   same ghazal pool as home-features.js's "Aaj Ka Sher" widget, using a
-   date-seeded pick so the set is stable for the whole day and changes
-   the next day — "random" in feel, but reproducible for everyone looking
-   at the site on the same day. This file only reads GHAZAL_ITEMS (via
-   ghazals-data.js) and never writes to it. */
+/* Homepage "Five Daily Shers" gallery — a horizontal photo carousel that
+   sits below the "Aaj Ka Sher" widget. Each of the 5 slides uses one of
+   5 fixed background photos (assets/gallery/sher-1..5.jpg, wired up in
+   style.css via .sgc-1..sgc-5) with the couplet set in white over it, so
+   the gallery reads as five distinct photo cards. The five couplets
+   themselves are picked from the same ghazal pool as home-features.js's
+   "Aaj Ka Sher" widget, using a date-seeded pick so the set is stable for
+   the whole day and changes the next day — "random" in feel, but
+   reproducible for everyone looking at the site on the same day. This
+   file only reads GHAZAL_ITEMS (via ghazals-data.js) and never writes to
+   it. */
 (function(){
 
   var track, dotsWrap, prevBtn, nextBtn, section;
@@ -63,15 +63,13 @@
     var l = lang();
     var item = entry.item;
     var verseHtml = item.versesHtml[entry.verseIdx];
-    var kind = item.kind || ('Ghazal · #' + item.num);
     if(l === 'en' && item.versesHtmlEn){
       verseHtml = item.versesHtmlEn[entry.verseIdx];
     }else if(l === 'ur' && typeof window.ZF_UR_transliterateHtml === 'function'){
       verseHtml = window.ZF_UR_transliterateHtml(verseHtml);
-      kind = typeof window.ZF_UR_transliterateText === 'function' ? window.ZF_UR_transliterateText(kind) : kind;
     }
-    var readLabel = l === 'en' ? "Read the full ghazal →" : l === 'ur' ? '← مکمل غزل پڑھیں' : 'पूरी ग़ज़ल पढ़ें →';
-    return {verseHtml: verseHtml, kind: kind, readLabel: readLabel};
+    var readLabel = l === 'en' ? 'Read full ghazal →' : l === 'ur' ? '← مکمل غزل پڑھیں' : 'ग़ज़ल पढ़िए →';
+    return {verseHtml: verseHtml, readLabel: readLabel};
   }
 
   function buildSlide(entry, idx){
@@ -83,39 +81,20 @@
     a.setAttribute('data-ur-href', entry.sourceUr + '#' + entry.item.id);
     a.setAttribute('data-idx', String(idx));
 
-    var mark = document.createElement('span');
-    mark.className = 'sgc-mark';
-    mark.setAttribute('aria-hidden', 'true');
-    mark.textContent = '\u201C';
-
-    var a2Wrap = document.createDocumentFragment();
-    if((idx % 5) === 4){
-      var bloom = document.createElement('span');
-      bloom.className = 'sgc-5-bloom';
-      bloom.setAttribute('aria-hidden', 'true');
-      bloom.textContent = '\u2766';
-      a2Wrap.appendChild(bloom);
-    }
+    var body = document.createElement('div');
+    body.className = 'sgc-body';
 
     var lines = document.createElement('div');
     lines.className = 'sgc-lines';
     lines.innerHTML = texts.verseHtml;
 
-    var foot = document.createElement('div');
-    foot.className = 'sgc-foot';
-    var kindEl = document.createElement('span');
-    kindEl.className = 'sgc-kind';
-    kindEl.textContent = texts.kind;
     var readEl = document.createElement('span');
     readEl.className = 'sgc-read';
     readEl.textContent = texts.readLabel;
-    foot.appendChild(kindEl);
-    foot.appendChild(readEl);
 
-    a.appendChild(mark);
-    a.appendChild(a2Wrap);
-    a.appendChild(lines);
-    a.appendChild(foot);
+    body.appendChild(lines);
+    body.appendChild(readEl);
+    a.appendChild(body);
 
     /* Reading (or clicking into) a gallery slide counts the same as
        reading it from anywhere else on the site — keeps the home
