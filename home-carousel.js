@@ -1,17 +1,25 @@
 /* Homepage "Five Daily Shers" gallery — a horizontal photo carousel that
    sits below the "Aaj Ka Sher" widget. Each of the 5 slides uses one of
-   5 fixed background photos (assets/gallery/sher-1..5.jpg, wired up in
-   style.css via .sgc-1..sgc-5) with the couplet set in white over it, so
-   the gallery reads as five distinct photo cards. The five couplets
-   themselves are picked from the same ghazal pool as home-features.js's
-   "Aaj Ka Sher" widget, using a date-seeded pick so the set is stable for
-   the whole day and changes the next day — "random" in feel, but
-   reproducible for everyone looking at the site on the same day. This
-   file only reads GHAZAL_ITEMS (via ghazals-data.js) and never writes to
-   it. */
+   5 fixed background photos (sher-1.jpg..sher-5.jpg, sitting in the
+   site's root folder, wired up in style.css via .sgc-1..sgc-5) with the
+   couplet set in white over it, so the gallery reads as five distinct
+   photo cards. The five couplets themselves are picked from the same
+   ghazal pool as home-features.js's "Aaj Ka Sher" widget, using a
+   date-seeded pick so the set is stable for the whole day and changes
+   the next day — "random" in feel, but reproducible for everyone looking
+   at the site on the same day. This file only reads GHAZAL_ITEMS (via
+   ghazals-data.js) and never writes to it.
+
+   Navigation is dots + swipe + autoplay only (no on-photo arrow
+   buttons) — nothing sitting on top of the image for the couplet to
+   ever collide with. Font size is not fixed either: each couplet's
+   plain-text length decides a --sgc-scale multiplier (see setFontScale
+   below), so a short sher reads large and a long one automatically
+   steps down, keeping every sher sitting comfortably inside its photo
+   in any of the three scripts. */
 (function(){
 
-  var track, dotsWrap, prevBtn, nextBtn, section;
+  var track, dotsWrap, section;
   var slidesData = [];
   var current = 0;
   var autoTimer = null;
@@ -72,6 +80,30 @@
     return {verseHtml: verseHtml, readLabel: readLabel};
   }
 
+  /* Plain-text length of a couplet (both misras combined, tags and
+     extra whitespace stripped) — the one number that decides how much
+     to shrink the font. Measuring the ACTUAL text that will render
+     (i.e. after the Hindi/English/Urdu swap already happened above)
+     means an English line — which typically runs longer than the same
+     couplet in Devanagari — correctly lands in a smaller size tier on
+     its own, without needing separate per-language thresholds. */
+  function plainLength(html){
+    var div = document.createElement('div');
+    div.innerHTML = html;
+    return (div.textContent || '').replace(/\s+/g, ' ').trim().length;
+  }
+
+  /* Longer couplet → smaller multiplier, so it still sits comfortably
+     inside the photo instead of ballooning across it. Tiers are on
+     combined-character count of both misras. */
+  function scaleForLength(len){
+    if(len > 110) return 0.62;
+    if(len > 90)  return 0.7;
+    if(len > 70)  return 0.8;
+    if(len > 50)  return 0.9;
+    return 1;
+  }
+
   function buildSlide(entry, idx){
     var texts = slideText(entry);
     var a = document.createElement('a');
@@ -87,6 +119,7 @@
     var lines = document.createElement('div');
     lines.className = 'sgc-lines';
     lines.innerHTML = texts.verseHtml;
+    lines.style.setProperty('--sgc-scale', String(scaleForLength(plainLength(texts.verseHtml))));
 
     var readEl = document.createElement('span');
     readEl.className = 'sgc-read';
@@ -160,8 +193,6 @@
     section = document.querySelector('.sher-gallery');
     track = document.getElementById('sher-carousel-track');
     dotsWrap = document.getElementById('sher-carousel-dots');
-    prevBtn = document.getElementById('sher-carousel-prev');
-    nextBtn = document.getElementById('sher-carousel-next');
     if(!track || typeof GHAZAL_ITEMS === 'undefined' || !GHAZAL_ITEMS.length) return;
 
     var pool = fullPool();
@@ -171,19 +202,15 @@
     renderSlides();
     renderDots();
 
-    if(prevBtn) prevBtn.addEventListener('click', function(){ goTo(current - 1); restartAutoplay(); });
-    if(nextBtn) nextBtn.addEventListener('click', function(){ goTo(current + 1); restartAutoplay(); });
-
     if(section){
       section.addEventListener('mouseenter', pauseAutoplay);
       section.addEventListener('mouseleave', restartAutoplay);
-      section.addEventListener('touchstart', pauseAutoplay, {passive:true});
       section.addEventListener('focusin', pauseAutoplay);
       section.addEventListener('focusout', restartAutoplay);
 
       /* Simple swipe support for touch screens. */
       var touchStartX = null;
-      section.addEventListener('touchstart', function(e){ touchStartX = e.touches[0].clientX; }, {passive:true});
+      section.addEventListener('touchstart', function(e){ touchStartX = e.touches[0].clientX; pauseAutoplay(); }, {passive:true});
       section.addEventListener('touchend', function(e){
         if(touchStartX === null) return;
         var dx = e.changedTouches[0].clientX - touchStartX;
@@ -192,9 +219,9 @@
           var forward = dx < 0;
           if(rtl) forward = !forward;
           goTo(current + (forward ? 1 : -1));
-          restartAutoplay();
         }
         touchStartX = null;
+        restartAutoplay();
       });
     }
 
