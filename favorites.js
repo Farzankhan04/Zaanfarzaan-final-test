@@ -50,7 +50,7 @@
 
   function previewHtml(id, found, index, animate){
     var item = found.item;
-    var prefix = found.type === 'ghazal' ? 'ghazals/' : 'nazms/';
+    var prefix = '';
     var cls = 'poem-item' + (animate ? ' poem-item-enter' : '');
     var style = animate ? (' style="--i:' + Math.min(index, 12) + '"') : '';
     return '<a href="' + prefix + id + '.html" class="' + cls + '" data-fav-id="' + id + '"' + style + '>' +

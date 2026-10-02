@@ -1274,3 +1274,12 @@ body.lang-ur .signature-flourish{transform:scaleX(-1);}
    a single small static raster PNG (no filter, no animation) over an
    SVG feTurbulence tile — same visual idea, none of the repaint cost. */
 
+
+/* ---- Poem page <h1> (visible heading for search engines + readers) ---- */
+.poem-h1{
+  font-family:'Noto Serif Devanagari','Cormorant Garamond',serif;
+  font-size:clamp(1.1rem,3.2vw,1.4rem); font-weight:600; line-height:1.75;
+  margin:0.2rem 0 1.5rem; color:var(--gold-soft); letter-spacing:0.01em;
+}
+/* Splash is shown once per browser session on the home page only. */
+html.zf-splash-off #zf-splash{display:none !important;}

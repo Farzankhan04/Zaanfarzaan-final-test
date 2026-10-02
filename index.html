@@ -9,20 +9,20 @@ Mirrors the #zf-splash rules in style.css -- keep both in sync. */
 #zf-splash span{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.5rem,5vw,2.3rem);color:#f2f1ec;opacity:0;animation:zfSplashTextIn .5s ease forwards .08s}
 @keyframes zfSplashTextIn{0%{opacity:0;letter-spacing:.3em}100%{opacity:1;letter-spacing:.05em}}
 @keyframes zfSplashOut{0%{opacity:1;visibility:visible}99%{opacity:0;visibility:visible}100%{opacity:0;visibility:hidden;pointer-events:none}}
-html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
+html.zf-en-init body,html.zf-ur-init body{visibility:hidden}html.zf-splash-off #zf-splash{display:none!important}
 @media (prefers-reduced-motion:reduce){#zf-splash{animation-duration:.01s;animation-delay:0s}#zf-splash span{animation:none;opacity:1;letter-spacing:.05em}}</style>
 <script>(function(){try{var l=localStorage.getItem('zf-lang');if(l==='en'){document.documentElement.classList.add('zf-en-init');}else if(l==='ur'){document.documentElement.classList.add('zf-ur-init');}}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title data-en="Zaan Farzaan — Ghazals &amp; Nazms" data-ur="زان فرزان — غزلیں اور نظمیں">ज़ान फ़रज़ान — ग़ज़लें और नज़्में</title>
-<meta name="description" content="ज़ान फ़रज़ान की ग़ज़लें, नज़्में और अदबी तहरीरें — एक जगह संकलित।">
+<title data-en="Zaan Farzaan — Urdu Ghazals, Nazms &amp; Shayari" data-ur="زان فرزان — غزلیں، نظمیں اور شاعری">ज़ान फ़रज़ान (Zaan Farzaan) — ग़ज़लें, नज़्में और शायरी</title>
+<meta name="description" content="ज़ान फ़रज़ान (Zaan Farzaan) की 40 ग़ज़लें और 10 नज़्में पढ़ें — मोहब्बत, जुदाई, तन्हाई और उम्मीद की शायरी, एक ही जगह।">
 <link rel="canonical" href="https://zaanfarzaan.site/">
 <link rel="alternate" hreflang="hi" href="https://zaanfarzaan.site/">
 <link rel="alternate" hreflang="en" href="https://zaanfarzaan.site/index-en.html">
 <link rel="alternate" hreflang="ur" href="https://zaanfarzaan.site/index-ur.html">
 <link rel="alternate" hreflang="x-default" href="https://zaanfarzaan.site/">
 
-<meta property="og:title" content="ज़ान फ़रज़ान — ग़ज़लें और नज़्में">
-<meta property="og:description" content="ज़ान फ़रज़ान की ग़ज़लें, नज़्में और अदबी तहरीरें — एक जगह संकलित।">
+<meta property="og:title" content="ज़ान फ़रज़ान (Zaan Farzaan) — ग़ज़लें, नज़्में और शायरी">
+<meta property="og:description" content="ज़ान फ़रज़ान (Zaan Farzaan) की 40 ग़ज़लें और 10 नज़्में पढ़ें — मोहब्बत, जुदाई, तन्हाई और उम्मीद की शायरी, एक ही जगह।">
 <meta property="og:image" content="https://zaanfarzaan.site/logo.png">
 <meta property="og:url" content="https://zaanfarzaan.site/">
 <meta property="og:type" content="website">
@@ -30,7 +30,7 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=7">
+<link rel="stylesheet" href="style.css?v=8">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
@@ -68,6 +68,8 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
   ]
 }
 </script>
+<script>try{var d=document.documentElement;if(sessionStorage.getItem('zf-splash')){d.classList.add('zf-splash-off');}else{sessionStorage.setItem('zf-splash','1');}}catch(e){}</script>
+<script>setTimeout(function(){document.documentElement.classList.remove('zf-en-init','zf-ur-init');},4000);</script>
 </head>
 <body data-page="home">
   <div id="zf-splash" aria-hidden="true"><span>Zaan Farzaan</span></div>
@@ -266,14 +268,14 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
   </div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="ghazals-data.js"></script>
 <script src="nazms-data.js"></script>
 <script src="ur-translit.js"></script>
-<script src="i18n.js?v=3"></script>
-<script src="app.js?v=3"></script>
+<script src="i18n.js?v=4"></script>
+<script src="app.js?v=4"></script>
 <script src="home-features.js?v=2"></script>
 <script src="home-carousel.js?v=3"></script>
-<script src="search.js"></script>
+<script src="search.js?v=2"></script>
 </body>
 </html>

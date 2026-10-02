@@ -97,7 +97,7 @@
       a.dataset.id = item.id;
       /* Real, crawlable href to the item's static SEO page when one exists
          (CONFIG.detailUrlPrefix), so search engines can follow/index it —
-         e.g. ghazals/ghazal-5.html. In-page clicks are still intercepted
+         e.g. ghazal-5.html. In-page clicks are still intercepted
          below and handled as an instant SPA-style detail open via #hash,
          so normal users never actually navigate there. */
       a.href = CONFIG.detailUrlPrefix ? (CONFIG.detailUrlPrefix + item.id + '.html') : ('#' + item.id);

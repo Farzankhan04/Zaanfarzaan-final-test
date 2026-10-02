@@ -68,6 +68,9 @@ function zfSyncLangUrl(lang){
     if(!window.history || !window.history.replaceState) return;
     var target = zfLangUrlFor(lang);
     if(window.location.pathname === target) return;
+    /* '/' and '/index.html' are the same Hindi home page and the canonical is '/':
+       never rewrite the address bar from the canonical URL to /index.html. */
+    if(window.location.pathname === '/' && target === '/index.html') return;
     history.replaceState(history.state, '', target + window.location.search + window.location.hash);
   }catch(e){}
 }

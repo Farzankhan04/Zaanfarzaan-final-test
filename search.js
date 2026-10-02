@@ -131,7 +131,7 @@
 
     if(typeof GHAZAL_ITEMS !== 'undefined'){
       GHAZAL_ITEMS.forEach(function(item){
-        var url = 'ghazals/' + item.id + '.html';
+        var url = item.id + '.html';
         if(ghazalTitleHay(item).indexOf(q) !== -1){
           titleHits.push(resultRow(item.kind, ghazalLabel(item), url));
         }else if(ghazalFullHay(item).indexOf(q) !== -1){
@@ -141,7 +141,7 @@
     }
     if(typeof NAZM_ITEMS !== 'undefined'){
       NAZM_ITEMS.forEach(function(item){
-        var url = 'nazms/' + item.id + '.html';
+        var url = item.id + '.html';
         if(nazmTitleHay(item).indexOf(q) !== -1){
           titleHits.push(resultRow(item.kind, nazmLabel(item), url));
         }else if(nazmFullHay(item).indexOf(q) !== -1){

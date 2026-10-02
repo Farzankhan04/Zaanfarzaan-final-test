@@ -232,6 +232,9 @@ function buildExportCard(card){
 }
 
 function downloadCard(card, btn){
+  /* html2canvas is loaded async (so it can never block the page); if someone taps
+     Download before it has arrived, fail politely instead of throwing. */
+  if(typeof html2canvas === 'undefined'){ showToast(window.ZF_T('downloadFailed')); return; }
   if(btn) btn.classList.add('loading');
 
   const stage = document.createElement('div');
