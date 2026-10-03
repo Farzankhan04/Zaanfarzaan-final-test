@@ -112,11 +112,23 @@ function showToast(msg){
   toast._timer = setTimeout(function(){ toast.classList.remove('show'); }, 2200);
 }
 
+/* SHARE LINKS - by default a shared ghazal/nazm points at that poem's own page
+   (ghazal-N.html / nazm-N.html): WhatsApp/Instagram previews then show the poem itself,
+   and the link counts for that page in Google. Set ZF_SHARE_STANDALONE to false to go
+   back to the old behaviour (a #hash link that opens the poem inside the list page). */
+window.ZF_SHARE_STANDALONE = true;
+window.zfStandaloneUrl = function(id){
+  if(window.ZF_SHARE_STANDALONE && /^(ghazal|nazm)-\d+$/.test(id)){
+    return window.location.origin + '/' + id + '.html';
+  }
+  return null;
+};
+
 /* SHARE */
 function shareCard(card){
   const kindEl = card.querySelector('.kind');
   const kindText = kindEl ? kindEl.textContent.trim() : window.ZF_T('defaultKind');
-  const url = window.location.origin + window.location.pathname + '#' + card.id;
+  const url = window.zfStandaloneUrl(card.id) || (window.location.origin + window.location.pathname + '#' + card.id);
   const shareData = { title: window.ZF_T('brandName') + ' — ' + kindText, text: window.ZF_T('shareTextPrefix') + kindText, url: url };
   if(navigator.share){
     navigator.share(shareData).catch(function(){});
@@ -347,9 +359,9 @@ function attachCardActions(root){
    the home page's badge that DISPLAYS the count lives in home-features.js
    and reads the same 'zf-read-poems' key. Nothing is sent anywhere. */
 (function(){
-  var m = window.location.pathname.match(/\/(ghazals|nazms)\/(ghazal|nazm)-(\d+)\.html$/);
+  var m = window.location.pathname.match(/\/(?:(?:ghazals|nazms)\/)?(ghazal|nazm)-(\d+)\.html$/);
   if(!m) return;
-  var id = m[2] + '-' + m[3];
+  var id = m[1] + '-' + m[2];
   try{
     var read = JSON.parse(localStorage.getItem('zf-read-poems') || '[]');
     if(read.indexOf(id) === -1){

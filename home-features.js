@@ -170,6 +170,7 @@
     var url;
     try{ url = new URL(currentEntry.source + '#' + currentEntry.item.id, window.location.href).href; }
     catch(e){ url = window.location.href; }
+    if(window.zfStandaloneUrl){ var own = window.zfStandaloneUrl(currentEntry.item.id); if(own) url = own; }
     var titleText = sourceLabel ? sourceLabel.textContent.trim() : '';
     var brandName = (typeof window.ZF_T === 'function') ? window.ZF_T('brandName') : 'Zaan Farzaan';
     var prefix = (typeof window.ZF_T === 'function') ? window.ZF_T('shareTextPrefix') : '';
