@@ -1286,10 +1286,18 @@ html.zf-splash-off #zf-splash{display:none !important;}
 
 /* ---- About page: name under the photo + blue badge ---- */
 .about-page .about-photo{margin-bottom:1.1rem;}
-.about-photo-name{
-  display:flex; align-items:center; justify-content:center; gap:.38em;
+.about-page .about-photo-name{
+  display:block; white-space:nowrap;
   margin:0 auto 2.2rem; font-size:clamp(1.45rem,4.4vw,1.85rem); font-weight:600;
   line-height:1.5; color:var(--paper); letter-spacing:.01em; text-align:center;
+  /* The name is always shown in English (Latin) letters with the badge to its right,
+     on the Hindi, English and Urdu pages alike - so it must not pick up the Devanagari /
+     Nastaliq heading fonts or the Urdu page's right-to-left direction. */
+  font-family:'Cormorant Garamond','Lora',serif; direction:ltr;
 }
-.zf-verified{display:inline-flex; flex:0 0 auto; width:.8em; height:.8em; margin-top:.06em;}
+/* invisible spacer (= badge + gap) on the left: keeps the NAME itself exactly centred under the photo,
+   with the badge sitting snugly to its right */
+.about-page .about-photo-name::before{content:""; display:inline-block; width:calc(.72em + .17em);}
+/* badge is anchored to the text baseline, so it stays optically centred at every font size */
+.zf-verified{display:inline-block; width:.72em; height:.72em; margin-left:.17em; vertical-align:-.07em;}
 .zf-verified-icon{display:block; width:100%; height:100%;}
