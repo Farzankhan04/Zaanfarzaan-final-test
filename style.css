@@ -1283,3 +1283,13 @@ body.lang-ur .signature-flourish{transform:scaleX(-1);}
 }
 /* Splash is shown once per browser session on the home page only. */
 html.zf-splash-off #zf-splash{display:none !important;}
+
+/* ---- About page: name under the photo + blue badge ---- */
+.about-page .about-photo{margin-bottom:1.1rem;}
+.about-photo-name{
+  display:flex; align-items:center; justify-content:center; gap:.38em;
+  margin:0 auto 2.2rem; font-size:clamp(1.45rem,4.4vw,1.85rem); font-weight:600;
+  line-height:1.5; color:var(--paper); letter-spacing:.01em; text-align:center;
+}
+.zf-verified{display:inline-flex; flex:0 0 auto; width:.8em; height:.8em; margin-top:.06em;}
+.zf-verified-icon{display:block; width:100%; height:100%;}
