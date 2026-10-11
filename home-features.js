@@ -66,9 +66,9 @@
     function apply(){
       linesEl.innerHTML = verseHtml;
       sourceLabel.textContent = firstLine;
-      sourceLink.href = entry.source;
-      sourceLink.setAttribute('data-en-href', entry.sourceEn);
-      sourceLink.setAttribute('data-ur-href', entry.sourceUr);
+      sourceLink.href = entry.source + '#' + item.id;
+      sourceLink.setAttribute('data-en-href', entry.sourceEn + '#' + item.id);
+      sourceLink.setAttribute('data-ur-href', entry.sourceUr + '#' + item.id);
       placeholder.hidden = true;
       content.hidden = false;
       content.classList.remove('sher-fade-out');
@@ -198,6 +198,7 @@
       if(typeof showToast === 'function' && typeof window.ZF_T === 'function') showToast(window.ZF_T('copiedToClipboard'));
       if(btn){ btn.classList.add('copied'); setTimeout(function(){ btn.classList.remove('copied'); }, 1600); }
     }
+    if(typeof window.zfCopyText === 'function'){ window.zfCopyText(text, done); return; }
     if(navigator.clipboard){
       navigator.clipboard.writeText(text).then(done).catch(function(){ window.prompt((typeof window.ZF_T === 'function') ? window.ZF_T('copyPrompt') : 'Copy:', text); });
     }else{

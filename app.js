@@ -152,24 +152,57 @@ const copyIconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" 
 function cardPlainText(card){
   const verses = card.querySelectorAll('.verse');
   const lines = [];
+  /* A nazm's verses are plain '.verse.nazm-line' blocks (one line each, no '.line' spans),
+     and the nazm title sits in an <h3>. A ghazal's verses are couplets made of '.line' spans. */
+  const isNazm = card.querySelector('.nazm-line') !== null;
+  const titleEl = card.querySelector('h3');
+  if(isNazm && titleEl){ lines.push(titleEl.textContent.trim()); lines.push(''); }
   verses.forEach(function(v, i){
-    if(i > 0) lines.push('');
-    v.querySelectorAll('.line').forEach(function(l){ lines.push(l.textContent.trim()); });
+    const spans = v.querySelectorAll('.line');
+    if(spans.length){
+      if(i > 0) lines.push('');
+      spans.forEach(function(l){ lines.push(l.textContent.trim()); });
+    } else {
+      lines.push(v.textContent.trim());
+    }
   });
   const brandName = window.ZF_T('brandName');
   return lines.join('\n') + '\n\n— ' + brandName + '\nzaanfarzaan.site';
 }
+/* Clipboard helper: modern Clipboard API first; if the browser refuses it (some in-app
+   browsers / WebViews do) fall back to the old select-and-copy trick, and only then to a
+   prompt box. Used by the poem 'Copy text' button and the homepage sher 'Copy text' button. */
+window.zfCopyText = function(text, done){
+  function legacyCopy(){
+    try{
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;';
+      document.body.appendChild(ta);
+      ta.focus(); ta.select(); ta.setSelectionRange(0, text.length);
+      const okCopy = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return okCopy;
+    }catch(e){ return false; }
+  }
+  function fallback(){
+    if(legacyCopy()) done();
+    else window.prompt(window.ZF_T('copyPrompt'), text);
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(fallback);
+  } else {
+    fallback();
+  }
+};
 function copyCardText(card, btn){
   const text = cardPlainText(card);
   function done(){
     showToast(window.ZF_T('copiedToClipboard'));
     if(btn){ btn.classList.add('copied'); setTimeout(function(){ btn.classList.remove('copied'); }, 1600); }
   }
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(text).then(done).catch(function(){ window.prompt(window.ZF_T('copyPrompt'), text); });
-  } else {
-    window.prompt(window.ZF_T('copyPrompt'), text);
-  }
+  window.zfCopyText(text, done);
 }
 
 /* FAVORITES — a private "पसंद" list, stored only on this device. Shared
