@@ -119,7 +119,7 @@ body.lang-ur .brand{line-height:1.6;}
 body.lang-ur .brand span{line-height:1.6; margin-top:6px;}
 .brand-group{display:flex; align-items:center; gap:0.7rem; min-width:0;}
 .brand-logo-link{display:block; flex:none; line-height:0;}
-.brand-logo{display:block; height:44px; width:44px; object-fit:contain;}
+.brand-logo{display:block; height:38px; width:55px; object-fit:contain;}
 .nav-right{display:flex; align-items:center; gap:1.1rem; flex:none;}
 .navlinks{display:flex; gap:1.1rem; font-size:0.94rem;}
 .navlinks a{text-decoration:none; color:var(--text-muted); transition:color .25s; position:relative; padding-bottom:4px;}
@@ -180,7 +180,7 @@ body.lang-ur .brand span{line-height:1.6; margin-top:6px;}
   .brand{font-size:1.16rem;}
   .brand span{font-size:0.62rem; letter-spacing:0.13em;}
   .brand-group{gap:0.5rem;}
-  .brand-logo{height:38px; width:38px;}
+  .brand-logo{height:33px; width:48px;}
   .nav-right{gap:0.5rem;}
   .lang-toggle .lang-opt{padding:0.36rem 0.55rem; font-size:0.64rem; min-width:25px;}
   .lang-toggle .lang-opt[data-lang-option="ur"]{font-size:0.82rem; padding-top:0.26rem;}
@@ -192,7 +192,7 @@ body.lang-ur .brand span{line-height:1.6; margin-top:6px;}
   nav{padding:14px 3.5vw; gap:0.4rem;}
   .brand{font-size:1.02rem;}
   .brand span{font-size:0.56rem; letter-spacing:0.09em;}
-  .brand-logo{height:32px; width:32px;}
+  .brand-logo{height:28px; width:41px;}
   .brand-group{gap:0.4rem;}
   .nav-right{gap:0.4rem;}
   .lang-toggle .lang-opt{padding:0.32rem 0.46rem; font-size:0.59rem; min-width:22px;}
