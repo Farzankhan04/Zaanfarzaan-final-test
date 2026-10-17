@@ -1,3 +1,8 @@
+/* NEWSLETTER SWITCH — put your Buttondown username between the quotes (the last part of
+   buttondown.com/<username>) and upload this file. Until it is filled in, no newsletter box
+   is shown anywhere, so nobody ever sees a form that does not work. */
+window.ZF_NEWSLETTER_USERNAME = '';
+
 /* SPLASH CLEANUP — the opening "Zaan Farzaan" splash (see #zf-splash in
    style.css and the top of <body> on every page) shows and hides itself
    on a pure CSS animation, so the page works even if this script is
@@ -516,4 +521,82 @@ function attachCardActions(root){
     lastX = e.clientX; lastY = e.clientY;
     spawnDot(e.clientX, e.clientY, 6 + Math.random()*7);
   });
+})();
+
+
+/* NEWSLETTER — "new ghazal/nazm in your inbox" box. Uses Buttondown's plain HTML form endpoint
+   (no tracking script, no API key). Shown on: home, about, ghazals, nazms, ebook and every
+   ghazal-N / nazm-N page. It needs window.ZF_NEWSLETTER_USERNAME (top of this file); with it
+   empty nothing is added. Text follows the site language via the same data-en/data-ur
+   mechanism as the rest of the site (i18n.js). */
+(function(){
+  var USER = String(window.ZF_NEWSLETTER_USERNAME || '').trim();
+  if(!/^[A-Za-z0-9._-]+$/.test(USER)) return;
+  var page = document.body && document.body.getAttribute('data-page');
+  if(['home','about','ghazals','nazms','ebook'].indexOf(page) === -1) return;
+  var main = document.querySelector('main');
+  if(!main || document.getElementById('zf-newsletter')) return;
+
+  var T = {
+    tag:   {hi:"Newsletter", en:"Newsletter", ur:"Newsletter"},
+    h2:    {hi:"नई ग़ज़ल-नज़्म सीधे इनबॉक्स में", en:"New Ghazals & Nazms, in Your Inbox", ur:"نئی غزلیں اور نظمیں، سیدھے ان باکس میں"},
+    p:     {hi:"जब भी कोई नई ग़ज़ल या नज़्म आए, सबसे पहले ईमेल पर पाएँ। कोई स्पैम नहीं।", en:"Get every new ghazal or nazm by email as soon as it is published. No spam.", ur:"جب بھی کوئی نئی غزل یا نظم آئے، سب سے پہلے ای میل پر پائیں۔ کوئی اسپیم نہیں۔"},
+    ph:    {hi:"आपका ईमेल", en:"Your email", ur:"آپ کا ای میل"},
+    btn:   {hi:"सब्सक्राइब करें", en:"Subscribe", ur:"سبسکرائب کریں"},
+    note:  {hi:"आपका ईमेल सिर्फ़ नई रचनाओं की सूचना भेजने के लिए इस्तेमाल होगा। जब चाहें अनसब्सक्राइब कर सकते हैं।", en:"Your email is used only to tell you about new work. Unsubscribe any time.", ur:"آپ کا ای میل صرف نئی تخلیقات کی اطلاع بھیجنے کے لیے استعمال ہوگا۔ جب چاہیں ان سبسکرائب کر سکتے ہیں۔"},
+    thanks:{hi:"शुक्रिया! पुष्टि के लिए अपने ईमेल में भेजे गए लिंक पर क्लिक कर दें।", en:"Thank you! Please click the link we just emailed you to confirm.", ur:"شکریہ! تصدیق کے لیے اپنے ای میل میں بھیجے گئے لنک پر کلک کر دیں۔"}
+  };
+  function d(k){ return 'data-en="'+T[k].en+'" data-ur="'+T[k].ur+'"'; }
+
+  var css = document.createElement('style');
+  css.textContent =
+    '.zf-newsletter{max-width:640px;margin:4vh auto 6vh;padding:0 6vw;}' +
+    '.zf-nl-box{border:1px solid rgba(220,220,214,.28);border-radius:10px;padding:2.2rem 1.8rem;text-align:center;' +
+      'background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,.015));box-shadow:0 14px 34px rgba(0,0,0,.35);}' +
+    '.zf-nl-tag{color:var(--rose);text-transform:uppercase;letter-spacing:.3em;font-size:.72rem;font-family:"Lora",serif;font-weight:600;margin-bottom:.5rem;}' +
+    '.zf-nl-box h2{color:var(--gold-soft);font-size:clamp(1.35rem,3.6vw,1.75rem);font-weight:700;line-height:1.45;margin-bottom:.6rem;' +
+      'font-family:"Cormorant Garamond","Noto Serif Devanagari",serif;}' +
+    'body.lang-ur .zf-nl-box h2{font-family:"Noto Nastaliq Urdu",serif;line-height:1.9;}' +
+    '.zf-nl-box p{color:var(--text-muted);font-size:.98rem;line-height:1.7;margin:0 auto 1.2rem;max-width:480px;}' +
+    '.zf-nl-form{display:flex;gap:.6rem;max-width:480px;margin:0 auto;}' +
+    '.zf-nl-form input[type=email]{flex:1;min-width:0;padding:.75rem .95rem;border-radius:8px;border:1px solid rgba(220,220,214,.35);' +
+      'background:var(--ink-deep);color:var(--text-light);font-size:1rem;font-family:inherit;}' +
+    '.zf-nl-form input[type=email]:focus{outline:2px solid var(--gold);outline-offset:1px;}' +
+    '.zf-nl-form button{padding:.75rem 1.3rem;border-radius:8px;border:0;cursor:pointer;background:var(--gold-soft);color:var(--ink);' +
+      'font-weight:700;font-size:.95rem;font-family:inherit;white-space:nowrap;}' +
+    '.zf-nl-form button:hover{background:#fff;}' +
+    '.zf-nl-box .zf-nl-note{font-size:.8rem;color:var(--text-muted);margin:.9rem auto 0;opacity:.85;}' +
+    '.zf-nl-thanks{color:var(--gold-soft);font-size:1.05rem;line-height:1.7;margin:.4rem auto 0;}' +
+    '@media (max-width:520px){.zf-nl-form{flex-direction:column;}.zf-nl-box{padding:1.8rem 1.2rem;}}';
+  document.head.appendChild(css);
+
+  var sec = document.createElement('section');
+  sec.id = 'zf-newsletter';
+  sec.className = 'zf-newsletter';
+  sec.innerHTML =
+    '<div class="zf-nl-box">' +
+      '<div class="zf-nl-tag">Newsletter</div>' +
+      '<h2 '+d('h2')+'>'+T.h2.hi+'</h2>' +
+      '<p '+d('p')+'>'+T.p.hi+'</p>' +
+      '<form class="zf-nl-form" action="https://buttondown.com/api/emails/embed-subscribe/'+USER+'" method="post" target="_blank">' +
+        '<input type="email" name="email" required autocomplete="email" placeholder="'+T.ph.hi+'" ' +
+          'data-en-placeholder="'+T.ph.en+'" data-ur-placeholder="'+T.ph.ur+'" ' +
+          'aria-label="'+T.ph.hi+'" data-en-aria-label="'+T.ph.en+'" data-ur-aria-label="'+T.ph.ur+'">' +
+        '<input type="hidden" name="embed" value="1">' +
+        '<button type="submit" '+d('btn')+'>'+T.btn.hi+'</button>' +
+      '</form>' +
+      '<div class="zf-nl-thanks" hidden '+d('thanks')+'>'+T.thanks.hi+'</div>' +
+      '<p class="zf-nl-note" '+d('note')+'>'+T.note.hi+'</p>' +
+    '</div>';
+
+  var anchor = main.querySelector('.meet-poet');   // home: sit just above "Meet the Poet"
+  if(anchor) main.insertBefore(sec, anchor); else main.appendChild(sec);
+
+  var form = sec.querySelector('.zf-nl-form'), thanks = sec.querySelector('.zf-nl-thanks');
+  form.addEventListener('submit', function(){
+    // the browser still posts the form to Buttondown (new tab); we just swap in the thank-you
+    setTimeout(function(){ form.hidden = true; thanks.hidden = false; }, 400);
+  });
+
+  if(typeof zfApplyStaticTranslations === 'function') zfApplyStaticTranslations(window.ZF_LANG);
 })();

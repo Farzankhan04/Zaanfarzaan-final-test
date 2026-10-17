@@ -57,6 +57,8 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
 .audio-soon-icon svg{width:30px; height:30px;}
 .audio-soon-badge{font-family:'Lora'; font-weight:600; font-size:.68rem; letter-spacing:.25em; text-transform:uppercase;
   color:var(--rose); border:1px solid rgba(156,156,149,.55); border-radius:999px; padding:.3rem 1rem;}
+/* letter-spacing breaks Devanagari/Urdu joins, so only English text is spaced out */
+body:not(.lang-en) .audio-soon-badge{letter-spacing:.03em; text-transform:none;}
 .audio-soon-box h2{font-size:clamp(1.5rem,4vw,1.9rem); font-weight:700; color:var(--text-dark);
   font-family:'Cormorant Garamond','Noto Serif Devanagari',serif; line-height:1.4;}
 body.lang-ur .audio-soon-box h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1.9;}
@@ -65,7 +67,7 @@ body.lang-ur .audio-soon-box h2{font-family:'Noto Nastaliq Urdu',serif; line-hei
 .nav-card.audio-card{cursor:default;}
 .nav-card.audio-card:hover{transform:translateY(0); box-shadow:0 4px 10px rgba(0,0,0,0.18),0 22px 42px rgba(0,0,0,0.32),inset 0 1px 0 rgba(255,255,255,0.6);}
 .nav-card.audio-card:hover .nav-card-arrow{transform:none;}
-.audio-card .nav-card-arrow{letter-spacing:.12em;}
+body.lang-en .audio-card .nav-card-arrow{letter-spacing:.12em;}
 .audio-read-note{text-align:center; padding:0 6vw 12vh; color:var(--text-muted); font-size:.98rem;}
 .audio-read-note a{color:var(--gold-soft); text-decoration:none; border-bottom:1px solid rgba(220,220,214,.4); margin:0 .5rem; padding-bottom:1px;}
 .audio-read-note a:hover{border-bottom-color:var(--gold-soft);}
