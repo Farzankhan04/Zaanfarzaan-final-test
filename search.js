@@ -29,7 +29,8 @@
     { title:{hi:'अन्य प्रोफ़ाइल', en:'Other Profiles', ur:'دیگر پروفائل'}, url:{hi:'profiles.html', en:'profiles-en.html', ur:'profiles-ur.html'}, kw:'profiles rekhta poetistic' },
     { title:{hi:'नज़राना पेश करें', en:'Nazrana', ur:'نذرانہ'}, url:{hi:'support.html', en:'support-en.html', ur:'support-ur.html'}, kw:'nazrana donate support upi payment daan' },
     { title:{hi:'सभी ग़ज़लें', en:'All Ghazals', ur:'تمام غزلیں'}, url:{hi:'ghazals.html', en:'ghazals-en.html', ur:'ghazals-ur.html'}, kw:'ghazals ghazal list' },
-    { title:{hi:'सभी नज़्में', en:'All Nazms', ur:'تمام نظمیں'}, url:{hi:'nazms.html', en:'nazms-en.html', ur:'nazms-ur.html'}, kw:'nazms nazm list' }
+    { title:{hi:'सभी नज़्में', en:'All Nazms', ur:'تمام نظمیں'}, url:{hi:'nazms.html', en:'nazms-en.html', ur:'nazms-ur.html'}, kw:'nazms nazm list' },
+    { title:{hi:'ऑडियो', en:'Audio', ur:'آڈیو'}, url:{hi:'audios.html', en:'audios-en.html', ur:'audios-ur.html'}, kw:'audio audios sound listen recording sunen suno awaaz awaz' }
   ];
   var PAGE_KIND = { hi:'पेज', en:'Page', ur:'صفحہ' };
 

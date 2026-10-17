@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<style>/* Critical splash CSS, inlined so it paints instantly (no flash of
+Hindi text while style.css/fonts are still loading on a slow connection).
+Mirrors the #zf-splash rules in style.css -- keep both in sync. */
+#zf-splash{position:fixed;inset:0;z-index:9999;visibility:visible;display:flex;align-items:center;justify-content:center;background:#151515;animation:zfSplashOut .5s ease forwards 2s}
+#zf-splash span{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.5rem,5vw,2.3rem);color:#f2f1ec;opacity:0;animation:zfSplashTextIn .5s ease forwards .08s}
+@keyframes zfSplashTextIn{0%{opacity:0;letter-spacing:.3em}100%{opacity:1;letter-spacing:.05em}}
+@keyframes zfSplashOut{0%{opacity:1;visibility:visible}99%{opacity:0;visibility:visible}100%{opacity:0;visibility:hidden;pointer-events:none}}
+html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
+@media (prefers-reduced-motion:reduce){#zf-splash{animation-duration:.01s;animation-delay:0s}#zf-splash span{animation:none;opacity:1;letter-spacing:.05em}}</style>
+<script>(function(){try{var l=localStorage.getItem('zf-lang');if(l==='en'){document.documentElement.classList.add('zf-en-init');}else if(l==='ur'){document.documentElement.classList.add('zf-ur-init');}}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-en="Audio — Zaan Farzaan | Listen to Ghazals &amp; Nazms" data-ur="آڈیو — زان فرزان | غزلیں اور نظمیں سنیے">ऑडियो — ज़ान फ़रज़ान (Zaan Farzaan) | ग़ज़लें और नज़्में सुनिए</title>
+<meta name="description" content="ज़ान फ़रज़ान की सभी ग़ज़लों और नज़्मों के ऑडियो — जल्द आ रहे हैं।">
+<link rel="canonical" href="https://zaanfarzaan.site/audios.html">
+<link rel="alternate" hreflang="hi" href="https://zaanfarzaan.site/audios.html">
+<link rel="alternate" hreflang="en" href="https://zaanfarzaan.site/audios-en.html">
+<link rel="alternate" hreflang="ur" href="https://zaanfarzaan.site/audios-ur.html">
+<link rel="alternate" hreflang="x-default" href="https://zaanfarzaan.site/audios.html">
+
+<meta property="og:title" content="ऑडियो — ज़ान फ़रज़ान (Zaan Farzaan) | ग़ज़लें और नज़्में सुनिए">
+<meta property="og:description" content="ज़ान फ़रज़ान की सभी ग़ज़लों और नज़्मों के ऑडियो — जल्द आ रहे हैं।">
+<meta property="og:image" content="https://zaanfarzaan.site/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://zaanfarzaan.site/audios.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Zaan Farzaan">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href="playfair-display-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css?v=12">
+<link rel="icon" type="image/x-icon" href="favicon.ico?v=2">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=2">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png?v=2">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
+<script>setTimeout(function(){document.documentElement.classList.remove('zf-en-init','zf-ur-init');},4000);</script>
+<style>
+/* AUDIO PAGE — kept inline on purpose so style.css (and its ?v=12 cache-bust on every page) does not need to change. */
+.audio-soon{max-width:760px; margin:2vh auto 0; padding:0 6vw; text-align:center;}
+.audio-soon-box{
+  background:linear-gradient(155deg,#fbfbf9 0%,#f5f5f2 55%,#e9e9e5 100%);
+  color:var(--text-dark); border-radius:10px; padding:3rem 2rem 2.6rem; position:relative; overflow:hidden;
+  border:1px solid rgba(220,220,214,0.35);
+  box-shadow:0 4px 10px rgba(0,0,0,0.18),0 22px 42px rgba(0,0,0,0.32),inset 0 1px 0 rgba(255,255,255,0.6);
+  display:flex; flex-direction:column; align-items:center; gap:.9rem;
+}
+.audio-soon-box::before{content:""; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg,transparent,var(--gold) 25%,var(--gold-soft) 50%,var(--gold) 75%,transparent); opacity:.85;}
+.audio-soon-icon{width:64px; height:64px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  background:var(--ink); color:var(--gold-soft); box-shadow:0 6px 16px rgba(0,0,0,.28);}
+.audio-soon-icon svg{width:30px; height:30px;}
+.audio-soon-badge{font-family:'Lora'; font-weight:600; font-size:.68rem; letter-spacing:.25em; text-transform:uppercase;
+  color:var(--rose); border:1px solid rgba(156,156,149,.55); border-radius:999px; padding:.3rem 1rem;}
+.audio-soon-box h2{font-size:clamp(1.5rem,4vw,1.9rem); font-weight:700; color:var(--text-dark);
+  font-family:'Cormorant Garamond','Noto Serif Devanagari',serif; line-height:1.4;}
+body.lang-ur .audio-soon-box h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1.9;}
+.audio-soon-box p{color:#5c5c58; font-size:1rem; line-height:1.75; max-width:520px;}
+.audio-cards{max-width:760px; padding-top:2.4rem; padding-bottom:3vh;}
+.nav-card.audio-card{cursor:default;}
+.nav-card.audio-card:hover{transform:translateY(0); box-shadow:0 4px 10px rgba(0,0,0,0.18),0 22px 42px rgba(0,0,0,0.32),inset 0 1px 0 rgba(255,255,255,0.6);}
+.nav-card.audio-card:hover .nav-card-arrow{transform:none;}
+.audio-card .nav-card-arrow{letter-spacing:.12em;}
+.audio-read-note{text-align:center; padding:0 6vw 12vh; color:var(--text-muted); font-size:.98rem;}
+.audio-read-note a{color:var(--gold-soft); text-decoration:none; border-bottom:1px solid rgba(220,220,214,.4); margin:0 .5rem; padding-bottom:1px;}
+.audio-read-note a:hover{border-bottom-color:var(--gold-soft);}
+</style>
+</head>
+<body data-page="audios">
+
+<nav>
+  <div class="brand-group">
+    <a href="index.html" data-en-href="index-en.html" data-ur-href="index-ur.html" class="brand-logo-link"><img src="logo.png?v=2" alt="Zaan Farzaan" class="brand-logo" width="55" height="38"></a>
+    <a href="index.html" data-en-href="index-en.html" data-ur-href="index-ur.html" class="brand" lang="en">Zaan Farzaan</a>
+  </div>
+  <div class="nav-right">
+    <div class="navlinks" id="nav-links">
+      <a href="index.html" data-en-href="index-en.html" data-ur-href="index-ur.html" data-page="home" data-en="Home" data-ur="ہوم">होम</a>
+      <a href="about.html" data-en-href="about-en.html" data-ur-href="about-ur.html" data-page="about" data-en="About" data-ur="تعارف">परिचय</a>
+      <a href="ghazals.html" data-en-href="ghazals-en.html" data-ur-href="ghazals-ur.html" data-page="ghazals" data-en="Ghazals" data-ur="غزلیں">ग़ज़लें</a>
+      <a href="nazms.html" data-en-href="nazms-en.html" data-ur-href="nazms-ur.html" data-page="nazms" data-en="Nazms" data-ur="نظمیں">नज़्में</a>
+      <a href="ebook.html" data-en-href="ebook-en.html" data-ur-href="ebook-ur.html" data-page="ebook" data-en="Book" data-ur="کتاب">किताब</a>
+      <a href="profiles.html" data-en-href="profiles-en.html" data-ur-href="profiles-ur.html" data-page="profiles" data-en="Profiles" data-ur="پروفائل">प्रोफ़ाइल</a>
+      <a href="feedback.html" data-en-href="feedback-en.html" data-ur-href="feedback-ur.html" data-page="feedback" data-en="Feedback" data-ur="فیڈبیک">फ़ीडबैक</a>
+      <a href="contact.html" data-en-href="contact-en.html" data-ur-href="contact-ur.html" data-page="contact" data-en="Contact" data-ur="رابطہ">संपर्क</a>
+      <a href="support.html" data-en-href="support-en.html" data-ur-href="support-ur.html" data-page="support" data-en="Nazrana" data-ur="نذرانہ">नज़राना</a>
+    </div>
+    <button type="button" class="lang-toggle" id="lang-toggle" role="group" aria-label="Switch to English / अंग्रेज़ी में बदलें">
+      <span class="lang-thumb"></span>
+      <span class="lang-opt active" data-lang-option="hi" aria-selected="true">हिं</span>
+      <span class="lang-opt" data-lang-option="en" aria-selected="false">EN</span>
+      <span class="lang-opt" data-lang-option="ur" aria-selected="false">اردو</span>
+    </button>
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="मेन्यू खोलें" data-en-aria-label="Open menu" data-ur-aria-label="مینو کھولیں">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<main>
+<div class="page-header">
+  <div class="tag">Audio</div>
+  <h1 data-en="Audio" data-ur="آڈیو">ऑडियो</h1>
+  <p data-en="Every ghazal and nazm, to listen to in one place." data-ur="تمام غزلیں اور نظمیں، سننے کے لیے ایک ہی جگہ۔">सभी ग़ज़लें और नज़्में, सुनने के लिए एक ही जगह।</p>
+</div>
+
+<section class="audio-soon reveal">
+  <div class="audio-soon-box">
+    <div class="audio-soon-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></div>
+    <div class="audio-soon-badge" data-en="Coming soon" data-ur="جلد آ رہا ہے">जल्द आ रहा है</div>
+    <h2 data-en="Audios are on their way" data-ur="آڈیو جلد آ رہے ہیں">ऑडियो जल्द आ रहे हैं</h2>
+    <p data-en="All the ghazals and nazms are being recorded. As soon as each recording is ready, it will be added here." data-ur="تمام غزلوں اور نظموں کی ریکارڈنگ جاری ہے۔ ہر تحریر کا آڈیو تیار ہوتے ہی یہاں شامل کر دیا جائے گا۔">सभी ग़ज़लों और नज़्मों की रिकॉर्डिंग चल रही है। हर रचना का ऑडियो तैयार होते ही यहाँ जोड़ दिया जाएगा।</p>
+  </div>
+</section>
+
+<div class="nav-cards audio-cards">
+  <div class="nav-card audio-card reveal">
+    <div class="nav-card-tag hide-on-en">Ghazals</div>
+    <h3 data-en="Ghazals" data-ur="غزلیں">ग़ज़लें</h3>
+    <p data-en="Audio for all 40 ghazals" data-ur="تمام 40 غزلوں کے آڈیو">सभी 40 ग़ज़लों के ऑडियो</p>
+    <div class="nav-card-arrow" data-en="Coming soon" data-ur="جلد آ رہا ہے">जल्द आ रहा है</div>
+  </div>
+  <div class="nav-card audio-card reveal">
+    <div class="nav-card-tag hide-on-en">Nazms</div>
+    <h3 data-en="Nazms" data-ur="نظمیں">नज़्में</h3>
+    <p data-en="Audio for all 10 nazms" data-ur="تمام 10 نظموں کے آڈیو">सभी 10 नज़्मों के ऑडियो</p>
+    <div class="nav-card-arrow" data-en="Coming soon" data-ur="جلد آ رہا ہے">जल्द आ रहा है</div>
+  </div>
+</div>
+
+<p class="audio-read-note"><span data-en="Meanwhile, read:" data-ur="تب تک پڑھیں:">तब तक पढ़ें:</span><a href="ghazals.html" data-en-href="ghazals-en.html" data-ur-href="ghazals-ur.html" data-en="Ghazals" data-ur="غزلیں">ग़ज़लें</a><a href="nazms.html" data-en-href="nazms-en.html" data-ur-href="nazms-ur.html" data-en="Nazms" data-ur="نظمیں">नज़्में</a></p>
+</main>
+
+<footer class="site-footer">
+  <div class="fineprint" data-en="© 2026 Zaan Farzaan · Collection" data-ur="© 2026 زان فرزان · مجموعہ">© 2026 ज़ान फ़रज़ान · संग्रह</div>
+  <div class="foot-links">
+    <a href="mailto:zaanfarzaan1@gmail.com">Email</a>
+    <a href="https://instagram.com/zaanfarzaan" target="_blank" rel="noopener">Instagram</a>
+    <a href="favorites.html" data-en-href="favorites-en.html" data-ur-href="favorites-ur.html">Favourites</a>
+    <a href="terms.html">Terms</a>
+    <a href="refund-policy.html">Refund Policy</a>
+  </div>
+</footer>
+
+<script src="i18n.js?v=5"></script>
+<script src="app.js?v=4"></script>
+</body>
+</html>

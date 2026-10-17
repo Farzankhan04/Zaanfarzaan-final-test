@@ -55,7 +55,7 @@ var ZF_CANONICAL_PATH = zfCanonicalBase(window.location.pathname);
    files. Individual ghazal/nazm pages and single-file utility pages
    (404, terms, refund-policy) don't have one, so their URL is left
    exactly as-is no matter what language is toggled. */
-var ZF_LANG_URL_PAGES = ['index','about','contact','ebook','favorites','feedback','ghazals','nazms','profiles','support'];
+var ZF_LANG_URL_PAGES = ['index','about','contact','ebook','favorites','feedback','ghazals','nazms','profiles','support','audios'];
 function zfLangUrlFor(lang){
   var m = /\/([a-z0-9-]+)\.html$/.exec(ZF_CANONICAL_PATH);
   var page = m ? m[1] : '';
