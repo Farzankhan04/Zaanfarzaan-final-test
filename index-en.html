@@ -74,6 +74,19 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}html.zf-splash-off #
 </script>
 <script>try{var d=document.documentElement;if(sessionStorage.getItem('zf-splash')){d.classList.add('zf-splash-off');}else{sessionStorage.setItem('zf-splash','1');}}catch(e){}</script>
 <script>setTimeout(function(){document.documentElement.classList.remove('zf-en-init','zf-ur-init');},4000);</script>
+<style>
+/* HOME: "Meet the poet" — photo section at the bottom of the home page (kept inline so style.css does not change). */
+.meet-poet{max-width:560px; margin:0 auto; padding:0 6vw 12vh; text-align:center; display:flex; flex-direction:column; align-items:center; gap:.5rem;}
+.meet-poet-photo{width:128px; height:128px; border-radius:50%; object-fit:cover; object-position:50% 22%; display:block;
+  border:2px solid rgba(220,220,214,.45); box-shadow:0 8px 22px rgba(0,0,0,.45); background:#e9e9e4; margin-bottom:.6rem;}
+.meet-poet .tag{color:var(--rose); text-transform:uppercase; letter-spacing:.3em; font-size:.72rem; font-family:'Lora'; font-weight:600;}
+.meet-poet h2{font-size:clamp(1.5rem,4vw,1.9rem); color:var(--gold-soft); font-weight:700; font-family:'Cormorant Garamond','Noto Serif Devanagari',serif; line-height:1.4;}
+body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1.9;}
+.meet-poet-name{color:var(--text-light); font-size:1.1rem; font-weight:600; letter-spacing:.04em;}
+.meet-poet-line{color:var(--text-muted); font-size:1rem; line-height:1.7;}
+.meet-poet-link{margin-top:.5rem; color:var(--gold-soft); text-decoration:none; font-size:.9rem; letter-spacing:.06em; font-weight:600; border-bottom:1px solid rgba(220,220,214,.4); padding-bottom:2px;}
+.meet-poet-link:hover{border-bottom-color:var(--gold-soft);}
+</style>
 </head>
 <body data-page="home" class="lang-en">
   <div id="zf-splash" aria-hidden="true"><span>Zaan Farzaan</span></div>
@@ -266,6 +279,14 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}html.zf-splash-off #
     <div class="nav-card-arrow" data-en="Nazrana →" data-hi="नज़राना पेश करें →" data-ur="← نذرانہ">Nazrana →</div>
   </a>
 </div>
+<section class="meet-poet reveal">
+  <img class="meet-poet-photo" src="about-photo.jpg" alt="Zaan Farzaan" width="128" height="128" loading="lazy" decoding="async">
+  <div class="tag">The Poet</div>
+  <h2 data-en="Meet the Poet" data-hi="शायर से मिलिए" data-ur="شاعر سے ملیے">Meet the Poet</h2>
+  <div class="meet-poet-name" data-en="Zaan Farzaan" data-hi="ज़ान फ़रज़ान" data-ur="زان فرزان">Zaan Farzaan</div>
+  <p class="meet-poet-line" data-en="A poet who writes ghazals and nazms." data-hi="ग़ज़ल और नज़्म लिखने वाले शायर।" data-ur="غزل اور نظم لکھنے والے شاعر۔">A poet who writes ghazals and nazms.</p>
+  <a class="meet-poet-link" href="about-en.html" data-en-href="about-en.html" data-ur-href="about-ur.html" data-hi-href="about.html" data-en="Read the introduction →" data-hi="परिचय पढ़ें →" data-ur="← تعارف پڑھیں">Read the introduction →</a>
+</section>
 </main>
 
 <footer class="site-footer">
