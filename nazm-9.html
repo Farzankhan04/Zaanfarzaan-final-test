@@ -88,7 +88,7 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="preload" href="playfair-display-600.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=12">
+<link rel="stylesheet" href="style.css?v=15">
 <link rel="icon" type="image/x-icon" href="favicon.ico?v=2">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=2">
 <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png?v=2">
@@ -113,11 +113,13 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
       <a href="about.html" data-page="about">परिचय</a>
       <a href="ghazals.html" data-page="ghazals">ग़ज़लें</a>
       <a href="nazms.html" data-page="nazms">नज़्में</a>
+      <a href="audios.html" data-page="audios">ऑडियो</a>
       <a href="ebook.html" data-page="ebook">किताब</a>
       <a href="profiles.html" data-page="profiles">प्रोफ़ाइल</a>
       <a href="feedback.html" data-page="feedback">फ़ीडबैक</a>
       <a href="contact.html" data-page="contact">संपर्क</a>
       <a href="support.html" data-page="support">नज़राना</a>
+      <a href="favorites.html" data-page="favorites" class="nav-fav" title="Favourites"><svg class="nav-fav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.3l7.8-7.8 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg><span class="nav-fav-label">पसंद</span></a>
     </div>
     <button type="button" class="nav-toggle" id="nav-toggle" aria-label="मेन्यू खोलें">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -154,12 +156,11 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
 </div>
 </main>
 
-<footer class="site-footer">
-  <div class="fineprint">© 2026 ज़ान फ़रज़ान · संग्रह</div>
+<footer class="site-footer" lang="en" dir="ltr">
+  <div class="fineprint">© 2026 Zaan Farzaan. All rights reserved.</div>
   <div class="foot-links">
     <a href="mailto:zaanfarzaan1@gmail.com">Email</a>
     <a href="https://instagram.com/zaanfarzaan" target="_blank" rel="noopener">Instagram</a>
-    <a href="favorites.html">Favourites</a>
     <a href="terms.html">Terms</a>
     <a href="refund-policy.html">Refund Policy</a>
   </div>
@@ -168,7 +169,7 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
 <script async src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="ur-translit.js"></script>
 <script src="i18n.js?v=4"></script>
-<script src="app.js?v=4"></script>
+<script src="app.js?v=5"></script>
 <script>
   if (typeof attachCardActions === 'function') { attachCardActions(document); }
 </script>
