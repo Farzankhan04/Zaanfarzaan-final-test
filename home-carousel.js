@@ -88,7 +88,7 @@
     window.ZF_fitCouplets(track, '.sgc-lines', {
       grow: true,
       maxPx: function(){ return window.innerWidth <= 640 ? 18 : 24; },   // cap: short shers must not balloon
-      minPx: function(){ return window.innerWidth <= 640 ? 11 : 13; },
+      minPx: function(){ return window.innerWidth <= 640 ? 10 : 13; },
       wrapPx: function(){ return window.innerWidth <= 640 ? 14 : 17; }
     });
   }

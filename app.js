@@ -1,7 +1,7 @@
 /* NEWSLETTER SWITCH — put your Buttondown username between the quotes (the last part of
    buttondown.com/<username>) and upload this file. Until it is filled in, no newsletter box
    is shown anywhere, so nobody ever sees a form that does not work. */
-window.ZF_NEWSLETTER_USERNAME = '';
+window.ZF_NEWSLETTER_USERNAME = 'Zaanfarzaan';
 
 /* SPLASH CLEANUP — the opening "Zaan Farzaan" splash (see #zf-splash in
    style.css and the top of <body> on every page) shows and hides itself
@@ -539,11 +539,11 @@ function attachCardActions(root){
 
   var T = {
     tag:   {hi:"Newsletter", en:"Newsletter", ur:"Newsletter"},
-    h2:    {hi:"नई ग़ज़ल-नज़्म सीधे इनबॉक्स में", en:"New Ghazals & Nazms, in Your Inbox", ur:"نئی غزلیں اور نظمیں، سیدھے ان باکس میں"},
-    p:     {hi:"जब भी कोई नई ग़ज़ल या नज़्म आए, सबसे पहले ईमेल पर पाएँ। कोई स्पैम नहीं।", en:"Get every new ghazal or nazm by email as soon as it is published. No spam.", ur:"جب بھی کوئی نئی غزل یا نظم آئے، سب سے پہلے ای میل پر پائیں۔ کوئی اسپیم نہیں۔"},
+    h2:    {hi:"नई ग़ज़लें, नज़्में और ऑडियो सीधे इनबॉक्स में", en:"New Ghazals, Nazms & Audios, in Your Inbox", ur:"نئی غزلیں، نظمیں اور آڈیو، سیدھے ان باکس میں"},
+    p:     {hi:"जब भी कोई नई ग़ज़ल, नज़्म या ऑडियो आए, सबसे पहले ईमेल पर पाएँ। कोई स्पैम नहीं।", en:"Get every new ghazal, nazm or audio by email as soon as it is published. No spam.", ur:"جب بھی کوئی نئی غزل، نظم یا آڈیو آئے، سب سے پہلے ای میل پر پائیں۔ کوئی اسپیم نہیں۔"},
     ph:    {hi:"आपका ईमेल", en:"Your email", ur:"آپ کا ای میل"},
     btn:   {hi:"सब्सक्राइब करें", en:"Subscribe", ur:"سبسکرائب کریں"},
-    note:  {hi:"आपका ईमेल सिर्फ़ नई रचनाओं की सूचना भेजने के लिए इस्तेमाल होगा। जब चाहें अनसब्सक्राइब कर सकते हैं।", en:"Your email is used only to tell you about new work. Unsubscribe any time.", ur:"آپ کا ای میل صرف نئی تخلیقات کی اطلاع بھیجنے کے لیے استعمال ہوگا۔ جب چاہیں ان سبسکرائب کر سکتے ہیں۔"},
+    note:  {hi:"आपका ईमेल सिर्फ़ नई रचनाओं और ऑडियो की सूचना भेजने के लिए इस्तेमाल होगा। जब चाहें अनसब्सक्राइब कर सकते हैं।", en:"Your email is used only to tell you about new poems and audios. Unsubscribe any time.", ur:"آپ کا ای میل صرف نئی تخلیقات اور آڈیو کی اطلاع بھیجنے کے لیے استعمال ہوگا۔ جب چاہیں ان سبسکرائب کر سکتے ہیں۔"},
     thanks:{hi:"शुक्रिया! पुष्टि के लिए अपने ईमेल में भेजे गए लिंक पर क्लिक कर दें।", en:"Thank you! Please click the link we just emailed you to confirm.", ur:"شکریہ! تصدیق کے لیے اپنے ای میل میں بھیجے گئے لنک پر کلک کر دیں۔"}
   };
   function d(k){ return 'data-en="'+T[k].en+'" data-ur="'+T[k].ur+'"'; }
@@ -616,8 +616,8 @@ function attachCardActions(root){
   function fitUnit(u, o){
     var lines = Array.prototype.slice.call(u.querySelectorAll('.line'));
     if(!lines.length) return;
-    u.style.fontSize = '';                                   // back to the stylesheet size
-    lines.forEach(function(l){ l.style.whiteSpace = 'nowrap'; });
+    u.style.fontSize = ''; u.style.wordSpacing = ''; u.style.letterSpacing = '';   // back to the stylesheet look
+    lines.forEach(function(l){ l.style.whiteSpace = 'nowrap'; l.style.textWrapStyle = ''; });
     var avail = u.clientWidth;
     if(avail <= 0) return;                                   // hidden right now — fitted later
     var base = parseFloat(getComputedStyle(u).fontSize) || 16;
@@ -635,13 +635,23 @@ function attachCardActions(root){
     var w0 = widest();
     if(w0 <= 0) return;
     function val(x, dflt){ return typeof x === 'function' ? x() : (x || dflt); }
-    var minPx = val(o.minPx, 11), maxPx = val(o.maxPx, 0);
+    var minPx = val(o.minPx, 9.5), maxPx = val(o.maxPx, 0);
     var size = base * (avail * 0.985) / w0;
+    // a long misra would come out small: first tighten the gaps between words a little,
+    // which buys back ~6-8% width, then work out the size again
+    var tight = false;
+    if(size < (o.tightBelowPx || 14)){
+      u.style.wordSpacing = '-0.12em';                       // word gaps only: letters are never touched (Urdu joins, Devanagari conjuncts)
+      var w1t = widest();
+      if(w1t > 0 && w1t < w0){ tight = true; w0 = w1t; size = base * (avail * 0.985) / w0; }
+      else { u.style.wordSpacing = ''; u.style.letterSpacing = ''; }
+    }
     if(!o.grow && size > base) size = base;                  // never bigger than the stylesheet size
     if(maxPx && size > maxPx) size = maxPx;
     var wrap = false;
     if(size < minPx){                                        // cannot fit on one line at a readable size:
       wrap = true;                                           // let this one sher wrap, at a comfortable size
+      u.style.wordSpacing = ''; u.style.letterSpacing = '';
       size = val(o.wrapPx, 0) || Math.max(minPx, base * 0.85);
     }
     u.style.fontSize = size + 'px';
@@ -650,10 +660,10 @@ function attachCardActions(root){
       var w1 = widest();
       if(w1 <= avail) break;
       size = size * (avail * 0.985) / w1;
-      if(size < minPx){ wrap = true; size = val(o.wrapPx, 0) || Math.max(minPx, base * 0.85); u.style.fontSize = size + 'px'; break; }
+      if(size < minPx){ wrap = true; u.style.wordSpacing = ''; u.style.letterSpacing = ''; size = val(o.wrapPx, 0) || Math.max(minPx, base * 0.85); u.style.fontSize = size + 'px'; break; }
       u.style.fontSize = size + 'px';
     }
-    if(wrap) lines.forEach(function(l){ l.style.whiteSpace = 'normal'; });
+    if(wrap) lines.forEach(function(l){ l.style.whiteSpace = 'normal'; l.style.textWrapStyle = 'balance'; });   // rare: breaks into two even halves
   }
 
   function run(entry){
@@ -676,7 +686,13 @@ function attachCardActions(root){
   var t = null;
   window.addEventListener('resize', function(){ window.clearTimeout(t); t = window.setTimeout(refitAll, 120); });
   window.addEventListener('orientationchange', function(){ window.setTimeout(refitAll, 250); });
-  if(document.fonts && document.fonts.ready) document.fonts.ready.then(refitAll);
+  if(document.fonts){
+    if(document.fonts.ready) document.fonts.ready.then(refitAll);
+    // fonts that start downloading later (Hindi / Urdu / Roman subsets) swap in after the first fit:
+    // every time one finishes, measure again with the REAL glyph widths
+    if(document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', function(){ window.setTimeout(refitAll, 30); });
+  }
+  [700, 2000, 4500].forEach(function(ms){ window.setTimeout(refitAll, ms); });   // safety net on slow networks
   window.addEventListener('load', function(){ window.setTimeout(refitAll, 60); });
 
   // Stand-alone ghazal pages (ghazal-N.html): the poem is already in the HTML, so fit it right away.
@@ -685,7 +701,7 @@ function attachCardActions(root){
     var main = document.querySelector('main');
     // both cards: the Hindi poem and the Roman transliteration under it
     if(page === 'ghazals' && main && main.querySelector('.card .verse .line')){
-      window.ZF_fitCouplets(main, '.card .verse', {minPx:11});
+      window.ZF_fitCouplets(main, '.card .verse', {minPx:9.5});
     }
   });
 })();
