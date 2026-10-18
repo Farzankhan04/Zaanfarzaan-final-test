@@ -122,8 +122,8 @@ html.is-scrolling nav{
   font-size:1.6rem; letter-spacing:0.012em; line-height:1.15; color:var(--gold-soft);
   text-decoration:none; display:block; min-width:0; white-space:nowrap; direction:ltr; text-align:left;
 }
-/* just above the hamburger breakpoint the English nav links are at their widest: keep the name from being squeezed */
-@media (min-width:1081px) and (max-width:1160px){ .brand{font-size:1.42rem;} }
+/* just above the hamburger breakpoint the English nav links (now 10 of them) are at their widest: keep the name from being squeezed */
+@media (min-width:1211px) and (max-width:1260px){ .brand{font-size:1.42rem;} }
 .brand-group{display:flex; align-items:center; gap:0.7rem; min-width:0;}
 .brand-logo-link{display:block; flex:none; line-height:0;}
 .brand-logo{display:block; height:38px; width:55px; object-fit:contain;}
@@ -132,6 +132,13 @@ html.is-scrolling nav{
 .navlinks a{text-decoration:none; color:var(--text-muted); transition:color .25s; position:relative; padding-bottom:4px;}
 .navlinks a:hover{color:var(--gold-soft);}
 .navlinks a.active{color:var(--gold-soft);}
+/* Favourites = heart icon in the nav. Desktop: icon only (the word stays for screen readers); in the hamburger menu: icon + word. */
+.navlinks a.nav-fav{display:inline-flex; align-items:center; gap:.6rem;}
+.nav-fav-icon{width:18px; height:18px; flex:none;}
+.navlinks a.nav-fav.active .nav-fav-icon{fill:currentColor;}
+@media (min-width:1211px){
+  .nav-fav-label{position:absolute; width:1px; height:1px; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap;}
+}
 .navlinks a.active::after{
   content:""; position:absolute; left:0; right:0; bottom:-4px; height:2px; background:var(--gold);
 }
@@ -162,7 +169,7 @@ html.is-scrolling nav{
 }
 .lang-toggle .lang-opt.active{color:var(--ink-deep); font-weight:600;}
 
-@media (max-width:1080px){
+@media (max-width:1210px){   /* hamburger menu below this width (was 1080 before the Favourites link was added to the nav) */
   .brand{font-size:1.5rem;}
   .navlinks{
     display:none; position:absolute; top:100%; left:0; right:0;
@@ -500,7 +507,10 @@ body.lang-en .sher-lines{font-family:'Cormorant Garamond','Lora', serif; font-st
 .card .nazm-line:last-child{margin-bottom:0;}
 
 @media (max-width:640px){
-  .card{padding:2.4rem 1.6rem;}
+  /* narrower side padding on phones so a whole misra can sit on ONE line at a readable size
+     (app.js ZF_fitCouplets then shrinks only as much as each sher needs) */
+  .poem-detail{padding-left:3vw; padding-right:3vw;}
+  .card{padding:2.4rem 1rem;}
   .card .verse{font-size:1.15rem;}
 }
 
@@ -677,7 +687,10 @@ body.lang-ur .qr-toggle-btn{font-family:'Noto Nastaliq Urdu', serif;}
 
 /* FOOTER */
 footer.site-footer{
-  text-align:center; padding:6vh 6vw 5vh; background:var(--ink-deep); position:relative; z-index:1;
+  /* the footer is ALWAYS English and left-to-right, identical on every page and in every language mode:
+     font / line-height / direction are pinned here so Urdu mode (which sets Nastaliq, 2.4 line-height and rtl on <body>) cannot change it */
+  font-family:'Noto Serif Devanagari','Lora', serif; line-height:1.9; direction:ltr; text-align:center;
+  padding:6vh 6vw 5vh; background:var(--ink-deep); position:relative; z-index:1;
   border-top:1px solid rgba(220,220,214,0.1);
   flex-shrink:0;
 }
@@ -861,7 +874,7 @@ body::before{animation:driftDots 90s linear infinite;}
 .sgc-4{background-image:url('sher-4.jpg');}
 .sgc-5{background-image:url('sher-5.jpg');}
 
-.sgc-body{position:relative; z-index:1; color:#fdfdfb; max-width:88%;}
+.sgc-body{position:relative; z-index:1; color:#fdfdfb; width:100%; max-width:88%;}   /* width:100% = a real, fixed text area for the fit to measure (not shrink-to-content) */
 /* Base sizes below are for the shortest couplets; home-carousel.js sets
    --sgc-scale (typically 0.62–1) per slide based on how long that
    couplet actually is, so longer ones step down from this base rather
@@ -887,7 +900,8 @@ body.lang-ur .sher-carousel-slide:hover .sgc-read{transform:translateX(-3px);}
 .sher-carousel-dot.active{background:var(--gold); transform:scale(1.3);}
 
 @media (max-width:640px){
-  .sher-carousel-slide{aspect-ratio:4/3; padding:1.2rem;}
+  .sher-carousel-slide{aspect-ratio:4/3; padding:1rem 0.8rem;}
+  .sgc-body{max-width:96%;}
   .sgc-lines{font-size:calc(1.08rem * var(--sgc-scale, 1));}
   body.lang-ur .sgc-lines{font-size:calc(1.2rem * var(--sgc-scale, 1));}
 }

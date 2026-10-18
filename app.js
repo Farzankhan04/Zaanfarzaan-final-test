@@ -600,3 +600,92 @@ function attachCardActions(root){
 
   if(typeof zfApplyStaticTranslations === 'function') zfApplyStaticTranslations(window.ZF_LANG);
 })();
+
+
+/* FIT-A-COUPLET — makes every sher sit on exactly two lines (one per misra), in any language and on any
+   screen. For each sher ("unit") it measures the natural width of its longest misra and sets the unit's
+   font-size so that misra just fits the available width. The font only ever GROWS if the caller asks for it
+   (opts.grow, used by the home photo carousel) and is always kept between opts.minPx and opts.maxPx; only if a
+   misra still cannot fit at minPx does that one sher fall back to normal wrapping, so nothing is ever cut off.
+   Used by: ghazal pages (ghazal-N.html + the open ghazal on ghazals*.html) and home-carousel.js.
+   ZF_fitCouplets(root, unitSelector, opts) fits now AND remembers (root, selector, opts) so a window resize /
+   web-font load / language switch re-fits it. */
+(function(){
+  var REG = [];
+
+  function fitUnit(u, o){
+    var lines = Array.prototype.slice.call(u.querySelectorAll('.line'));
+    if(!lines.length) return;
+    u.style.fontSize = '';                                   // back to the stylesheet size
+    lines.forEach(function(l){ l.style.whiteSpace = 'nowrap'; });
+    var avail = u.clientWidth;
+    if(avail <= 0) return;                                   // hidden right now — fitted later
+    var base = parseFloat(getComputedStyle(u).fontSize) || 16;
+    function widest(){
+      var m = 0;
+      lines.forEach(function(l){
+        var d = l.style.display;
+        l.style.display = 'inline-block';                    // natural text width, not the box width
+        var w = l.offsetWidth + 1;                           // layout width: unaffected by entry animations (scale)
+        l.style.display = d;
+        if(w > m) m = w;
+      });
+      return m;
+    }
+    var w0 = widest();
+    if(w0 <= 0) return;
+    function val(x, dflt){ return typeof x === 'function' ? x() : (x || dflt); }
+    var minPx = val(o.minPx, 11), maxPx = val(o.maxPx, 0);
+    var size = base * (avail * 0.985) / w0;
+    if(!o.grow && size > base) size = base;                  // never bigger than the stylesheet size
+    if(maxPx && size > maxPx) size = maxPx;
+    var wrap = false;
+    if(size < minPx){                                        // cannot fit on one line at a readable size:
+      wrap = true;                                           // let this one sher wrap, at a comfortable size
+      size = val(o.wrapPx, 0) || Math.max(minPx, base * 0.85);
+    }
+    u.style.fontSize = size + 'px';
+    // font hinting is not perfectly linear: verify, and trim a little more if it still spills over
+    for(var i = 0; i < 3 && !wrap; i++){
+      var w1 = widest();
+      if(w1 <= avail) break;
+      size = size * (avail * 0.985) / w1;
+      if(size < minPx){ wrap = true; size = val(o.wrapPx, 0) || Math.max(minPx, base * 0.85); u.style.fontSize = size + 'px'; break; }
+      u.style.fontSize = size + 'px';
+    }
+    if(wrap) lines.forEach(function(l){ l.style.whiteSpace = 'normal'; });
+  }
+
+  function run(entry){
+    if(!document.documentElement.contains(entry.root)) return;
+    Array.prototype.slice.call(entry.root.querySelectorAll(entry.sel)).forEach(function(u){ fitUnit(u, entry.opts); });
+  }
+
+  window.ZF_fitCouplets = function(root, sel, opts){
+    if(!root) return;
+    opts = opts || {};
+    var found = null;
+    REG.forEach(function(e){ if(e.root === root && e.sel === sel) found = e; });
+    if(found) found.opts = opts; else { found = {root:root, sel:sel, opts:opts}; REG.push(found); }
+    run(found);
+    // once more after layout settles (an element that was display:none a moment ago, late fonts)
+    window.requestAnimationFrame(function(){ window.requestAnimationFrame(function(){ run(found); }); });
+  };
+
+  function refitAll(){ REG = REG.filter(function(e){ return document.documentElement.contains(e.root); }); REG.forEach(run); }
+  var t = null;
+  window.addEventListener('resize', function(){ window.clearTimeout(t); t = window.setTimeout(refitAll, 120); });
+  window.addEventListener('orientationchange', function(){ window.setTimeout(refitAll, 250); });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(refitAll);
+  window.addEventListener('load', function(){ window.setTimeout(refitAll, 60); });
+
+  // Stand-alone ghazal pages (ghazal-N.html): the poem is already in the HTML, so fit it right away.
+  document.addEventListener('DOMContentLoaded', function(){
+    var page = document.body && document.body.getAttribute('data-page');
+    var main = document.querySelector('main');
+    // both cards: the Hindi poem and the Roman transliteration under it
+    if(page === 'ghazals' && main && main.querySelector('.card .verse .line')){
+      window.ZF_fitCouplets(main, '.card .verse', {minPx:11});
+    }
+  });
+})();

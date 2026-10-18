@@ -12,11 +12,10 @@
 
    Navigation is dots + swipe + autoplay only (no on-photo arrow
    buttons) — nothing sitting on top of the image for the couplet to
-   ever collide with. Font size is not fixed either: each couplet's
-   plain-text length decides a --sgc-scale multiplier (see setFontScale
-   below), so a short sher reads large and a long one automatically
-   steps down, keeping every sher sitting comfortably inside its photo
-   in any of the three scripts. */
+   ever collide with. Font size is not fixed either: ZF_fitCouplets
+   (app.js) sizes each sher so its longest misra fills the photo's text
+   area on one line — short shers up to a comfortable cap, long ones
+   down to a readable floor — in any of the three scripts. */
 (function(){
 
   var track, dotsWrap, section;
@@ -80,28 +79,18 @@
     return {verseHtml: verseHtml, readLabel: readLabel};
   }
 
-  /* Plain-text length of a couplet (both misras combined, tags and
-     extra whitespace stripped) — the one number that decides how much
-     to shrink the font. Measuring the ACTUAL text that will render
-     (i.e. after the Hindi/English/Urdu swap already happened above)
-     means an English line — which typically runs longer than the same
-     couplet in Devanagari — correctly lands in a smaller size tier on
-     its own, without needing separate per-language thresholds. */
-  function plainLength(html){
-    var div = document.createElement('div');
-    div.innerHTML = html;
-    return (div.textContent || '').replace(/\s+/g, ' ').trim().length;
-  }
-
-  /* Longer couplet → smaller multiplier, so it still sits comfortably
-     inside the photo instead of ballooning across it. Tiers are on
-     combined-character count of both misras. */
-  function scaleForLength(len){
-    if(len > 110) return 0.62;
-    if(len > 90)  return 0.7;
-    if(len > 70)  return 0.8;
-    if(len > 50)  return 0.9;
-    return 1;
+  /* Font size is decided per sher by ZF_fitCouplets (app.js): it measures the longest misra and sets the size
+     so that misra just fits the photo's text area on ONE line — a short sher is enlarged (up to a comfortable cap),
+     a long one is shrunk (down to a readable floor). Replaces the old 5-tier character-count guess, which made
+     short shers look oversized and long ones wrap onto extra lines. */
+  function fitSlides(){
+    if(!track || typeof window.ZF_fitCouplets !== 'function') return;
+    window.ZF_fitCouplets(track, '.sgc-lines', {
+      grow: true,
+      maxPx: function(){ return window.innerWidth <= 640 ? 18 : 24; },   // cap: short shers must not balloon
+      minPx: function(){ return window.innerWidth <= 640 ? 11 : 13; },
+      wrapPx: function(){ return window.innerWidth <= 640 ? 14 : 17; }
+    });
   }
 
   function buildSlide(entry, idx){
@@ -119,7 +108,6 @@
     var lines = document.createElement('div');
     lines.className = 'sgc-lines';
     lines.innerHTML = texts.verseHtml;
-    lines.style.setProperty('--sgc-scale', String(scaleForLength(plainLength(texts.verseHtml))));
 
     var readEl = document.createElement('span');
     readEl.className = 'sgc-read';
@@ -179,6 +167,7 @@
       track.appendChild(buildSlide(entry, i));
     });
     updateTrackPosition();
+    fitSlides();
   }
 
   function restartAutoplay(){
