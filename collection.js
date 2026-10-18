@@ -127,6 +127,56 @@
     return -1;
   }
 
+  /* SHARE ROW — WhatsApp / Telegram / X / Facebook links under the open ghazal/nazm (the same row
+     the stand-alone ghazal-N.html / nazm-N.html pages have). The link shared is that poem's own page,
+     so the preview picture (share-<id>.jpg) shows up. Re-drawn on every language switch. */
+  const SHARE_LABEL = {hi:'शेयर करें', en:'Share', ur:'شیئر کریں'};
+  function injectShareCss(){
+    if(document.getElementById('zf-share-css')) return;
+    const st = document.createElement('style');
+    st.id = 'zf-share-css';
+    st.textContent =
+      '.zf-share-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:.6rem .8rem;margin:1.6rem 0 0}' +
+      '.zf-share-label{flex-basis:100%;text-align:center;color:var(--text-muted);font-size:.9rem;margin:0 0 .1rem}' +
+      '.zf-share-row a{color:var(--gold-soft);border:1px solid rgba(220,220,214,.35);border-radius:999px;padding:.38rem .95rem;' +
+        'font-size:.88rem;text-decoration:none;font-family:"Lora",sans-serif}' +
+      '.zf-share-row a:hover{border-color:var(--gold-soft);background:rgba(255,255,255,.06)}';
+    document.head.appendChild(st);
+  }
+  function plainLines(html){
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html || '';
+    const spans = tmp.querySelectorAll('.line');
+    if(spans.length) return Array.prototype.map.call(spans, function(n){ return n.textContent.trim(); });
+    return [tmp.textContent.trim()];
+  }
+  function shareRowHtml(item){
+    injectShareCss();
+    const l = lang();
+    const url = 'https://zaanfarzaan.site/' + item.id + '.html';
+    let msg;
+    if(CONFIG.type === 'nazm'){
+      msg = '\u2018' + itemLabel(item) + '\u2019';
+    } else {
+      const v0 = (item.versesHtml || [])[0] || '';
+      const src = (l === 'en') ? (((item.versesHtmlEn || [])[0]) || v0) : (l === 'ur' ? urHtml(v0) : v0);
+      msg = plainLines(src).slice(0, 2).join('\n');
+    }
+    const who = (l === 'hi') ? 'ज़ान फ़रज़ान' : 'Zaan Farzaan';
+    const tag = (CONFIG.type === 'nazm' ? 'Nazm' : 'Ghazal') + ' #' + item.num;
+    const text = msg + '\n\u2014 ' + who + ' (' + tag + ')';
+    const q = encodeURIComponent;
+    const links = [
+      ['WhatsApp', 'https://wa.me/?text=' + q(text + '\n' + url)],
+      ['Telegram', 'https://t.me/share/url?url=' + q(url) + '&amp;text=' + q(text)],
+      ['X', 'https://twitter.com/intent/tweet?text=' + q(text) + '&amp;url=' + q(url)],
+      ['Facebook', 'https://www.facebook.com/sharer/sharer.php?u=' + q(url)]
+    ];
+    return '<div class="zf-share-row"><span class="zf-share-label">' + SHARE_LABEL[l] + '</span>' +
+      links.map(function(x){ return '<a href="' + x[1] + '" target="_blank" rel="noopener noreferrer">' + x[0] + '</a>'; }).join('') +
+      '</div>';
+  }
+
   function renderDetail(item, idx){
     const prevItem = ITEMS[idx - 1];
     const nextItem = ITEMS[idx + 1];
@@ -140,7 +190,8 @@
       '<div class="poem-nav-buttons">' +
         (prevItem ? ('<a href="#' + prevItem.id + '" id="prev-link">' + arrow('back') + ' ' + configLabel('prevLabel') + '</a>') : '<span class="disabled"></span>') +
         (nextItem ? ('<a href="#' + nextItem.id + '" id="next-link">' + configLabel('nextLabel') + ' ' + arrow('forward') + '</a>') : '<span class="disabled"></span>') +
-      '</div>';
+      '</div>' +
+      shareRowHtml(item);
 
     const backLink = document.getElementById('back-link');
     if(backLink) backLink.addEventListener('click', function(e){ e.preventDefault(); closeDetail(); });
