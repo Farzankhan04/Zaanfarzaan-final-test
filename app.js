@@ -544,6 +544,8 @@ function attachCardActions(root){
     ph:    {hi:"आपका ईमेल", en:"Your email", ur:"آپ کا ای میل"},
     btn:   {hi:"सब्सक्राइब करें", en:"Subscribe", ur:"سبسکرائب کریں"},
     note:  {hi:"आपका ईमेल सिर्फ़ नई रचनाओं और ऑडियो की सूचना भेजने के लिए इस्तेमाल होगा। जब चाहें अनसब्सक्राइब कर सकते हैं।", en:"Your email is used only to tell you about new poems and audios. Unsubscribe any time.", ur:"آپ کا ای میل صرف نئی تخلیقات اور آڈیو کی اطلاع بھیجنے کے لیے استعمال ہوگا۔ جب چاہیں ان سبسکرائب کر سکتے ہیں۔"},
+    share: {hi:"WhatsApp पर शेयर करें", en:"Share on WhatsApp", ur:"WhatsApp پر شیئر کریں"},
+    msg:   {hi:"नमस्ते! मेरी नई ग़ज़लें, नज़्में और ऑडियो अब सीधे आपके ईमेल पर भी। जैसे ही कुछ नया आए, सबसे पहले आपको मिलेगा। यहाँ से सब्सक्राइब करें:", en:"Hello! My new ghazals, nazms and audios now also reach you directly by email. As soon as something new is out, you get it first. Subscribe here:", ur:"السلام علیکم! میری نئی غزلیں، نظمیں اور آڈیو اب سیدھے آپ کے ای میل پر بھی۔ جیسے ہی کچھ نیا آئے، سب سے پہلے آپ کو ملے گا۔ یہاں سے سبسکرائب کریں:"},
     thanks:{hi:"शुक्रिया! पुष्टि के लिए अपने ईमेल में भेजे गए लिंक पर क्लिक कर दें।", en:"Thank you! Please click the link we just emailed you to confirm.", ur:"شکریہ! تصدیق کے لیے اپنے ای میل میں بھیجے گئے لنک پر کلک کر دیں۔"}
   };
   function d(k){ return 'data-en="'+T[k].en+'" data-ur="'+T[k].ur+'"'; }
@@ -567,6 +569,8 @@ function attachCardActions(root){
     '.zf-nl-form button:hover{background:#fff;}' +
     '.zf-nl-box .zf-nl-note{font-size:.8rem;color:var(--text-muted);margin:.9rem auto 0;opacity:.85;}' +
     '.zf-nl-thanks{color:var(--gold-soft);font-size:1.05rem;line-height:1.7;margin:.4rem auto 0;}' +
+    '.zf-nl-share{display:inline-block;margin-top:.9rem;color:var(--gold-soft);font-size:.88rem;text-decoration:none;border:1px solid rgba(220,220,214,.35);border-radius:999px;padding:.38rem 1rem;}' +
+    '.zf-nl-share:hover{border-color:var(--gold-soft);background:rgba(255,255,255,.06);}' +
     '@media (max-width:520px){.zf-nl-form{flex-direction:column;}.zf-nl-box{padding:1.8rem 1.2rem;}}';
   document.head.appendChild(css);
 
@@ -587,6 +591,7 @@ function attachCardActions(root){
       '</form>' +
       '<div class="zf-nl-thanks" hidden '+d('thanks')+'>'+T.thanks.hi+'</div>' +
       '<p class="zf-nl-note" '+d('note')+'>'+T.note.hi+'</p>' +
+      '<a class="zf-nl-share" href="#" rel="noopener" '+d('share')+'>'+T.share.hi+'</a>' +
     '</div>';
 
   var anchor = main.querySelector('.meet-poet');   // home: sit just above "Meet the Poet"
@@ -598,6 +603,15 @@ function attachCardActions(root){
     setTimeout(function(){ form.hidden = true; thanks.hidden = false; }, 400);
   });
 
+  // "Share on WhatsApp": opens WhatsApp with a ready message + the Buttondown sign-up page of this newsletter
+  var shareLink = sec.querySelector('.zf-nl-share');
+  shareLink.addEventListener('click', function(ev){
+    ev.preventDefault();
+    var l = (window.ZF_LANG === 'en' || window.ZF_LANG === 'ur') ? window.ZF_LANG : 'hi';
+    var text = T.msg[l] + '\nhttps://buttondown.com/' + USER;
+    window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank', 'noopener');
+  });
+
   if(typeof zfApplyStaticTranslations === 'function') zfApplyStaticTranslations(window.ZF_LANG);
 })();
 
@@ -607,7 +621,7 @@ function attachCardActions(root){
    font-size so that misra just fits the available width. The font only ever GROWS if the caller asks for it
    (opts.grow, used by the home photo carousel) and is always kept between opts.minPx and opts.maxPx; only if a
    misra still cannot fit at minPx does that one sher fall back to normal wrapping, so nothing is ever cut off.
-   Used by: ghazal pages (ghazal-N.html + the open ghazal on ghazals*.html) and home-carousel.js.
+   Used by home-carousel.js ONLY (ghazal pages keep one fixed font size, like the original design).
    ZF_fitCouplets(root, unitSelector, opts) fits now AND remembers (root, selector, opts) so a window resize /
    web-font load / language switch re-fits it. */
 (function(){
@@ -694,14 +708,4 @@ function attachCardActions(root){
   }
   [700, 2000, 4500].forEach(function(ms){ window.setTimeout(refitAll, ms); });   // safety net on slow networks
   window.addEventListener('load', function(){ window.setTimeout(refitAll, 60); });
-
-  // Stand-alone ghazal pages (ghazal-N.html): the poem is already in the HTML, so fit it right away.
-  document.addEventListener('DOMContentLoaded', function(){
-    var page = document.body && document.body.getAttribute('data-page');
-    var main = document.querySelector('main');
-    // both cards: the Hindi poem and the Roman transliteration under it
-    if(page === 'ghazals' && main && main.querySelector('.card .verse .line')){
-      window.ZF_fitCouplets(main, '.card .verse', {minPx:9.5});
-    }
-  });
 })();

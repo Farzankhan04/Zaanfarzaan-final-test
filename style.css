@@ -507,10 +507,7 @@ body.lang-en .sher-lines{font-family:'Cormorant Garamond','Lora', serif; font-st
 .card .nazm-line:last-child{margin-bottom:0;}
 
 @media (max-width:640px){
-  /* narrower side padding on phones so a whole misra can sit on ONE line at a readable size
-     (app.js ZF_fitCouplets then shrinks only as much as each sher needs) */
-  .poem-detail{padding-left:2vw; padding-right:2vw;}
-  .card{padding:2.4rem .75rem;}
+  .card{padding:2.4rem 1.6rem;}
   .card .verse{font-size:1.15rem;}
 }
 

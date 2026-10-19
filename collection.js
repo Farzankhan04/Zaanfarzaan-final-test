@@ -201,9 +201,6 @@
     if(nextLink) nextLink.addEventListener('click', function(e){ e.preventDefault(); openDetail(nextItem.id); });
 
     attachCardActions(detailEl);
-    if(CONFIG.type !== 'nazm' && typeof window.ZF_fitCouplets === 'function'){
-      window.ZF_fitCouplets(detailEl, '.card .verse', {minPx:9.5});   // one misra = one line, always (unless it cannot fit even at the floor size)
-    }
   }
 
   function openDetail(id){
