@@ -14,7 +14,7 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
 <script>window.ZF_FORCE_LANG='en';try{document.documentElement.classList.add('zf-en-init');}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Audio — Zaan Farzaan | Listen to Ghazals &amp; Nazms</title>
-<meta name="description" content="Audio recordings of all of Zaan Farzaan&#x27;s ghazals and nazms — coming soon.">
+<meta name="description" content="Listen to audio recordings of Zaan Farzaan's nazms and read each nazm alongside. More audios are on their way.">
 <link rel="canonical" href="https://zaanfarzaan.site/audios-en.html">
 <link rel="alternate" hreflang="hi" href="https://zaanfarzaan.site/audios.html">
 <link rel="alternate" hreflang="en" href="https://zaanfarzaan.site/audios-en.html">
@@ -22,7 +22,7 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
 <link rel="alternate" hreflang="x-default" href="https://zaanfarzaan.site/audios.html">
 
 <meta property="og:title" content="Audio — Zaan Farzaan | Listen to Ghazals &amp; Nazms">
-<meta property="og:description" content="Audio recordings of all of Zaan Farzaan&#x27;s ghazals and nazms — coming soon.">
+<meta property="og:description" content="Listen to audio recordings of Zaan Farzaan's nazms and read each nazm alongside. More audios are on their way.">
 <meta property="og:image" content="https://zaanfarzaan.site/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -71,6 +71,25 @@ body.lang-en .audio-card .nav-card-arrow{letter-spacing:.12em;}
 .audio-read-note{text-align:center; padding:0 6vw 12vh; color:var(--text-muted); font-size:.98rem;}
 .audio-read-note a{color:var(--gold-soft); text-decoration:none; border-bottom:1px solid rgba(220,220,214,.4); margin:0 .5rem; padding-bottom:1px;}
 .audio-read-note a:hover{border-bottom-color:var(--gold-soft);}
+
+/* AUDIO TRACKS (nazm recordings) */
+.audio-list{max-width:760px; margin:2vh auto 0; padding:0 6vw;}
+.audio-list-head{text-align:center; margin-bottom:1.6rem;}
+.audio-list-head h2{font-family:'Cormorant Garamond','Noto Serif Devanagari',serif; font-size:clamp(1.6rem,4.5vw,2.1rem); color:var(--gold-soft); font-weight:700; line-height:1.4;}
+body.lang-ur .audio-list-head h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1.9;}
+.audio-list-head p{color:var(--text-muted); font-size:.98rem; line-height:1.7; margin-top:.4rem;}
+.audio-track{background:linear-gradient(155deg,#fbfbf9 0%,#f5f5f2 55%,#e9e9e5 100%); color:var(--text-dark); border-radius:10px; padding:1.4rem 1.5rem 1.2rem; margin-bottom:1.3rem; position:relative; overflow:hidden;
+  border:1px solid rgba(220,220,214,0.35); box-shadow:0 4px 10px rgba(0,0,0,0.18),0 18px 34px rgba(0,0,0,0.28),inset 0 1px 0 rgba(255,255,255,0.6);}
+.audio-track::before{content:""; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,transparent,var(--gold) 25%,var(--gold-soft) 50%,var(--gold) 75%,transparent); opacity:.85;}
+.audio-track-top{display:flex; flex-direction:column; gap:.2rem; margin-bottom:.9rem;}
+.audio-track-no{font-family:'Lora'; font-weight:600; font-size:.68rem; letter-spacing:.2em; text-transform:uppercase; color:var(--rose);}
+body:not(.lang-en) .audio-track-no{letter-spacing:.03em; text-transform:none;}
+.audio-track h3{font-family:'Cormorant Garamond','Noto Serif Devanagari',serif; font-size:clamp(1.3rem,3.8vw,1.6rem); font-weight:700; color:var(--text-dark); line-height:1.45;}
+body.lang-ur .audio-track h3{font-family:'Noto Nastaliq Urdu',serif; line-height:1.9;}
+.audio-track audio{width:100%; height:44px; display:block;}
+.audio-track-read{display:inline-block; margin-top:.9rem; color:#4a4a46; text-decoration:none; font-size:.95rem; border-bottom:1px solid rgba(74,74,70,.4); padding-bottom:1px;}
+.audio-track-read:hover{color:#000; border-bottom-color:#000;}
+.audio-more{text-align:center; color:var(--text-muted); font-size:.95rem; line-height:1.7; margin:1.6rem 0 0;}
 </style>
 </head>
 <body data-page="audios" class="lang-en">
@@ -113,13 +132,52 @@ body.lang-en .audio-card .nav-card-arrow{letter-spacing:.12em;}
   <p data-en="Every ghazal and nazm, to listen to in one place." data-hi="सभी ग़ज़लें और नज़्में, सुनने के लिए एक ही जगह।" data-ur="تمام غزلیں اور نظمیں، سننے کے لیے ایک ہی جگہ۔">Every ghazal and nazm, to listen to in one place.</p>
 </div>
 
-<section class="audio-soon reveal">
-  <div class="audio-soon-box">
-    <div class="audio-soon-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></div>
-    <div class="audio-soon-badge" data-en="Coming soon" data-hi="जल्द आ रहा है" data-ur="جلد آ رہا ہے">Coming soon</div>
-    <h2 data-en="Audios are on their way" data-hi="ऑडियो जल्द आ रहे हैं" data-ur="آڈیو جلد آ رہے ہیں">Audios are on their way</h2>
-    <p data-en="All the ghazals and nazms are being recorded. As soon as each recording is ready, it will be added here." data-hi="सभी ग़ज़लों और नज़्मों की रिकॉर्डिंग चल रही है। हर रचना का ऑडियो तैयार होते ही यहाँ जोड़ दिया जाएगा।" data-ur="تمام غزلوں اور نظموں کی ریکارڈنگ جاری ہے۔ ہر تحریر کا آڈیو تیار ہوتے ہی یہاں شامل کر دیا جائے گا۔">All the ghazals and nazms are being recorded. As soon as each recording is ready, it will be added here.</p>
+<section class="audio-list">
+  <div class="audio-list-head reveal">
+    <h2 data-en="Listen to the Nazms" data-hi="नज़्में सुनिए" data-ur="نظمیں سنیے">Listen to the Nazms</h2>
+    <p data-en="Every nazm whose recording is ready is here, each with a link to read it." data-hi="जिस नज़्म का ऑडियो आ चुका है, वो यहाँ है। हर ऑडियो के साथ उसे पढ़ने का लिंक भी है।" data-ur="جن نظموں کا آڈیو تیار ہو چکا ہے وہ یہاں ہیں، ہر آڈیو کے ساتھ نظم پڑھنے کا لنک بھی ہے۔">Every nazm whose recording is ready is here, each with a link to read it.</p>
   </div>
+  <article class="audio-track reveal" id="nazm-3">
+    <div class="audio-track-top">
+      <div class="audio-track-no" data-en="Nazm 3" data-hi="नज़्म 3" data-ur="نظم 3">Nazm 3</div>
+      <h3 data-en="Main La-parwa Abhi Bhi Hun" data-hi="मैं ला-परवा अभी भी हूँ" data-ur="میں لاپرواہ ابھی بھی ہوں">Main La-parwa Abhi Bhi Hun</h3>
+    </div>
+    <audio controls preload="none" src="audio-nazm-3.mp3"></audio>
+    <a class="audio-track-read" href="nazm-3.html" data-en-href="nazm-3.html" data-ur-href="nazm-3.html"><span data-en="Read this nazm" data-hi="नज़्म पढ़ें" data-ur="یہ نظم پڑھیں">Read this nazm</span> <span aria-hidden="true">&rarr;</span></a>
+  </article>
+  <article class="audio-track reveal" id="nazm-4">
+    <div class="audio-track-top">
+      <div class="audio-track-no" data-en="Nazm 4" data-hi="नज़्म 4" data-ur="نظم 4">Nazm 4</div>
+      <h3 data-en="Kamaal Aadmi Ho" data-hi="कमाल आदमी हो" data-ur="کمال آدمی ہو">Kamaal Aadmi Ho</h3>
+    </div>
+    <audio controls preload="none" src="audio-nazm-4.mp3"></audio>
+    <a class="audio-track-read" href="nazm-4.html" data-en-href="nazm-4.html" data-ur-href="nazm-4.html"><span data-en="Read this nazm" data-hi="नज़्म पढ़ें" data-ur="یہ نظم پڑھیں">Read this nazm</span> <span aria-hidden="true">&rarr;</span></a>
+  </article>
+  <article class="audio-track reveal" id="nazm-5">
+    <div class="audio-track-top">
+      <div class="audio-track-no" data-en="Nazm 5" data-hi="नज़्म 5" data-ur="نظم 5">Nazm 5</div>
+      <h3 data-en="Sun Mere Ai Pyaare Rab" data-hi="सुन मेरे ऐ प्यारे रब" data-ur="سن میرے اے پیارے رب">Sun Mere Ai Pyaare Rab</h3>
+    </div>
+    <audio controls preload="none" src="audio-nazm-5.mp3"></audio>
+    <a class="audio-track-read" href="nazm-5.html" data-en-href="nazm-5.html" data-ur-href="nazm-5.html"><span data-en="Read this nazm" data-hi="नज़्म पढ़ें" data-ur="یہ نظم پڑھیں">Read this nazm</span> <span aria-hidden="true">&rarr;</span></a>
+  </article>
+  <article class="audio-track reveal" id="nazm-6">
+    <div class="audio-track-top">
+      <div class="audio-track-no" data-en="Nazm 6" data-hi="नज़्म 6" data-ur="نظم 6">Nazm 6</div>
+      <h3 data-en="Aadat" data-hi="आदत" data-ur="عادت">Aadat</h3>
+    </div>
+    <audio controls preload="none" src="audio-nazm-6.mp3"></audio>
+    <a class="audio-track-read" href="nazm-6.html" data-en-href="nazm-6.html" data-ur-href="nazm-6.html"><span data-en="Read this nazm" data-hi="नज़्म पढ़ें" data-ur="یہ نظم پڑھیں">Read this nazm</span> <span aria-hidden="true">&rarr;</span></a>
+  </article>
+  <article class="audio-track reveal" id="nazm-8">
+    <div class="audio-track-top">
+      <div class="audio-track-no" data-en="Nazm 8" data-hi="नज़्म 8" data-ur="نظم 8">Nazm 8</div>
+      <h3 data-en="Achha Sochenge" data-hi="अच्छा सोचेंगे" data-ur="اچھا سوچیں گے">Achha Sochenge</h3>
+    </div>
+    <audio controls preload="none" src="audio-nazm-8.mp3"></audio>
+    <a class="audio-track-read" href="nazm-8.html" data-en-href="nazm-8.html" data-ur-href="nazm-8.html"><span data-en="Read this nazm" data-hi="नज़्म पढ़ें" data-ur="یہ نظم پڑھیں">Read this nazm</span> <span aria-hidden="true">&rarr;</span></a>
+  </article>
+  <p class="audio-more reveal" data-en="Audios of the remaining nazms and all the ghazals will keep being added." data-hi="बाक़ी नज़्मों और सभी ग़ज़लों के ऑडियो धीरे-धीरे जुड़ते रहेंगे।" data-ur="باقی نظموں اور تمام غزلوں کے آڈیو آہستہ آہستہ شامل ہوتے رہیں گے۔">Audios of the remaining nazms and all the ghazals will keep being added.</p>
 </section>
 
 <div class="nav-cards audio-cards">
@@ -127,12 +185,6 @@ body.lang-en .audio-card .nav-card-arrow{letter-spacing:.12em;}
     <div class="nav-card-tag hide-on-en">Ghazals</div>
     <h3 data-en="Ghazals" data-hi="ग़ज़लें" data-ur="غزلیں">Ghazals</h3>
     <p data-en="Audio for all 40 ghazals" data-hi="सभी 40 ग़ज़लों के ऑडियो" data-ur="تمام 40 غزلوں کے آڈیو">Audio for all 40 ghazals</p>
-    <div class="nav-card-arrow" data-en="Coming soon" data-hi="जल्द आ रहा है" data-ur="جلد آ رہا ہے">Coming soon</div>
-  </div>
-  <div class="nav-card audio-card reveal">
-    <div class="nav-card-tag hide-on-en">Nazms</div>
-    <h3 data-en="Nazms" data-hi="नज़्में" data-ur="نظمیں">Nazms</h3>
-    <p data-en="Audio for all 10 nazms" data-hi="सभी 10 नज़्मों के ऑडियो" data-ur="تمام 10 نظموں کے آڈیو">Audio for all 10 nazms</p>
     <div class="nav-card-arrow" data-en="Coming soon" data-hi="जल्द आ रहा है" data-ur="جلد آ رہا ہے">Coming soon</div>
   </div>
 </div>
@@ -150,6 +202,10 @@ body.lang-en .audio-card .nav-card-arrow{letter-spacing:.12em;}
   </div>
 </footer>
 
+<script>
+/* only one audio plays at a time */
+document.addEventListener('play',function(e){if(e.target.tagName!=='AUDIO')return;document.querySelectorAll('.audio-track audio').forEach(function(a){if(a!==e.target)a.pause();});},true);
+</script>
 <script src="i18n.js?v=5"></script>
 <script src="app.js?v=5"></script>
 </body>
