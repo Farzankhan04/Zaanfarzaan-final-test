@@ -133,7 +133,7 @@ button:disabled{opacity:.5}
   function act(c, what, btn){
     btn.disabled = true;
     ensureFresh().then(function(){
-      var path = '/rest/v1/comments?id=eq.' + encodeURIComponent(c.id);
+      var path = '/rest/v1/comments?id=eq.' + encodeURIComponent(c.id) + '&select=id,approved';   // select=... zaroori: bina iske ip_hash maangta hai jiski permission nahi
       var o = what === 'delete' ? {method:'DELETE', headers:{'Prefer':'return=representation'}}
         : {method:'PATCH', headers:{'Content-Type':'application/json','Prefer':'return=representation'}, body: JSON.stringify({approved: what === 'approve'})};
       return authFetch(path, o);

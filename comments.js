@@ -168,6 +168,26 @@
     }
   }
 
+  /* ---------- ghazals / nazms collection pages (tap a poem -> it opens in #poem-detail) ---------- */
+  var detail = document.getElementById('poem-detail');
+  if(detail && !m){
+    var syncing = false;
+    function syncDetail(){
+      if(syncing) return; syncing = true;
+      try{
+        var card = detail.querySelector('.card.manuscript[id]'), row = detail.querySelector('.zf-share-row');
+        var cur = detail.querySelector('.zf-comments');
+        if(!card || !row || !/^(ghazal|nazm)-\d{1,3}$/.test(card.id)){ if(cur) cur.remove(); return; }
+        if(cur && cur.getAttribute('data-key') === card.id) return;
+        if(cur) cur.remove();
+        row.parentNode.insertBefore(build(card.id, true), row.nextSibling);
+        applyLang();
+      } finally { syncing = false; }
+    }
+    new MutationObserver(syncDetail).observe(detail, {childList: true});
+    syncDetail();
+  }
+
   /* ---------- audio pages: a "Comments" toggle on each card ---------- */
   var cards = document.querySelectorAll('.audio-track');
   if(cards.length){

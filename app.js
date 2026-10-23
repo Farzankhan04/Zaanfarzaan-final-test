@@ -716,7 +716,7 @@ function attachCardActions(root){
 (function(){
   try{
     var p = location.pathname, page = document.body && document.body.getAttribute('data-page');
-    if(/\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(p) || page === 'audios'){
+    if(/\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(p) || ['audios','ghazals','nazms'].indexOf(page) !== -1){
       var s = document.createElement('script'); s.src = 'comments.js?v=1'; s.defer = true; document.body.appendChild(s);
     }
   }catch(e){}
