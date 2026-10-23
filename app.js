@@ -709,3 +709,15 @@ function attachCardActions(root){
   [700, 2000, 4500].forEach(function(ms){ window.setTimeout(refitAll, ms); });   // safety net on slow networks
   window.addEventListener('load', function(){ window.setTimeout(refitAll, 60); });
 })();
+
+
+/* COMMENTS — loads comments.js (reader comments, shown after the poet approves them) on every ghazal-N / nazm-N page
+   and on the audio pages. Kept as a tiny loader so none of those pages has to be edited. */
+(function(){
+  try{
+    var p = location.pathname, page = document.body && document.body.getAttribute('data-page');
+    if(/\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(p) || page === 'audios'){
+      var s = document.createElement('script'); s.src = 'comments.js?v=1'; s.defer = true; document.body.appendChild(s);
+    }
+  }catch(e){}
+})();
