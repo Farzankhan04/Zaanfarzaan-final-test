@@ -765,3 +765,68 @@ function attachCardActions(root){
   var t = null;
   new MutationObserver(function(){ clearTimeout(t); t = setTimeout(scan, 30); }).observe(document.body, {childList: true, subtree: true});
 })();
+
+
+/* INSTALL AS APP (PWA) — links the web-app manifest, registers service-worker.js (offline reading) and shows a small, dismissible
+   "Install" bar: on Android/Chrome it uses the browser's own install prompt; on iPhone (Safari has none) it shows the
+   "Share -> Add to Home Screen" hint. Never shown inside the audio page's reader frame or once the app is already installed. */
+(function(){
+  try{
+    if(window.self !== window.top) return;                                   // inside an iframe (audio-page reader): do nothing
+    var head = document.head;
+    function meta(n, c){ if(!document.querySelector('meta[name="' + n + '"]')){ var m = document.createElement('meta'); m.name = n; m.content = c; head.appendChild(m); } }
+    if(!document.querySelector('link[rel="manifest"]')){ var l = document.createElement('link'); l.rel = 'manifest'; l.href = '/manifest.json'; head.appendChild(l); }
+    meta('theme-color', '#151515'); meta('mobile-web-app-capable', 'yes'); meta('apple-mobile-web-app-capable', 'yes');
+    meta('apple-mobile-web-app-title', 'Zaan Farzaan'); meta('apple-mobile-web-app-status-bar-style', 'black-translucent');
+
+    if('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')){
+      window.addEventListener('load', function(){ navigator.serviceWorker.register('/service-worker.js').catch(function(){}); });
+    }
+
+    var standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    if(standalone) return;
+    var KEY = 'zf-pwa-hide-until';
+    function hidden(){ try{ return Date.now() < parseInt(localStorage.getItem(KEY) || '0', 10); }catch(e){ return false; } }
+    function hideFor(days){ try{ localStorage.setItem(KEY, String(Date.now() + days * 864e5)); }catch(e){} }
+    // show only from the 2nd page of a visit, so a first-time visitor is not greeted by a banner
+    var views = 1; try{ views = parseInt(sessionStorage.getItem('zf-pv') || '0', 10) + 1; sessionStorage.setItem('zf-pv', String(views)); }catch(e){}
+
+    var T = {
+      title:{hi:'ऐप की तरह इंस्टॉल करें', en:'Install as an app', ur:'ایپ کی طرح انسٹال کریں'},
+      sub:  {hi:'होम स्क्रीन पर आइकन, पूरी स्क्रीन में, और पढ़े हुए पन्ने बिना इंटरनेट के भी।', en:'An icon on your home screen, full screen, and pages you have read work without internet.', ur:'ہوم اسکرین پر آئیکن، پوری اسکرین میں، اور پڑھے ہوئے صفحات بغیر انٹرنیٹ کے بھی۔'},
+      btn:  {hi:'इंस्टॉल', en:'Install', ur:'انسٹال'},
+      ios:  {hi:'Safari में नीचे Share बटन दबाएँ, फिर “Add to Home Screen”।', en:'In Safari tap the Share button, then “Add to Home Screen”.', ur:'Safari میں نیچے Share بٹن دبائیں، پھر “Add to Home Screen”۔'},
+      x:    {hi:'बंद करें', en:'Close', ur:'بند کریں'}
+    };
+    function L(){ var l = window.ZF_LANG; return (l === 'en' || l === 'ur') ? l : 'hi'; }
+    var css = document.createElement('style');
+    css.textContent = '.zf-install{position:fixed;left:12px;right:12px;bottom:12px;z-index:9000;max-width:520px;margin:0 auto;display:flex;align-items:center;gap:.8rem;padding:.8rem .9rem;border-radius:12px;background:#1d1d1d;color:#f2f1ec;border:1px solid rgba(220,220,214,.3);box-shadow:0 10px 30px rgba(0,0,0,.5);font-size:.92rem;line-height:1.5}' +
+      'body.zf-bar-on .zf-install{bottom:92px}.zf-install img{width:40px;height:40px;border-radius:9px;flex:none}.zf-install .zf-i-t{flex:1;min-width:0}.zf-install strong{display:block;font-size:.98rem}' +
+      '.zf-install small{display:block;color:#9c9c95;font-size:.78rem}.zf-install button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid rgba(220,220,214,.35);background:transparent;color:#f2f1ec;min-height:38px;padding:0 .9rem;flex:none}' +
+      '.zf-install .zf-i-go{background:#f2f1ec;color:#151515;border-color:#f2f1ec;font-weight:700}.zf-install .zf-i-x{padding:0;width:34px;font-size:1.2rem;line-height:1}';
+    document.head.appendChild(css);
+
+    function show(kind, deferred){
+      if(document.getElementById('zf-install') || hidden() || views < 2) return;
+      var b = document.createElement('div'); b.id = 'zf-install'; b.className = 'zf-install'; b.setAttribute('role', 'region'); b.setAttribute('aria-label', T.title[L()]);
+      var l = L();
+      b.innerHTML = '<img src="/icon-192.png" alt="" width="40" height="40"><div class="zf-i-t"><strong></strong><small></small></div>' +
+        (kind === 'prompt' ? '<button type="button" class="zf-i-go"></button>' : '') + '<button type="button" class="zf-i-x" aria-label="' + T.x[l] + '">&times;</button>';
+      b.querySelector('strong').textContent = T.title[l];
+      b.querySelector('small').textContent = kind === 'prompt' ? T.sub[l] : T.ios[l];
+      if(kind === 'prompt') b.querySelector('.zf-i-go').textContent = T.btn[l];
+      document.body.appendChild(b);
+      b.querySelector('.zf-i-x').addEventListener('click', function(){ hideFor(kind === 'prompt' ? 14 : 30); b.remove(); });
+      var go = b.querySelector('.zf-i-go');
+      if(go) go.addEventListener('click', function(){
+        b.remove(); deferred.prompt();
+        deferred.userChoice.then(function(r){ if(r && r.outcome !== 'accepted') hideFor(14); }).catch(function(){});
+      });
+    }
+    window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); setTimeout(function(){ show('prompt', e); }, 1500); });
+    window.addEventListener('appinstalled', function(){ var b = document.getElementById('zf-install'); if(b) b.remove(); hideFor(3650); });
+    var ua = navigator.userAgent || '';
+    var iosSafari = /iPhone|iPad|iPod/.test(ua) && /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
+    if(iosSafari) setTimeout(function(){ show('ios'); }, 2500);
+  }catch(e){}
+})();

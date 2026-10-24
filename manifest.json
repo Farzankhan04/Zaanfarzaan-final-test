@@ -1,0 +1,73 @@
+{
+  "id": "/",
+  "name": "Zaan Farzaan — Ghazals & Nazms",
+  "short_name": "Zaan Farzaan",
+  "description": "Ghazals, nazms and audio by poet Zaan Farzaan — in Hindi, Urdu and English.",
+  "start_url": "/?source=app",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#151515",
+  "theme_color": "#151515",
+  "lang": "hi",
+  "dir": "auto",
+  "categories": [
+    "books",
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ghazals",
+      "short_name": "Ghazals",
+      "url": "/ghazals.html?source=shortcut",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Nazms",
+      "short_name": "Nazms",
+      "url": "/nazms.html?source=shortcut",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Audio",
+      "short_name": "Audio",
+      "url": "/audios.html?source=shortcut",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
