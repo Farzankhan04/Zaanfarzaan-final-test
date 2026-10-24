@@ -721,3 +721,47 @@ function attachCardActions(root){
     }
   }catch(e){}
 })();
+
+
+/* INSTAGRAM SHARE — adds an "Instagram" button to every .zf-share-row (the share buttons under each ghazal / nazm: on the
+   ghazal-N / nazm-N pages AND inside the ghazals / nazms list view). Instagram has no "share this link" web address like
+   WhatsApp, so the button copies the ready message + link to the clipboard and opens Instagram; the reader pastes it in a
+   story / chat / post. The message is the same text the WhatsApp button carries. */
+(function(){
+  var MSG = {
+    hi: 'लिंक कॉपी हो गया — अब Instagram में पेस्ट करें',
+    en: 'Link copied — now paste it in Instagram',
+    ur: 'لنک کاپی ہو گیا — اب Instagram میں پیسٹ کریں'
+  };
+  function lang(){ var l = window.ZF_LANG; return (l === 'en' || l === 'ur') ? l : 'hi'; }
+  function toast(t){
+    var old = document.getElementById('zf-ig-toast'); if(old) old.remove();
+    var d = document.createElement('div'); d.id = 'zf-ig-toast'; d.textContent = t; d.setAttribute('role', 'status');
+    d.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:10001;max-width:90vw;padding:.7rem 1.1rem;border-radius:10px;background:#f2f1ec;color:#151515;font-size:.95rem;line-height:1.5;box-shadow:0 8px 24px rgba(0,0,0,.4);text-align:center';
+    document.body.appendChild(d); setTimeout(function(){ if(d.parentNode) d.remove(); }, 3500);
+  }
+  function copy(text){
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).catch(function(){ fallback(text); }); return; }
+    fallback(text);
+  }
+  function fallback(text){
+    try{ var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;left:-9999px;top:0'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }catch(e){}
+  }
+  function messageFor(row){
+    var wa = row.querySelector('a[href*="wa.me/"]');
+    if(wa){ try{ var t = new URL(wa.href).searchParams.get('text'); if(t) return t; }catch(e){} }
+    var c = document.querySelector('link[rel="canonical"]');
+    return document.title + '\n' + (c ? c.href : location.href);
+  }
+  function addTo(row){
+    if(row.querySelector('.zf-share-ig')) return;
+    var a = document.createElement('a'); a.className = 'zf-share-ig'; a.textContent = 'Instagram';
+    a.href = 'https://www.instagram.com/direct/new/'; a.target = '_blank'; a.rel = 'noopener noreferrer';
+    a.addEventListener('click', function(){ copy(messageFor(row)); toast(MSG[lang()]); });   // the link itself still opens Instagram
+    row.appendChild(a);
+  }
+  function scan(){ [].forEach.call(document.querySelectorAll('.zf-share-row'), addTo); }
+  scan();
+  var t = null;
+  new MutationObserver(function(){ clearTimeout(t); t = setTimeout(scan, 30); }).observe(document.body, {childList: true, subtree: true});
+})();

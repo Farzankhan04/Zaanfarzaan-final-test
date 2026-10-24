@@ -26,6 +26,13 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=2">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
 <script>setTimeout(function(){document.documentElement.classList.remove('zf-en-init','zf-ur-init');},4000);</script>
+<style>
+/* LEGAL PAGE: the text always stays English, left-to-right, in the English fonts - even if the visitor flips the language switch to Hindi/Urdu */
+main.legal-en{direction:ltr;line-height:1.9;font-family:'Lora','Cormorant Garamond',serif;}
+main.legal-en h1,main.legal-en h2,main.legal-en h3{font-family:'Cormorant Garamond','Lora',serif;}
+main.legal-en .tag{letter-spacing:.3em;text-transform:uppercase;}
+main.legal-en p,main.legal-en li{line-height:inherit;}
+</style>
 </head>
 <body data-page="refund-policy">
 
@@ -60,7 +67,7 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
   </div>
 </nav>
 
-<main>
+<main class="legal-en" lang="en" dir="ltr">
 <div class="page-header">
   <div class="tag">Legal</div>
   <h1>Refund &amp; Cancellation Policy</h1>

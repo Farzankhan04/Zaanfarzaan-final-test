@@ -27,15 +27,11 @@
     loading: {hi:'लोड हो रहा है…', en:'Loading…', ur:'لوڈ ہو رہا ہے…'},
     loaderr: {hi:'टिप्पणियाँ अभी नहीं खुल पाईं।', en:'Could not load comments right now.', ur:'تبصرے ابھی نہیں کھل سکے۔'}
   };
-  function lang(){
-    var l = window.ZF_LANG;
-    if(l !== 'en' && l !== 'ur'){ var c = document.body.classList; l = c.contains('lang-ur') ? 'ur' : (c.contains('lang-en') ? 'en' : 'hi'); }
-    return l;
-  }
+  function lang(){ return 'en'; }   // comment section is English only, whatever the site language
   function tx(k){ return T[k][lang()]; }
-  function d(k){ return 'data-en="' + T[k].en.replace(/"/g,'&quot;') + '" data-ur="' + T[k].ur.replace(/"/g,'&quot;') + '"'; }
+  function d(k){ return ''; }
   function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
-  function applyLang(root){ if(typeof zfApplyStaticTranslations === 'function') try{ zfApplyStaticTranslations(window.ZF_LANG); }catch(e){} }
+  function applyLang(){}   // nothing to translate: English only
 
   /* ---------- Supabase REST ---------- */
   function headers(extra){ var h = {'apikey': SB_KEY}; for(var k in (extra||{})) h[k] = extra[k]; return h; }
@@ -59,10 +55,9 @@
   var css = document.createElement('style');
   css.textContent =
     '.zf-comments [hidden],.zf-comments[hidden]{display:none !important;}' +
-    '.zf-comments{max-width:640px;margin:2.4rem auto 0;padding:0;text-align:start;}' +
+    '.zf-comments{max-width:640px;margin:2.4rem auto 0;padding:0;direction:ltr;text-align:left;}' +
     '.zf-cm-box{border:1px solid rgba(220,220,214,.28);border-radius:10px;padding:1.6rem 1.3rem;background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,.015));}' +
     '.zf-comments h2,.zf-cm-title{color:var(--gold-soft);font-size:clamp(1.2rem,3.4vw,1.5rem);font-weight:700;margin:0 0 1rem;font-family:"Cormorant Garamond","Noto Serif Devanagari",serif;}' +
-    'body.lang-ur .zf-comments h2{font-family:"Noto Nastaliq Urdu",serif;line-height:1.9;}' +
     '.zf-cm-list{display:flex;flex-direction:column;gap:.8rem;margin:0 0 1.2rem;}' +
     '.zf-cm-item{border-inline-start:2px solid rgba(220,220,214,.35);padding:.2rem .9rem;}' +
     '.zf-cm-name{font-weight:600;color:var(--gold-soft);font-size:.95rem;}' +
@@ -92,25 +87,24 @@
   document.head.appendChild(css);
 
   /* ---------- one comment block (list + form) for a page key ---------- */
-  var shownAt = Date.now();
   function fmtDate(iso){
-    try{ return new Date(iso).toLocaleDateString({hi:'hi-IN', en:'en-IN', ur:'ur-PK'}[lang()], {day:'numeric', month:'short', year:'numeric'}); }catch(e){ return ''; }
+    try{ return new Date(iso).toLocaleDateString('en-IN', {day:'numeric', month:'short', year:'numeric'}); }catch(e){ return ''; }
   }
   function build(key, withHeading){
     var sec = document.createElement('section'); sec.className = 'zf-comments'; sec.setAttribute('data-key', key);
     sec.innerHTML =
       '<div class="zf-cm-box">' +
-        (withHeading ? '<h2 ' + d('h') + '>' + esc(T.h.hi) + '</h2>' : '') +
+        (withHeading ? '<h2 ' + d('h') + '>' + esc(T.h.en) + '</h2>' : '') +
         '<div class="zf-cm-list" aria-live="polite"></div>' +
         '<form class="zf-cm-form" novalidate>' +
           '<input class="zf-cm-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">' +
-          '<input type="text" name="name" maxlength="60" autocomplete="nickname" placeholder="' + esc(T.name.hi) + '" data-en-placeholder="' + esc(T.name.en) + '" data-ur-placeholder="' + esc(T.name.ur) + '" aria-label="' + esc(T.name.hi) + '" data-en-aria-label="' + esc(T.name.en) + '" data-ur-aria-label="' + esc(T.name.ur) + '">' +
-          '<textarea name="body" maxlength="1000" dir="auto" placeholder="' + esc(T.text.hi) + '" data-en-placeholder="' + esc(T.text.en) + '" data-ur-placeholder="' + esc(T.text.ur) + '" aria-label="' + esc(T.text.hi) + '" data-en-aria-label="' + esc(T.text.en) + '" data-ur-aria-label="' + esc(T.text.ur) + '"></textarea>' +
+          '<input type="text" name="name" maxlength="60" autocomplete="nickname" placeholder="' + esc(T.name.en) + '" aria-label="' + esc(T.name.en) + '">' +
+          '<textarea name="body" maxlength="1000" dir="auto" placeholder="' + esc(T.text.en) + '" aria-label="' + esc(T.text.en) + '"></textarea>' +
           '<p class="zf-cm-err" hidden></p>' +
-          '<button type="submit" ' + d('send') + '>' + esc(T.send.hi) + '</button>' +
+          '<button type="submit" ' + d('send') + '>' + esc(T.send.en) + '</button>' +
         '</form>' +
-        '<p class="zf-cm-thanks" hidden ' + d('thanks') + '>' + esc(T.thanks.hi) + '</p>' +
-        '<p class="zf-cm-note" ' + d('note') + '>' + esc(T.note.hi) + '</p>' +
+        '<p class="zf-cm-thanks" hidden ' + d('thanks') + '>' + esc(T.thanks.en) + '</p>' +
+        '<p class="zf-cm-note" ' + d('note') + '>' + esc(T.note.en) + '</p>' +
       '</div>';
     var listEl = sec.querySelector('.zf-cm-list'), form = sec.querySelector('form'), errEl = sec.querySelector('.zf-cm-err'),
         thanks = sec.querySelector('.zf-cm-thanks'), btn = sec.querySelector('button[type=submit]');
@@ -118,7 +112,7 @@
     function render(rows){
       listEl.innerHTML = '';
       if(!rows.length){
-        var p = document.createElement('p'); p.className = 'zf-cm-empty'; p.setAttribute('data-en', T.none.en); p.setAttribute('data-ur', T.none.ur); p.textContent = T.none.hi; listEl.appendChild(p); return;
+        var p = document.createElement('p'); p.className = 'zf-cm-empty'; p.textContent = T.none.en; listEl.appendChild(p); return;
       }
       rows.forEach(function(r){
         var it = document.createElement('div'); it.className = 'zf-cm-item';
@@ -142,14 +136,11 @@
       if(form.website.value) return;                                         // honeypot: bots fill it
       var name = form.name.value.trim().slice(0, 60) || tx('anon'), body = form.body.value.trim();
       if(body.length < 2){ showErr('short'); return; }
-      var last = 0; try{ last = parseInt(localStorage.getItem('zf-cm-last') || '0', 10); }catch(e){}
-      if(Date.now() - last < 20000 || Date.now() - shownAt < 3000){ showErr('wait'); return; }
       btn.disabled = true; btn.textContent = tx('sending');
       postComment(key, name, body).then(function(){
-        try{ localStorage.setItem('zf-cm-last', String(Date.now())); }catch(e){}
-        form.hidden = true; thanks.hidden = false;
+                form.hidden = true; thanks.hidden = false;
       }).catch(function(e){
-        btn.disabled = false; btn.textContent = tx('send'); showErr(e && e.message === 'rate' ? 'wait' : 'err');
+        btn.disabled = false; btn.textContent = tx('send'); showErr('err');
       });
     });
     load();
