@@ -400,6 +400,7 @@ function attachCardActions(root){
   var m = window.location.pathname.match(/\/(?:(?:ghazals|nazms)\/)?(ghazal|nazm)-(\d+)\.html$/);
   if(!m) return;
   var id = m[1] + '-' + m[2];
+  try{ localStorage.setItem('zf-last-read', JSON.stringify({id: id, t: Date.now()})); }catch(e){}
   try{
     var read = JSON.parse(localStorage.getItem('zf-read-poems') || '[]');
     if(read.indexOf(id) === -1){

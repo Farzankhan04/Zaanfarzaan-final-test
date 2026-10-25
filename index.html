@@ -88,6 +88,43 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
 .meet-poet-line{color:var(--text-muted); font-size:1rem; line-height:1.7;}
 .meet-poet-link{margin-top:.5rem; color:var(--gold-soft); text-decoration:none; font-size:.9rem; letter-spacing:.06em; font-weight:600; border-bottom:1px solid rgba(220,220,214,.4); padding-bottom:2px;}
 .meet-poet-link:hover{border-bottom-color:var(--gold-soft);}
+/* HOME v25: hero buttons, compact search, new strip, continue card, reader voices, compact phone cards, better contrast */
+.hero-cta{display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; margin-top:1.8rem;}
+.hero-btn{display:inline-block; padding:.8rem 1.6rem; border-radius:999px; border:1px solid rgba(220,220,214,.55); color:var(--gold-soft); text-decoration:none; font-weight:600; font-size:1rem; letter-spacing:.02em; min-height:46px; transition:background .25s,color .25s,transform .25s;}
+.hero-btn:hover,.hero-btn:focus-visible{background:rgba(220,220,214,.14); transform:translateY(-2px);}
+.hero-btn-main{background:var(--gold-soft); color:#151515; border-color:var(--gold-soft);}
+.hero-btn-main:hover,.hero-btn-main:focus-visible{background:#fff;}
+.hero .attribution{color:#b4b4ad;}
+.site-search-compact{padding:2.2vh 6vw 1vh;}
+.zf-continue,.zf-new{max-width:640px; margin:1.4rem auto 0; padding:0 6vw;}
+.zf-continue a.zf-cont-card{display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1rem 1.2rem; border-radius:10px; border:1px solid rgba(220,220,214,.4); background:rgba(220,220,214,.07); color:var(--gold-soft); text-decoration:none;}
+.zf-continue .zf-k,.zf-new .zf-k{font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; color:#b4b4ad; font-family:'Lora',serif; font-weight:600;}
+.zf-continue .zf-t{font-size:1.15rem; margin-top:.2rem;}
+.zf-continue .zf-go{white-space:nowrap; font-weight:600; color:var(--gold-soft);}
+.zf-new-card{padding:1.1rem 1.2rem; border-radius:10px; border:1px solid rgba(220,220,214,.4); background:rgba(220,220,214,.07);}
+.zf-new-card .zf-t{font-size:1.25rem; margin:.25rem 0 .7rem; color:var(--gold-soft);}
+.zf-new-card audio{width:100%; height:40px;}
+.zf-new-card .zf-links{display:flex; gap:1.2rem; flex-wrap:wrap; margin-top:.7rem; font-size:.92rem;}
+.zf-new-card .zf-links a{color:var(--gold-soft); text-decoration:underline; text-underline-offset:3px;}
+.zf-voices{max-width:1080px; margin:0 auto; padding:0 0 6vh; text-align:center;}
+.zf-voices .tag{color:#b4b4ad; text-transform:uppercase; letter-spacing:.3em; font-size:.72rem; font-family:'Lora',serif; font-weight:600;}
+.zf-voices h2{font-size:clamp(1.5rem,4vw,2rem); color:var(--gold-soft); font-weight:700; margin:.5rem 0 1.4rem;}
+.zf-voices-track{display:flex; gap:1rem; overflow-x:auto; scroll-snap-type:x mandatory; padding:.3rem 6vw 1rem; -webkit-overflow-scrolling:touch; direction:ltr; text-align:left;}
+.zf-voice{flex:0 0 min(300px,80vw); scroll-snap-align:center; padding:1.1rem 1.2rem; border-radius:10px; border:1px solid rgba(220,220,214,.35); background:rgba(220,220,214,.07); font-family:'Lora',serif; display:flex; flex-direction:column; gap:.7rem;}
+.zf-voice q{quotes:"\201C" "\201D"; font-size:1rem; line-height:1.6; color:var(--gold-soft); display:-webkit-box; -webkit-line-clamp:6; -webkit-box-orient:vertical; overflow:hidden; white-space:pre-line; word-break:break-word;}
+.zf-voice .zf-by{font-size:.82rem; color:#b4b4ad; margin-top:auto;}
+.zf-voice .zf-by a{color:var(--gold-soft);}
+.nav-card .nav-card-arrow{color:#4a4a47;}
+.nav-card .nav-card-tag{color:#5c5c58;}
+@media (max-width:600px){
+  .nav-cards{grid-template-columns:1fr 1fr; gap:.8rem; padding:2vh 4vw 6vh;}
+  .nav-card{padding:1.2rem 1rem; min-height:0;}
+  .nav-card h3{font-size:1.25rem;}
+  .nav-card p{font-size:.82rem; line-height:1.5; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;}
+  .nav-card-preview{display:none !important;}
+  .nav-card .nav-card-arrow{font-size:.82rem;}
+  .nav-card:last-child:nth-child(odd){grid-column:1 / -1;}
+}
 </style>
 </head>
 <body data-page="home">
@@ -137,11 +174,13 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
     <span class="line" data-en="Kise mila hai kuchh yahaan pe sirf chaah&nbsp;se" data-ur="کسے ملا ہے کچھ یہاں پہ صرف چاہ سے">किसे मिला है कुछ यहाँ पे सिर्फ़ चाह से</span>
   </div>
   <div class="attribution" data-en="— Zaan Farzaan" data-ur="— زان فرزان">— ज़ान फ़रज़ान</div>
+  <div class="hero-cta">
+    <a class="hero-btn hero-btn-main" href="ghazals.html" data-en-href="ghazals-en.html" data-ur-href="ghazals-ur.html" data-hi-href="ghazals.html" data-en="Read Ghazals" data-hi="ग़ज़लें पढ़ें" data-ur="غزلیں پڑھیں">ग़ज़लें पढ़ें</a>
+    <a class="hero-btn" href="audios.html" data-en-href="audios-en.html" data-ur-href="audios-ur.html" data-hi-href="audios.html" data-en="Listen to Nazms" data-hi="नज़्में सुनें" data-ur="نظمیں سنیں">नज़्में सुनें</a>
+  </div>
 </section>
 
-<section class="site-search-section reveal">
-  <div class="tag" data-en="Search" data-ur="تلاش کریں">खोजें</div>
-  <h2 data-en="Find Anything" data-ur="کچھ بھی تلاش کریں">कुछ भी ढूँढें</h2>
+<section class="site-search-section site-search-compact">
   <div class="collection-search">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     <input type="text" id="site-search-input" placeholder="ग़ज़ल, नज़्म या पेज खोजें…" data-en-placeholder="Search a ghazal, nazm, or page…" data-ur-placeholder="غزل، نظم یا صفحہ تلاش کریں…" autocomplete="off">
@@ -149,6 +188,10 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
   <div class="no-results" id="site-search-no-results" data-en="No matches found" data-ur="کچھ نہیں ملا">कुछ नहीं मिला</div>
   <div class="poem-list" id="site-search-results"></div>
 </section>
+
+<section class="zf-continue" id="zf-continue" hidden></section>
+
+<section class="zf-new" id="zf-new" hidden></section>
 
 <div class="flourish" aria-hidden="true"><span>❦</span></div>
 
@@ -220,18 +263,16 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
     <div class="stat-label" data-en="Nazms" data-ur="نظمیں">नज़्में</div>
   </div>
   <div class="stat">
+    <div class="stat-num" data-count="10" id="zf-stat-audio">0</div>
+    <div class="stat-label" data-en="Audios" data-hi="ऑडियो" data-ur="آڈیو">ऑडियो</div>
+  </div>
+  <div class="stat">
     <div class="stat-num" data-count="3">0</div>
     <div class="stat-label" data-en="Languages" data-ur="زبانیں">भाषाएँ</div>
   </div>
 </div>
 
 <div class="nav-cards">
-  <a href="about.html" data-en-href="about-en.html" data-ur-href="about-ur.html" class="nav-card reveal">
-    <div class="nav-card-tag hide-on-en">About</div>
-    <h3 data-en="About" data-ur="تعارف">परिचय</h3>
-    <p data-en="Learn about Zaan Farzaan's life, his journey in poetry, and the way he sees the world." data-ur="زان فرزان کی زندگی، شاعری کے سفر اور دنیا کو دیکھنے کے ان کے انداز کے بارے میں جانیں۔">ज़ान फ़रज़ान की ज़िंदगी, शायरी का सफ़र और उनकी सोच के बारे में जानें।</p>
-    <div class="nav-card-arrow" data-en="Read →" data-ur="← پڑھیں">पढ़ें →</div>
-  </a>
   <a href="ghazals.html" data-en-href="ghazals-en.html" data-ur-href="ghazals-ur.html" class="nav-card reveal">
     <div class="nav-card-tag hide-on-en">Ghazals</div>
     <h3 data-en="Ghazals" data-ur="غزلیں">ग़ज़लें</h3>
@@ -248,7 +289,7 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
   <a href="audios.html" data-en-href="audios-en.html" data-ur-href="audios-ur.html" class="nav-card reveal">
     <div class="nav-card-tag hide-on-en">Audio</div>
     <h3 data-en="Audio" data-ur="آڈیو">ऑडियो</h3>
-    <p data-en="Listen to all the ghazals and nazms in audio — coming soon." data-ur="تمام غزلیں اور نظمیں آڈیو میں سنیے — آڈیو جلد آ رہے ہیں۔">सभी ग़ज़लें और नज़्में ऑडियो में सुनिए — ऑडियो जल्द आ रहे हैं।</p>
+    <p data-en="Listen to the nazms in audio — they keep playing while you read, and you can download them too." data-hi="10 नज़्में ऑडियो में सुनिए — पढ़ते वक़्त भी चलती रहेंगी, डाउनलोड भी कर सकते हैं।" data-ur="نظمیں آڈیو میں سنیے — پڑھتے وقت بھی چلتی رہیں گی، ڈاؤن لوڈ بھی کر سکتے ہیں۔">10 नज़्में ऑडियो में सुनिए — पढ़ते वक़्त भी चलती रहेंगी, डाउनलोड भी कर सकते हैं।</p>
     <div class="nav-card-arrow" data-en="Listen →" data-ur="← سنیں">सुनें →</div>
   </a>
   <a href="ebook.html" data-en-href="ebook-en.html" data-ur-href="ebook-ur.html" class="nav-card reveal">
@@ -256,6 +297,12 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
     <h3 data-en="Book" data-ur="کتاب">किताब</h3>
     <p data-en="All 40 ghazals and 10 nazms, together as one PDF book you can keep and read offline — ₹99." data-ur="تمام 40 غزلیں اور 10 نظمیں، ایک PDF کتاب کی صورت میں — ₹99 میں۔">सभी 40 ग़ज़लें और 10 नज़्में, एक PDF किताब की सूरत में — ₹99 में।</p>
     <div class="nav-card-arrow" data-en="Buy →" data-ur="← خریدیں">ख़रीदें →</div>
+  </a>
+  <a href="about.html" data-en-href="about-en.html" data-ur-href="about-ur.html" class="nav-card reveal">
+    <div class="nav-card-tag hide-on-en">About</div>
+    <h3 data-en="About" data-ur="تعارف">परिचय</h3>
+    <p data-en="Learn about Zaan Farzaan's life, his journey in poetry, and the way he sees the world." data-ur="زان فرزان کی زندگی، شاعری کے سفر اور دنیا کو دیکھنے کے ان کے انداز کے بارے میں جانیں۔">ज़ान फ़रज़ान की ज़िंदगी, शायरी का सफ़र और उनकी सोच के बारे में जानें।</p>
+    <div class="nav-card-arrow" data-en="Read →" data-ur="← پڑھیں">पढ़ें →</div>
   </a>
   <a href="profiles.html" data-en-href="profiles-en.html" data-ur-href="profiles-ur.html" class="nav-card reveal">
     <div class="nav-card-tag hide-on-en">Profiles</div>
@@ -282,6 +329,11 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
     <div class="nav-card-arrow" data-en="Nazrana →" data-ur="← نذرانہ">नज़राना पेश करें →</div>
   </a>
 </div>
+<section class="zf-voices" id="zf-voices" hidden>
+  <div class="tag">Readers</div>
+  <h2 data-en="Readers' Voices" data-hi="पाठकों की ज़ुबानी" data-ur="قارئین کی زبانی">पाठकों की ज़ुबानी</h2>
+  <div class="zf-voices-track" id="zf-voices-track"></div>
+</section>
 <section class="meet-poet reveal">
   <img class="meet-poet-photo" src="about-photo.jpg" alt="Zaan Farzaan" width="128" height="128" loading="lazy" decoding="async">
   <div class="tag">The Poet</div>
@@ -311,5 +363,6 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
 <script src="home-features.js?v=2"></script>
 <script src="home-carousel.js?v=4"></script>
 <script src="search.js?v=3"></script>
+<script src="home-extras.js?v=1"></script>
 </body>
 </html>
