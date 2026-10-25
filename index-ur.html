@@ -137,6 +137,26 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
 .zf-mood-card .zf-links{display:flex; gap:1rem; justify-content:center; align-items:center; flex-wrap:wrap; margin-top:1rem; font-size:.92rem;}
 .zf-mood-card .zf-links a{color:var(--gold-soft); text-decoration:underline; text-underline-offset:3px;}
 .hero-app{display:inline-block;margin-top:1.1rem;color:#cfcfc8;font-size:.92rem;text-decoration:underline;text-underline-offset:4px}
+.zf-greet{display:inline-block;margin-bottom:1rem;padding:.35rem 1rem;border:1px solid rgba(220,220,214,.35);border-radius:999px;color:#e6e6df;font-size:.95rem}
+.zf-game,.zf-favs{max-width:640px; margin:2.5rem auto 0; padding:0 6vw; text-align:center;}
+.zf-game .zf-k,.zf-favs .zf-k{font-size:.72rem; letter-spacing:.3em; text-transform:uppercase; color:#b4b4ad; font-family:'Lora',serif; font-weight:600;}
+.zf-game h2,.zf-favs h2{font-size:clamp(1.5rem,4vw,2rem); color:var(--gold-soft); font-weight:700; margin:.5rem 0 1.1rem;}
+.zf-game-card{padding:1.4rem 1.2rem; border-radius:10px; border:1px solid rgba(220,220,214,.4); background:rgba(220,220,214,.07);}
+.zf-game-card .zf-ml{font-size:1.2rem; line-height:1.9; color:var(--gold-soft);}
+.zf-game-card.rtl{direction:rtl;}
+.zf-game-card .zf-chips{margin-top:1rem;}
+.zf-fill{display:inline-block; min-width:3.5em; white-space:pre; text-align:center; border-bottom:2px dashed rgba(242,241,236,.7); color:#b4b4ad;}
+.zf-fill.ok{border-bottom:2px solid #9fd3a6; color:#9fd3a6; font-weight:700;}
+.zf-chip.bad{opacity:.45; text-decoration:line-through;}
+.zf-hint{margin-top:.8rem; color:#e3a0a0;} .zf-hint.ok{color:#9fd3a6;}
+.zf-game-card .zf-links{display:flex; gap:1rem; justify-content:center; align-items:center; flex-wrap:wrap; margin-top:1rem; font-size:.92rem;}
+.zf-game-card .zf-links a{color:var(--gold-soft); text-decoration:underline; text-underline-offset:3px;}
+.zf-favs{max-width:1080px; padding:0;}
+.zf-fav-track{display:flex; gap:.9rem; overflow-x:auto; scroll-snap-type:x mandatory; padding:.3rem 6vw 1rem; -webkit-overflow-scrolling:touch;}
+.zf-fav{flex:0 0 min(230px,70vw); scroll-snap-align:start; display:flex; flex-direction:column; gap:.4rem; padding:1rem 1.1rem; text-align:start; border-radius:10px; border:1px solid rgba(220,220,214,.35); background:rgba(220,220,214,.07); color:var(--gold-soft); text-decoration:none;}
+.zf-fav .zf-fk{font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:#b4b4ad; font-family:'Lora',serif;}
+.zf-fav .zf-ft{font-size:1.05rem; line-height:1.5;}
+.zf-fav-all{display:inline-block; margin-top:.4rem; color:var(--gold-soft); text-decoration:underline; text-underline-offset:3px;}
 </style>
 </head>
 <body data-page="home" class="lang-ur">
@@ -175,6 +195,7 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
 
 <main>
 <section class="hero">
+  <div class="zf-greet" id="zf-greet" hidden></div>
   <div class="eyebrow" data-en="A Collection of Ghazals &amp; Nazms" data-hi="ग़ज़लों और नज़्मों का संग्रह" data-ur="غزلوں اور نظموں کا مجموعہ">غزلوں اور نظموں کا مجموعہ</div>
   <h1 data-en="Zaan Farzaan" data-hi="ज़ान फ़रज़ान" data-ur="زان فرزان">زان فرزان</h1>
   <svg class="signature-flourish" viewBox="0 0 180 26" aria-hidden="true" focusable="false">
@@ -267,6 +288,10 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
 </section>
 
 <section class="zf-mood" id="zf-mood" hidden></section>
+
+<section class="zf-game" id="zf-game" hidden></section>
+
+<section class="zf-favs" id="zf-favs" hidden></section>
 
 <div class="stat-strip reveal">
   <div class="stat">
@@ -378,6 +403,6 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
 <script src="home-features.js?v=2"></script>
 <script src="home-carousel.js?v=4"></script>
 <script src="search.js?v=3"></script>
-<script src="home-extras.js?v=2"></script>
+<script src="home-extras.js?v=3"></script>
 </body>
 </html>

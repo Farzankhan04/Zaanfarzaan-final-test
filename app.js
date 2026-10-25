@@ -712,6 +712,20 @@ function attachCardActions(root){
 })();
 
 
+/* AUDIO COUNT — number of nazm audios that exist (audio-nazm-1.mp3 ... audio-nazm-N.mp3). Change ONLY this number when a new audio is added;
+   the home page and the nazm pages read it from here. */
+window.ZF_AUDIO_COUNT = 10;
+
+/* NAZM AUDIO — loads nazm-audio.js (audio player under each nazm) */
+(function(){
+  try{
+    var p = location.pathname, page = document.body && document.body.getAttribute('data-page');
+    if(/\/nazm-\d{1,3}(\.html)?$/.test(p) || page === 'nazms'){
+      var s = document.createElement('script'); s.src = 'nazm-audio.js?v=1'; s.defer = true; document.body.appendChild(s);
+    }
+  }catch(e){}
+})();
+
 /* COMMENTS — loads comments.js (reader comments, shown after the poet approves them) on every ghazal-N / nazm-N page
    and on the audio pages. Kept as a tiny loader so none of those pages has to be edited. */
 (function(){
