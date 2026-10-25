@@ -125,6 +125,17 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
   .nav-card .nav-card-arrow{font-size:.82rem;}
   .nav-card:last-child:nth-child(odd){grid-column:1 / -1;}
 }
+.zf-mood{max-width:640px; margin:2.5rem auto 0; padding:0 6vw; text-align:center;}
+.zf-mood .zf-k{font-size:.72rem; letter-spacing:.3em; text-transform:uppercase; color:#b4b4ad; font-family:'Lora',serif; font-weight:600;}
+.zf-mood h2{font-size:clamp(1.5rem,4vw,2rem); color:var(--gold-soft); font-weight:700; margin:.5rem 0 1.1rem;}
+.zf-chips{display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center;}
+.zf-chip,.zf-more{font:inherit; cursor:pointer; padding:.55rem 1.1rem; min-height:42px; border-radius:999px; border:1px solid rgba(220,220,214,.5); background:transparent; color:var(--gold-soft);}
+.zf-chip.on{background:var(--gold-soft); color:#151515; border-color:var(--gold-soft); font-weight:700;}
+.zf-mood-card{margin-top:1.3rem; padding:1.4rem 1.2rem; border-radius:10px; border:1px solid rgba(220,220,214,.4); background:rgba(220,220,214,.07);}
+.zf-mood-card .zf-ml{font-size:1.2rem; line-height:1.9; color:var(--gold-soft);}
+.zf-mood-card.rtl{direction:rtl;}
+.zf-mood-card .zf-links{display:flex; gap:1rem; justify-content:center; align-items:center; flex-wrap:wrap; margin-top:1rem; font-size:.92rem;}
+.zf-mood-card .zf-links a{color:var(--gold-soft); text-decoration:underline; text-underline-offset:3px;}
 </style>
 </head>
 <body data-page="home" class="lang-ur">
@@ -253,6 +264,8 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
   <div class="sher-carousel-dots" id="sher-carousel-dots"></div>
 </section>
 
+<section class="zf-mood" id="zf-mood" hidden></section>
+
 <div class="stat-strip reveal">
   <div class="stat">
     <div class="stat-num" data-count="40">0</div>
@@ -363,6 +376,6 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
 <script src="home-features.js?v=2"></script>
 <script src="home-carousel.js?v=4"></script>
 <script src="search.js?v=3"></script>
-<script src="home-extras.js?v=1"></script>
+<script src="home-extras.js?v=2"></script>
 </body>
 </html>

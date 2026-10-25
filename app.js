@@ -786,9 +786,11 @@ function attachCardActions(root){
 
     var standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
     if(standalone) return;
-    var KEY = 'zf-pwa-hide-until';
-    function hidden(){ try{ return Date.now() < parseInt(localStorage.getItem(KEY) || '0', 10); }catch(e){ return false; } }
-    function hideFor(days){ try{ localStorage.setItem(KEY, String(Date.now() + days * 864e5)); }catch(e){} }
+    /* Closing the bar hides it only for the rest of this visit (this browser session); it comes back on the next visit
+       after 1-2 pages. Old long "hide" values from earlier versions are cleared. */
+    try{ localStorage.removeItem('zf-pwa-hide-until'); }catch(e){}
+    function hidden(){ try{ return sessionStorage.getItem('zf-pwa-closed') === '1'; }catch(e){ return false; } }
+    function hideFor(){ try{ sessionStorage.setItem('zf-pwa-closed', '1'); }catch(e){} }
     // show only from the 2nd page of a visit, so a first-time visitor is not greeted by a banner
     var views = 1; try{ views = parseInt(sessionStorage.getItem('zf-pv') || '0', 10) + 1; sessionStorage.setItem('zf-pv', String(views)); }catch(e){}
 
@@ -817,15 +819,15 @@ function attachCardActions(root){
       b.querySelector('small').textContent = kind === 'prompt' ? T.sub[l] : T.ios[l];
       if(kind === 'prompt') b.querySelector('.zf-i-go').textContent = T.btn[l];
       document.body.appendChild(b);
-      b.querySelector('.zf-i-x').addEventListener('click', function(){ hideFor(kind === 'prompt' ? 14 : 30); b.remove(); });
+      b.querySelector('.zf-i-x').addEventListener('click', function(){ hideFor(); b.remove(); });
       var go = b.querySelector('.zf-i-go');
       if(go) go.addEventListener('click', function(){
         b.remove(); deferred.prompt();
-        deferred.userChoice.then(function(r){ if(r && r.outcome !== 'accepted') hideFor(14); }).catch(function(){});
+        deferred.userChoice.then(function(r){ if(r && r.outcome !== 'accepted') hideFor(); }).catch(function(){});
       });
     }
     window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); setTimeout(function(){ show('prompt', e); }, 1500); });
-    window.addEventListener('appinstalled', function(){ var b = document.getElementById('zf-install'); if(b) b.remove(); hideFor(3650); });
+    window.addEventListener('appinstalled', function(){ var b = document.getElementById('zf-install'); if(b) b.remove(); hideFor(); });
     var ua = navigator.userAgent || '';
     var iosSafari = /iPhone|iPad|iPod/.test(ua) && /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
     if(iosSafari) setTimeout(function(){ show('ios'); }, 2500);

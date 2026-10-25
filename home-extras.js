@@ -91,11 +91,60 @@
       .catch(function(){});
   }
 
-  /* ---- 4. audio count in stat strip (stat-strip counter reads data-count) ---- */
+
+  /* ---- 4. mood se sher: every sher is tagged one by one (I=ishq, J=judai, T=tanhai, U=umeed, Z=zindagi/iman).
+     MOOD[ghazal number] = one letter per sher, in order. ---- */
+  var MOOD = {"1": "ZZUZUUZJ", "2": "JIJJIJT", "3": "IJIJIIZ", "4": "JUJJIJ", "5": "ZZZZUJTT", "6": "IJIUJ", "7": "IJZZZIZZ", "8": "JIZIJ", "9": "JIJJTJJT", "10": "UIJIZTZ", "11": "JJJJTJTT", "12": "JJJJJTZZT", "13": "JJTUTTU", "14": "JZZZZTZZZ", "15": "ZZTTZZZZZTZZT", "16": "UZIZIIJUT", "17": "IIUIIIII", "18": "JJJJJJ", "19": "JZTZZZJZ", "20": "JTJZTJ", "21": "JJJTJIJ", "22": "ZJZIZZZZU", "23": "JJJJTTZUT", "24": "JJJTZZZZJ", "25": "TTZZZTZZZTT", "26": "ZITTIZZJUTJZ", "27": "IZIUUIZZZJITZ", "28": "ZTIZUTZIZ", "29": "ZZZZZZZZZZZZ", "30": "IZIIUZZIZ", "31": "TZZZITUIIZITIJJ", "32": "ZTJJJZUTJZZUJ", "33": "UJZUUIJJJJI", "34": "JJJJJJJJZU", "35": "ZZZZZZZZZ", "36": "TZZZZZZIZ", "37": "ZZIZUTJJZ", "38": "ZJZTIZZIZIII", "39": "ZZUZZZZZZJZZ", "40": "JJTJJJJ"};
+  var MOODS = [
+    ['I', 'इश्क़', 'Love', 'عشق'], ['J', 'जुदाई', 'Separation', 'جدائی'], ['T', 'तन्हाई', 'Loneliness', 'تنہائی'],
+    ['U', 'उम्मीद', 'Hope', 'امید'], ['Z', 'ज़िंदगी · ईमान', 'Life & Faith', 'زندگی · ایمان']];
+  var curMood = null, curPick = null;
+  function lines(html){
+    var doc = new DOMParser().parseFromString(html, 'text/html'), ls = doc.querySelectorAll('.line'), out = [];
+    if(ls.length){ for(var i=0;i<ls.length;i++) out.push(ls[i].textContent); }
+    else out.push(doc.body.textContent);
+    return out;
+  }
+  function pickSher(code){
+    var pool = [];
+    if(typeof GHAZAL_ITEMS === 'undefined') return null;
+    GHAZAL_ITEMS.forEach(function(g){ var m = MOOD[g.num]; if(!m) return; for(var i=0;i<m.length;i++) if(m.charAt(i) === code) pool.push([g, i]); });
+    if(!pool.length) return null;
+    var p; for(var k=0;k<6;k++){ p = pool[Math.floor(Math.random() * pool.length)]; if(!curPick || p[0] !== curPick[0] || p[1] !== curPick[1]) break; }
+    return p;
+  }
+  function renderMood(){
+    var box = document.getElementById('zf-mood'); if(!box) return;
+    var l = lang(), idx = l === 'en' ? 2 : (l === 'ur' ? 3 : 1);
+    box.textContent = '';
+    box.appendChild(el('div', 'zf-k', 'Mood'));
+    box.appendChild(el('h2', null, tr('आज मन कैसा है?', 'How are you feeling today?', 'آج دل کا کیا حال ہے؟')));
+    var chips = el('div', 'zf-chips');
+    MOODS.forEach(function(m){
+      var b = el('button', 'zf-chip' + (curMood === m[0] ? ' on' : ''), m[idx]); b.type = 'button';
+      b.addEventListener('click', function(){ curMood = m[0]; curPick = pickSher(m[0]); renderMood(); });
+      chips.appendChild(b);
+    });
+    box.appendChild(chips);
+    if(curMood && curPick){
+      var g = curPick[0], i = curPick[1], src = (l === 'en' && g.versesHtmlEn && g.versesHtmlEn[i]) ? g.versesHtmlEn[i] : g.versesHtml[i];
+      var card = el('div', 'zf-mood-card' + (l === 'ur' ? ' rtl' : ''));
+      lines(src).forEach(function(t){ card.appendChild(el('div', 'zf-ml', l === 'ur' ? ur(t) : t)); });
+      var row = el('div', 'zf-links');
+      var more = el('button', 'zf-more', tr('एक और शेर', 'Another sher', 'ایک اور شعر')); more.type = 'button';
+      more.addEventListener('click', function(){ curPick = pickSher(curMood); renderMood(); });
+      row.appendChild(more);
+      row.appendChild(link(g.id + '.html', null, tr('पूरी ग़ज़ल पढ़ें', 'Read the full ghazal', 'پوری غزل پڑھیں')));
+      card.appendChild(row); box.appendChild(card);
+    }
+    box.hidden = false;
+  }
+
+  /* ---- 5. audio count in stat strip (stat-strip counter reads data-count) ---- */
   var sa = document.getElementById('zf-stat-audio');
   if(sa) sa.setAttribute('data-count', String(ZF_AUDIO_COUNT));
 
-  function all(){ renderContinue(); renderNew(); renderVoices(); }
+  function all(){ renderContinue(); renderNew(); renderMood(); renderVoices(); }
   var prev = window.ZF_rerenderCollection;
   window.ZF_rerenderCollection = function(){ if(typeof prev === 'function') prev(); all(); };
   all(); loadVoices();
