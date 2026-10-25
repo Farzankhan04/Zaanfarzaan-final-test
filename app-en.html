@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>/* Critical splash CSS, inlined so it paints instantly (no flash of
+Hindi text while style.css/fonts are still loading on a slow connection).
+Mirrors the #zf-splash rules in style.css -- keep both in sync. */
+#zf-splash{position:fixed;inset:0;z-index:9999;visibility:visible;display:flex;align-items:center;justify-content:center;background:#151515;animation:zfSplashOut .5s ease forwards 2s}
+#zf-splash span{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.5rem,5vw,2.3rem);color:#f2f1ec;opacity:0;animation:zfSplashTextIn .5s ease forwards .08s}
+@keyframes zfSplashTextIn{0%{opacity:0;letter-spacing:.3em}100%{opacity:1;letter-spacing:.05em}}
+@keyframes zfSplashOut{0%{opacity:1;visibility:visible}99%{opacity:0;visibility:visible}100%{opacity:0;visibility:hidden;pointer-events:none}}
+html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
+@media (prefers-reduced-motion:reduce){#zf-splash{animation-duration:.01s;animation-delay:0s}#zf-splash span{animation:none;opacity:1;letter-spacing:.05em}}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>window.ZF_FORCE_LANG='en';try{document.documentElement.classList.add('zf-en-init');}catch(e){}</script>
+<title data-en="Install the App — Zaan Farzaan" data-hi="ऐप इंस्टॉल करें — ज़ान फ़रज़ान (Zaan Farzaan)" data-ur="ایپ انسٹال کریں — زان فرزان">Install the App — Zaan Farzaan</title>
+<meta name="description" content="Install Zaan Farzaan's poetry on your phone like an app.">
+<link rel="canonical" href="https://zaanfarzaan.site/app-en.html">
+<link rel="alternate" hreflang="hi" href="https://zaanfarzaan.site/app.html">
+<link rel="alternate" hreflang="en" href="https://zaanfarzaan.site/app-en.html">
+<link rel="alternate" hreflang="ur" href="https://zaanfarzaan.site/app-ur.html">
+<link rel="alternate" hreflang="x-default" href="https://zaanfarzaan.site/app.html">
+
+<meta property="og:title" content="Install the App — Zaan Farzaan">
+<meta property="og:description" content="Install Zaan Farzaan's poetry on your phone like an app.">
+<meta property="og:image" content="https://zaanfarzaan.site/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://zaanfarzaan.site/app-en.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Zaan Farzaan">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href="playfair-display-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css?v=15">
+<link rel="icon" type="image/x-icon" href="favicon.ico?v=2">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=2">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png?v=2">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
+<script>setTimeout(function(){document.documentElement.classList.remove('zf-en-init','zf-ur-init');},4000);</script>
+<style>
+#zf-install{display:none !important}
+.app-page{max-width:640px;margin:0 auto;padding:0 6vw 10vh;text-align:center}
+.app-page p.lead{color:#cfcfc8;line-height:1.8;margin:.2rem 0 1.4rem}
+.app-ben{list-style:none;padding:0;margin:0 auto 1.6rem;display:grid;gap:.5rem;text-align:start;max-width:420px}
+.app-ben li{padding:.55rem .9rem;border:1px solid rgba(220,220,214,.3);border-radius:10px;background:rgba(220,220,214,.06);color:#f2f1ec}
+.app-ben li::before{content:"✓ ";font-weight:700}
+.app-go{display:inline-block;font:inherit;cursor:pointer;padding:.95rem 2.2rem;border-radius:999px;border:1px solid #f2f1ec;background:#f2f1ec;color:#151515;font-weight:700;font-size:1.1rem;min-height:52px}
+.app-go[disabled]{background:transparent;color:#f2f1ec;cursor:default}
+.app-note{color:#b4b4ad;margin:.9rem 0 0;font-size:.95rem;min-height:1.4em}
+.app-steps{margin:2.2rem 0 0;text-align:start}
+.app-steps h2,.app-share h2{font-size:1.25rem;color:#f2f1ec;margin:0 0 .6rem;text-align:center}
+.app-box{padding:1rem 1.1rem 1rem 1.1rem;border:1px solid rgba(220,220,214,.3);border-radius:10px;background:rgba(220,220,214,.06);margin:0 0 1rem}
+.app-box.hl{border-color:#f2f1ec;box-shadow:0 0 0 2px rgba(242,241,236,.25)}
+.app-box ol{margin:.3rem 0 0;padding-inline-start:1.4rem;color:#e6e6df;line-height:1.9}
+.app-share{margin-top:2rem}
+.app-qr{width:200px;height:200px;margin:.8rem auto 1rem;border-radius:10px;overflow:hidden;background:#fff}
+.app-qr svg{display:block;width:100%;height:100%}
+.app-url{direction:ltr;color:#b4b4ad;font-family:'Lora',serif;margin:.2rem 0 1rem;word-break:break-all}
+.app-row{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap}
+.app-btn{font:inherit;cursor:pointer;text-decoration:none;padding:.65rem 1.2rem;min-height:44px;border-radius:999px;border:1px solid rgba(220,220,214,.55);background:transparent;color:#f2f1ec;display:inline-flex;align-items:center}
+</style>
+</head>
+<body data-page="app" class="lang-en">
+
+<nav>
+  <div class="brand-group">
+    <a href="index-en.html" data-en-href="index-en.html" data-ur-href="index-ur.html" class="brand-logo-link" data-hi-href="index.html"><img src="logo.png?v=2" alt="Zaan Farzaan" class="brand-logo" width="55" height="38"></a>
+    <a href="index-en.html" data-en-href="index-en.html" data-ur-href="index-ur.html" data-hi-href="index.html" class="brand" lang="en">Zaan Farzaan</a>
+  </div>
+  <div class="nav-right">
+    <div class="navlinks" id="nav-links">
+      <a href="index-en.html" data-en-href="index-en.html" data-ur-href="index-ur.html" data-page="home" data-en="Home" data-hi="होम" data-ur="ہوم" data-hi-href="index.html">Home</a>
+      <a href="about-en.html" data-en-href="about-en.html" data-ur-href="about-ur.html" data-page="about" data-en="About" data-hi="परिचय" data-ur="تعارف" data-hi-href="about.html">About</a>
+      <a href="ghazals-en.html" data-en-href="ghazals-en.html" data-ur-href="ghazals-ur.html" data-page="ghazals" data-en="Ghazals" data-hi="ग़ज़लें" data-ur="غزلیں" data-hi-href="ghazals.html">Ghazals</a>
+      <a href="nazms-en.html" data-en-href="nazms-en.html" data-ur-href="nazms-ur.html" data-page="nazms" data-en="Nazms" data-hi="नज़्में" data-ur="نظمیں" data-hi-href="nazms.html">Nazms</a>
+      <a href="audios-en.html" data-en-href="audios-en.html" data-ur-href="audios-ur.html" data-page="audios" data-en="Audio" data-hi="ऑडियो" data-ur="آڈیو" data-hi-href="audios.html">Audio</a>
+      <a href="ebook-en.html" data-en-href="ebook-en.html" data-ur-href="ebook-ur.html" data-page="ebook" data-en="Book" data-hi="किताब" data-ur="کتاب" data-hi-href="ebook.html">Book</a>
+      <a href="profiles-en.html" data-en-href="profiles-en.html" data-ur-href="profiles-ur.html" data-page="profiles" data-en="Profiles" data-hi="प्रोफ़ाइल" data-ur="پروفائل" data-hi-href="profiles.html">Profiles</a>
+      <a href="feedback-en.html" data-en-href="feedback-en.html" data-ur-href="feedback-ur.html" data-page="feedback" data-en="Feedback" data-hi="फ़ीडबैक" data-ur="فیڈبیک" data-hi-href="feedback.html">Feedback</a>
+      <a href="contact-en.html" data-en-href="contact-en.html" data-ur-href="contact-ur.html" data-page="contact" data-en="Contact" data-hi="संपर्क" data-ur="رابطہ" data-hi-href="contact.html">Contact</a>
+      <a href="support-en.html" data-en-href="support-en.html" data-ur-href="support-ur.html" data-page="support" data-en="Nazrana" data-hi="नज़राना" data-ur="نذرانہ" data-hi-href="support.html">Nazrana</a>
+      <a href="favorites-en.html" data-en-href="favorites-en.html" data-ur-href="favorites-ur.html" data-page="favorites" class="nav-fav" title="Favourites" data-hi-href="favorites.html"><svg class="nav-fav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.3l7.8-7.8 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg><span class="nav-fav-label" data-en="Favourites" data-hi="पसंद" data-ur="پسند">Favourites</span></a>
+    </div>
+    <button type="button" class="lang-toggle" id="lang-toggle" role="group" aria-label="Switch to English / अंग्रेज़ी में बदलें">
+      <span class="lang-thumb"></span>
+      <span class="lang-opt active" data-lang-option="hi" aria-selected="true">हिं</span>
+      <span class="lang-opt" data-lang-option="en" aria-selected="false">EN</span>
+      <span class="lang-opt" data-lang-option="ur" aria-selected="false">اردو</span>
+    </button>
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Open menu" data-en-aria-label="Open menu" data-ur-aria-label="مینو کھولیں" data-hi-aria-label="मेन्यू खोलें">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<main>
+<div class="page-header">
+  <div class="tag">App</div>
+  <h1 data-en="Install the App" data-hi="ऐप इंस्टॉल करें" data-ur="ایپ انسٹال کریں">Install the App</h1>
+</div>
+<div class="app-page">
+  <p class="lead" data-en="Keep Zaan Farzaan's poetry on your phone's home screen — no Play Store needed, just one tap." data-hi="ज़ान फ़रज़ान की शायरी अपने फ़ोन की होम स्क्रीन पर रखिए — बिना Play Store के, सिर्फ़ एक टैप में।" data-ur="زان فرزان کی شاعری اپنے فون کی ہوم اسکرین پر رکھیں — پلے اسٹور کے بغیر، صرف ایک ٹیپ میں۔">Keep Zaan Farzaan's poetry on your phone's home screen — no Play Store needed, just one tap.</p>
+  <ul class="app-ben">
+    <li data-en="An icon on your home screen" data-hi="होम स्क्रीन पर आइकन" data-ur="ہوم اسکرین پر آئیکن">An icon on your home screen</li>
+    <li data-en="Full screen, like a real app" data-hi="पूरी स्क्रीन में, ऐप जैसा अनुभव" data-ur="پوری اسکرین میں، ایپ جیسا تجربہ">Full screen, like a real app</li>
+    <li data-en="Pages you have read open even without internet" data-hi="पढ़े हुए पन्ने बिना इंटरनेट के भी खुलते हैं" data-ur="پڑھے ہوئے صفحات بغیر انٹرنیٹ کے بھی کھلتے ہیں">Pages you have read open even without internet</li>
+    <li data-en="Free, and very light" data-hi="मुफ़्त, और बहुत हल्का" data-ur="مفت، اور بہت ہلکا">Free, and very light</li>
+  </ul>
+  <button type="button" class="app-go" id="app-go">Install now</button>
+  <p class="app-note" id="app-note"></p>
+
+  <div class="app-steps">
+    <div class="app-box" id="box-and">
+      <h2 data-en="Android (Chrome)" data-hi="Android (Chrome)" data-ur="Android (Chrome)">Android (Chrome)</h2>
+      <ol><li data-en="Open this page in Chrome." data-hi="Chrome में यह पेज खोलिए।" data-ur="Chrome میں یہ صفحہ کھولیں۔">Open this page in Chrome.</li><li data-en="Tap ⋮ (three dots) at the top right." data-hi="ऊपर दाएँ कोने में ⋮ (तीन बिंदु) दबाइए।" data-ur="اوپر دائیں کونے میں ⋮ (تین نقطے) دبائیں۔">Tap ⋮ (three dots) at the top right.</li><li data-en="Choose “Install app” or “Add to Home screen”." data-hi="“ऐप इंस्टॉल करें” या “Add to Home screen” चुनिए।" data-ur="“Install app” یا “Add to Home screen” چنیں۔">Choose “Install app” or “Add to Home screen”.</li></ol>
+    </div>
+    <div class="app-box" id="box-ios">
+      <h2 data-en="iPhone (Safari)" data-hi="iPhone (Safari)" data-ur="iPhone (Safari)">iPhone (Safari)</h2>
+      <ol><li data-en="Open this page in Safari (not Chrome)." data-hi="Safari में यह पेज खोलिए (Chrome में नहीं)।" data-ur="Safari میں یہ صفحہ کھولیں (Chrome میں نہیں)۔">Open this page in Safari (not Chrome).</li><li data-en="Tap the Share button (square with an arrow) at the bottom." data-hi="नीचे Share बटन (चौकोर में ऊपर तीर) दबाइए।" data-ur="نیچے Share بٹن (چوکور میں اوپر تیر) دبائیں۔">Tap the Share button (square with an arrow) at the bottom.</li><li data-en="Choose “Add to Home Screen”, then tap Add." data-hi="“Add to Home Screen” चुनकर Add दबाइए।" data-ur="“Add to Home Screen” چن کر Add دبائیں۔">Choose “Add to Home Screen”, then tap Add.</li></ol>
+    </div>
+  </div>
+
+  <div class="app-share">
+    <h2 data-en="Share it with friends" data-hi="दोस्तों को भेजिए" data-ur="دوستوں کو بھیجیں">Share it with friends</h2>
+    <p data-en="Send this link, or let them scan the QR code." data-hi="यह लिंक भेजिए, या QR कोड स्कैन करवाइए।" data-ur="یہ لنک بھیجیں، یا QR کوڈ اسکین کروائیں۔">Send this link, or let them scan the QR code.</p>
+    <div class="app-qr"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41 41" shape-rendering="crispEdges" role="img" aria-label="QR code: zaanfarzaan.site/app.html"><rect width="41" height="41" fill="#fff"/><path fill="#151515" d="M6 6h1v1h-1zM7 6h1v1h-1zM8 6h1v1h-1zM9 6h1v1h-1zM10 6h1v1h-1zM11 6h1v1h-1zM12 6h1v1h-1zM15 6h1v1h-1zM21 6h1v1h-1zM22 6h1v1h-1zM25 6h1v1h-1zM26 6h1v1h-1zM28 6h1v1h-1zM29 6h1v1h-1zM30 6h1v1h-1zM31 6h1v1h-1zM32 6h1v1h-1zM33 6h1v1h-1zM34 6h1v1h-1zM6 7h1v1h-1zM12 7h1v1h-1zM14 7h1v1h-1zM15 7h1v1h-1zM17 7h1v1h-1zM18 7h1v1h-1zM26 7h1v1h-1zM28 7h1v1h-1zM34 7h1v1h-1zM6 8h1v1h-1zM8 8h1v1h-1zM9 8h1v1h-1zM10 8h1v1h-1zM12 8h1v1h-1zM15 8h1v1h-1zM16 8h1v1h-1zM17 8h1v1h-1zM20 8h1v1h-1zM22 8h1v1h-1zM24 8h1v1h-1zM28 8h1v1h-1zM30 8h1v1h-1zM31 8h1v1h-1zM32 8h1v1h-1zM34 8h1v1h-1zM6 9h1v1h-1zM8 9h1v1h-1zM9 9h1v1h-1zM10 9h1v1h-1zM12 9h1v1h-1zM14 9h1v1h-1zM15 9h1v1h-1zM17 9h1v1h-1zM22 9h1v1h-1zM23 9h1v1h-1zM25 9h1v1h-1zM28 9h1v1h-1zM30 9h1v1h-1zM31 9h1v1h-1zM32 9h1v1h-1zM34 9h1v1h-1zM6 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM10 10h1v1h-1zM12 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM19 10h1v1h-1zM20 10h1v1h-1zM21 10h1v1h-1zM24 10h1v1h-1zM25 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h1v1h-1zM31 10h1v1h-1zM32 10h1v1h-1zM34 10h1v1h-1zM6 11h1v1h-1zM12 11h1v1h-1zM14 11h1v1h-1zM16 11h1v1h-1zM19 11h1v1h-1zM20 11h1v1h-1zM21 11h1v1h-1zM22 11h1v1h-1zM26 11h1v1h-1zM28 11h1v1h-1zM34 11h1v1h-1zM6 12h1v1h-1zM7 12h1v1h-1zM8 12h1v1h-1zM9 12h1v1h-1zM10 12h1v1h-1zM11 12h1v1h-1zM12 12h1v1h-1zM14 12h1v1h-1zM16 12h1v1h-1zM18 12h1v1h-1zM20 12h1v1h-1zM22 12h1v1h-1zM24 12h1v1h-1zM26 12h1v1h-1zM28 12h1v1h-1zM29 12h1v1h-1zM30 12h1v1h-1zM31 12h1v1h-1zM32 12h1v1h-1zM33 12h1v1h-1zM34 12h1v1h-1zM18 13h1v1h-1zM19 13h1v1h-1zM21 13h1v1h-1zM25 13h1v1h-1zM6 14h1v1h-1zM7 14h1v1h-1zM8 14h1v1h-1zM9 14h1v1h-1zM10 14h1v1h-1zM12 14h1v1h-1zM13 14h1v1h-1zM14 14h1v1h-1zM15 14h1v1h-1zM16 14h1v1h-1zM18 14h1v1h-1zM20 14h1v1h-1zM21 14h1v1h-1zM23 14h1v1h-1zM24 14h1v1h-1zM26 14h1v1h-1zM27 14h1v1h-1zM29 14h1v1h-1zM31 14h1v1h-1zM33 14h1v1h-1zM6 15h1v1h-1zM8 15h1v1h-1zM9 15h1v1h-1zM11 15h1v1h-1zM13 15h1v1h-1zM15 15h1v1h-1zM21 15h1v1h-1zM22 15h1v1h-1zM23 15h1v1h-1zM24 15h1v1h-1zM25 15h1v1h-1zM26 15h1v1h-1zM27 15h1v1h-1zM28 15h1v1h-1zM29 15h1v1h-1zM30 15h1v1h-1zM34 15h1v1h-1zM6 16h1v1h-1zM8 16h1v1h-1zM12 16h1v1h-1zM13 16h1v1h-1zM14 16h1v1h-1zM15 16h1v1h-1zM17 16h1v1h-1zM18 16h1v1h-1zM23 16h1v1h-1zM6 17h1v1h-1zM7 17h1v1h-1zM9 17h1v1h-1zM15 17h1v1h-1zM16 17h1v1h-1zM17 17h1v1h-1zM20 17h1v1h-1zM22 17h1v1h-1zM25 17h1v1h-1zM26 17h1v1h-1zM27 17h1v1h-1zM28 17h1v1h-1zM29 17h1v1h-1zM31 17h1v1h-1zM33 17h1v1h-1zM6 18h1v1h-1zM7 18h1v1h-1zM8 18h1v1h-1zM10 18h1v1h-1zM11 18h1v1h-1zM12 18h1v1h-1zM13 18h1v1h-1zM15 18h1v1h-1zM17 18h1v1h-1zM23 18h1v1h-1zM25 18h1v1h-1zM31 18h1v1h-1zM32 18h1v1h-1zM6 19h1v1h-1zM10 19h1v1h-1zM14 19h1v1h-1zM16 19h1v1h-1zM18 19h1v1h-1zM19 19h1v1h-1zM20 19h1v1h-1zM21 19h1v1h-1zM24 19h1v1h-1zM25 19h1v1h-1zM27 19h1v1h-1zM28 19h1v1h-1zM29 19h1v1h-1zM30 19h1v1h-1zM34 19h1v1h-1zM7 20h1v1h-1zM11 20h1v1h-1zM12 20h1v1h-1zM14 20h1v1h-1zM15 20h1v1h-1zM16 20h1v1h-1zM19 20h1v1h-1zM20 20h1v1h-1zM21 20h1v1h-1zM24 20h1v1h-1zM27 20h1v1h-1zM29 20h1v1h-1zM30 20h1v1h-1zM31 20h1v1h-1zM32 20h1v1h-1zM6 21h1v1h-1zM8 21h1v1h-1zM9 21h1v1h-1zM11 21h1v1h-1zM13 21h1v1h-1zM14 21h1v1h-1zM16 21h1v1h-1zM18 21h1v1h-1zM19 21h1v1h-1zM21 21h1v1h-1zM22 21h1v1h-1zM25 21h1v1h-1zM26 21h1v1h-1zM30 21h1v1h-1zM33 21h1v1h-1zM6 22h1v1h-1zM8 22h1v1h-1zM12 22h1v1h-1zM13 22h1v1h-1zM15 22h1v1h-1zM16 22h1v1h-1zM18 22h1v1h-1zM20 22h1v1h-1zM23 22h1v1h-1zM25 22h1v1h-1zM31 22h1v1h-1zM32 22h1v1h-1zM6 23h1v1h-1zM7 23h1v1h-1zM8 23h1v1h-1zM9 23h1v1h-1zM11 23h1v1h-1zM15 23h1v1h-1zM16 23h1v1h-1zM22 23h1v1h-1zM25 23h1v1h-1zM26 23h1v1h-1zM28 23h1v1h-1zM29 23h1v1h-1zM30 23h1v1h-1zM32 23h1v1h-1zM34 23h1v1h-1zM6 24h1v1h-1zM8 24h1v1h-1zM9 24h1v1h-1zM10 24h1v1h-1zM11 24h1v1h-1zM12 24h1v1h-1zM13 24h1v1h-1zM14 24h1v1h-1zM15 24h1v1h-1zM16 24h1v1h-1zM17 24h1v1h-1zM18 24h1v1h-1zM21 24h1v1h-1zM22 24h1v1h-1zM24 24h1v1h-1zM26 24h1v1h-1zM27 24h1v1h-1zM29 24h1v1h-1zM30 24h1v1h-1zM32 24h1v1h-1zM6 25h1v1h-1zM8 25h1v1h-1zM9 25h1v1h-1zM10 25h1v1h-1zM11 25h1v1h-1zM15 25h1v1h-1zM17 25h1v1h-1zM20 25h1v1h-1zM21 25h1v1h-1zM22 25h1v1h-1zM24 25h1v1h-1zM27 25h1v1h-1zM28 25h1v1h-1zM30 25h1v1h-1zM33 25h1v1h-1zM6 26h1v1h-1zM7 26h1v1h-1zM9 26h1v1h-1zM10 26h1v1h-1zM12 26h1v1h-1zM13 26h1v1h-1zM14 26h1v1h-1zM15 26h1v1h-1zM17 26h1v1h-1zM23 26h1v1h-1zM26 26h1v1h-1zM27 26h1v1h-1zM28 26h1v1h-1zM29 26h1v1h-1zM30 26h1v1h-1zM32 26h1v1h-1zM33 26h1v1h-1zM34 26h1v1h-1zM14 27h1v1h-1zM15 27h1v1h-1zM18 27h1v1h-1zM19 27h1v1h-1zM20 27h1v1h-1zM22 27h1v1h-1zM26 27h1v1h-1zM30 27h1v1h-1zM31 27h1v1h-1zM32 27h1v1h-1zM33 27h1v1h-1zM34 27h1v1h-1zM6 28h1v1h-1zM7 28h1v1h-1zM8 28h1v1h-1zM9 28h1v1h-1zM10 28h1v1h-1zM11 28h1v1h-1zM12 28h1v1h-1zM14 28h1v1h-1zM19 28h1v1h-1zM20 28h1v1h-1zM21 28h1v1h-1zM24 28h1v1h-1zM25 28h1v1h-1zM26 28h1v1h-1zM28 28h1v1h-1zM30 28h1v1h-1zM31 28h1v1h-1zM32 28h1v1h-1zM6 29h1v1h-1zM12 29h1v1h-1zM15 29h1v1h-1zM18 29h1v1h-1zM19 29h1v1h-1zM21 29h1v1h-1zM22 29h1v1h-1zM24 29h1v1h-1zM25 29h1v1h-1zM26 29h1v1h-1zM30 29h1v1h-1zM6 30h1v1h-1zM8 30h1v1h-1zM9 30h1v1h-1zM10 30h1v1h-1zM12 30h1v1h-1zM14 30h1v1h-1zM18 30h1v1h-1zM20 30h1v1h-1zM21 30h1v1h-1zM22 30h1v1h-1zM23 30h1v1h-1zM24 30h1v1h-1zM26 30h1v1h-1zM27 30h1v1h-1zM28 30h1v1h-1zM29 30h1v1h-1zM30 30h1v1h-1zM32 30h1v1h-1zM33 30h1v1h-1zM6 31h1v1h-1zM8 31h1v1h-1zM9 31h1v1h-1zM10 31h1v1h-1zM12 31h1v1h-1zM14 31h1v1h-1zM15 31h1v1h-1zM22 31h1v1h-1zM23 31h1v1h-1zM24 31h1v1h-1zM25 31h1v1h-1zM31 31h1v1h-1zM32 31h1v1h-1zM33 31h1v1h-1zM34 31h1v1h-1zM6 32h1v1h-1zM8 32h1v1h-1zM9 32h1v1h-1zM10 32h1v1h-1zM12 32h1v1h-1zM14 32h1v1h-1zM15 32h1v1h-1zM17 32h1v1h-1zM18 32h1v1h-1zM21 32h1v1h-1zM23 32h1v1h-1zM28 32h1v1h-1zM29 32h1v1h-1zM30 32h1v1h-1zM31 32h1v1h-1zM32 32h1v1h-1zM33 32h1v1h-1zM6 33h1v1h-1zM12 33h1v1h-1zM14 33h1v1h-1zM15 33h1v1h-1zM17 33h1v1h-1zM20 33h1v1h-1zM21 33h1v1h-1zM24 33h1v1h-1zM26 33h1v1h-1zM27 33h1v1h-1zM28 33h1v1h-1zM31 33h1v1h-1zM33 33h1v1h-1zM6 34h1v1h-1zM7 34h1v1h-1zM8 34h1v1h-1zM9 34h1v1h-1zM10 34h1v1h-1zM11 34h1v1h-1zM12 34h1v1h-1zM14 34h1v1h-1zM15 34h1v1h-1zM17 34h1v1h-1zM23 34h1v1h-1zM25 34h1v1h-1zM27 34h1v1h-1zM28 34h1v1h-1zM31 34h1v1h-1zM32 34h1v1h-1z"/></svg></div>
+    <div class="app-url">zaanfarzaan.site/app.html</div>
+    <div class="app-row">
+      <a class="app-btn" id="app-wa" href="#" target="_blank" rel="noopener"><span data-en="Send on WhatsApp" data-hi="WhatsApp पर भेजें" data-ur="WhatsApp پر بھیجیں">Send on WhatsApp</span></a>
+      <button type="button" class="app-btn" id="app-copy">Copy link</button>
+    </div>
+  </div>
+</div>
+</main>
+
+<footer class="site-footer" lang="en" dir="ltr">
+  <div class="fineprint">© 2026 Zaan Farzaan. All rights reserved.</div>
+  <div class="foot-links">
+    <a href="mailto:zaanfarzaan1@gmail.com">Email</a>
+    <a href="https://instagram.com/zaanfarzaan" target="_blank" rel="noopener">Instagram</a>
+    <a href="terms.html">Terms</a>
+    <a href="refund-policy.html">Refund Policy</a>
+  </div>
+</footer>
+
+<script src="i18n.js?v=4"></script>
+<script src="app.js?v=5"></script>
+<script>
+(function(){
+  var go=document.getElementById('app-go'), note=document.getElementById('app-note'), deferred=null;
+  var ua=navigator.userAgent||'', ios=/iPhone|iPad|iPod/.test(ua), safari=/Safari/.test(ua)&&!/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
+  var standalone=(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||window.navigator.standalone===true;
+  function L(){var l=window.ZF_LANG;return l==='en'?1:(l==='ur'?2:0);}
+  var T={done:["✓ ऐप पहले से इंस्टॉल है", "✓ The app is already installed", "✓ ایپ پہلے سے انسٹال ہے"],ios_btn:["नीचे iPhone के स्टेप देखें ↓", "See the iPhone steps below ↓", "نیچے iPhone کے مراحل دیکھیں ↓"],ios_other:["iPhone पर यह पेज Safari में खोलिए, तभी इंस्टॉल हो पाएगा।", "On iPhone, open this page in Safari — install only works there.", "iPhone پر یہ صفحہ Safari میں کھولیں، تبھی انسٹال ہو سکے گا۔"],manual:["अगर बटन से इंस्टॉल न हो, तो नीचे दिए स्टेप से कीजिए।", "If the button does not install it, follow the steps below.", "اگر بٹن سے انسٹال نہ ہو تو نیچے دیے مراحل سے کریں۔"],btn:["अभी इंस्टॉल करें", "Install now", "ابھی انسٹال کریں"],copied:["कॉपी हो गया ✓", "Copied ✓", "کاپی ہو گیا ✓"],copy:["लिंक कॉपी करें", "Copy link", "لنک کاپی کریں"]};
+  function t(k){return T[k][L()];}
+  function hl(id,on){var e=document.getElementById(id); if(e) e.classList[on?'add':'remove']('hl');}
+  function paint(){
+    if(standalone){ go.textContent=t('done'); go.disabled=true; note.textContent=''; return; }
+    if(ios){ go.textContent=t('ios_btn'); note.textContent = safari ? '' : t('ios_other'); hl('box-ios',true); return; }
+    go.textContent=t('btn'); go.disabled=false; note.textContent = deferred ? '' : t('manual'); hl('box-and',!deferred);
+  }
+  window.addEventListener('beforeinstallprompt',function(e){ e.preventDefault(); deferred=e; paint(); });
+  window.addEventListener('appinstalled',function(){ standalone=true; paint(); });
+  go.addEventListener('click',function(){
+    if(ios){ var b=document.getElementById('box-ios'); if(b&&b.scrollIntoView) b.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+    if(deferred){ var d=deferred; deferred=null; d.prompt(); d.userChoice.then(function(){paint();}).catch(function(){}); }
+    else { var b2=document.getElementById('box-and'); if(b2&&b2.scrollIntoView) b2.scrollIntoView({behavior:'smooth',block:'center'}); }
+  });
+  var cp=document.getElementById('app-copy');
+  cp.addEventListener('click',function(){
+    var u='https://zaanfarzaan.site/app.html';
+    function ok(){ cp.textContent=t('copied'); setTimeout(function(){cp.textContent=t('copy');},1800); }
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(u).then(ok).catch(function(){}); }
+    else { var i=document.createElement('input'); i.value=u; document.body.appendChild(i); i.select(); try{document.execCommand('copy');ok();}catch(e){} i.remove(); }
+  });
+  var wa=document.getElementById('app-wa');
+  function setWa(){ var m=["ज़ान फ़रज़ान की शायरी का ऐप — यहाँ से इंस्टॉल कीजिए:", "Zaan Farzaan's poetry app — install it here:", "زان فرزان کی شاعری کا ایپ — یہاں سے انسٹال کریں:"][L()]; wa.href='https://wa.me/?text='+encodeURIComponent(m+' https://zaanfarzaan.site/app.html'); }
+  setWa(); paint();
+  var prev=window.ZF_rerenderCollection; window.ZF_rerenderCollection=function(){ if(typeof prev==='function') prev(); paint(); setWa(); cp.textContent=t('copy'); };
+})();
+</script>
+</body>
+</html>
