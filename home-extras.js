@@ -142,10 +142,10 @@
 
   /* ---- 6. greeting by time of day ---- */
   var GREET = {
-    morning: ['सुप्रभात ☀ — नई सुबह, नया शेर', 'Good morning ☀ — a new sher for a new day', 'صبح بخیر ☀ — نئی صبح، نیا شعر'],
-    noon:    ['आदाब — दोपहर की फ़ुर्सत में कुछ पढ़िए', 'Good afternoon — a little poetry for your break', 'آداب — دوپہر کی فرصت میں کچھ پڑھیے'],
-    evening: ['शुभ संध्या — शाम की चाय के साथ एक शेर', 'Good evening — a sher with your evening tea', 'شام بخیر — شام کی چائے کے ساتھ ایک شعر'],
-    night:   ['शब-ब-ख़ैर 🌙 — रात की ख़ामुशी में कुछ सुनिए', 'Good night 🌙 — something to hear in the quiet of the night', 'شب بخیر 🌙 — رات کی خاموشی میں کچھ سنیے']
+    morning: ['☀️ सुप्रभात', '☀️ Good morning', '☀️ صبح بخیر'],
+    noon:    ['🌤️ आदाब', '🌤️ Good afternoon', '🌤️ آداب'],
+    evening: ['🌆 शुभ संध्या', '🌆 Good evening', '🌆 شام بخیر'],
+    night:   ['🌙 शब-ब-ख़ैर', '🌙 Good night', '🌙 شب بخیر']
   };
   function renderGreet(){
     var g = document.getElementById('zf-greet'); if(!g) return;
