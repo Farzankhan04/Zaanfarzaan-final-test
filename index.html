@@ -160,6 +160,22 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
 .hero{background:linear-gradient(180deg,rgba(21,21,21,.62) 0%,rgba(21,21,21,.50) 45%,rgba(21,21,21,.78) 85%,#151515 100%),url(sher-2.jpg) 62% 28%/cover no-repeat;}
 .hero h1{text-shadow:0 2px 18px rgba(0,0,0,.65);} .hero .sher{text-shadow:0 2px 14px rgba(0,0,0,.7);}
 .zf-greet{position:absolute;left:14px;top:12px;z-index:2;margin:0;padding:.2rem .65rem;border:1px solid rgba(220,220,214,.3);border-radius:999px;background:rgba(21,21,21,.45);color:#e6e6df;font-size:.8rem;line-height:1.5;text-align:left;direction:ltr}
+.zf-badges,.zf-idea{max-width:640px; margin:2.5rem auto 0; padding:0 6vw; text-align:center;}
+.zf-badges .zf-k,.zf-idea .zf-k{font-size:.72rem; letter-spacing:.3em; text-transform:uppercase; color:#b4b4ad; font-family:'Lora',serif; font-weight:600;}
+.zf-badges h2,.zf-idea h2{font-size:clamp(1.5rem,4vw,2rem); color:var(--gold-soft); font-weight:700; margin:.5rem 0 .8rem;}
+.zf-streak{display:inline-block; margin:0 0 .6rem; padding:.4rem 1rem; border-radius:999px; border:1px solid rgba(255,170,80,.55); background:rgba(255,170,80,.1); color:#ffd9a8; font-weight:600;}
+.zf-bcount{color:#b4b4ad; font-size:.9rem; margin-bottom:.9rem;}
+.zf-bgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:.6rem;}
+@media (min-width:560px){.zf-bgrid{grid-template-columns:repeat(4,1fr);}}
+.zf-badge{padding:.8rem .4rem; border-radius:10px; border:1px solid rgba(220,220,214,.2); background:rgba(220,220,214,.04); opacity:.5; filter:grayscale(1);}
+.zf-badge.on{opacity:1; filter:none; border-color:rgba(242,241,236,.6); background:rgba(220,220,214,.12);}
+.zf-badge .zf-be{font-size:1.6rem; line-height:1.2;} .zf-badge .zf-bn{font-size:.82rem; color:var(--gold-soft); margin-top:.25rem; line-height:1.3;} .zf-badge .zf-bp{font-size:.75rem; color:#b4b4ad; margin-top:.2rem;}
+.zf-idea-p{color:#cfcfc8; line-height:1.8; margin:0 0 1rem;}
+.zf-idea-card{padding:1.2rem; border-radius:10px; border:1px solid rgba(220,220,214,.4); background:rgba(220,220,214,.07); display:flex; flex-direction:column; gap:.7rem; position:relative; text-align:start;}
+.zf-idea-card textarea,.zf-idea-card input[type=text]{font:inherit; width:100%; padding:.7rem .8rem; border-radius:8px; border:1px solid rgba(220,220,214,.35); background:#101010; color:var(--gold-soft);}
+.zf-idea-card textarea{resize:vertical; min-height:110px;}
+.zf-idea-card .zf-chip{align-self:center;}
+.zf-idea-note{font-size:.8rem; color:#b4b4ad; text-align:center;}
 </style>
 </head>
 <body data-page="home">
@@ -296,6 +312,10 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
 
 <section class="zf-favs" id="zf-favs" hidden></section>
 
+<section class="zf-badges" id="zf-badges" hidden></section>
+
+<section class="zf-idea" id="zf-idea" hidden></section>
+
 <div class="stat-strip reveal">
   <div class="stat">
     <div class="stat-num" data-count="40">0</div>
@@ -406,6 +426,6 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
 <script src="home-features.js?v=2"></script>
 <script src="home-carousel.js?v=4"></script>
 <script src="search.js?v=3"></script>
-<script src="home-extras.js?v=4"></script>
+<script src="home-extras.js?v=5"></script>
 </body>
 </html>

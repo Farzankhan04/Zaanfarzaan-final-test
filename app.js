@@ -392,23 +392,50 @@ function attachCardActions(root){
   });
 }
 
-/* READING PROGRESS — mark a ghazal/nazm detail page as "read" the moment
-   someone opens it. Storage-only here (shared on every page via app.js);
-   the home page's badge that DISPLAYS the count lives in home-features.js
-   and reads the same 'zf-read-poems' key. Nothing is sent anywhere. */
-(function(){
-  var m = window.location.pathname.match(/\/(?:(?:ghazals|nazms)\/)?(ghazal|nazm)-(\d+)\.html$/);
-  if(!m) return;
-  var id = m[1] + '-' + m[2];
+/* READING PROGRESS — records which ghazal/nazm a reader opened ("read" list + "where you left off"), plus visit days (streak) and
+   audios played (badges). Storage-only, on this device; nothing is sent anywhere. The home page shows them (home-extras.js).
+   A poem counts when it is opened as its own page (ghazal-N / nazm-N) OR inside the ghazals / nazms list view (#poem-detail). */
+function zfMarkRead(id){
+  if(!/^(ghazal|nazm)-\d{1,3}$/.test(id || '')) return;
   try{ localStorage.setItem('zf-last-read', JSON.stringify({id: id, t: Date.now()})); }catch(e){}
   try{
     var read = JSON.parse(localStorage.getItem('zf-read-poems') || '[]');
-    if(read.indexOf(id) === -1){
-      read.push(id);
-      localStorage.setItem('zf-read-poems', JSON.stringify(read));
-    }
+    if(read.indexOf(id) === -1){ read.push(id); localStorage.setItem('zf-read-poems', JSON.stringify(read)); }
+  }catch(e){}
+}
+(function(){
+  var m = window.location.pathname.match(/\/(?:(?:ghazals|nazms)\/)?(ghazal|nazm)-(\d+)\.html$/);
+  if(m) zfMarkRead(m[1] + '-' + m[2]);
+  var det = document.getElementById('poem-detail');
+  if(det){
+    var last = '';
+    var scan = function(){
+      var c = det.querySelector('.card.manuscript[id]');
+      if(c && c.id !== last){ last = c.id; zfMarkRead(c.id); } else if(!c){ last = ''; }
+    };
+    new MutationObserver(scan).observe(det, {childList: true});
+    scan();
+  }
+})();
+
+/* VISIT DAYS — one entry per calendar day (device's local date) the site was opened; the home page turns them into a streak. */
+(function(){
+  try{
+    var d = new Date(), key = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+    var days = JSON.parse(localStorage.getItem('zf-visit-days') || '[]');
+    if(days.indexOf(key) === -1){ days.push(key); if(days.length > 800) days = days.slice(-800); localStorage.setItem('zf-visit-days', JSON.stringify(days)); }
   }catch(e){}
 })();
+
+/* AUDIOS HEARD — remembers which nazm audios this reader pressed play on (for the badges). */
+document.addEventListener('play', function(e){
+  try{
+    var src = e.target && e.target.getAttribute && e.target.getAttribute('src'), m = /audio-nazm-(\d+)\.mp3/.exec(src || '');
+    if(!m) return;
+    var heard = JSON.parse(localStorage.getItem('zf-heard-audio') || '[]'), n = parseInt(m[1], 10);
+    if(heard.indexOf(n) === -1){ heard.push(n); localStorage.setItem('zf-heard-audio', JSON.stringify(heard)); }
+  }catch(err){}
+}, true);
 
 /* PAGE TRANSITIONS — a soft fade when moving between pages on this site,
    instead of the usual hard cut. Only intercepts plain left-clicks on

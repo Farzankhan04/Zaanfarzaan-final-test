@@ -245,7 +245,7 @@
       var opts = el('div', 'zf-chips');
       GAME.opts.forEach(function(w){
         var b = el('button', 'zf-chip' + (GAME.wrong[w] ? ' bad' : ''), w); b.type = 'button'; b.disabled = !!GAME.wrong[w];
-        b.addEventListener('click', function(){ if(w === GAME.ans) GAME.solved = true; else GAME.wrong[w] = true; renderGame(); });
+        b.addEventListener('click', function(){ if(w === GAME.ans){ GAME.solved = true; try{ localStorage.setItem('zf-game-wins', String((parseInt(localStorage.getItem('zf-game-wins') || '0', 10) || 0) + 1)); }catch(e){} } else GAME.wrong[w] = true; renderGame(); renderBadges(); });
         opts.appendChild(b);
       });
       card.appendChild(opts);
@@ -261,11 +261,115 @@
     card.appendChild(row2); box.appendChild(card); box.hidden = false;
   }
 
+  /* ---- 9. streak + badges (all stored on this device only) ---- */
+  function jget(k){ try{ return JSON.parse(localStorage.getItem(k) || '[]') || []; }catch(e){ return []; } }
+  function dayKey(d){ return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function streak(){
+    var days = jget('zf-visit-days'), set = {}; days.forEach(function(x){ set[x] = 1; });
+    var d = new Date(), n = 0;
+    if(!set[dayKey(d)]) d.setDate(d.getDate() - 1);          /* not counted yet today: still show yesterday's streak */
+    while(set[dayKey(d)]){ n++; d.setDate(d.getDate() - 1); }
+    var best = 0; try{ best = parseInt(localStorage.getItem('zf-best-streak') || '0', 10) || 0; }catch(e){}
+    if(n > best){ best = n; try{ localStorage.setItem('zf-best-streak', String(best)); }catch(e){} }
+    return {now: n, best: best};
+  }
+  function stats(){
+    var read = jget('zf-read-poems'), g = 0, n = 0;
+    read.forEach(function(id){ if(id.indexOf('ghazal-') === 0) g++; else if(id.indexOf('nazm-') === 0) n++; });
+    var wins = 0; try{ wins = parseInt(localStorage.getItem('zf-game-wins') || '0', 10) || 0; }catch(e){}
+    var gTotal = (typeof GHAZAL_ITEMS !== 'undefined') ? GHAZAL_ITEMS.length : 40, nTotal = (typeof NAZM_ITEMS !== 'undefined') ? NAZM_ITEMS.length : 10;
+    return {g: g, n: n, gTotal: gTotal, nTotal: nTotal, heard: jget('zf-heard-audio').length, aTotal: ZF_AUDIO_COUNT, favs: jget('zf-favorite-poems').length, wins: wins, best: streak().best};
+  }
+  function badgeList(s){
+    return [
+      ['📖', ['पहला पन्ना','First page','پہلا صفحہ'], s.g + s.n, 1],
+      ['🌹', ['ग़ज़ल-प्रेमी','Ghazal lover','غزل کے دلدادہ'], s.g, 10],
+      ['👑', ['ग़ज़ल-उस्ताद','Ghazal master','غزل کے استاد'], s.g, s.gTotal],
+      ['🌙', ['नज़्म-प्रेमी','Nazm lover','نظم کے دلدادہ'], s.n, 5],
+      ['🏅', ['नज़्म-उस्ताद','Nazm master','نظم کے استاد'], s.n, s.nTotal],
+      ['🎧', ['सुनने वाला','Listener','سننے والا'], s.heard, 1],
+      ['🎶', ['पूरा श्रोता','Full listener','مکمل سامع'], s.heard, s.aTotal],
+      ['❤️', ['दिल से','From the heart','دل سے'], s.favs, 5],
+      ['🎯', ['शेर-शनास','Sher-connoisseur','شعر شناس'], s.wins, 3],
+      ['🔥', ['3 दिन','3-day streak','3 دن'], s.best, 3],
+      ['🔥', ['7 दिन','7-day streak','7 دن'], s.best, 7],
+      ['🔥', ['30 दिन','30-day streak','30 دن'], s.best, 30]
+    ];
+  }
+  function renderBadges(){
+    var box = document.getElementById('zf-badges'); if(!box) return;
+    var st = streak(), s = stats(), list = badgeList(s), got = 0;
+    list.forEach(function(b){ if(b[2] >= b[3]) got++; });
+    box.textContent = '';
+    box.appendChild(el('div', 'zf-k', 'Badges'));
+    box.appendChild(el('h2', null, tr('आपके बैज', 'Your badges', 'آپ کے بیج')));
+    if(st.now >= 1){
+      box.appendChild(el('div', 'zf-streak', '🔥 ' + tr(st.now + ' दिन लगातार', st.now + (st.now === 1 ? '-day streak' : '-day streak'), st.now + ' دن مسلسل') + (st.best > st.now ? '  ·  ' + tr('सबसे लंबी: ', 'Best: ', 'سب سے طویل: ') + st.best : '')));
+    }
+    box.appendChild(el('div', 'zf-bcount', got + ' / ' + list.length));
+    var grid = el('div', 'zf-bgrid');
+    list.forEach(function(b){
+      var done = b[2] >= b[3], t = el('div', 'zf-badge' + (done ? ' on' : ''));
+      t.appendChild(el('div', 'zf-be', b[0])); t.appendChild(el('div', 'zf-bn', b[1][lang() === 'en' ? 1 : (lang() === 'ur' ? 2 : 0)]));
+      t.appendChild(el('div', 'zf-bp', done ? '✓' : Math.min(b[2], b[3]) + '/' + b[3])); grid.appendChild(t);
+    });
+    box.appendChild(grid); box.hidden = false;
+    /* streak chip next to the greeting */
+    var g = document.getElementById('zf-greet');
+    if(g && st.now >= 2 && g.textContent.indexOf('🔥') === -1) g.textContent += '  🔥' + st.now;
+  }
+
+  /* ---- 10. "apna khayaal do": readers send a feeling / idea for a future poem (stored in Supabase table "ideas", only the poet can read it) ---- */
+  var IDEA = {
+    h:   ['आपका ख़याल', 'Your thought', 'آپ کا خیال'],
+    p:   ['अपना एहसास या ख़याल लिखिए — जिसे आप शेर में देखना चाहते हैं। हो सकता है अगली ग़ज़ल या नज़्म उसी से बने।',
+          'Write a feeling or a thought you would like to see turned into a sher. The next ghazal or nazm may begin from it.',
+          'اپنا احساس یا خیال لکھیے — جسے آپ شعر میں دیکھنا چاہتے ہیں۔ ہو سکتا ہے اگلی غزل یا نظم اسی سے بنے۔'],
+    ta:  ['यहाँ अपना ख़याल लिखिए…', 'Write your thought here…', 'یہاں اپنا خیال لکھیے…'],
+    nm:  ['आपका नाम (ज़रूरी नहीं)', 'Your name (optional)', 'آپ کا نام (ضروری نہیں)'],
+    go:  ['ख़याल भेजें', 'Send my thought', 'خیال بھیجیں'],
+    ok:  ['शुक्रिया! आपका ख़याल पहुँच गया 🙏', 'Thank you! Your thought has reached me 🙏', 'شکریہ! آپ کا خیال پہنچ گیا 🙏'],
+    bad: ['नहीं जा सका, थोड़ी देर बाद फिर कोशिश कीजिए।', 'Could not send, please try again in a little while.', 'نہیں جا سکا، تھوڑی دیر بعد دوبارہ کوشش کیجیے۔'],
+    short: ['कृपया कम से कम कुछ शब्द लिखिए।', 'Please write at least a few words.', 'براہ کرم کم از کم چند الفاظ لکھیے۔'],
+    note:['आपका ख़याल सिर्फ़ शायर को दिखता है, सबके सामने नहीं छपता।', 'Your thought is seen only by the poet; it is not shown publicly.', 'آپ کا خیال صرف شاعر کو نظر آتا ہے، سب کے سامنے نہیں چھپتا۔']
+  };
+  function ti(k){ return tr(IDEA[k][0], IDEA[k][1], IDEA[k][2]); }
+  var ideaState = {text: '', name: '', done: false};
+  function renderIdea(){
+    var box = document.getElementById('zf-idea'); if(!box) return;
+    box.textContent = '';
+    box.appendChild(el('div', 'zf-k', 'Idea'));
+    box.appendChild(el('h2', null, ti('h')));
+    box.appendChild(el('p', 'zf-idea-p', ti('p')));
+    var card = el('div', 'zf-idea-card');
+    if(ideaState.done){ card.appendChild(el('div', 'zf-hint ok', ti('ok'))); box.appendChild(card); box.hidden = false; return; }
+    var ta = el('textarea'); ta.maxLength = 700; ta.rows = 4; ta.placeholder = ti('ta'); ta.setAttribute('dir', 'auto'); ta.value = ideaState.text;
+    ta.setAttribute('aria-label', ti('h'));
+    var nm = el('input'); nm.type = 'text'; nm.maxLength = 60; nm.placeholder = ti('nm'); nm.setAttribute('dir', 'auto'); nm.value = ideaState.name; nm.autocomplete = 'off';
+    var hp = el('input'); hp.type = 'text'; hp.name = 'website'; hp.tabIndex = -1; hp.autocomplete = 'off'; hp.setAttribute('aria-hidden', 'true'); hp.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;opacity:0';
+    var go = el('button', 'zf-chip on', ti('go')); go.type = 'button';
+    var msg = el('div', 'zf-hint');
+    ta.addEventListener('input', function(){ ideaState.text = ta.value; }); nm.addEventListener('input', function(){ ideaState.name = nm.value; });
+    go.addEventListener('click', function(){
+      var body = ta.value.trim(); msg.className = 'zf-hint';
+      if(body.length < 3){ msg.textContent = ti('short'); return; }
+      if(hp.value){ ideaState.done = true; renderIdea(); return; }         /* bots: pretend it worked */
+      go.disabled = true;
+      fetch(SB_URL + '/rest/v1/ideas', {method: 'POST', headers: {apikey: SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal'},
+        body: JSON.stringify({name: nm.value.trim() || null, body: body})})
+        .then(function(r){ if(!r.ok) throw new Error('x'); ideaState = {text: '', name: '', done: true}; renderIdea(); })
+        .catch(function(){ go.disabled = false; msg.className = 'zf-hint'; msg.textContent = ti('bad'); });
+    });
+    card.appendChild(ta); card.appendChild(nm); card.appendChild(hp); card.appendChild(go); card.appendChild(msg);
+    card.appendChild(el('div', 'zf-idea-note', ti('note')));
+    box.appendChild(card); box.hidden = false;
+  }
+
   /* ---- 5. audio count in stat strip (stat-strip counter reads data-count) ---- */
   var sa = document.getElementById('zf-stat-audio');
   if(sa) sa.setAttribute('data-count', String(ZF_AUDIO_COUNT));
 
-  function all(){ renderGreet(); renderContinue(); renderNew(); renderMood(); renderGame(); renderFavs(); renderVoices(); }
+  function all(){ renderGreet(); renderContinue(); renderNew(); renderMood(); renderGame(); renderFavs(); renderBadges(); renderIdea(); renderVoices(); }
   var prev = window.ZF_rerenderCollection;
   window.ZF_rerenderCollection = function(){ if(typeof prev === 'function') prev(); all(); };
   all(); loadVoices();

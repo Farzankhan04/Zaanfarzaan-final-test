@@ -173,6 +173,9 @@
   /* ---------- entry buttons ---------- */
   function addToRow(row){
     if(row.querySelector('.zf-share-pic')) return;
+    /* nazms are one continuous poem, not couplets: no photo card for them */
+    var scope0 = row.closest('.poem-detail') || document, card0 = scope0.querySelector('.card.manuscript') || document.querySelector('.card.manuscript');
+    if(!card0 || /^nazm-/.test(card0.id || '') || card0.querySelector('.nazm-line')) return;
     var a = el('a', 'zf-share-pic', t('btn')); a.href = '#'; a.setAttribute('role', 'button');
     a.addEventListener('click', function(e){
       e.preventDefault();

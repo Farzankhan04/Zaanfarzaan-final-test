@@ -39,7 +39,7 @@ button:disabled{opacity:.5}
   var ADMIN  = 'zaanfarzaan1@gmail.com';
   var KEY = 'zf-admin-session';
   var app = document.getElementById('app');
-  var session = null, all = [], tab = 'pending';
+  var session = null, all = [], ideas = [], tab = 'pending';
 
   function loadSess(){ try{ return JSON.parse(localStorage.getItem(KEY) || 'null'); }catch(e){ return null; } }
   function saveSess(s){ try{ if(s) localStorage.setItem(KEY, JSON.stringify(s)); else localStorage.removeItem(KEY); }catch(e){} }
@@ -107,12 +107,25 @@ button:disabled{opacity:.5}
     right.appendChild(rb); right.appendChild(lb); top.appendChild(right); app.appendChild(top);
 
     var tabs = el('div', {class:'tabs'});
-    [['pending','Pending (' + pend.length + ')'], ['approved','Approved (' + appr.length + ')']].forEach(function(t){
+    [['pending','Pending (' + pend.length + ')'], ['approved','Approved (' + appr.length + ')'], ['ideas','Khayaal (' + ideas.length + ')']].forEach(function(t){
       var b = el('button', {type:'button', text:t[1], 'aria-pressed': tab === t[0] ? 'true' : 'false'});
       b.addEventListener('click', function(){ tab = t[0]; render(); }); tabs.appendChild(b);
     });
     app.appendChild(tabs);
 
+    if(tab === 'ideas'){
+      if(!ideas.length) app.appendChild(el('p', {class:'msg', text:'Abhi koi khayaal nahi aaya.'}));
+      ideas.forEach(function(c){
+        var card = el('div', {class:'card'});
+        card.appendChild(el('div', {class:'meta', text: new Date(c.created_at).toLocaleString() + (c.name ? '  ·  ' + c.name : '  ·  (naam nahi)')}));
+        card.appendChild(el('div', {class:'body', dir:'auto', text: c.body}));
+        var row = el('div', {class:'row'});
+        var cp = el('button', {type:'button', text:'Copy'}); cp.addEventListener('click', function(){ try{ navigator.clipboard.writeText(c.body); cp.textContent = 'Copied'; }catch(e){} }); row.appendChild(cp);
+        var d = el('button', {type:'button', class:'bad', text:'Delete'}); d.addEventListener('click', function(){ if(confirm('Ye khayaal hamesha ke liye delete karna hai?')) delIdea(c, d); }); row.appendChild(d);
+        card.appendChild(row); app.appendChild(card);
+      });
+      return;
+    }
     var list = tab === 'pending' ? pend : appr;
     if(!list.length) app.appendChild(el('p', {class:'msg', text: tab === 'pending' ? 'Koi pending comment nahi.' : 'Abhi koi approved comment nahi.'}));
     list.forEach(function(c){
@@ -142,12 +155,21 @@ button:disabled{opacity:.5}
         if(what === 'delete') all = all.filter(function(x){ return x.id !== c.id; }); else c.approved = (what === 'approve'); render(); })
       .catch(function(){ btn.disabled = false; alert('Nahi ho paya. Refresh karke fir koshish karo (shayad login purana ho gaya).'); });
   }
+  function delIdea(c, btn){
+    btn.disabled = true;
+    ensureFresh().then(function(){ return authFetch('/rest/v1/ideas?id=eq.' + encodeURIComponent(c.id) + '&select=id', {method:'DELETE', headers:{'Prefer':'return=representation'}}); })
+      .then(function(r){ if(!r.ok) throw new Error('act'); return r.json(); })
+      .then(function(rows){ if(!rows.length) throw new Error('none'); ideas = ideas.filter(function(x){ return x.id !== c.id; }); render(); })
+      .catch(function(){ btn.disabled = false; alert('Nahi ho paya. Refresh karke fir koshish karo.'); });
+  }
   function reload(){
     app.innerHTML = ''; app.appendChild(el('p', {class:'msg', text:'Loading…'}));
     ensureFresh().then(function(){ return whoami(); }).then(function(email){
       if(email.toLowerCase() !== ADMIN){ session = null; saveSess(null); showLogin('Ye email (' + email + ') admin nahi hai.'); return null; }
       return authFetch('/rest/v1/comments?select=id,created_at,page,name,body,approved&order=created_at.desc&limit=500')
-        .then(function(r){ if(!r.ok) throw new Error('load'); return r.json(); }).then(function(rows){ all = rows; render(); });
+        .then(function(r){ if(!r.ok) throw new Error('load'); return r.json(); }).then(function(rows){ all = rows;
+          return authFetch('/rest/v1/ideas?select=id,created_at,name,body&order=created_at.desc&limit=500').then(function(r){ return r.ok ? r.json() : []; }).catch(function(){ return []; });
+        }).then(function(rows){ ideas = rows; render(); });
     }).catch(function(){ session = null; saveSess(null); showLogin('Login purana ho gaya. Dobara login karo.'); });
   }
 
