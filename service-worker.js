@@ -10,7 +10,7 @@
 var CACHE = 'zf-v1';
 var PRECACHE = ['/', '/index.html', '/index-en.html', '/index-ur.html', '/ghazals.html', '/ghazals-en.html', '/ghazals-ur.html',
   '/nazms.html', '/nazms-en.html', '/nazms-ur.html', '/audios.html', '/audios-en.html', '/audios-ur.html', '/about.html', '/offline.html',
-  '/style.css', '/app.js', '/i18n.js', '/collection.js', '/search.js', '/home-features.js', '/home-carousel.js', '/home-extras.js', '/mood-data.js', '/sher-image.js', '/lafz.js', '/lafz-data.js', '/wall.js', '/audios.js', '/comments.js',
+  '/style.css', '/app.js', '/i18n.js', '/collection.js', '/search.js', '/home-features.js', '/home-carousel.js', '/home-extras.js', '/mood-data.js', '/sher-image.js', '/lafz.js', '/lafz-data.js', '/ashaar.js', '/audios.js', '/comments.js',
   '/ghazals-data.js', '/nazms-data.js', '/playfair-display-600.woff2', '/logo.png', '/favicon.ico', '/icon-192.png', '/manifest.json'];
 for(var i = 1; i <= 40; i++) PRECACHE.push('/ghazal-' + i + '.html');
 for(var j = 1; j <= 10; j++) PRECACHE.push('/nazm-' + j + '.html');

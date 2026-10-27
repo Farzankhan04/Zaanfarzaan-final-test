@@ -86,14 +86,14 @@ window.ZF_NEWSLETTER_USERNAME = 'Zaanfarzaan';
   /* Sher Wall link — added here so none of the 50+ pages has to be edited. */
   (function(){
     var aud = document.querySelector('.navlinks a[data-page="audios"]');
-    if(aud && !document.querySelector('.navlinks a[data-page="wall"]')){
+    if(aud && !document.querySelector('.navlinks a[data-page="ashaar"]')){
       var cur = window.ZF_LANG, suf = cur === 'en' ? '-en' : (cur === 'ur' ? '-ur' : '');
       var a = document.createElement('a');
-      a.href = 'wall' + suf + '.html'; a.setAttribute('data-page', 'wall');
-      a.setAttribute('data-hi-href', 'wall.html'); a.setAttribute('data-en-href', 'wall-en.html'); a.setAttribute('data-ur-href', 'wall-ur.html');
-      a.setAttribute('data-hi', 'दीवार'); a.setAttribute('data-en', 'Wall'); a.setAttribute('data-ur', 'دیوار');
-      a.textContent = cur === 'en' ? 'Wall' : (cur === 'ur' ? 'دیوار' : 'दीवार');
-      aud.parentNode.insertBefore(a, aud.nextSibling);
+      a.href = 'ashaar' + suf + '.html'; a.setAttribute('data-page', 'ashaar');
+      a.setAttribute('data-hi-href', 'ashaar.html'); a.setAttribute('data-en-href', 'ashaar-en.html'); a.setAttribute('data-ur-href', 'ashaar-ur.html');
+      a.setAttribute('data-hi', "अश'आर"); a.setAttribute('data-en', "Ash'aar"); a.setAttribute('data-ur', 'اشعار');
+      a.textContent = cur === 'en' ? "Ash'aar" : (cur === 'ur' ? 'اشعار' : "अश'आर");
+      aud.parentNode.insertBefore(a, aud);
     }
   })();
   const here = document.body.getAttribute('data-page');
@@ -771,7 +771,7 @@ window.ZF_AUDIO_COUNT = 10;
   try{
     if(window.self !== window.top || /admin-comments/.test(location.pathname)) return;
     var p = document.body && document.body.getAttribute('data-page');
-    if(p === 'home' || p === 'wall' || p === 'ghazals' || p === 'nazms' || /\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(location.pathname) || /(^|\/)(index[^\/]*\.html)?$/.test(location.pathname)){
+    if(p === 'home' || p === 'ashaar' || p === 'ghazals' || p === 'nazms' || /\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(location.pathname) || /(^|\/)(index[^\/]*\.html)?$/.test(location.pathname)){
       var s = document.createElement('script'); s.src = 'sher-image.js?v=1'; s.defer = true; document.body.appendChild(s);
     }
   }catch(e){}
