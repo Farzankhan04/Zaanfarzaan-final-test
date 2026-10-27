@@ -176,6 +176,14 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
 .zf-idea-card textarea{resize:vertical; min-height:110px;}
 .zf-idea-card .zf-chip{align-self:center;}
 .zf-idea-note{font-size:.8rem; color:#b4b4ad; text-align:center;}
+.hero .sher{display:flex; flex-direction:column; align-items:center;}
+.hero .sher .line{display:inline-block; opacity:1; animation:zfWrite 2.6s steps(34,end) .5s both;}
+.hero .sher .line:nth-of-type(2){animation-delay:3.2s;}
+@keyframes zfWrite{from{clip-path:inset(-10% 100% -10% 0);} to{clip-path:inset(-10% -2% -10% 0);}}
+body.lang-ur .hero .sher .line{animation-name:zfWriteRtl;}
+@keyframes zfWriteRtl{from{clip-path:inset(-10% 0 -10% 100%);} to{clip-path:inset(-10% 0 -10% -2%);}}
+.hero .attribution{animation-delay:5.8s;}
+@media (prefers-reduced-motion:reduce){.hero .sher .line{animation:none; clip-path:none;}}
 </style>
 </head>
 <body data-page="home" class="lang-en">
@@ -355,6 +363,12 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
     <p data-en="Listen to the nazms in audio — they keep playing while you read, and you can download them too." data-hi="10 नज़्में ऑडियो में सुनिए — पढ़ते वक़्त भी चलती रहेंगी, डाउनलोड भी कर सकते हैं।" data-ur="نظمیں آڈیو میں سنیے — پڑھتے وقت بھی چلتی رہیں گی، ڈاؤن لوڈ بھی کر سکتے ہیں۔">Listen to the nazms in audio — they keep playing while you read, and you can download them too.</p>
     <div class="nav-card-arrow" data-en="Listen →" data-hi="सुनें →" data-ur="← سنیں">Listen →</div>
   </a>
+  <a href="wall-en.html" data-en-href="wall-en.html" data-ur-href="wall-ur.html" data-hi-href="wall.html" class="nav-card reveal">
+    <div class="nav-card-tag hide-on-en">Wall</div>
+    <h3 data-en="Sher Wall" data-hi="शेर की दीवार" data-ur="اشعار کی دیوار">Sher Wall</h3>
+    <p data-en="All the shers as photo cards — pick a mood, scroll, share." data-hi="सारे शेर फ़ोटो कार्ड की तरह — मूड चुनिए, स्क्रॉल कीजिए, शेयर कीजिए।" data-ur="سارے اشعار فوٹو کارڈ کی طرح — موڈ چنیے، اسکرول کیجیے، شیئر کیجیے۔">All the shers as photo cards — pick a mood, scroll, share.</p>
+    <div class="nav-card-arrow" data-en="Open →" data-hi="खोलें →" data-ur="← کھولیں">Open →</div>
+  </a>
   <a href="ebook-en.html" data-en-href="ebook-en.html" data-ur-href="ebook-ur.html" class="nav-card reveal" data-hi-href="ebook.html">
     <div class="nav-card-tag hide-on-en">eBook</div>
     <h3 data-en="Book" data-hi="किताब" data-ur="کتاب">Book</h3>
@@ -426,6 +440,7 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
 <script src="home-features.js?v=2"></script>
 <script src="home-carousel.js?v=4"></script>
 <script src="search.js?v=3"></script>
-<script src="home-extras.js?v=5"></script>
+<script src="mood-data.js?v=1"></script>
+<script src="home-extras.js?v=6"></script>
 </body>
 </html>

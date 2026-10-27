@@ -170,6 +170,8 @@
     sync(); x.focus();
   }
 
+  window.ZF_openPhotoCard = openPic;   /* used by the Sher Wall */
+
   /* ---------- entry buttons ---------- */
   function addToRow(row){
     if(row.querySelector('.zf-share-pic')) return;
