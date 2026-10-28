@@ -84,13 +84,36 @@
     return haystack;
   }
 
+  /* Search brain (zf-find.js): finds any word/sher in any script and shows it highlighted in the results. Loaded as soon as the page opens. */
+  let lastQuery = '';
+  function loadFind(){
+    if(window.ZFS){ window.ZFS.ready(function(){ if(searchInput && searchInput.value) renderList(searchInput.value); }); return; }
+    const sc = document.createElement('script'); sc.src = 'zf-find.js?v=1';
+    sc.onload = function(){ window.ZFS.ready(function(){ if(searchInput && searchInput.value) renderList(searchInput.value); }); };
+    document.head.appendChild(sc);
+  }
+  loadFind();
+  /* After a poem is opened from a search, mark the searched word inside it and scroll to it. */
+  function markSearched(){
+    if(!window.ZFS || !searchInput || !searchInput.value.trim()) return;
+    window.ZFS.highlightIn(detailEl, window.ZFS.parse(searchInput.value));
+  }
+
   function renderList(filter, animateEntrance){
     const q = (filter || '').trim().toLowerCase().normalize('NFC');
     listEl.innerHTML = '';
-    let matches = 0;
+    let matches = 0, P0 = null;
+    lastQuery = q;
     ITEMS.forEach(function(item){
-      const haystack = itemHaystack(item);
-      if(q !== '' && !haystack.includes(q)) return;
+      let snip = '', P = null;
+      if(q !== ''){
+        if(window.ZFS){
+          P = P0 || (P0 = window.ZFS.parse(filter));
+          const m = window.ZFS.match(item, P);
+          if(!m) return;
+          if(m.verses.length) snip = window.ZFS.snippets(item, m, P, lang(), 3);
+        } else if(!itemHaystack(item).includes(q)) return;
+      }
       const shownIndex = matches;
       matches++;
       const a = document.createElement('a');
@@ -110,7 +133,7 @@
       a.innerHTML =
         '<div class="poem-item-text">' +
           '<div class="poem-item-num">' + item.kind + '</div>' +
-          '<div class="poem-item-line">' + itemLabel(item) + '</div>' +
+          '<div class="poem-item-line">' + (P ? window.ZFS.highlightHtml(itemLabel(item), P.vars) : itemLabel(item)) + '</div>' + snip +
         '</div>' +
         '<div class="poem-item-go">' + arrow('forward') + '</div>';
       a.addEventListener('click', function(e){
@@ -212,6 +235,7 @@
     detailEl.classList.add('open');
     if(window.location.hash !== '#' + id) history.pushState({id:id}, '', '#' + id);
     window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+    markSearched();
   }
 
   function closeDetail(){

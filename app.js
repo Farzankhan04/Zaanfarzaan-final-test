@@ -790,6 +790,23 @@ window.ZF_AUDIO_COUNT = 10;
   }catch(e){}
 })();
 
+/* SEARCH HIGHLIGHT — a poem page opened from a search result (…/ghazal-5.html?q=word) marks the searched word and scrolls to it */
+(function(){
+  try{
+    var m = /[?&]q=([^&]+)/.exec(location.search);
+    if(!m || !/\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(location.pathname)) return;
+    var q = decodeURIComponent(m[1].replace(/\+/g, ' ')), vm = /[?&]v=(\d+)/.exec(location.search), vi = vm ? +vm[1] : null;
+    var s = document.createElement('script'); s.src = 'zf-find.js?v=1';
+    s.onload = function(){
+      window.ZFS.ready(function(){
+        var go = function(){ var c = document.querySelector('.card.manuscript'); if(c) window.ZFS.highlightIn(c, window.ZFS.parse(q), true, vi); };
+        go(); setTimeout(function(){ var c = document.querySelector('.card.manuscript'); if(c) window.ZFS.highlightIn(c, window.ZFS.parse(q), false, vi); }, 900);
+      });
+    };
+    document.head.appendChild(s);
+  }catch(e){}
+})();
+
 /* GOATCOUNTER — private visitor analytics (only the site owner sees it; no cookies, no popup). Not counted on the admin page or when testing locally. */
 (function(){
   try{

@@ -14,7 +14,7 @@
   var noResultsEl = document.getElementById('site-search-no-results');
   if(!input || !resultsEl) return;
 
-  var MAX_RESULTS = 10;
+  var MAX_RESULTS = 12;
 
   /* Hand-picked, not auto-generated — these are the pages worth jumping
      to from a search box (skips Terms/Refund Policy; nobody searches
@@ -97,14 +97,21 @@
   function pageLabel(p){ var l = lang(); return l === 'en' ? p.title.en : (l === 'ur' ? p.title.ur : p.title.hi); }
   function pageUrl(p){ var l = lang(); return l === 'en' ? p.url.en : (l === 'ur' ? p.url.ur : p.url.hi); }
 
-  function resultRow(kindLabel, label, url){
+  /* ZFS (zf-find.js) does the real matching: any word or sher, in Hindi/Roman/Urdu spelling, plus meanings from the glossary. */
+  function loadFind(cb){
+    if(window.ZFS){ cb(); return; }
+    var s = document.createElement('script'); s.src = 'zf-find.js?v=1'; s.onload = cb; document.head.appendChild(s);
+  }
+  loadFind(function(){ window.ZFS.ready(function(){ if(input.value) render(input.value); }); });
+
+  function resultRow(kindLabel, label, url, snipHtml){
     var a = document.createElement('a');
     a.href = url;
     a.className = 'poem-item';
     a.innerHTML =
       '<div class="poem-item-text">' +
         '<div class="poem-item-num">' + kindLabel + '</div>' +
-        '<div class="poem-item-line">' + label + '</div>' +
+        '<div class="poem-item-line">' + label + '</div>' + (snipHtml || '') +
       '</div>' +
       '<div class="poem-item-go">' + arrow() + '</div>';
     return a;
@@ -117,41 +124,31 @@
       noResultsEl.classList.remove('show');
       return;
     }
+    if(!window.ZFS){ loadFind(function(){ render(input.value); }); return; }
+    var Z = window.ZFS, P = Z.parse(query), L = lang();
+    var qs = '?q=' + encodeURIComponent(query.trim());
 
-    /* Pages rank first (typing "contact" should jump straight to the
-       Contact page, not wait behind a coincidental verse match), then
-       poems matched in the title/first line, then poems only matched
-       somewhere in the verses. */
+    /* Pages rank first (typing "contact" should jump straight to the Contact page), then poems whose title/first line
+       matches, then poems that only match somewhere inside the verses (those show the matching sher). */
     var pageHits = [], titleHits = [], bodyHits = [];
 
     PAGES.forEach(function(p){
       if(pageHay(p).indexOf(q) !== -1){
-        pageHits.push(resultRow(PAGE_KIND[lang()], pageLabel(p), pageUrl(p)));
+        pageHits.push(resultRow(PAGE_KIND[L], pageLabel(p), pageUrl(p)));
       }
     });
 
-    if(typeof GHAZAL_ITEMS !== 'undefined'){
-      GHAZAL_ITEMS.forEach(function(item){
-        var url = item.id + '.html';
-        if(ghazalTitleHay(item).indexOf(q) !== -1){
-          titleHits.push(resultRow(item.kind, ghazalLabel(item), url));
-        }else if(ghazalFullHay(item).indexOf(q) !== -1){
-          bodyHits.push(resultRow(item.kind, ghazalLabel(item), url));
-        }
-      });
+    function addPoem(item, labelFn){
+      var m = Z.match(item, P); if(!m) return;
+      var label = Z.highlightHtml(labelFn(item), P.vars), url = item.id + '.html' + qs + (m.verses.length ? '&v=' + m.verses[0] : '');
+      var row = resultRow(item.kind, label, url, m.verses.length ? Z.snippets(item, m, P, L, 2) : '');
+      (m.title ? titleHits : bodyHits).push({row: row, n: m.verses.length});
     }
-    if(typeof NAZM_ITEMS !== 'undefined'){
-      NAZM_ITEMS.forEach(function(item){
-        var url = item.id + '.html';
-        if(nazmTitleHay(item).indexOf(q) !== -1){
-          titleHits.push(resultRow(item.kind, nazmLabel(item), url));
-        }else if(nazmFullHay(item).indexOf(q) !== -1){
-          bodyHits.push(resultRow(item.kind, nazmLabel(item), url));
-        }
-      });
-    }
+    if(typeof GHAZAL_ITEMS !== 'undefined') GHAZAL_ITEMS.forEach(function(it){ addPoem(it, ghazalLabel); });
+    if(typeof NAZM_ITEMS !== 'undefined') NAZM_ITEMS.forEach(function(it){ addPoem(it, nazmLabel); });
+    bodyHits.sort(function(a, b){ return b.n - a.n; });
 
-    var all = pageHits.concat(titleHits, bodyHits).slice(0, MAX_RESULTS);
+    var all = pageHits.concat(titleHits.map(function(x){ return x.row; }), bodyHits.map(function(x){ return x.row; })).slice(0, MAX_RESULTS);
     all.forEach(function(row){ resultsEl.appendChild(row); });
     noResultsEl.classList.toggle('show', all.length === 0);
   }

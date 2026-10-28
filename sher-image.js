@@ -13,7 +13,14 @@
     post:  ['पोस्ट', 'Post', 'پوسٹ'], story: ['स्टोरी', 'Story', 'اسٹوری'],
     dl:    ['⬇ डाउनलोड', '⬇ Download', '⬇ ڈاؤن لوڈ'], share: ['शेयर करें', 'Share', 'شیئر کریں'],
     close: ['बंद करें', 'Close', 'بند کریں'], bg: ['पीछे की तस्वीर', 'Background', 'پس منظر'],
-    plain: ['सादा', 'Plain', 'سادہ'], fail: ['नहीं बन पाया, फिर कोशिश कीजिए', 'Could not make it, please try again', 'نہیں بن سکا، دوبارہ کوشش کیجیے']
+    plain: ['सादा', 'Plain', 'سادہ'],
+    dbtn:  ['💌 समर्पित करें', '💌 Dedicate', '💌 منسوب کریں'],
+    dtitle: ['समर्पण कार्ड', 'Dedication card', 'منسوب کارڈ'],
+    dh:    ['किसी अपने के नाम', 'For someone you love', 'کسی اپنے کے نام'],
+    dsg:   ['इस ग़ज़ल का कोई भी शेर चुनिए, नाम लिखिए और कार्ड भेज दीजिए।', 'Pick any sher from this ghazal, write a name, and send the card.', 'اس غزل کا کوئی بھی شعر چنیے، نام لکھیے اور کارڈ بھیج دیجیے۔'],
+    dsn:   ['इस नज़्म के कुछ मिसरे चुनिए, नाम लिखिए और कार्ड भेज दीजिए।', 'Pick a few lines of this nazm, write a name, and send the card.', 'اس نظم کے کچھ مصرعے چنیے، نام لکھیے اور کارڈ بھیج دیجیے۔'],
+    dph:   ['किसके नाम? (जैसे: अम्मी, दोस्त)', 'Whose name? (e.g. Ammi, my friend)', 'کس کے نام؟ (جیسے: امی، دوست)'],
+    dnm:   ['नाम (वैकल्पिक)', 'Name (optional)', 'نام (اختیاری)'], fail: ['नहीं बन पाया, फिर कोशिश कीजिए', 'Could not make it, please try again', 'نہیں بن سکا، دوبارہ کوشش کیجیے']
   };
   function lang(){ var l = window.ZF_LANG; return l === 'en' ? 1 : (l === 'ur' ? 2 : 0); }
   function t(k){ return T[k][lang()]; }
@@ -47,7 +54,7 @@
     if(/[ऀ-ॿ]/.test(text)) return {fam: '"Noto Serif Devanagari","Tiro Devanagari Hindi",serif', rtl: false, lh: 1.75, style: ''};
     return {fam: '"Lora","Cormorant Garamond",Georgia,serif', rtl: false, lh: 1.7, style: 'italic '};
   }
-  function draw(canvas, lines, bgSrc, fmt, cb){
+  function draw(canvas, lines, bgSrc, fmt, cb, name){
     var d = FMT[fmt], W = d[0], H = d[1]; canvas.width = W; canvas.height = H;
     var ctx = canvas.getContext('2d'), sample = lines.join(' '), F = fontFor(sample);
     function go(img){
@@ -66,7 +73,7 @@
       /* frame */
       ctx.strokeStyle = 'rgba(242,241,236,.35)'; ctx.lineWidth = 2; ctx.strokeRect(36, 36, W - 72, H - 72);
       /* text fit */
-      var maxW = W - 220, availH = H - 560, size = 74, widest;
+      var maxW = W - 220, availH = H - (name ? 700 : 560), size = 74, widest;
       for(; size > 28; size -= 2){
         ctx.font = F.style + size + 'px ' + F.fam; widest = 0;
         lines.forEach(function(l){ widest = Math.max(widest, ctx.measureText(l).width); });
@@ -82,6 +89,14 @@
       ctx.strokeStyle = 'rgba(242,241,236,.55)'; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.moveTo(W / 2 - 70, y0 - lh * .8 - 30); ctx.lineTo(W / 2 + 70, y0 - lh * .8 - 30); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(W / 2 - 70, y0 + (lines.length - .2) * lh + 10); ctx.lineTo(W / 2 + 70, y0 + (lines.length - .2) * lh + 10); ctx.stroke();
+      if(name){
+        var lab = F.rtl ? (name + ' \u06a9\u06d2 \u0644\u06cc\u06d2') : (/[\u0900-\u097F]/.test(sample) ? (name + ' \u0915\u0947 \u0932\u093f\u090f') : ('For ' + name));
+        var NF = fontFor(lab + ' ' + sample), ny = Math.max(150, y0 - lh * .8 - 110), ns = 54;
+        ctx.textBaseline = 'middle'; ctx.textAlign = 'center'; ctx.direction = NF.rtl ? 'rtl' : 'ltr';
+        for(; ns > 28; ns -= 2){ ctx.font = (NF.rtl || /[\u0900-\u097F]/.test(lab) ? '' : 'italic ') + ns + 'px ' + NF.fam; if(ctx.measureText('\u2661  ' + lab).width <= W - 240) break; }
+        ctx.fillStyle = '#e9e7de'; ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 12;
+        ctx.fillText('\u2661  ' + lab, W / 2, ny); ctx.shadowBlur = 0; ctx.direction = 'ltr';
+      }
       ctx.textBaseline = 'alphabetic'; ctx.fillStyle = '#f5f4ee';
       ctx.font = 'italic 54px "Lora",Georgia,serif'; ctx.fillText('Zaan Farzaan', W / 2, H - 150);
       ctx.font = '30px "Lora",Georgia,serif'; ctx.fillStyle = 'rgba(245,244,238,.75)'; ctx.fillText('zaanfarzaan.site', W / 2, H - 100);
@@ -89,7 +104,7 @@
     }
     var fams = ['"Noto Nastaliq Urdu"', '"Noto Serif Devanagari"', '"Lora"'];
     var p = (document.fonts && document.fonts.load) ? Promise.all([
-        document.fonts.load((F.style + '40px ' + F.fam), sample), document.fonts.load('italic 54px "Lora"', 'Zaan Farzaan')]).catch(function(){}) : Promise.resolve();
+        document.fonts.load((F.style + '40px ' + F.fam), sample), document.fonts.load('italic 54px "Lora"', 'Zaan Farzaan')].concat(name ? [document.fonts.load('40px ' + fontFor(name + sample).fam, name + ' \u0915\u0947 \u0932\u093f\u090f')] : [])).catch(function(){}) : Promise.resolve();
     p.then(function(){ getImg(bgSrc, go); });
   }
 
@@ -109,16 +124,26 @@
       '.zf-pic-th{width:48px;height:48px;border-radius:8px;border:2px solid transparent;padding:0;overflow:hidden;cursor:pointer;background:#333;color:#f2f1ec;font-size:.7rem}' +
       '.zf-pic-th.on{border-color:#f2f1ec}.zf-pic-th img{width:100%;height:100%;object-fit:cover;display:block}' +
       '.zf-pic-pn{font-size:.9rem;color:#b4b4ad;min-width:3em;text-align:center;direction:ltr}' +
-      '.zf-pic-lab{width:100%;text-align:center;font-size:.8rem;color:#b4b4ad}';
+      '.zf-pic-lab{width:100%;text-align:center;font-size:.8rem;color:#b4b4ad}' +
+      '.zf-pic-name{margin:0 0 10px}.zf-pic-in{width:100%;font:inherit;font-size:1rem;color:#f2f1ec;background:#111;border:1px solid rgba(220,220,214,.4);border-radius:10px;padding:.6rem .8rem;min-height:42px;text-align:center}' +
+      '.zf-pic-in:focus{outline:none;border-color:#f2f1ec}' +
+      '.zf-dedicate{margin:1.6rem auto 0;max-width:520px;text-align:center;border:1px solid rgba(220,220,214,.3);border-radius:14px;padding:1.2rem 1.1rem 1.3rem;background:rgba(255,255,255,.03)}' +
+      '.zf-ded-h{font-size:1.15rem;font-weight:600;margin:.2rem 0 .35rem}.zf-ded-s{font-size:.9rem;opacity:.75;line-height:1.55;margin:0 0 .9rem}' +
+      '.zf-ded-b{font:inherit;cursor:pointer;min-height:44px;padding:0 1.3rem;border-radius:999px;border:1px solid #f2f1ec;background:#f2f1ec;color:#151515;font-weight:700}';
     document.head.appendChild(s);
   }
-  function openPic(pages){
+  function openPic(pages, opts){
     if(!pages || !pages.length) return;
+    opts = opts || {};
     addCss();
-    var st = {p: 0, bg: 1, fmt: 'post'};
+    var st = {p: 0, bg: 1, fmt: 'post', name: ''};
     var ov = el('div', 'zf-pic-ov'), box = el('div', 'zf-pic-box'); ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true');
-    var top = el('div', 'zf-pic-top'); top.appendChild(el('span', null, t('title')));
+    var top = el('div', 'zf-pic-top'); top.appendChild(el('span', null, t(opts.dedicate ? 'dtitle' : 'title')));
     var x = el('button', 'zf-pic-x', '✕'); x.type = 'button'; x.setAttribute('aria-label', t('close')); top.appendChild(x);
+    var nameRow = el('div', 'zf-pic-row zf-pic-name'), nameIn = el('input', 'zf-pic-in');
+    nameIn.type = 'text'; nameIn.maxLength = 28; nameIn.placeholder = t(opts.dedicate ? 'dph' : 'dnm'); nameIn.setAttribute('autocomplete', 'off'); nameIn.setAttribute('aria-label', t('dnm'));
+    nameRow.appendChild(nameIn);
+    var nt = null; nameIn.addEventListener('input', function(){ clearTimeout(nt); nt = setTimeout(function(){ st.name = nameIn.value.trim(); sync(); }, 180); });
     var cv = el('canvas', 'zf-pic-cv');
     var rowF = el('div', 'zf-pic-row'), rowP = el('div', 'zf-pic-row'), rowB = el('div', 'zf-pic-row'), rowA = el('div', 'zf-pic-row');
     var fb = {};
@@ -140,7 +165,7 @@
     dl.addEventListener('click', function(){
       blobOf(function(b){
         if(!b){ alert(t('fail')); return; }
-        var a = document.createElement('a'), u = URL.createObjectURL(b); a.href = u; a.download = 'zaan-farzaan-sher.png'; document.body.appendChild(a); a.click(); a.remove();
+        var a = document.createElement('a'), u = URL.createObjectURL(b); a.href = u; a.download = (st.name ? 'for-' + st.name.replace(/[^\w\u0900-\u097F\u0600-\u06FF]+/g, '-') + '-' : '') + 'zaan-farzaan-sher.png'; document.body.appendChild(a); a.click(); a.remove();
         setTimeout(function(){ URL.revokeObjectURL(u); }, 4000);
       });
     });
@@ -159,15 +184,15 @@
       ['post', 'story'].forEach(function(k){ fb[k].className = 'zf-pic-b' + (st.fmt === k ? ' on' : ''); });
       th.forEach(function(b, i){ b.className = 'zf-pic-th' + (st.bg === i ? ' on' : ''); });
       pn.textContent = (st.p + 1) + ' / ' + pages.length;
-      draw(cv, pages[st.p], BGS[st.bg], st.fmt);
+      draw(cv, pages[st.p], BGS[st.bg], st.fmt, null, st.name);
     }
-    [top, cv, rowF, rowP, rowB, rowA].forEach(function(n){ box.appendChild(n); });
+    [top, nameRow, cv, rowF, rowP, rowB, rowA].forEach(function(n){ box.appendChild(n); });
     ov.appendChild(box); document.body.appendChild(ov);
     function close(){ ov.remove(); document.removeEventListener('keydown', key); document.body.style.overflow = ''; }
     function key(e){ if(e.key === 'Escape') close(); }
     document.addEventListener('keydown', key); document.body.style.overflow = 'hidden';
     x.addEventListener('click', close); ov.addEventListener('click', function(e){ if(e.target === ov) close(); });
-    sync(); x.focus();
+    sync(); (opts.dedicate ? nameIn : x).focus();
   }
 
   window.ZF_openPhotoCard = openPic;   /* used by the Sher Wall */
@@ -186,6 +211,22 @@
     });
     row.insertBefore(a, row.children[1] || null);
   }
+  /* "Dedicate" card under every ghazal and nazm: pick any sher (or a few nazm lines), write a name, send the card */
+  function addDedicate(row){
+    var scope = row.closest('.poem-detail') || document, card = scope.querySelector('.card.manuscript') || document.querySelector('.card.manuscript');
+    if(!card) return;
+    if(row.parentNode.querySelector('.zf-dedicate')) return;
+    addCss();
+    var isNazm = /^nazm-/.test(card.id || '') || !!card.querySelector('.nazm-line');
+    var box = el('div', 'zf-dedicate'); box.setAttribute('data-nazm', isNazm ? '1' : '0');
+    box.appendChild(el('div', 'zf-ded-h', t('dh'))); box.appendChild(el('p', 'zf-ded-s', t(isNazm ? 'dsn' : 'dsg')));
+    var b = el('button', 'zf-ded-b', t('dbtn')); b.type = 'button'; box.appendChild(b);
+    b.addEventListener('click', function(){
+      var sc = row.closest('.poem-detail') || document, c = sc.querySelector('.card.manuscript') || document.querySelector('.card.manuscript');
+      if(c) openPic(pagesFromCard(c), {dedicate: true});
+    });
+    row.parentNode.insertBefore(box, row.nextSibling);
+  }
   function addHome(){
     var bar = document.querySelector('.sher-actions'); if(!bar || bar.querySelector('.zf-home-pic')) return;
     var b = el('button', 'sher-today-btn zf-home-pic', t('btn')); b.type = 'button';
@@ -196,10 +237,10 @@
     });
     bar.appendChild(b);
   }
-  function scan(){ [].forEach.call(document.querySelectorAll('.zf-share-row'), addToRow); addHome(); }
+  function scan(){ [].forEach.call(document.querySelectorAll('.zf-share-row'), function(r){ addToRow(r); addDedicate(r); }); addHome(); }
   scan();
   var tm = null;
   new MutationObserver(function(){ clearTimeout(tm); tm = setTimeout(scan, 40); }).observe(document.body, {childList: true, subtree: true});
   var prev = window.ZF_rerenderCollection;
-  window.ZF_rerenderCollection = function(){ if(typeof prev === 'function') prev(); [].forEach.call(document.querySelectorAll('.zf-share-pic,.zf-home-pic'), function(n){ n.textContent = t('btn'); }); };
+  window.ZF_rerenderCollection = function(){ if(typeof prev === 'function') prev(); [].forEach.call(document.querySelectorAll('.zf-share-pic,.zf-home-pic'), function(n){ n.textContent = t('btn'); }); [].forEach.call(document.querySelectorAll('.zf-dedicate'), function(n){ n.remove(); }); scan(); };
 })();

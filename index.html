@@ -5,13 +5,17 @@
 <style>/* Critical splash CSS, inlined so it paints instantly (no flash of
 Hindi text while style.css/fonts are still loading on a slow connection).
 Mirrors the #zf-splash rules in style.css -- keep both in sync. */
-#zf-splash{position:fixed;inset:0;z-index:9999;visibility:visible;display:flex;align-items:center;justify-content:center;background:#151515;animation:zfSplashOut .5s ease forwards 2s}
-#zf-splash span{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.5rem,5vw,2.3rem);color:#f2f1ec;opacity:0;animation:zfSplashTextIn .5s ease forwards .08s}
+@font-face{font-family:'ZF Brand';font-style:normal;font-weight:600;font-display:block;src:url('playfair-display-600.woff2') format('woff2')}
+#zf-splash{position:fixed;inset:0;z-index:9999;visibility:visible;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.1rem;background:#151515;animation:zfSplashOut .5s ease forwards 2s}
+#zf-splash img{width:min(44vw,200px);height:auto;opacity:0;animation:zfSplashLogoIn .7s ease forwards .05s}
+@keyframes zfSplashLogoIn{0%{opacity:0;transform:translateY(8px) scale(.96)}100%{opacity:1;transform:none}}
+#zf-splash span{font-family:'ZF Brand','Playfair Display',Georgia,serif;font-weight:600;font-size:clamp(1.6rem,6.4vw,2.4rem);color:#f2f1ec;opacity:0;animation:zfSplashTextIn .5s ease forwards .08s}
 @keyframes zfSplashTextIn{0%{opacity:0;letter-spacing:.3em}100%{opacity:1;letter-spacing:.05em}}
 @keyframes zfSplashOut{0%{opacity:1;visibility:visible}99%{opacity:0;visibility:visible}100%{opacity:0;visibility:hidden;pointer-events:none}}
 html.zf-en-init body,html.zf-ur-init body{visibility:hidden}html.zf-splash-off #zf-splash{display:none!important}
-@media (prefers-reduced-motion:reduce){#zf-splash{animation-duration:.01s;animation-delay:0s}#zf-splash span{animation:none;opacity:1;letter-spacing:.05em}}</style>
+@media (prefers-reduced-motion:reduce){#zf-splash{animation-duration:.01s;animation-delay:0s}#zf-splash span,#zf-splash img{animation:none;opacity:1;letter-spacing:.05em}}</style>
 <script>(function(){try{var l=localStorage.getItem('zf-lang');if(l==='en'){document.documentElement.classList.add('zf-en-init');}else if(l==='ur'){document.documentElement.classList.add('zf-ur-init');}}catch(e){}})();</script>
+<link rel="preload" as="image" href="logo.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title data-en="Zaan Farzaan — Urdu Ghazals, Nazms &amp; Shayari" data-ur="زان فرزان — غزلیں، نظمیں اور شاعری">ज़ान फ़रज़ान (Zaan Farzaan) — ग़ज़लें, नज़्में और शायरी</title>
 <meta name="description" content="ज़ान फ़रज़ान (Zaan Farzaan) की 40 ग़ज़लें और 10 नज़्में पढ़ें — मोहब्बत, जुदाई, तन्हाई और उम्मीद की शायरी, एक ही जगह।">
@@ -188,7 +192,7 @@ body.lang-ur .hero .sher .line{animation-name:zfWriteRtl;}
 </style>
 </head>
 <body data-page="home">
-  <div id="zf-splash" aria-hidden="true"><span>Zaan Farzaan</span></div>
+  <div id="zf-splash" aria-hidden="true"><img src="logo.png" alt="" width="200" height="139"><span>Zaan Farzaan</span></div>
 
 <nav>
   <div class="brand-group">

@@ -4,7 +4,7 @@
   if(!grid || typeof GHAZAL_ITEMS === 'undefined') return;
   var PHOTOS = ['sher-1.jpg', 'sher-2.jpg', 'sher-3.jpg', 'sher-4.jpg', 'sher-5.jpg'];
   var MOODS = window.ZF_MOODS || [], MOOD = window.ZF_MOOD || {};
-  var T = {all: ['सब', 'All', 'سب'], shuffle: ['🔀 फेंटें', '🔀 Shuffle', '🔀 پھینٹیں'], of: ['शेर', 'shers', 'اشعار'], gh: ['ग़ज़ल', 'Ghazal', 'غزل'],
+  var T = {ded: ['💌 समर्पित करें', '💌 Dedicate', '💌 منسوب کریں'], all: ['सब', 'All', 'سب'], shuffle: ['🔀 फेंटें', '🔀 Shuffle', '🔀 پھینٹیں'], of: ['शेर', 'shers', 'اشعار'], gh: ['ग़ज़ल', 'Ghazal', 'غزل'],
            end: ['बस, इतने ही — फिर से फेंटकर देखिए', 'That is all — shuffle to see them again', 'بس اتنے ہی — دوبارہ پھینٹ کر دیکھیے']};
   function lang(){ var l = window.ZF_LANG; return l === 'en' ? 1 : (l === 'ur' ? 2 : 0); }
   function tr(k){ return T[k][lang()]; }
@@ -31,6 +31,7 @@
   }
   function dailySeed(){ var d = new Date(); return d.getFullYear() * 400 + (d.getMonth() + 1) * 31 + d.getDate(); }
   var seed = dailySeed();
+  (function(){ var st = document.createElement('style'); st.textContent = '.ashaar-ded{font:inherit;font-size:.76rem;cursor:pointer;color:#f2f1ec;background:rgba(255,255,255,.1);border:1px solid rgba(242,241,236,.4);border-radius:999px;padding:.28rem .7rem;min-height:30px}.ashaar-ded:hover{background:rgba(255,255,255,.2)}.ashaar-foot{gap:.5rem}'; document.head.appendChild(st); })();
   function card(x){
     var L = sherLines(x.g, x.i), a = el('div', 'ashaar-card'); a.tabIndex = 0; a.setAttribute('role', 'button');
     a.style.backgroundImage = 'linear-gradient(180deg,rgba(14,14,14,.6),rgba(14,14,14,.72)),url(' + PHOTOS[x.n % PHOTOS.length] + ')';
@@ -43,7 +44,10 @@
     lnk.addEventListener('click', function(e){ e.stopPropagation(); });
     var mm = MOODS.filter(function(m){ return m[0] === x.m; })[0];
     if(mm) foot.appendChild(el('span', 'ashaar-mood', mm[lang() === 1 ? 2 : (lang() === 2 ? 3 : 1)]));
-    foot.appendChild(lnk); a.appendChild(foot);
+    var db = el('button', 'ashaar-ded', tr('ded')); db.type = 'button';
+    db.addEventListener('click', function(e){ e.stopPropagation(); if(typeof window.ZF_openPhotoCard === 'function') window.ZF_openPhotoCard([L], {dedicate: true}); });
+    db.addEventListener('keydown', function(e){ e.stopPropagation(); });
+    foot.appendChild(db); foot.appendChild(lnk); a.appendChild(foot);
     function open(){ if(typeof window.ZF_openPhotoCard === 'function') window.ZF_openPhotoCard([L]); }
     a.addEventListener('click', open); a.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); open(); } });
     return a;
