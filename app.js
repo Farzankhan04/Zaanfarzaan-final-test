@@ -443,9 +443,9 @@ function zfMarkRead(id){
 /* AUDIOS HEARD — remembers which nazm audios this reader pressed play on (for the badges). */
 document.addEventListener('play', function(e){
   try{
-    var src = e.target && e.target.getAttribute && e.target.getAttribute('src'), m = /audio-nazm-(\d+)\.mp3/.exec(src || '');
+    var src = e.target && e.target.getAttribute && e.target.getAttribute('src'), m = /audio-(nazm|ghazal)-(\d+)\.mp3/.exec(src || '');
     if(!m) return;
-    var heard = JSON.parse(localStorage.getItem('zf-heard-audio') || '[]'), n = parseInt(m[1], 10);
+    var heard = JSON.parse(localStorage.getItem('zf-heard-audio') || '[]'), n = parseInt(m[2], 10) + (m[1] === 'ghazal' ? 100 : 0);   /* ghazal audios are stored as 100+N */
     if(heard.indexOf(n) === -1){ heard.push(n); localStorage.setItem('zf-heard-audio', JSON.stringify(heard)); }
   }catch(err){}
 }, true);
@@ -755,12 +755,17 @@ document.addEventListener('play', function(e){
 /* AUDIO COUNT — number of nazm audios that exist (audio-nazm-1.mp3 ... audio-nazm-N.mp3). Change ONLY this number when a new audio is added;
    the home page and the nazm pages read it from here. */
 window.ZF_AUDIO_COUNT = 10;
+/* Ghazal audios that exist (audio-ghazal-N.mp3) -> add the ghazal number here when a new one is added. Newest audio (home "New audio" card):
+   ZF_NEWEST_AUDIO. Recitation credits: ghazal 8 is recited by Farheen Nazar (Instagram link below); every nazm is recited by Zaan Farzaan. */
+window.ZF_GHAZAL_AUDIOS = [8];
+window.ZF_NEWEST_AUDIO = {kind: 'ghazal', n: 8};
+window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र', 'Farheen Nazar', 'فرحین نظر'], url: 'https://www.instagram.com/ehsaas_sukhan'}}};
 
 /* NAZM AUDIO — loads nazm-audio.js (audio player under each nazm) */
 (function(){
   try{
     var p = location.pathname, page = document.body && document.body.getAttribute('data-page');
-    if(/\/nazm-\d{1,3}(\.html)?$/.test(p) || page === 'nazms'){
+    if(/\/(nazm|ghazal)-\d{1,3}(\.html)?$/.test(p) || page === 'nazms' || page === 'ghazals'){
       var s = document.createElement('script'); s.src = 'nazm-audio.js?v=1'; s.defer = true; document.body.appendChild(s);
     }
   }catch(e){}

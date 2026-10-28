@@ -12,9 +12,9 @@
   if(!cards.length) return;
 
   var STR = {
-    hi:{now:'अभी चल रहा है', read:'नज़्म पढ़ें', back:'ऑडियो पर वापस', play:'चलाएँ', pause:'रोकें', close:'बंद करें', loading:'नज़्म खुल रही है…', playingHint:'ऑडियो चलता रहेगा'},
-    en:{now:'Now playing', read:'Read this nazm', back:'Back to audio', play:'Play', pause:'Pause', close:'Close', loading:'Opening the nazm…', playingHint:'Audio keeps playing'},
-    ur:{now:'ابھی چل رہا ہے', read:'یہ نظم پڑھیں', back:'آڈیو پر واپس', play:'چلائیں', pause:'روکیں', close:'بند کریں', loading:'نظم کھل رہی ہے…', playingHint:'آڈیو چلتا رہے گا'}
+    hi:{now:'अभी चल रहा है', read:'नज़्म पढ़ें', readG:'ग़ज़ल पढ़ें', back:'ऑडियो पर वापस', play:'चलाएँ', pause:'रोकें', close:'बंद करें', loading:'नज़्म खुल रही है…', playingHint:'ऑडियो चलता रहेगा'},
+    en:{now:'Now playing', read:'Read this nazm', readG:'Read this ghazal', back:'Back to audio', play:'Play', pause:'Pause', close:'Close', loading:'Opening the nazm…', playingHint:'Audio keeps playing'},
+    ur:{now:'ابھی چل رہا ہے', read:'یہ نظم پڑھیں', readG:'یہ غزل پڑھیں', back:'آڈیو پر واپس', play:'چلائیں', pause:'روکیں', close:'بند کریں', loading:'نظم کھل رہی ہے…', playingHint:'آڈیو چلتا رہے گا'}
   };
   function lang(){
     var c = document.body.classList;
@@ -25,6 +25,9 @@
 
   /* ---------- CSS ---------- */
   var css = '\
+.audio-credit{font-size:.88rem; color:var(--text-muted,#6f6f69); margin:.5rem 0 .2rem;}\
+.audio-credit a{color:inherit; text-decoration:underline; text-underline-offset:3px; font-weight:600;}\
+.audio-credit .audio-ig{font-weight:400; font-size:.8rem; margin-inline-start:.5rem; opacity:.85;}\
 .audio-modes{display:flex; flex-wrap:wrap; justify-content:center; gap:.5rem; margin:0 0 1.5rem;}\
 .audio-mode{font:inherit; font-size:.92rem; line-height:1.4; cursor:pointer; padding:.5rem 1.05rem; border-radius:999px; background:transparent; color:var(--text-muted,#9c9c95); border:1px solid rgba(220,220,214,.35); transition:background .2s,color .2s,border-color .2s;}\
 .audio-mode:hover{border-color:rgba(220,220,214,.7); color:#f2f1ec;}\
@@ -90,14 +93,15 @@ body.zf-reader-open{overflow:hidden;}';
 
   var cur = -1;                       // index of the card whose audio is the "current" one
   function audioOf(i){ return cards[i] ? cards[i].querySelector('audio') : null; }
-  function numOf(i){ return cards[i].id.replace('nazm-', ''); }
+  function numOf(i){ return cards[i].id; }   /* e.g. 'nazm-3' or 'ghazal-8' */
+  function isGhazal(i){ return i >= 0 && /^ghazal-/.test(cards[i].id); }
   function titleOf(i){ var h = cards[i].querySelector('h3'); return h ? h.textContent.trim() : ''; }
   function isPlaying(a){ return a && !a.paused && !a.ended; }
 
   function refreshTexts(){
     cards.forEach(function(c){ c.querySelector('.zf-now-text').textContent = T('now'); });
     barNow.textContent = T('now');
-    barRead.textContent = T('read');
+    barRead.textContent = T(isGhazal(cur) ? 'readG' : 'read');
     barX.setAttribute('aria-label', T('close'));
     if(cur >= 0){
       barTitle.textContent = titleOf(cur);
@@ -120,6 +124,7 @@ body.zf-reader-open{overflow:hidden;}';
       barPP.innerHTML = p ? ICON_PAUSE : ICON_PLAY;
       barPP.setAttribute('aria-label', p ? T('pause') : T('play'));
       barTitle.textContent = titleOf(cur);
+      barRead.textContent = T(isGhazal(cur) ? 'readG' : 'read');
       barRead.style.display = readerOpen ? 'none' : '';
       document.documentElement.style.setProperty('--zf-bar-h', bar.offsetHeight + 'px');
     }
@@ -129,7 +134,7 @@ body.zf-reader-open{overflow:hidden;}';
   }
   function setMeta(){
     if(!('mediaSession' in navigator) || typeof MediaMetadata === 'undefined' || cur < 0) return;
-    try{ navigator.mediaSession.metadata = new MediaMetadata({title: titleOf(cur), artist: 'Zaan Farzaan', album: 'Nazms'}); }catch(e){}
+    try{ navigator.mediaSession.metadata = new MediaMetadata({title: titleOf(cur), artist: isGhazal(cur) ? 'Farheen Nazar · Zaan Farzaan' : 'Zaan Farzaan', album: isGhazal(cur) ? 'Ghazals' : 'Nazms'}); }catch(e){}
   }
 
   /* ---------- modes: once / repeat / next ---------- */
@@ -215,7 +220,7 @@ body.zf-reader-open{overflow:hidden;}';
     readerN = n; readerOpen = true;
     store('zf-lang', lang());                                  // the nazm page opens in the language chosen here
     readerFrame.classList.remove('ready'); readerLoad.textContent = T('loading');
-    readerFrame.src = 'nazm-' + n + '.html';
+    readerFrame.src = n + '.html';
     clearInterval(readerTimer);
     readerTimer = setInterval(tidyFrame, 25);                  // hide nav/splash as early as possible
     setTimeout(function(){ clearInterval(readerTimer); if(readerOpen) readerFrame.classList.add('ready'); }, 6000);
@@ -223,7 +228,7 @@ body.zf-reader-open{overflow:hidden;}';
     document.body.classList.add('zf-reader-open');
     refreshTexts(); refreshState();
     reader.classList.toggle('bar', bar.classList.contains('on'));
-    if(!fromPop){ try{ history.pushState({zfReader: n}, '', location.pathname + location.search + '#nazm-' + n); }catch(e){} }
+    if(!fromPop){ try{ history.pushState({zfReader: n}, '', location.pathname + location.search + '#' + n); }catch(e){} }
   }
   function closeReader(){
     if(!reader || !readerOpen) return;
@@ -238,7 +243,7 @@ body.zf-reader-open{overflow:hidden;}';
     if(!a) return;
     if(e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     e.preventDefault();
-    openReader(a.closest('.audio-track').id.replace('nazm-', ''));
+    openReader(a.closest('.audio-track').id);
   });
 
   /* language toggle: refresh our own texts after i18n has swapped the page */

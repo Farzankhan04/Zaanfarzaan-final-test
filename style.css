@@ -1277,6 +1277,26 @@ body.lang-ur .signature-flourish{transform:scaleX(-1);}
   #zf-splash span{animation:none; opacity:1; letter-spacing:0.05em;}
 }
 
+
+/* ---- 6b. Opening splash on EVERY page (2 s): small ZF logo with "Zaan Farzaan" under it, same look as the phone's own app-opening screen.
+   Pure CSS on <html>'s ::before/::after (no HTML needed on any page), so it paints before anything else and never flashes the page underneath.
+   (The old #zf-splash element is no longer used; app.js tolerates its absence.) ---- */
+html{--zfw:clamp(62px,18vw,84px)}
+html::before{
+  content:''; position:fixed; inset:0; z-index:100000; pointer-events:none;
+  background:#151515 url(logo.png) no-repeat; background-size:var(--zfw) auto;
+  background-position:center calc(50% - 20px - var(--zfw)*.17);
+  animation:zfSplashOut .3s ease 1.7s forwards;
+}
+html::after{
+  content:'Zaan Farzaan'; position:fixed; left:0; right:0; z-index:100001; pointer-events:none; text-align:center;
+  top:calc(50% - 20px + var(--zfw)*.17 + 14px);
+  font-family:'ZF Brand','Playfair Display',Georgia,serif; font-weight:600; font-size:1.15rem; letter-spacing:.08em; color:#f2f1ec;
+  opacity:0; animation:zfSplashTxt2 .4s ease .1s both, zfSplashOut .3s ease 1.7s forwards;
+}
+@keyframes zfSplashTxt2{0%{opacity:0}100%{opacity:1}}
+@media (prefers-reduced-motion:reduce){ html::before,html::after{animation-duration:.01s; animation-delay:0s} html::after{opacity:1} }
+
 /* ---- 7. (Removed) Paper texture + drifting light — .card/.manuscript,
    .nav-card and .sher-card used to carry a fine noise-tile
    background-image (an feTurbulence SVG data-URI) plus a slowly

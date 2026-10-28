@@ -93,7 +93,7 @@ button:disabled{opacity:.5}
 
   function pageLink(page){
     var m = page.match(/^(audio-)?(ghazal|nazm)-(\d+)$/); if(!m) return {href:'#', label:page};
-    if(m[1]) return {href:'audios.html#nazm-' + m[3], label:'Audio · ' + m[2] + ' ' + m[3]};
+    if(m[1]) return {href:'audios.html#' + m[2] + '-' + m[3], label:'Audio · ' + m[2] + ' ' + m[3]};
     return {href: m[2] + '-' + m[3] + '.html', label: m[2] + ' ' + m[3]};
   }
   function render(){

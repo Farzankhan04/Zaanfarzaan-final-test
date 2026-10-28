@@ -79,7 +79,6 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}html.zf-splash-off #
   ]
 }
 </script>
-<script>try{var d=document.documentElement;if(sessionStorage.getItem('zf-splash')){d.classList.add('zf-splash-off');}else{sessionStorage.setItem('zf-splash','1');}}catch(e){}</script>
 <script>setTimeout(function(){document.documentElement.classList.remove('zf-en-init','zf-ur-init');},4000);</script>
 <style>
 .zf-all-link{display:inline-block;margin:.2rem .6rem;padding:.5rem 1rem;border:1px solid #3a3a38;border-radius:999px;color:inherit;text-decoration:none;font-size:.88rem;opacity:.9}.zf-all-link:hover{border-color:#8f8f89}
@@ -109,6 +108,7 @@ body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1
 .zf-continue .zf-go{white-space:nowrap; font-weight:600; color:var(--gold-soft);}
 .zf-new-card{padding:1.1rem 1.2rem; border-radius:10px; border:1px solid rgba(220,220,214,.4); background:rgba(220,220,214,.07);}
 .zf-new-card .zf-t{font-size:1.25rem; margin:.25rem 0 .7rem; color:var(--gold-soft);}
+.zf-new-card .zf-credit{font-size:.88rem; margin:-.4rem 0 .7rem; opacity:.82}.zf-new-card .zf-credit a{color:inherit; text-decoration:underline; text-underline-offset:3px; font-weight:600}
 .zf-new-card audio{width:100%; height:40px;}
 .zf-new-card .zf-links{display:flex; gap:1.2rem; flex-wrap:wrap; margin-top:.7rem; font-size:.92rem;}
 .zf-new-card .zf-links a{color:var(--gold-soft); text-decoration:underline; text-underline-offset:3px;}
@@ -192,8 +192,7 @@ body.lang-ur .hero .sher .line{animation-name:zfWriteRtl;}
 </style>
 </head>
 <body data-page="home" class="lang-ur">
-  <div id="zf-splash" aria-hidden="true"><img src="logo.png" alt="" width="200" height="139"><span>Zaan Farzaan</span></div>
-
+  
 <nav>
   <div class="brand-group">
     <a href="index-ur.html" data-en-href="index-en.html" data-ur-href="index-ur.html" class="brand-logo-link" data-hi-href="index.html"><img src="logo.png?v=2" alt="Zaan Farzaan" class="brand-logo" width="55" height="38"></a>
@@ -372,7 +371,7 @@ body.lang-ur .hero .sher .line{animation-name:zfWriteRtl;}
   <a href="audios-ur.html" data-en-href="audios-en.html" data-ur-href="audios-ur.html" class="nav-card reveal" data-hi-href="audios.html">
     <div class="nav-card-tag hide-on-en">Audio</div>
     <h3 data-en="Audio" data-hi="ऑडियो" data-ur="آڈیو">آڈیو</h3>
-    <p data-en="Listen to the nazms in audio — they keep playing while you read, and you can download them too." data-hi="10 नज़्में ऑडियो में सुनिए — पढ़ते वक़्त भी चलती रहेंगी, डाउनलोड भी कर सकते हैं।" data-ur="نظمیں آڈیو میں سنیے — پڑھتے وقت بھی چلتی رہیں گی، ڈاؤن لوڈ بھی کر سکتے ہیں۔">نظمیں آڈیو میں سنیے — پڑھتے وقت بھی چلتی رہیں گی، ڈاؤن لوڈ بھی کر سکتے ہیں۔</p>
+    <p data-en="Listen to a ghazal and the nazms in audio — they keep playing while you read, and you can download them too." data-hi="एक ग़ज़ल और 10 नज़्में ऑडियो में सुनिए — पढ़ते वक़्त भी चलती रहेंगी, डाउनलोड भी कर सकते हैं।" data-ur="ایک غزل اور نظمیں آڈیو میں سنیے — پڑھتے وقت بھی چلتی رہیں گی، ڈاؤن لوڈ بھی کر سکتے ہیں۔">ایک غزل اور نظمیں آڈیو میں سنیے — پڑھتے وقت بھی چلتی رہیں گی، ڈاؤن لوڈ بھی کر سکتے ہیں۔</p>
     <div class="nav-card-arrow" data-en="Listen →" data-hi="सुनें →" data-ur="← سنیں">← سنیں</div>
   </a>
   <a href="ebook-ur.html" data-en-href="ebook-en.html" data-ur-href="ebook-ur.html" class="nav-card reveal" data-hi-href="ebook.html">

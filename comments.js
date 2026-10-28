@@ -188,7 +188,7 @@
       b.querySelector('.zf-cm-t').textContent = base + (n ? ' (' + n + ')' : '');
     }
     cards.forEach(function(card){
-      var num = card.id.replace('nazm-', ''), key = 'audio-nazm-' + num;
+      var num = card.id, key = 'audio-' + card.id;   /* 'audio-nazm-3' / 'audio-ghazal-8' */
       var b = document.createElement('button'); b.type = 'button'; b.className = 'zf-cm-toggle'; b.setAttribute('aria-expanded', 'false');
       b.innerHTML = '<span class="zf-cm-t"></span>'; label(b, 0);
       card.appendChild(b);
@@ -200,8 +200,8 @@
       });
       card.__zfCmBtn = b; card.__zfCmNum = num;
     });
-    fetchCounts('audio-nazm-').then(function(rows){
-      rows.forEach(function(r){ var n = r.page.replace('audio-nazm-', ''); counts[n] = (counts[n] || 0) + 1; });
+    Promise.all([fetchCounts('audio-nazm-'), fetchCounts('audio-ghazal-')]).then(function(all){
+      all[0].concat(all[1]).forEach(function(r){ var n = r.page.replace('audio-', ''); counts[n] = (counts[n] || 0) + 1; });
       cards.forEach(function(c){ var s = c.querySelector('.zf-comments'); if(!s || s.hidden) label(c.__zfCmBtn, counts[c.__zfCmNum] || 0); });
     }).catch(function(){});
     // keep our labels in the right language when the visitor switches language
