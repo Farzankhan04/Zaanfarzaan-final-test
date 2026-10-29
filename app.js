@@ -785,11 +785,11 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
 /* LAFZ-O-MATLAB (Beta) — tap a hard word in a ghazal/nazm to see its meaning (lafz-data.js = approved glossary) */
 (function(){
   try{
-    if(window.self !== window.top || /admin-comments/.test(location.pathname)) return;
-    var p = document.body && document.body.getAttribute('data-page');
-    if(p === 'ghazals' || p === 'nazms' || /\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(location.pathname)){
-      var a = document.createElement('script'); a.src = 'lafz-data.js?v=1'; a.defer = true;
-      a.onload = function(){ var b = document.createElement('script'); b.src = 'lafz.js?v=1'; b.defer = true; document.body.appendChild(b); };
+    if(/admin-comments/.test(location.pathname)) return;
+    var inF = window.self !== window.top, p = document.body && document.body.getAttribute('data-page');
+    if(inF ? /\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(location.pathname) : (p === 'ghazals' || p === 'nazms' || /\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(location.pathname))){
+      var a = document.createElement('script'); a.src = 'lafz-data.js?v=2'; a.defer = true;
+      a.onload = function(){ var b = document.createElement('script'); b.src = 'lafz.js?v=2'; b.defer = true; document.body.appendChild(b); };
       document.body.appendChild(a);
     }
   }catch(e){}

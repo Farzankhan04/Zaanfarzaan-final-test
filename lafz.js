@@ -6,12 +6,13 @@
   function nh(s){ return s.normalize('NFD').replace(NUK,'').replace(APOS,'').normalize('NFC').replace(/ँ/g,'ं'); }
   function nr(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]/g,''); }
   function nu(s){ return s.replace(/[ً-ٰٟـ‌‍‎‏۔ۀ]/g,'').replace(/ي/g,'ی').replace(/ك/g,'ک').replace(/ہ/g,'ہ').replace(/ۂ/g,'ہ'); }
-  var HI = {}, EN = {}, UR = null;
-  D.forEach(function(e,i){ e.k.forEach(function(k){ HI[nh(k)] = i; }); (e.r||[]).forEach(function(r){ if(!(r in EN)) EN[r] = i; }); });
+  var HI = {}, EN = {}, UR = null, MAXW = 4;
+  function sp(s){ return s.replace(/[-–‌]+/g,' ').replace(/\s+/g,' ').trim(); }
+  D.forEach(function(e,i){ e.k.forEach(function(k){ HI[sp(nh(k))] = i; }); (e.r||[]).forEach(function(r){ if(!(r in EN)) EN[r] = i; }); });
   function lang(){ return window.ZF_LANG || 'hi'; }
   function buildUr(){
     UR = {}; var t = window.ZF_UR_transliterateText; if(!t) return;
-    D.forEach(function(e,i){ e.k.forEach(function(k){ try{ var u = nu(t(k)); if(u) UR[u] = i; }catch(x){} }); });
+    D.forEach(function(e,i){ e.k.forEach(function(k){ try{ var u = sp(nu(t(k))); if(!u) return; if(u in UR){ if(String(UR[u]).split(',').indexOf(String(i)) < 0) UR[u] += ',' + i; } else UR[u] = String(i); }catch(x){} }); });
   }
   /* CSS */
   var st = document.createElement('style');
@@ -28,22 +29,31 @@
     '@media(prefers-reduced-motion:reduce){.lz-pop{animation:none}}';
   document.head.appendChild(st);
 
-  function matchIdx(tok, l){
-    if(l === 'en') return EN[nr(tok)];
-    if(l === 'ur'){ if(!UR) buildUr(); return UR[nu(tok)]; }
-    return HI[nh(tok)];
+  function matchKey(words, l){
+    if(l === 'en'){ var k = words.map(nr).join(' '); return EN[k]; }
+    if(l === 'ur'){ if(!UR) buildUr(); return UR[sp(nu(words.join(' ')))]; }
+    return HI[sp(nh(words.join(' ')))];
   }
   var TOK = { hi: /[ऀ-ॿ'’ʼ]+/g, en: /[A-Za-z'’]+/g, ur: /[؀-ۿ‌]+/g };
 
   function wrapNode(tn, l){
-    var txt = tn.nodeValue, re = new RegExp(TOK[l].source, 'g'), m, last = 0, frag = null;
-    while((m = re.exec(txt))){
-      var idx = matchIdx(m[0], l);
-      if(idx === undefined) continue;
+    var txt = tn.nodeValue, re = new RegExp(TOK[l].source, 'g'), m, toks = [], frag = null, last = 0;
+    while((m = re.exec(txt))) toks.push({w:m[0], s:m.index, e:m.index + m[0].length});
+    for(var i = 0; i < toks.length; i++){
+      var hit = null;
+      for(var n = Math.min(MAXW, toks.length - i); n >= 1 && !hit; n--){
+        var ok = true;
+        for(var j = i; j < i + n - 1; j++){ if(!/^[\s\-–]+$/.test(txt.slice(toks[j].e, toks[j+1].s))){ ok = false; break; } }
+        if(!ok) continue;
+        var idx = matchKey(toks.slice(i, i + n).map(function(t){ return t.w; }), l);
+        if(idx !== undefined) hit = {idx:idx, n:n};
+      }
+      if(!hit) continue;
+      var st0 = toks[i].s, en0 = toks[i + hit.n - 1].e;
       if(!frag) frag = document.createDocumentFragment();
-      if(m.index > last) frag.appendChild(document.createTextNode(txt.slice(last, m.index)));
-      var s = document.createElement('span'); s.className = 'lz'; s.setAttribute('data-lz', idx); s.setAttribute('role','button'); s.setAttribute('tabindex','0');
-      s.textContent = m[0]; frag.appendChild(s); last = m.index + m[0].length;
+      if(st0 > last) frag.appendChild(document.createTextNode(txt.slice(last, st0)));
+      var s = document.createElement('span'); s.className = 'lz'; s.setAttribute('data-lz', hit.idx); s.setAttribute('role','button'); s.setAttribute('tabindex','0');
+      s.textContent = txt.slice(st0, en0); frag.appendChild(s); last = en0; i += hit.n - 1;
     }
     if(frag){ if(last < txt.length) frag.appendChild(document.createTextNode(txt.slice(last))); tn.parentNode.replaceChild(frag, tn); return true; }
     return false;
@@ -74,7 +84,8 @@
   function urT(s){ try{ return window.ZF_UR_transliterateText ? window.ZF_UR_transliterateText(s) : s; }catch(e){ return s; } }
   function open(span){
     close();
-    var e = D[+span.getAttribute('data-lz')], L = lang(), p = document.createElement('div');
+    var ids = String(span.getAttribute('data-lz')).split(','), e = D[+ids[0]], L = lang(), p = document.createElement('div');
+    if(ids.length > 1){ e = {h: ids.map(function(i){ return D[+i].h; }).join(' / '), e: ids.map(function(i){ return D[+i].e; }).join(' / ')}; }
     p.className = 'lz-pop'; p.setAttribute('role','dialog');
     var main, sub;
     if(L === 'en'){ main = e.e; sub = e.h; }
