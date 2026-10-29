@@ -25,9 +25,8 @@
     cr.appendChild(document.createTextNode(tr('पाठ: ', 'Recited by ', 'آواز: ')));
     if(who){ var wa = document.createElement('a'); wa.href = who.url; wa.target = '_blank'; wa.rel = 'noopener'; wa.textContent = tr(who.name[0], who.name[1], who.name[2]); cr.appendChild(wa); }
     else cr.appendChild(document.createTextNode(tr('ज़ान फ़रज़ान', 'Zaan Farzaan', 'زان فرزان')));
-    var a = document.createElement('audio'); a.controls = true; a.preload = 'none'; a.src = file;
+    var a = document.createElement('audio'); a.controls = true; a.controlsList = 'nodownload'; a.preload = 'none'; a.src = file;
     var l = document.createElement('div'); l.className = 'zf-nz-l';
-    var dl = document.createElement('a'); dl.href = file; dl.setAttribute('download', ''); dl.textContent = tr('डाउनलोड', 'Download', 'ڈاؤن لوڈ');
     var all = document.createElement('a'); all.href = (lang() === 'en' ? 'audios-en.html#' : (lang() === 'ur' ? 'audios-ur.html#' : 'audios.html#')) + kind + '-' + n; all.textContent = tr('सभी ऑडियो', 'All audios', 'تمام آڈیو');
     var sh = document.createElement('a'); sh.href = '#'; sh.textContent = tr('🔗 शेयर करें', '🔗 Share', '🔗 شیئر کریں');
     sh.addEventListener('click', function(e){
@@ -40,7 +39,7 @@
       var done = function(){ sh.textContent = tr('✓ लिंक कॉपी हो गया', '✓ Link copied', '✓ لنک کاپی ہو گیا'); setTimeout(function(){ sh.textContent = tr('🔗 शेयर करें', '🔗 Share', '🔗 شیئر کریں'); }, 1800); };
       if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text + '\n' + url).then(done, function(){ window.prompt('', url); }); else window.prompt('', url);
     });
-    l.appendChild(dl); l.appendChild(sh); l.appendChild(all); d.appendChild(t); d.appendChild(cr); d.appendChild(a); d.appendChild(l);
+    l.appendChild(sh); l.appendChild(all); d.appendChild(t); d.appendChild(cr); d.appendChild(a); d.appendChild(l);
     return d;
   }
   var inited = false;

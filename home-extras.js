@@ -51,7 +51,7 @@
   function renderNew(){
     var box = document.getElementById('zf-new'); if(!box) return;
     var nw = window.ZF_NEWEST_AUDIO || {kind: 'nazm', n: ZF_AUDIO_COUNT}, n = nw.n, isG = nw.kind === 'ghazal', id = nw.kind + '-' + n;
-    if(!audioEl){ audioEl = document.createElement('audio'); audioEl.controls = true; audioEl.preload = 'none'; audioEl.src = 'audio-' + nw.kind + '-' + n + '.mp3'; }
+    if(!audioEl){ audioEl = document.createElement('audio'); audioEl.controls = true; audioEl.controlsList = 'nodownload'; audioEl.preload = 'none'; audioEl.src = 'audio-' + nw.kind + '-' + n + '.mp3'; }
     box.textContent = '';
     var card = el('div', 'zf-new-card');
     card.appendChild(el('div', 'zf-k', tr('नया ऑडियो','New audio','نیا آڈیو')));
