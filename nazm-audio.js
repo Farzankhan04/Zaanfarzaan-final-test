@@ -29,7 +29,18 @@
     var l = document.createElement('div'); l.className = 'zf-nz-l';
     var dl = document.createElement('a'); dl.href = file; dl.setAttribute('download', ''); dl.textContent = tr('डाउनलोड', 'Download', 'ڈاؤن لوڈ');
     var all = document.createElement('a'); all.href = (lang() === 'en' ? 'audios-en.html#' : (lang() === 'ur' ? 'audios-ur.html#' : 'audios.html#')) + kind + '-' + n; all.textContent = tr('सभी ऑडियो', 'All audios', 'تمام آڈیو');
-    l.appendChild(dl); l.appendChild(all); d.appendChild(t); d.appendChild(cr); d.appendChild(a); d.appendChild(l);
+    var sh = document.createElement('a'); sh.href = '#'; sh.textContent = tr('🔗 शेयर करें', '🔗 Share', '🔗 شیئر کریں');
+    sh.addEventListener('click', function(e){
+      e.preventDefault();
+      var url = 'https://zaanfarzaan.site/' + kind + '-' + n + '.html';
+      var h1 = document.querySelector('.poem-h1'), nm = h1 ? h1.textContent.split(':').pop().trim() : '';
+      if(!nm){ var ln = document.querySelector('.card.manuscript .line, .card.manuscript .nazm-line'); nm = ln ? ln.textContent.trim() : ''; }
+      var text = '🎧 ' + nm + '\n' + cr.textContent + '\n— Zaan Farzaan';
+      if(navigator.share){ navigator.share({title: 'Zaan Farzaan', text: text, url: url}).catch(function(){}); return; }
+      var done = function(){ sh.textContent = tr('✓ लिंक कॉपी हो गया', '✓ Link copied', '✓ لنک کاپی ہو گیا'); setTimeout(function(){ sh.textContent = tr('🔗 शेयर करें', '🔗 Share', '🔗 شیئر کریں'); }, 1800); };
+      if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text + '\n' + url).then(done, function(){ window.prompt('', url); }); else window.prompt('', url);
+    });
+    l.appendChild(dl); l.appendChild(sh); l.appendChild(all); d.appendChild(t); d.appendChild(cr); d.appendChild(a); d.appendChild(l);
     return d;
   }
   var inited = false;

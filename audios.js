@@ -12,9 +12,9 @@
   if(!cards.length) return;
 
   var STR = {
-    hi:{now:'अभी चल रहा है', read:'नज़्म पढ़ें', readG:'ग़ज़ल पढ़ें', back:'ऑडियो पर वापस', play:'चलाएँ', pause:'रोकें', close:'बंद करें', loading:'नज़्म खुल रही है…', playingHint:'ऑडियो चलता रहेगा'},
-    en:{now:'Now playing', read:'Read this nazm', readG:'Read this ghazal', back:'Back to audio', play:'Play', pause:'Pause', close:'Close', loading:'Opening the nazm…', playingHint:'Audio keeps playing'},
-    ur:{now:'ابھی چل رہا ہے', read:'یہ نظم پڑھیں', readG:'یہ غزل پڑھیں', back:'آڈیو پر واپس', play:'چلائیں', pause:'روکیں', close:'بند کریں', loading:'نظم کھل رہی ہے…', playingHint:'آڈیو چلتا رہے گا'}
+    hi:{now:'अभी चल रहा है', read:'नज़्म पढ़ें', readG:'ग़ज़ल पढ़ें', back:'ऑडियो पर वापस', play:'चलाएँ', pause:'रोकें', close:'बंद करें', loading:'नज़्म खुल रही है…', playingHint:'ऑडियो चलता रहेगा', share:'🔗 शेयर करें', copied:'लिंक कॉपी हो गया'},
+    en:{now:'Now playing', read:'Read this nazm', readG:'Read this ghazal', back:'Back to audio', play:'Play', pause:'Pause', close:'Close', loading:'Opening the nazm…', playingHint:'Audio keeps playing', share:'🔗 Share', copied:'Link copied'},
+    ur:{now:'ابھی چل رہا ہے', read:'یہ نظم پڑھیں', readG:'یہ غزل پڑھیں', back:'آڈیو پر واپس', play:'چلائیں', pause:'روکیں', close:'بند کریں', loading:'نظم کھل رہی ہے…', playingHint:'آڈیو چلتا رہے گا', share:'🔗 شیئر کریں', copied:'لنک کاپی ہو گیا'}
   };
   function lang(){
     var c = document.body.classList;
@@ -69,6 +69,28 @@ body.zf-bar-on{padding-bottom:78px;}\
 body.zf-reader-open{overflow:hidden;}';
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
+  /* ---------- per-card Share button: shares the link of that audio's own page (ghazal-8.html / nazm-3.html, which has the player under it) ---------- */
+  var toastEl = null, toastT = null;
+  function toast(msg){
+    if(!toastEl){ toastEl = document.createElement('div'); toastEl.style.cssText = 'position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:10100;background:#f2f1ec;color:#151515;padding:.55rem 1.1rem;border-radius:999px;font-size:.9rem;box-shadow:0 6px 20px rgba(0,0,0,.4);pointer-events:none;transition:opacity .2s'; document.body.appendChild(toastEl); }
+    toastEl.textContent = msg; toastEl.style.opacity = '1'; clearTimeout(toastT); toastT = setTimeout(function(){ toastEl.style.opacity = '0'; }, 1800);
+  }
+  function copyText(txt){
+    if(navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(txt);
+    return new Promise(function(res, rej){ try{ var ta = document.createElement('textarea'); ta.value = txt; ta.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(ta); ta.select(); var ok = document.execCommand('copy'); ta.remove(); ok ? res() : rej(); }catch(e){ rej(); } });
+  }
+  cards.forEach(function(c){
+    var a = document.createElement('a'); a.href = '#'; a.className = 'audio-track-dl zf-audio-share'; a.setAttribute('role', 'button'); a.textContent = STR[lang()].share;
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      var h = c.querySelector('h3'), cr = c.querySelector('.audio-credit'), url = 'https://zaanfarzaan.site/' + c.id + '.html';
+      var text = '🎧 ' + (h ? h.textContent.trim() : '') + (cr ? '\n' + cr.textContent.replace(/\s*Instagram\s*\S*\s*$/, '').trim() : '') + '\n— Zaan Farzaan';
+      if(navigator.share){ navigator.share({title: h ? h.textContent.trim() : 'Zaan Farzaan', text: text, url: url}).catch(function(){}); return; }
+      copyText(text + '\n' + url).then(function(){ toast(T('copied')); }, function(){ window.prompt('', url); });
+    });
+    var anchor = c.querySelector('.audio-track-read'); (anchor && anchor.parentNode === c) ? c.insertBefore(a, anchor) : c.appendChild(a);
+  });
+
   /* ---------- per-card "now playing" badge ---------- */
   cards.forEach(function(c){
     var b = document.createElement('div'); b.className = 'zf-card-now';
@@ -99,7 +121,7 @@ body.zf-reader-open{overflow:hidden;}';
   function isPlaying(a){ return a && !a.paused && !a.ended; }
 
   function refreshTexts(){
-    cards.forEach(function(c){ c.querySelector('.zf-now-text').textContent = T('now'); });
+    cards.forEach(function(c){ c.querySelector('.zf-now-text').textContent = T('now'); var sb = c.querySelector('.zf-audio-share'); if(sb) sb.textContent = T('share'); });
     barNow.textContent = T('now');
     barRead.textContent = T(isGhazal(cur) ? 'readG' : 'read');
     barX.setAttribute('aria-label', T('close'));
