@@ -78,12 +78,12 @@
     '.zf-cm-toggle{display:inline-block;margin-top:.9rem;margin-inline-end:1.4rem;font:inherit;font-size:.95rem;cursor:pointer;color:#4a4a46;background:none;border:0;border-bottom:1px solid rgba(74,74,70,.4);padding:0 0 1px;}' +
     '.zf-cm-toggle:hover{color:#000;border-bottom-color:#000;}' +
     '.audio-track .zf-comments{margin:1rem 0 0;max-width:none;}' +
-    '.audio-track .zf-cm-box{background:rgba(0,0,0,.04);border-color:rgba(74,74,70,.25);padding:1.1rem 1rem;}' +
-    '.audio-track .zf-cm-name{color:#2a2a28;} .audio-track .zf-cm-date,.audio-track .zf-cm-empty,.audio-track .zf-cm-msg,.audio-track .zf-cm-note{color:#6b6b66;}' +
-    '.audio-track .zf-cm-body{color:#222220;} .audio-track .zf-cm-item{border-color:rgba(74,74,70,.4);}' +
-    '.audio-track .zf-cm-thanks{color:#2a2a28;} .audio-track .zf-cm-err{color:#a03030;}' +
-    '.audio-track .zf-cm-form input[type=text],.audio-track .zf-cm-form textarea{background:#fff;color:#1d1d1b;border-color:rgba(74,74,70,.4);}' +
-    '.audio-track .zf-cm-form button{background:#1d1d1b;color:#f2f1ec;} .audio-track .zf-cm-form button:hover{background:#000;}';
+    '.audio-track .zf-cm-box{background:rgba(255,255,255,.04);border-color:rgba(220,220,214,.22);padding:1.1rem 1rem;}' +
+    '.audio-track .zf-cm-name{color:#f2f1ec;} .audio-track .zf-cm-date,.audio-track .zf-cm-empty,.audio-track .zf-cm-msg,.audio-track .zf-cm-note{color:#a8a8a1;}' +
+    '.audio-track .zf-cm-body{color:#e6e5e0;} .audio-track .zf-cm-item{border-color:rgba(220,220,214,.25);}' +
+    '.audio-track .zf-cm-thanks{color:#f2f1ec;} .audio-track .zf-cm-err{color:#e3a0a0;}' +
+    '.audio-track .zf-cm-form input[type=text],.audio-track .zf-cm-form textarea{background:#151515;color:#f2f1ec;border-color:rgba(220,220,214,.3);}' +
+    '.audio-track .zf-cm-form button{background:#f2f1ec;color:#151515;} .audio-track .zf-cm-form button:hover{background:#fff;}';
   document.head.appendChild(css);
 
   /* ---------- one comment block (list + form) for a page key ---------- */

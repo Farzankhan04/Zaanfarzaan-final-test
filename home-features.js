@@ -66,6 +66,14 @@
     function apply(){
       linesEl.innerHTML = verseHtml;
       sourceLabel.textContent = firstLine;
+      try{
+        var pre = sourceLink.querySelector('.sher-source-prefix'), isN = /nazm/i.test(String(item.id||'') + String(item.kind||''));
+        if(pre){
+          var tH = isN ? 'नज़्म' : 'ग़ज़ल', tE = isN ? 'Nazm' : 'Ghazal', tU = isN ? 'نظم' : 'غزل';
+          pre.setAttribute('data-en', tE); pre.setAttribute('data-ur', tU); pre.setAttribute('data-hi', tH);
+          pre.textContent = l === 'en' ? tE : l === 'ur' ? tU : tH;
+        }
+      }catch(e){}
       sourceLink.href = entry.source + '#' + item.id;
       sourceLink.setAttribute('data-en-href', entry.sourceEn + '#' + item.id);
       sourceLink.setAttribute('data-ur-href', entry.sourceUr + '#' + item.id);

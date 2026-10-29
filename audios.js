@@ -66,7 +66,18 @@ body.zf-bar-on{padding-bottom:78px;}\
 .zf-reader iframe{flex:1; width:100%; border:0; background:#151515; opacity:0; transition:opacity .25s;}\
 .zf-reader iframe.ready{opacity:1;}\
 .zf-reader-load{position:absolute; left:0; right:0; top:60px; text-align:center; color:var(--text-muted,#9c9c95); font-size:.95rem; pointer-events:none;}\
-body.zf-reader-open{overflow:hidden;}';
+body.zf-reader-open{overflow:hidden;}\
+/* v39: dark cards + button-style actions */\
+.audio-track{background:linear-gradient(155deg,#262625 0%,#1d1d1c 100%); color:#f2f1ec; border-color:rgba(220,220,214,.2); box-shadow:0 8px 24px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.05);}\
+.audio-track h3{color:#f2f1ec;} .audio-track .audio-track-no{color:#b4b4ad;}\
+.audio-track audio{color-scheme:dark; border-radius:999px;}\
+.audio-track .audio-credit{color:#b4b4ad; margin:.7rem 0 .1rem;} .audio-track .audio-credit a{color:#dcdcd6;}\
+.audio-track .audio-track-dl,.audio-track .audio-track-read,.audio-track .zf-cm-toggle{display:inline-flex; align-items:center; gap:.3rem; margin:.8rem .5rem 0 0; padding:.5rem 1rem; min-height:40px; border:1px solid rgba(220,220,214,.35); border-radius:999px; background:transparent; color:#f2f1ec; font:inherit; font-size:.92rem; text-decoration:none; cursor:pointer; transition:background .2s,border-color .2s;}\
+.audio-track .audio-track-read{background:#f2f1ec; color:#151515; border-color:#f2f1ec; font-weight:600;}\
+.audio-track .audio-track-dl:hover,.audio-track .zf-cm-toggle:hover{background:rgba(220,220,214,.12); border-color:#f2f1ec; color:#fff;}\
+.audio-track .audio-track-read:hover{background:#fff; color:#000;}\
+html[dir="rtl"] .audio-track .audio-track-dl,html[dir="rtl"] .audio-track .audio-track-read,html[dir="rtl"] .audio-track .zf-cm-toggle{margin:.8rem 0 0 .5rem;}\
+.zf-card-now{color:#dcdcd6;}';
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
   /* ---------- per-card Share button: shares the link of that audio's own page (ghazal-8.html / nazm-3.html, which has the player under it) ---------- */

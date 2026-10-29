@@ -789,7 +789,7 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
     var inF = window.self !== window.top, p = document.body && document.body.getAttribute('data-page');
     if(inF ? /\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(location.pathname) : (p === 'ghazals' || p === 'nazms' || /\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(location.pathname))){
       var a = document.createElement('script'); a.src = 'lafz-data.js?v=2'; a.defer = true;
-      a.onload = function(){ var b = document.createElement('script'); b.src = 'lafz.js?v=2'; b.defer = true; document.body.appendChild(b); };
+      a.onload = function(){ var b = document.createElement('script'); b.src = 'lafz.js?v=3'; b.defer = true; document.body.appendChild(b); };
       document.body.appendChild(a);
     }
   }catch(e){}
@@ -942,4 +942,26 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
     var iosSafari = /iPhone|iPad|iPod/.test(ua) && /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
     if(iosSafari) setTimeout(function(){ show('ios'); }, 2500);
   }catch(e){}
+})();
+
+/* v39: tag roman (Latin) verses so style.css can size them to fit one line; short wording for the poem-page link */
+(function(){
+  var t = null;
+  function run(){
+    try{
+      [].forEach.call(document.querySelectorAll('.card .verse'), function(v){
+        v.classList.toggle('zf-latin', !/[ऀ-ॿ؀-ۿ]/.test(v.textContent));
+      });
+      var a = document.querySelector('.seo-cta a');
+      if(a && !a.getAttribute('data-zf-cta')){
+        var L = window.ZF_LANG || 'hi';
+        var isN = /nazm/i.test(location.pathname);
+        a.textContent = L === 'en' ? (isN ? 'See all nazms →' : 'See all ghazals →') : L === 'ur' ? (isN ? 'تمام نظمیں دیکھیں ←' : 'تمام غزلیں دیکھیں ←') : (isN ? 'सारी नज़्में देखें →' : 'सारी ग़ज़लें देखें →');
+        a.setAttribute('data-zf-cta', '1');
+      }
+    }catch(e){}
+  }
+  function sched(){ clearTimeout(t); t = setTimeout(run, 80); }
+  function start(){ run(); try{ new MutationObserver(sched).observe(document.body, {childList:true, subtree:true}); }catch(e){} }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();

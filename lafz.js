@@ -16,8 +16,12 @@
   }
   /* CSS */
   var st = document.createElement('style');
-  st.textContent = '.lz{border-bottom:1.5px dotted currentColor;cursor:pointer;-webkit-tap-highlight-color:transparent}'+
-    '.lz:hover{opacity:.75}'+
+  st.textContent = '.lz{border-bottom:1px dotted rgba(220,220,214,.38);cursor:pointer;-webkit-tap-highlight-color:transparent;text-decoration:none}'+
+    '.lz:hover{border-bottom-color:rgba(220,220,214,.85)}'+
+    'body.lz-off .lz{border-bottom-color:transparent;cursor:inherit;pointer-events:none}'+
+    '.lz-hint{display:flex;align-items:center;justify-content:center;gap:.6rem;flex-wrap:wrap}'+
+    '.lz-tg{font:inherit;font-size:.72rem;cursor:pointer;padding:.18rem .7rem;border-radius:999px;background:transparent;color:inherit;border:1px solid currentColor;opacity:.8}'+
+    'body.lz-off .lz-tg{opacity:.55}'+
     '.lz-hint{margin-top:.7rem;font-size:.78rem;opacity:.62;text-align:center}'+
     '.lz-hint b,.lz-pop .lz-beta{font-weight:700;font-size:.62rem;letter-spacing:.08em;padding:.08rem .38rem;border:1px solid currentColor;border-radius:.6rem;vertical-align:middle;opacity:.85}'+
     '.lz-pop{position:absolute;z-index:9999;max-width:min(82vw,300px);min-width:180px;background:#111;color:#f0f0ec;border:1px solid #3a3a38;border-radius:12px;padding:.7rem .85rem .6rem;box-shadow:0 10px 30px rgba(0,0,0,.45);font-size:.95rem;line-height:1.5;text-align:start;animation:lzIn .16s ease-out}'+
@@ -74,11 +78,19 @@
         var h = document.createElement('div'); h.className = 'lz-hint';
         var L = lang();
         h.innerHTML = (L === 'en' ? 'Tap an underlined word for its meaning' : L === 'ur' ? 'خط کشیدہ لفظ پر ٹیپ کریں، مطلب دیکھیں' : 'रेखांकित शब्द पर टैप करें, मतलब देखें') + ' <b>BETA</b>';
+        var tg = document.createElement('button'); tg.type = 'button'; tg.className = 'lz-tg'; tg.textContent = tgText();
+        tg.addEventListener('click', function(ev){ ev.stopPropagation(); try{ localStorage.setItem(LSK, isOff() ? '0' : '1'); }catch(e){} close(); applyOff(); [].forEach.call(document.querySelectorAll('.lz-tg'), function(b){ b.textContent = tgText(); }); });
+        h.appendChild(tg);
         c.appendChild(h);
       }
     });
   }
 
+  var LSK = 'zf-lafz-off';
+  function isOff(){ try{ return localStorage.getItem(LSK) === '1'; }catch(e){ return false; } }
+  function applyOff(){ document.body.classList.toggle('lz-off', isOff()); }
+  function tgText(){ var L = lang(), off = isOff(); return L === 'en' ? (off ? 'Show meanings: OFF' : 'Show meanings: ON') : L === 'ur' ? (off ? 'مطلب دکھائیں: بند' : 'مطلب دکھائیں: چالو') : (off ? 'शब्दार्थ दिखाएँ: बंद' : 'शब्दार्थ दिखाएँ: चालू'); }
+  applyOff();
   var pop = null;
   function close(){ if(pop){ pop.remove(); pop = null; } }
   function urT(s){ try{ return window.ZF_UR_transliterateText ? window.ZF_UR_transliterateText(s) : s; }catch(e){ return s; } }

@@ -1339,3 +1339,12 @@ html.zf-splash-off #zf-splash{display:none !important;}
 /* badge is anchored to the text baseline, so it stays optically centred at every font size */
 .zf-verified{display:inline-block; width:.72em; height:.72em; margin-left:.17em; vertical-align:-.07em;}
 .zf-verified-icon{display:block; width:100%; height:100%;}
+
+/* v39: list titles wrap to two lines instead of "…", roman verses fit the phone, quieter poem-page link */
+.poem-item .poem-item-line{white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; text-overflow:clip; line-height:1.5;}
+@media (max-width:600px){
+  .card .verse.zf-latin{font-size:clamp(.74rem,3.5vw,1rem); line-height:1.9; letter-spacing:0;}
+  .card .verse.zf-latin .line{overflow-wrap:normal;}
+}
+.seo-cta a{display:inline-block; border:0 !important; background:none !important; padding:.4rem .2rem !important; font-size:.9rem; color:var(--text-muted,#9c9c95); text-decoration:underline; text-underline-offset:4px;}
+.seo-cta a:hover{color:var(--gold-soft,#dcdcd6) !important;} .seo-cta a::before{display:none !important;}
