@@ -965,3 +965,35 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
   function start(){ run(); try{ new MutationObserver(sched).observe(document.body, {childList:true, subtree:true}); }catch(e){} }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();
+
+/* v40: when the internet drops while the site is open, offer the small star game (offline.html is saved on the phone) */
+(function(){
+  try{
+    if(window.self !== window.top || /offline\.html$/.test(location.pathname) || /admin-comments/.test(location.pathname)) return;
+    var el = null, L = function(){ return window.ZF_LANG || 'hi'; };
+    var TX = {
+      hi:{m:'इंटरनेट नहीं है', b:'✦ तारे चुनिए'},
+      en:{m:'You are offline', b:'✦ Play a game'},
+      ur:{m:'انٹرنیٹ نہیں ہے', b:'✦ تارے چنیے'}
+    };
+    function show(){
+      if(el) return;
+      var t = TX[L()] || TX.hi;
+      el = document.createElement('div');
+      el.setAttribute('role','status');
+      el.style.cssText = 'position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:99999;display:flex;align-items:center;gap:.7rem;padding:.55rem .6rem .55rem 1rem;border-radius:999px;background:#1b1b1b;color:#f2f1ec;border:1px solid rgba(220,220,214,.35);box-shadow:0 8px 24px rgba(0,0,0,.5);font-size:.88rem;max-width:92vw';
+      var s = document.createElement('span'); s.textContent = t.m;
+      var a = document.createElement('a'); a.href = '/offline.html'; a.textContent = t.b;
+      a.style.cssText = 'background:#f2f1ec;color:#151515;text-decoration:none;font-weight:600;padding:.4rem .9rem;border-radius:999px;white-space:nowrap';
+      var x = document.createElement('button'); x.type = 'button'; x.textContent = '×'; x.setAttribute('aria-label','close');
+      x.style.cssText = 'background:none;border:0;color:inherit;font-size:1.1rem;cursor:pointer;opacity:.6;padding:0 .3rem';
+      x.addEventListener('click', hide);
+      el.appendChild(s); el.appendChild(a); el.appendChild(x);
+      document.body.appendChild(el);
+    }
+    function hide(){ if(el){ el.remove(); el = null; } }
+    window.addEventListener('offline', show);
+    window.addEventListener('online', hide);
+    if(navigator.onLine === false) window.addEventListener('load', show);
+  }catch(e){}
+})();
