@@ -997,3 +997,13 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
     if(navigator.onLine === false) window.addEventListener('load', show);
   }catch(e){}
 })();
+
+/* v41: "Aaj ka Lafz" card on the home pages */
+(function(){
+  try{
+    if(window.self !== window.top) return;
+    if(document.body && document.body.getAttribute('data-page') === 'home'){
+      var s = document.createElement('script'); s.src = 'lafz-today.js?v=1'; s.defer = true; document.body.appendChild(s);
+    }
+  }catch(e){}
+})();
