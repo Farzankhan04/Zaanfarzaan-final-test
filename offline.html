@@ -1,29 +1,143 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="robots" content="noindex">
 <title>Offline | Zaan Farzaan</title>
 <style>
 :root{color-scheme:dark}
-body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#151515;color:#f2f1ec;font-family:Georgia,'Noto Serif Devanagari','Noto Nastaliq Urdu',serif;text-align:center;padding:2rem;box-sizing:border-box}
-.box{max-width:420px}
-img{width:96px;height:auto;margin-bottom:1rem;opacity:.95}
-h1{font-size:1.5rem;margin:.2rem 0 .8rem;font-weight:600}
-p{color:#9c9c95;line-height:1.8;margin:.4rem 0}
-a,button{display:inline-block;margin-top:1.3rem;padding:.7rem 1.4rem;border-radius:8px;border:1px solid rgba(220,220,214,.4);background:transparent;color:#f2f1ec;font:inherit;text-decoration:none;cursor:pointer}
-a:hover,button:hover{border-color:#f2f1ec}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;background:#101012;color:#f2f1ec;font-family:Georgia,'Noto Serif Devanagari','Noto Nastaliq Urdu',serif;touch-action:manipulation;overscroll-behavior:none}
+#wrap{position:fixed;inset:0;display:flex;flex-direction:column}
+#top{padding:.7rem 1rem .3rem;text-align:center;flex:none}
+#top b{font-size:1.05rem;font-weight:600;letter-spacing:.02em}
+#top small{display:block;color:#9c9c95;font-size:.78rem;line-height:1.5;margin-top:.15rem}
+#cv{flex:1;width:100%;display:block;min-height:0}
+#sher{position:fixed;left:50%;bottom:5.2rem;transform:translate(-50%,12px);width:min(92vw,420px);padding:.9rem 1rem;border-radius:14px;background:rgba(24,24,26,.92);border:1px solid rgba(220,220,214,.3);text-align:center;line-height:1.8;font-size:1.02rem;opacity:0;pointer-events:none;transition:opacity .4s,transform .4s}
+#sher.on{opacity:1;transform:translate(-50%,0)}
+#sher i{display:block;font-style:normal;color:#9c9c95;font-size:.72rem;letter-spacing:.12em;margin-top:.3rem}
+#ov{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;background:rgba(12,12,14,.72);text-align:center;padding:1.4rem}
+#ov.off{display:none}
+#ov h1{margin:.1rem 0;font-size:1.6rem;font-weight:600}
+#ov p{margin:.1rem 0;color:#b4b4ad;line-height:1.7;max-width:320px;font-size:.95rem}
+.btn{display:inline-block;margin-top:.9rem;padding:.75rem 1.6rem;border-radius:999px;border:1px solid #f2f1ec;background:#f2f1ec;color:#151515;font:inherit;font-weight:600;font-size:1rem;text-decoration:none;cursor:pointer}
+.btn.ghost{background:transparent;color:#f2f1ec;border-color:rgba(220,220,214,.45);margin-top:.5rem;font-weight:400;font-size:.9rem}
+#bar{position:fixed;left:0;right:0;bottom:0;display:flex;gap:.6rem;justify-content:center;padding:.6rem;background:linear-gradient(transparent,#101012 70%)}
+#bar a,#bar button{font:inherit;font-size:.85rem;color:#cfcfc8;background:transparent;border:1px solid rgba(220,220,214,.3);padding:.5rem 1rem;border-radius:999px;text-decoration:none}
 </style>
 </head>
 <body>
-<div class="box">
-  <img src="logo.png" alt="Zaan Farzaan">
-  <h1>You are offline</h1>
-  <p>This page was not saved on your phone yet. Pages you have already opened are available without internet.</p>
-  <p lang="hi">इंटरनेट नहीं है। जो पन्ने आप पहले खोल चुके हैं वे बिना इंटरनेट के भी खुलेंगे।</p>
-  <p lang="ur" dir="rtl">انٹرنیٹ نہیں ہے۔ جو صفحات آپ پہلے کھول چکے ہیں وہ انٹرنیٹ کے بغیر بھی کھلیں گے۔</p>
-  <a href="/index.html">Home</a> <button type="button" onclick="location.reload()">Try again</button>
+<div id="wrap">
+  <div id="top"><b id="t1"></b><small id="t2"></small></div>
+  <canvas id="cv"></canvas>
 </div>
+<div id="sher"></div>
+<div id="ov">
+  <h1 id="ovT"></h1><p id="ovP"></p>
+  <button class="btn" id="go"></button>
+</div>
+<div id="bar"><a href="/index.html" id="home"></a><button type="button" id="retry"></button></div>
+<script>
+(function(){
+  var SH = [{"h": ["सोच रक्खा था मैं ने भी क्या क्या नहीं", "सोचने भर से पर कुछ भी होता नहीं"], "e": ["Soch rakkha tha main ne bhi kya kya nahin", "Sochne bhar se par kuchh bhi hota nahin"], "n": 2}, {"h": ["हम-सफ़र बिछड़ा न होता गर सर-ए-राह", "मैं अभी शायद सर-ए-मंज़िल न होता"], "e": ["Hum-safar bichhda na hota gar sar-e-raah", "Main abhi shaayad sar-e-manzil na hota"], "n": 3}, {"h": ["ऐ मिरे दिल बता ये ज़रूरी है क्या", "जो हमेशा से था वो हमेशा रहे"], "e": ["Ai mire dil bata ye zaroori hai kya", "Jo hamesha se tha wo hamesha rahe"], "n": 5}, {"h": ["तेरी आँखों में मिरी तस्वीर नइं", "बोल क़ाबिज़ तेरे दिल पर कौन है"], "e": ["Teri aankhon mein miri tasveer nain", "Bol qaabiz tere dil par kaun hai"], "n": 7}, {"h": ["है इक ख़्वाहिश कि मुझ को भी कोई मेरी तरह चाहे", "मिरे जैसा कोई 'आशिक़ नहीं देखा कभी मैं ने"], "e": ["Hai ik khwaahish ki mujh ko bhi koi meri tarah chaahe", "Mire jaisa koi 'aashiq nahin dekha kabhi main ne"], "n": 9}, {"h": ["सदा इस ने मुझे हिम्मत फ़राहम की", "यही इक बात है अच्छी मिरे ग़म की"], "e": ["Sada is ne mujhe himmat faraaham ki", "Yahi ik baat hai achchhi mire gham ki"], "n": 10}, {"h": ["तुझे हो मुबारक तिरी बे-वफ़ाई", "मैं ख़ुश हूँ कि मैं ने मोहब्बत निभाई"], "e": ["Tujhe ho mubaarak tiri be-wafaai", "Main khush hun ki main ne mohabbat nibhaai"], "n": 12}, {"h": ["सुकून इस दर्जा फ़ुर्क़त में नहीं होता", "अगर ये ज़ेहन ग़फ़लत में नहीं होता"], "e": ["Sukoon is darja furqat mein nahin hota", "Agar ye zehan ghaflat mein nahin hota"], "n": 14}, {"h": ["माना दुख का नाता मुझ से पैहम है लेकिन", "कम-अज़-कम ख़ुश रहने की ख़ुश-फ़हमी ही पालूँ"], "e": ["Maana dukh ka naata mujh se paiham hai lekin", "Kam-az-kam khush rahne ki khush-fahmi hi paalun"], "n": 25}, {"h": ["ज़मीं वाले ज़मीं वालों के चक्कर में पड़ा है क्यूँ", "कहीं तेरे न हाथों से निकल तेरा फ़लक जाए"], "e": ["Zamin waale zamin waalon ke chakkar mein pada hai kyun", "Kahin tere na haathon se nikal tera falak jaae"], "n": 31}];
+  var lang = 'hi'; try{ lang = localStorage.getItem('zf-lang') || 'hi'; }catch(e){}
+  if(lang !== 'en' && lang !== 'ur') lang = 'hi';
+  var TX = {
+    hi:{t1:'इंटरनेट नहीं है', t2:'तब तक चाँद के तारे चुनिए ✦', ovT:'तारे चुनिए', ovP:'आसमान से गिरते तारों को छूकर चुनिए। हर 5 तारों पर एक शेर मिलेगा। तीन तारे छूटे तो खेल ख़त्म।', go:'खेल शुरू करें', home:'होम', retry:'फिर कोशिश करें', over:'रात ढल गई', score:'तारे', best:'सबसे ज़्यादा', again:'फिर खेलें', from:'ज़ान फ़रज़ान'},
+    en:{t1:'You are offline', t2:'Pick a few stars till the internet returns ✦', ovT:'Pick the stars', ovP:'Tap the falling stars to collect them. Every 5 stars reveals a sher. Miss three and the night ends.', go:'Start', home:'Home', retry:'Try again', over:'The night is over', score:'Stars', best:'Best', again:'Play again', from:'Zaan Farzaan'},
+    ur:{t1:'انٹرنیٹ نہیں ہے', t2:'جب تک نیٹ آئے، چاند کے تارے چنیے ✦', ovT:'تارے چنیے', ovP:'آسمان سے گرتے تاروں کو چھوئیے۔ ہر 5 تاروں پر ایک شعر ملے گا۔ تین تارے چھوٹے تو کھیل ختم۔', go:'کھیل شروع کریں', home:'ہوم', retry:'دوبارہ کوشش', over:'رات ڈھل گئی', score:'تارے', best:'سب سے زیادہ', again:'دوبارہ کھیلیں', from:'زان فرزان'}
+  }[lang];
+  function $(i){ return document.getElementById(i); }
+  if(lang === 'ur') document.documentElement.dir = 'rtl';
+  $('t1').textContent = TX.t1; $('t2').textContent = TX.t2; $('ovT').textContent = TX.ovT; $('ovP').textContent = TX.ovP;
+  $('go').textContent = TX.go; $('home').textContent = TX.home; $('retry').textContent = TX.retry;
+  $('retry').onclick = function(){ location.reload(); };
+  var cv = $('cv'), cx = cv.getContext('2d'), W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
+  function fit(){ var r = cv.getBoundingClientRect(); W = r.width; H = r.height; cv.width = W * DPR; cv.height = H * DPR; cx.setTransform(DPR, 0, 0, DPR, 0, 0); }
+  window.addEventListener('resize', fit); fit();
+  var bg = [], i; for(i = 0; i < 70; i++) bg.push({x:Math.random(), y:Math.random(), r:Math.random() * 1.3 + .3, p:Math.random() * 6});
+  var stars, parts, score, lives, running = false, t0 = 0, spawnAt = 0, shown = 0, best = 0, last = 0;
+  try{ best = +localStorage.getItem('zf-star-best') || 0; }catch(e){}
+  function star(x, y, r, rot){
+    cx.beginPath();
+    for(var k = 0; k < 10; k++){ var a = rot + k * Math.PI / 5 - Math.PI / 2, rr = k % 2 ? r * .45 : r; cx.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr); }
+    cx.closePath();
+  }
+  function start(){
+    stars = []; parts = []; score = 0; lives = 3; shown = 0; running = true; t0 = performance.now(); spawnAt = 0; last = t0;
+    $('ov').classList.add('off'); $('sher').classList.remove('on');
+  }
+  function spawn(now){
+    var el = (now - t0) / 1000, sp = 55 + Math.min(el * 2.2, 95);
+    var r = 15 + Math.random() * 6, gold = Math.random() < .12;
+    stars.push({x:r + 10 + Math.random() * (W - 2 * r - 20), y:-r, r:r, v:sp * (.85 + Math.random() * .4), rot:Math.random() * 3, w:(Math.random() - .5) * 1.2, gold:gold, sw:Math.random() * 6});
+  }
+  function burst(x, y, gold){
+    for(var k = 0; k < 14; k++){ var a = Math.random() * 6.283, s = 40 + Math.random() * 110; parts.push({x:x, y:y, vx:Math.cos(a) * s, vy:Math.sin(a) * s, l:1, g:gold}); }
+  }
+  function showSher(){
+    var s = SH[shown % SH.length]; shown++;
+    var ls = lang === 'en' ? s.e : s.h, el = $('sher');
+    el.innerHTML = '';
+    ls.forEach(function(t){ var d = document.createElement('div'); d.textContent = t; el.appendChild(d); });
+    var f = document.createElement('i'); f.textContent = '— ' + TX.from; el.appendChild(f);
+    el.classList.add('on'); clearTimeout(showSher.t); showSher.t = setTimeout(function(){ el.classList.remove('on'); }, 7000);
+  }
+  function tap(ev){
+    if(!running) return;
+    var r = cv.getBoundingClientRect(), p = ev.touches ? ev.touches[0] : ev, x = p.clientX - r.left, y = p.clientY - r.top, hit = -1, bd = 1e9;
+    stars.forEach(function(s, k){ var d = Math.hypot(s.x - x, s.y - y); if(d < s.r + 26 && d < bd){ bd = d; hit = k; } });
+    if(hit >= 0){
+      var s = stars.splice(hit, 1)[0]; burst(s.x, s.y, s.gold);
+      if(s.gold){ if(lives < 3) lives++; score += 2; } else score++;
+      if(Math.floor(score / 5) > shown - 0 && score >= (shown + 1) * 5) showSher();
+    }
+    ev.preventDefault();
+  }
+  cv.addEventListener('touchstart', tap, {passive:false}); cv.addEventListener('mousedown', tap);
+  function over(){
+    running = false;
+    var nb = score > best; if(nb){ best = score; try{ localStorage.setItem('zf-star-best', String(best)); }catch(e){} }
+    $('ovT').textContent = TX.over;
+    $('ovP').textContent = TX.score + ': ' + score + '  ·  ' + TX.best + ': ' + best + (nb && score > 0 ? '  ✦' : '');
+    $('go').textContent = TX.again; $('ov').classList.remove('off');
+  }
+  $('go').onclick = start;
+  function moon(){
+    var mx = W - 58, my = 52;
+    cx.save(); cx.shadowColor = 'rgba(240,236,210,.5)'; cx.shadowBlur = 24; cx.fillStyle = '#ece8d2';
+    cx.beginPath(); cx.arc(mx, my, 24, 0, 6.283); cx.fill(); cx.restore();
+    cx.fillStyle = '#101012'; cx.beginPath(); cx.arc(mx + 10, my - 5, 21, 0, 6.283); cx.fill();
+  }
+  function frame(now){
+    var dt = Math.min((now - last) / 1000, .05); last = now;
+    var g = cx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#0c0d18'); g.addColorStop(1, '#1b1a22'); cx.fillStyle = g; cx.fillRect(0, 0, W, H);
+    bg.forEach(function(b){ cx.globalAlpha = .35 + .35 * Math.sin(now / 900 + b.p); cx.fillStyle = '#fff'; cx.fillRect(b.x * W, b.y * H, b.r, b.r); });
+    cx.globalAlpha = 1; moon();
+    if(running){
+      if(now >= spawnAt){ spawn(now); spawnAt = now + Math.max(520, 1150 - (now - t0) / 45); }
+      for(i = stars.length - 1; i >= 0; i--){
+        var s = stars[i]; s.y += s.v * dt; s.rot += s.w * dt; s.x += Math.sin(now / 700 + s.sw) * 12 * dt;
+        if(s.y - s.r > H - 4){ stars.splice(i, 1); lives--; if(lives <= 0){ over(); break; } }
+      }
+    }
+    stars && stars.forEach(function(s){
+      cx.save(); cx.shadowColor = s.gold ? 'rgba(255,200,90,.9)' : 'rgba(255,245,200,.8)'; cx.shadowBlur = 16;
+      cx.fillStyle = s.gold ? '#ffcf5a' : '#fff4c8'; star(s.x, s.y, s.r, s.rot); cx.fill(); cx.restore();
+    });
+    parts && (parts = parts.filter(function(p){ p.l -= dt * 1.6; p.x += p.vx * dt; p.y += p.vy * dt; if(p.l <= 0) return false; cx.globalAlpha = p.l; cx.fillStyle = p.g ? '#ffcf5a' : '#fff4c8'; cx.fillRect(p.x, p.y, 2.5, 2.5); cx.globalAlpha = 1; return true; }));
+    if(running || (stars && stars.length)){
+      cx.fillStyle = '#f2f1ec'; cx.font = '600 16px Georgia,serif'; cx.textAlign = lang === 'ur' ? 'right' : 'left';
+      cx.fillText('✦ ' + score, lang === 'ur' ? W - 14 : 14, 28);
+      var h = ''; for(i = 0; i < 3; i++) h += i < lives ? '♥ ' : '♡ ';
+      cx.fillStyle = '#e88a9a'; cx.fillText(h, lang === 'ur' ? W - 14 : 14, 52);
+    }
+    requestAnimationFrame(frame);
+  }
+  stars = []; parts = []; score = 0; lives = 3; requestAnimationFrame(function(n){ last = n; frame(n); });
+  window.addEventListener('online', function(){ var a = document.createElement('a'); });
+})();
+</script>
 </body>
 </html>
