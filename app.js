@@ -982,7 +982,7 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
       el = document.createElement('div');
       el.setAttribute('role','status');
       el.style.cssText = 'position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:99999;display:flex;align-items:center;gap:.7rem;padding:.55rem .6rem .55rem 1rem;border-radius:999px;background:#1b1b1b;color:#f2f1ec;border:1px solid rgba(220,220,214,.35);box-shadow:0 8px 24px rgba(0,0,0,.5);font-size:.88rem;max-width:92vw';
-      var s = document.createElement('span'); s.textContent = t.m;
+      var s = document.createElement('span'); s.textContent = t.m; s.style.whiteSpace = 'nowrap';
       var a = document.createElement('a'); a.href = '/offline.html'; a.textContent = t.b;
       a.style.cssText = 'background:#f2f1ec;color:#151515;text-decoration:none;font-weight:600;padding:.4rem .9rem;border-radius:999px;white-space:nowrap';
       var x = document.createElement('button'); x.type = 'button'; x.textContent = '×'; x.setAttribute('aria-label','close');
@@ -992,6 +992,8 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
       document.body.appendChild(el);
     }
     function hide(){ if(el){ el.remove(); el = null; } }
+    /* keep the saved offline game page fresh (the service worker stores it when it is fetched while online) */
+    window.addEventListener('load', function(){ setTimeout(function(){ try{ if(navigator.onLine !== false) fetch('/offline.html', {cache:'no-cache'}).catch(function(){}); }catch(e){} }, 3000); });
     window.addEventListener('offline', show);
     window.addEventListener('online', hide);
     if(navigator.onLine === false) window.addEventListener('load', show);
@@ -1005,5 +1007,13 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
     if(document.body && document.body.getAttribute('data-page') === 'home'){
       var s = document.createElement('script'); s.src = 'lafz-today.js?v=1'; s.defer = true; document.body.appendChild(s);
     }
+  }catch(e){}
+})();
+
+/* v42: keep audio playing while moving around the site (audio-shell.js) */
+(function(){
+  try{
+    if(window.self !== window.top || /admin-comments|offline\.html/.test(location.pathname)) return;
+    var s = document.createElement('script'); s.src = 'audio-shell.js?v=1'; s.defer = true; document.body.appendChild(s);
   }catch(e){}
 })();

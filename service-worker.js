@@ -7,10 +7,10 @@
    WHAT IT NEVER TOUCHES: audio files (mp3 / range requests), Supabase (comments), Buttondown, the admin page, anything that is not GET.
    WHEN YOU CHANGE FILES: pages and files update by themselves while online. Only change CACHE below (zf-v1 -> zf-v2) if you also
    change the PRECACHE list or want every phone to throw away all saved copies. */
-var CACHE = 'zf-v1';
+var CACHE = 'zf-v2';
 var PRECACHE = ['/', '/index.html', '/index-en.html', '/index-ur.html', '/ghazals.html', '/ghazals-en.html', '/ghazals-ur.html',
   '/nazms.html', '/nazms-en.html', '/nazms-ur.html', '/audios.html', '/audios-en.html', '/audios-ur.html', '/about.html', '/offline.html',
-  '/style.css', '/app.js', '/i18n.js', '/collection.js', '/search.js', '/home-features.js', '/home-carousel.js', '/home-extras.js', '/mood-data.js', '/sher-image.js', '/lafz.js', '/zf-find.js', '/lafz-data.js', '/lafz-today.js', '/ashaar.js', '/audios.js', '/comments.js',
+  '/style.css', '/app.js', '/i18n.js', '/collection.js', '/search.js', '/home-features.js', '/home-carousel.js', '/home-extras.js', '/mood-data.js', '/sher-image.js', '/lafz.js', '/zf-find.js', '/lafz-data.js', '/lafz-today.js', '/audio-shell.js', '/ashaar.js', '/audios.js', '/comments.js',
   '/ghazals-data.js', '/nazms-data.js', '/playfair-display-600.woff2', '/logo.png', '/favicon.ico', '/icon-192.png', '/manifest.json'];
 for(var i = 1; i <= 40; i++) PRECACHE.push('/ghazal-' + i + '.html');
 for(var j = 1; j <= 10; j++) PRECACHE.push('/nazm-' + j + '.html');
