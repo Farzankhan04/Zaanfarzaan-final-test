@@ -1284,7 +1284,7 @@ body.lang-ur .signature-flourish{transform:scaleX(-1);}
 html{--zfw:clamp(62px,18vw,84px)}
 html::before{
   content:''; position:fixed; inset:0; z-index:100000; pointer-events:none;
-  background:#151515 url(logo.png) no-repeat; background-size:var(--zfw) auto;
+  background:#151515 url(logo.png?v=2) no-repeat; background-size:var(--zfw) auto;
   background-position:center calc(50% - 20px - var(--zfw)*.17);
   animation:zfSplashOut .3s ease 1.7s forwards;
 }

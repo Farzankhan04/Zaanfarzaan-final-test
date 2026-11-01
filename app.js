@@ -788,8 +788,8 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
     if(/admin-comments/.test(location.pathname)) return;
     var inF = window.self !== window.top, p = document.body && document.body.getAttribute('data-page');
     if(inF ? /\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(location.pathname) : (p === 'ghazals' || p === 'nazms' || /\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(location.pathname))){
-      var a = document.createElement('script'); a.src = 'lafz-data.js?v=2'; a.defer = true;
-      a.onload = function(){ var b = document.createElement('script'); b.src = 'lafz.js?v=3'; b.defer = true; document.body.appendChild(b); };
+      var a = document.createElement('script'); a.src = 'lafz-data.js?v=3'; a.defer = true;
+      a.onload = function(){ var b = document.createElement('script'); b.src = 'lafz.js?v=4'; b.defer = true; document.body.appendChild(b); };
       document.body.appendChild(a);
     }
   }catch(e){}
@@ -1005,7 +1005,13 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
   try{
     if(window.self !== window.top) return;
     if(document.body && document.body.getAttribute('data-page') === 'home'){
-      var s = document.createElement('script'); s.src = 'lafz-today.js?v=1'; s.defer = true; document.body.appendChild(s);
+      var loadToday = function(){ if(window.__zfLtLoaded) return; window.__zfLtLoaded = true; var s = document.createElement('script'); s.src = 'lafz-today.js?v=1'; s.defer = true; document.body.appendChild(s); };
+      var anchor = document.getElementById('zf-mood') || document.getElementById('zf-game');
+      if(anchor && 'IntersectionObserver' in window){
+        var io = new IntersectionObserver(function(es){ if(es.some(function(e){ return e.isIntersecting; })){ io.disconnect(); loadToday(); } }, {rootMargin: '900px 0px'});
+        io.observe(anchor);
+        setTimeout(loadToday, 12000);
+      }else{ loadToday(); }
     }
   }catch(e){}
 })();
@@ -1015,5 +1021,53 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
   try{
     if(window.self !== window.top || /admin-comments|offline\.html/.test(location.pathname)) return;
     var s = document.createElement('script'); s.src = 'audio-shell.js?v=1'; s.defer = true; document.body.appendChild(s);
+  }catch(e){}
+})();
+
+/* v44: script switch (हिन्दी | Roman | اردو) on every ghazal / nazm page, so Urdu and English readers who arrive from a shared link can read it their way */
+(function(){
+  try{
+    if(!/\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(location.pathname)) return;
+    var main = document.querySelector('.poem-detail .card.manuscript'); if(!main) return;
+    var cards = document.querySelectorAll('.poem-detail > .card'); var roman = null;
+    for(var i = 0; i < cards.length; i++){ var k = cards[i].querySelector('.kind'); if(k && /Roman/i.test(k.textContent)){ roman = cards[i]; break; } }
+    if(!roman) return;
+    function inner(card){ var c = card.cloneNode(true), k = c.querySelector('.kind'); if(k) k.remove(); return c.innerHTML; }
+    var HI = inner(main), EN = inner(roman), UR = null;
+    var kindEl = main.querySelector('.kind');
+    var st = document.createElement('style');
+    st.textContent = '.zf-script{display:flex;gap:.5rem;justify-content:center;margin:1rem 0 .2rem}'+
+      '.zf-script button{font:inherit;font-size:.9rem;cursor:pointer;padding:.42rem 1.05rem;min-height:40px;border-radius:999px;border:1px solid rgba(220,220,214,.4);background:transparent;color:inherit}'+
+      '.zf-script button[aria-pressed="true"]{background:#f2f1ec;color:#151515;border-color:#f2f1ec;font-weight:600}'+
+      '.card.zf-sc-ur{direction:rtl;text-align:right}.card.zf-sc-ur .verse,.card.zf-sc-ur .nazm-line,.card.zf-sc-ur h3{font-family:"Noto Nastaliq Urdu",serif;line-height:2.5;font-size:1.3rem}'+
+      '.card.zf-sc-ur .kind{direction:ltr}';
+    document.head.appendChild(st);
+    var row = document.createElement('div'); row.className = 'zf-script'; row.setAttribute('role','group');
+    var defs = [['hi','हिन्दी'],['en','Roman'],['ur','اردو']], btns = {};
+    defs.forEach(function(d){
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = d[1]; b.setAttribute('aria-pressed','false');
+      b.addEventListener('click', function(){ set(d[0]); try{ localStorage.setItem('zf-poem-script', d[0]); }catch(e){} });
+      btns[d[0]] = b; row.appendChild(b);
+    });
+    main.parentNode.insertBefore(row, main);
+    function set(sc){
+      var html = HI;
+      if(sc === 'en') html = EN;
+      else if(sc === 'ur'){
+        if(typeof window.ZF_UR_transliterateHtml !== 'function') return;
+        if(!UR){ try{ UR = window.ZF_UR_transliterateHtml(HI); }catch(e){ return; } }
+        html = UR;
+      }
+      var k = main.querySelector('.kind');
+      main.innerHTML = ''; if(k) main.appendChild(k); else if(kindEl) main.appendChild(kindEl);
+      main.insertAdjacentHTML('beforeend', html);
+      main.classList.toggle('zf-sc-ur', sc === 'ur');
+      roman.style.display = sc === 'en' ? 'none' : '';
+      for(var key in btns) btns[key].setAttribute('aria-pressed', key === sc ? 'true' : 'false');
+      main.setAttribute('data-sc', sc);
+    }
+    var start = 'hi'; try{ start = localStorage.getItem('zf-poem-script') || ''; }catch(e){}
+    if(!start){ var L = window.ZF_LANG; start = L === 'en' ? 'en' : (L === 'ur' ? 'ur' : 'hi'); }
+    if(start !== 'hi'){ set(start); } else { btns.hi.setAttribute('aria-pressed','true'); }
   }catch(e){}
 })();

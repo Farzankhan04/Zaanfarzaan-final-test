@@ -8,11 +8,11 @@
   function nu(s){ return s.replace(/[ً-ٰٟـ‌‍‎‏۔ۀ]/g,'').replace(/ي/g,'ی').replace(/ك/g,'ک').replace(/ہ/g,'ہ').replace(/ۂ/g,'ہ'); }
   var HI = {}, EN = {}, UR = null, MAXW = 4;
   function sp(s){ return s.replace(/[-–‌]+/g,' ').replace(/\s+/g,' ').trim(); }
-  D.forEach(function(e,i){ e.k.forEach(function(k){ HI[sp(nh(k))] = i; }); (e.r||[]).forEach(function(r){ if(!(r in EN)) EN[r] = i; }); });
+  D.forEach(function(e,i){ if(!e.x) e.k.forEach(function(k){ HI[sp(nh(k))] = i; }); (e.r||[]).forEach(function(r){ if(!(r in EN)) EN[r] = i; }); });
   function lang(){ return window.ZF_LANG || 'hi'; }
   function buildUr(){
     UR = {}; var t = window.ZF_UR_transliterateText; if(!t) return;
-    D.forEach(function(e,i){ e.k.forEach(function(k){ try{ var u = sp(nu(t(k))); if(!u) return; if(u in UR){ if(String(UR[u]).split(',').indexOf(String(i)) < 0) UR[u] += ',' + i; } else UR[u] = String(i); }catch(x){} }); });
+    D.forEach(function(e,i){ if(e.x) return; e.k.forEach(function(k){ try{ var u = sp(nu(t(k))); if(!u) return; if(u in UR){ if(String(UR[u]).split(',').indexOf(String(i)) < 0) UR[u] += ',' + i; } else UR[u] = String(i); }catch(x){} }); });
   }
   /* CSS */
   var st = document.createElement('style');
@@ -53,6 +53,7 @@
         if(idx !== undefined) hit = {idx:idx, n:n};
       }
       if(!hit) continue;
+      if(D[+String(hit.idx).split(',')[0]].x){ i += hit.n - 1; continue; }   /* blocker phrase (e.g. "jaan kar" = knowing): swallow the words, underline nothing */
       var st0 = toks[i].s, en0 = toks[i + hit.n - 1].e;
       if(!frag) frag = document.createDocumentFragment();
       if(st0 > last) frag.appendChild(document.createTextNode(txt.slice(last, st0)));
