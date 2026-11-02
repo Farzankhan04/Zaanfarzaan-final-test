@@ -1423,3 +1423,21 @@ body:not(.lang-en) .zf-sher-lines{font-style:normal;}
 .lang-en .zf-hero .zf-sher-lines{font-size:min(1.7rem,calc(100cqw / 15.5)) !important;}
 .lang-ur .zf-hero .zf-sher-lines{font-size:min(1.5rem,calc(100cqw / 13.4)) !important;}
 .zf-hero .zf-sher-link{white-space:nowrap;}
+
+/* v45f: centred layout - medium photo, name, small facts, sher, "Complete Biography", then the text */
+.zf-orn-round{width:min(236px,68vw); margin:1rem auto .8rem;}
+.about-page .about-photo-name{margin:0 auto .9rem; font-size:clamp(1.45rem,5.4vw,1.9rem);}
+.zf-facts{max-width:340px; margin:0 auto 1.4rem; padding:.1rem 0;}
+.zf-fact{padding:.42rem .2rem; gap:.8rem;}
+.zf-fact dt{font-size:.68rem; letter-spacing:.12em;}
+.zf-fact dd{font-size:.9rem;}
+.lang-ur .zf-fact dt{font-size:.82rem;}
+.zf-sher-box{max-width:480px; margin:.2rem auto 1.4rem;}
+.zf-sher-lines{font-size:clamp(1.05rem,5.2vw,1.5rem) !important; line-height:1.85; text-wrap:balance;}
+.lang-en .zf-sher-lines{font-size:clamp(1.15rem,5.6vw,1.6rem) !important;}
+.zf-sher-lines .zf-sl{white-space:nowrap;}
+.zf-bio-head{display:flex; align-items:center; gap:.9rem; margin:1.6rem 0 1.4rem; font-weight:600; font-size:.82rem; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); font-family:'Lora',serif;}
+.zf-bio-head::before,.zf-bio-head::after{content:""; flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(220,220,214,.45));}
+.zf-bio-head::after{transform:scaleX(-1);}
+.lang-ur .zf-bio-head,.zf-bio-head:lang(hi){letter-spacing:.04em; text-transform:none; font-size:1.05rem;}
+body:not(.lang-en) .zf-bio-head{letter-spacing:.04em; text-transform:none; font-size:1.05rem;}

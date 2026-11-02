@@ -1075,15 +1075,15 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
 /* v45e: About hero - keep each misra of the sher on ONE line by fitting the font size to its column. */
 (function(){
   try{
-    var box = document.querySelector('.zf-hero .zf-sher-lines');
+    var box = document.querySelector('.zf-sher-lines');
     if(!box) return;
     var busy = false;
     function fit(){
       if(busy) return; busy = true;
       try{
-        var col = box.parentNode.clientWidth;
+        var col = box.parentNode.clientWidth - 28;
         if(!col){ busy = false; return; }
-        var fs = (window.ZF_LANG === 'hi' || window.ZF_LANG === 'ur') ? 24 : 27;
+        var fs = (window.ZF_LANG === 'hi' || window.ZF_LANG === 'ur') ? 25 : 27;
         box.style.setProperty('font-size', fs + 'px', 'important');
         var lines = box.querySelectorAll('.zf-sl');
         function widest(){ var m = 0; for(var i = 0; i < lines.length; i++){ var r = document.createRange(); r.selectNodeContents(lines[i]); m = Math.max(m, r.getBoundingClientRect().width); } return m; }
