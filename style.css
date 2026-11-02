@@ -1398,3 +1398,28 @@ body:not(.lang-en) .zf-sher-lines{font-style:normal;}
 .lang-en .zf-sher-lines{font-family:'Cormorant Garamond','Lora',serif; font-size:clamp(1.1rem,5.3vw,1.5rem) !important; font-weight:500; letter-spacing:.01em; line-height:1.75;}
 .lang-en .zf-sher-lines .zf-sl{white-space:nowrap;}
 .about-page > p{text-align:justify; text-justify:inter-word; hyphens:none; text-align-last:start;}
+
+/* v45c: About hero - Rekhta-style profile: photo + name on the left, main sher on the right */
+.zf-hero{display:grid; grid-template-columns:clamp(150px,42vw,230px) minmax(0,1fr); align-items:center; gap:clamp(.6rem,3vw,2rem); direction:ltr; margin:.6rem 0 1.6rem;}
+.zf-hero-l{display:flex; flex-direction:column; align-items:center;}
+.zf-hero .zf-orn-round{width:100%; margin:0 0 .3rem;}
+.about-page .zf-hero .about-photo-name{margin:0; font-size:clamp(1.02rem,4.6vw,1.5rem); white-space:nowrap;}
+.zf-hero-r{min-width:0;}
+.zf-hero .zf-sher-box{margin:0; padding:.4rem 0; max-width:none; text-align:center;}
+.zf-hero .zf-sher-box::before,.zf-hero .zf-sher-box::after{width:44px;}
+.zf-hero .zf-sher-lines{font-size:clamp(.95rem,4.2vw,1.35rem) !important; line-height:1.75; text-wrap:balance;}
+.lang-en .zf-hero .zf-sher-lines{font-size:clamp(1rem,4.6vw,1.5rem) !important;}
+.zf-hero .zf-sher-lines .zf-sl{white-space:normal !important;}
+.zf-hero .zf-sher-link{font-size:clamp(.78rem,3.2vw,.9rem);}
+.zf-hero-r{direction:inherit;} html[dir="rtl"] .zf-hero-r{direction:rtl;}
+
+/* v45e: each misra stays on ONE line; font scales to the column (container query units) */
+.zf-hero{grid-template-columns:clamp(116px,32vw,200px) minmax(0,1fr); gap:clamp(.5rem,2.2vw,1.6rem); margin:.6rem -4vw 1.6rem;}
+.about-page .zf-hero .about-photo-name{font-size:clamp(.9rem,4vw,1.4rem);}
+.zf-hero-r{container-type:inline-size;}
+.zf-hero .zf-sher-box{padding:.3rem 0;}
+.zf-hero .zf-sher-lines .zf-sl{white-space:nowrap !important;}
+.zf-hero .zf-sher-lines{font-size:min(1.5rem,calc(100cqw / 16)) !important; line-height:1.8; text-wrap:nowrap;}
+.lang-en .zf-hero .zf-sher-lines{font-size:min(1.7rem,calc(100cqw / 15.5)) !important;}
+.lang-ur .zf-hero .zf-sher-lines{font-size:min(1.5rem,calc(100cqw / 13.4)) !important;}
+.zf-hero .zf-sher-link{white-space:nowrap;}

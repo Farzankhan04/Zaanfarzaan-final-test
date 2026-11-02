@@ -1071,3 +1071,32 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
     if(start !== 'hi'){ set(start); } else { btns.hi.setAttribute('aria-pressed','true'); }
   }catch(e){}
 })();
+
+/* v45e: About hero - keep each misra of the sher on ONE line by fitting the font size to its column. */
+(function(){
+  try{
+    var box = document.querySelector('.zf-hero .zf-sher-lines');
+    if(!box) return;
+    var busy = false;
+    function fit(){
+      if(busy) return; busy = true;
+      try{
+        var col = box.parentNode.clientWidth;
+        if(!col){ busy = false; return; }
+        var fs = (window.ZF_LANG === 'hi' || window.ZF_LANG === 'ur') ? 24 : 27;
+        box.style.setProperty('font-size', fs + 'px', 'important');
+        var lines = box.querySelectorAll('.zf-sl');
+        function widest(){ var m = 0; for(var i = 0; i < lines.length; i++){ var r = document.createRange(); r.selectNodeContents(lines[i]); m = Math.max(m, r.getBoundingClientRect().width); } return m; }
+        var guard = 0;
+        while(widest() > col && fs > 9 && guard++ < 60){ fs -= 0.5; box.style.setProperty('font-size', fs + 'px', 'important'); }
+      }catch(e){}
+      busy = false;
+    }
+    fit();
+    if(document.fonts && document.fonts.ready){ document.fonts.ready.then(fit); }
+    window.addEventListener('resize', fit);
+    window.addEventListener('load', fit);
+    if(window.MutationObserver){ new MutationObserver(function(){ setTimeout(fit, 0); }).observe(box, {childList:true, subtree:true, characterData:true}); }
+    document.addEventListener('click', function(e){ if(e.target.closest && e.target.closest('.lang-opt, #lang-toggle')) setTimeout(fit, 350); });
+  }catch(e){}
+})();
