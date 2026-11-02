@@ -16,8 +16,8 @@
   }
   /* CSS */
   var st = document.createElement('style');
-  st.textContent = '.lz{border-bottom:1px dotted rgba(220,220,214,.38);cursor:pointer;-webkit-tap-highlight-color:transparent;text-decoration:none}'+
-    '.lz:hover{border-bottom-color:rgba(220,220,214,.85)}'+
+  st.textContent = '.lz{border-bottom:1px dotted rgba(var(--zf-rgb),.38);cursor:pointer;-webkit-tap-highlight-color:transparent;text-decoration:none}'+
+    '.lz:hover{border-bottom-color:rgba(var(--zf-rgb),.85)}'+
     'body.lz-off .lz{border-bottom-color:transparent;cursor:inherit;pointer-events:none}'+
     '.lz-hint{display:flex;align-items:center;justify-content:center;gap:.6rem;flex-wrap:wrap}'+
     '.lz-tg{font:inherit;font-size:.72rem;cursor:pointer;padding:.18rem .7rem;border-radius:999px;background:transparent;color:inherit;border:1px solid currentColor;opacity:.8}'+

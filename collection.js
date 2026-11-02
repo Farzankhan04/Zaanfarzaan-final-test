@@ -99,6 +99,29 @@
     window.ZFS.highlightIn(detailEl, window.ZFS.parse(searchInput.value));
   }
 
+
+  /* v47: tiny "N couplets - ~M min" line under each list row */
+  function itemMeta(item){
+    try{
+      var L = lang();
+      var h = (L === 'en' && item.versesHtmlEn) ? item.versesHtmlEn : item.versesHtml;
+      if(Array.isArray(h)) h = h.join('');
+      if(!h) return '';
+      var lines = (h.match(/class="line"/g) || []).length + (h.match(/nazm-line/g) || []).length;
+      var verses = (h.match(/class="verse"/g) || []).length;
+      var txt = h.replace(/<[^>]*>/g, ' ').trim();
+      var words = txt ? txt.split(/\s+/).length : 0;
+      var mins = Math.max(1, Math.round(words / 110));
+      var isNazm = /^nazm/.test(String(item.id));
+      var n = isNazm ? lines : verses;
+      if(!n) return '';
+      var unit = isNazm ? (L === 'en' ? 'lines' : (L === 'ur' ? 'مصرعے' : 'पंक्तियाँ'))
+                        : (L === 'en' ? 'couplets' : (L === 'ur' ? 'اشعار' : 'अश्आर'));
+      var tm = L === 'en' ? ('~' + mins + ' min read') : (L === 'ur' ? ('~' + mins + ' منٹ') : ('~' + mins + ' मिनट'));
+      return '<div class="poem-item-meta">' + n + ' ' + unit + ' · ' + tm + '</div>';
+    }catch(e){ if(window.console) console.log('itemMeta', e); return ''; }
+  }
+
   function renderList(filter, animateEntrance){
     const q = (filter || '').trim().toLowerCase().normalize('NFC');
     listEl.innerHTML = '';
@@ -133,7 +156,7 @@
       a.innerHTML =
         '<div class="poem-item-text">' +
           '<div class="poem-item-num">' + item.kind + '</div>' +
-          '<div class="poem-item-line">' + (P ? window.ZFS.highlightHtml(itemLabel(item), P.vars) : itemLabel(item)) + '</div>' + snip +
+          '<div class="poem-item-line">' + (P ? window.ZFS.highlightHtml(itemLabel(item), P.vars) : itemLabel(item)) + '</div>' + itemMeta(item) + snip +
         '</div>' +
         '<div class="poem-item-go">' + arrow('forward') + '</div>';
       a.addEventListener('click', function(e){
@@ -280,7 +303,12 @@
     if(!existing.length) return false;
     existing.forEach(function(a){
       const id = a.dataset.id;
-      if(findIndexById(id) === -1) return;
+      var ix = findIndexById(id);
+      if(ix === -1) return;
+      if(!a.querySelector('.poem-item-meta')){
+        var m = itemMeta(ITEMS[ix]), ln = a.querySelector('.poem-item-line');
+        if(m && ln){ ln.insertAdjacentHTML('afterend', m); }
+      }
       a.addEventListener('click', function(e){
         e.preventDefault();
         openDetail(id);

@@ -56,16 +56,16 @@
   css.textContent =
     '.zf-comments [hidden],.zf-comments[hidden]{display:none !important;}' +
     '.zf-comments{max-width:640px;margin:2.4rem auto 0;padding:0;direction:ltr;text-align:left;}' +
-    '.zf-cm-box{border:1px solid rgba(220,220,214,.28);border-radius:10px;padding:1.6rem 1.3rem;background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,.015));}' +
+    '.zf-cm-box{border:1px solid rgba(var(--zf-rgb),.28);border-radius:10px;padding:1.6rem 1.3rem;background:linear-gradient(160deg,rgba(var(--zf-rgb3),.045),rgba(var(--zf-rgb3),.015));}' +
     '.zf-comments h2,.zf-cm-title{color:var(--gold-soft);font-size:clamp(1.2rem,3.4vw,1.5rem);font-weight:700;margin:0 0 1rem;font-family:"Cormorant Garamond","Noto Serif Devanagari",serif;}' +
     '.zf-cm-list{display:flex;flex-direction:column;gap:.8rem;margin:0 0 1.2rem;}' +
-    '.zf-cm-item{border-inline-start:2px solid rgba(220,220,214,.35);padding:.2rem .9rem;}' +
+    '.zf-cm-item{border-inline-start:2px solid rgba(var(--zf-rgb),.35);padding:.2rem .9rem;}' +
     '.zf-cm-name{font-weight:600;color:var(--gold-soft);font-size:.95rem;}' +
     '.zf-cm-date{color:var(--text-muted);font-size:.75rem;margin-inline-start:.6rem;font-weight:400;}' +
     '.zf-cm-body{color:var(--text-light);font-size:1rem;line-height:1.75;margin-top:.15rem;white-space:pre-wrap;word-wrap:break-word;}' +
     '.zf-cm-empty,.zf-cm-msg{color:var(--text-muted);font-size:.95rem;line-height:1.7;margin:0 0 1rem;}' +
     '.zf-cm-form{display:flex;flex-direction:column;gap:.6rem;}' +
-    '.zf-cm-form input[type=text],.zf-cm-form textarea{width:100%;box-sizing:border-box;padding:.7rem .9rem;border-radius:8px;border:1px solid rgba(220,220,214,.35);background:var(--ink-deep,#101010);color:var(--text-light,#f2f1ec);font-size:1rem;font-family:inherit;}' +
+    '.zf-cm-form input[type=text],.zf-cm-form textarea{width:100%;box-sizing:border-box;padding:.7rem .9rem;border-radius:8px;border:1px solid rgba(var(--zf-rgb),.35);background:var(--ink-deep,#101010);color:var(--text-light,#f2f1ec);font-size:1rem;font-family:inherit;}' +
     '.zf-cm-form textarea{min-height:96px;resize:vertical;line-height:1.6;}' +
     '.zf-cm-form input:focus,.zf-cm-form textarea:focus{outline:2px solid var(--gold,#cfcfc8);outline-offset:1px;}' +
     '.zf-cm-form button{align-self:flex-start;padding:.7rem 1.4rem;border-radius:8px;border:0;cursor:pointer;background:var(--gold-soft,#dcdcd6);color:var(--ink,#151515);font-weight:700;font-size:.95rem;font-family:inherit;}' +
@@ -78,11 +78,11 @@
     '.zf-cm-toggle{display:inline-block;margin-top:.9rem;margin-inline-end:1.4rem;font:inherit;font-size:.95rem;cursor:pointer;color:#4a4a46;background:none;border:0;border-bottom:1px solid rgba(74,74,70,.4);padding:0 0 1px;}' +
     '.zf-cm-toggle:hover{color:#000;border-bottom-color:#000;}' +
     '.audio-track .zf-comments{margin:1rem 0 0;max-width:none;}' +
-    '.audio-track .zf-cm-box{background:rgba(255,255,255,.04);border-color:rgba(220,220,214,.22);padding:1.1rem 1rem;}' +
+    '.audio-track .zf-cm-box{background:rgba(var(--zf-rgb3),.04);border-color:rgba(var(--zf-rgb),.22);padding:1.1rem 1rem;}' +
     '.audio-track .zf-cm-name{color:#f2f1ec;} .audio-track .zf-cm-date,.audio-track .zf-cm-empty,.audio-track .zf-cm-msg,.audio-track .zf-cm-note{color:#a8a8a1;}' +
-    '.audio-track .zf-cm-body{color:#e6e5e0;} .audio-track .zf-cm-item{border-color:rgba(220,220,214,.25);}' +
+    '.audio-track .zf-cm-body{color:#e6e5e0;} .audio-track .zf-cm-item{border-color:rgba(var(--zf-rgb),.25);}' +
     '.audio-track .zf-cm-thanks{color:#f2f1ec;} .audio-track .zf-cm-err{color:#e3a0a0;}' +
-    '.audio-track .zf-cm-form input[type=text],.audio-track .zf-cm-form textarea{background:#151515;color:#f2f1ec;border-color:rgba(220,220,214,.3);}' +
+    '.audio-track .zf-cm-form input[type=text],.audio-track .zf-cm-form textarea{background:#151515;color:#f2f1ec;border-color:rgba(var(--zf-rgb),.3);}' +
     '.audio-track .zf-cm-form button{background:#f2f1ec;color:#151515;} .audio-track .zf-cm-form button:hover{background:#fff;}';
   document.head.appendChild(css);
 

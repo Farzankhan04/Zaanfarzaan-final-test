@@ -31,7 +31,7 @@
   }
   function dailySeed(){ var d = new Date(); return d.getFullYear() * 400 + (d.getMonth() + 1) * 31 + d.getDate(); }
   var seed = dailySeed();
-  (function(){ var st = document.createElement('style'); st.textContent = '.ashaar-ded{font:inherit;font-size:.76rem;cursor:pointer;color:#f2f1ec;background:rgba(255,255,255,.1);border:1px solid rgba(242,241,236,.4);border-radius:999px;padding:.28rem .7rem;min-height:30px}.ashaar-ded:hover{background:rgba(255,255,255,.2)}.ashaar-foot{gap:.5rem}'; document.head.appendChild(st); })();
+  (function(){ var st = document.createElement('style'); st.textContent = '.ashaar-ded{font:inherit;font-size:.76rem;cursor:pointer;color:var(--gold-soft);background:rgba(var(--zf-rgb3),.1);border:1px solid rgba(var(--zf-rgb2),.4);border-radius:999px;padding:.28rem .7rem;min-height:30px}.ashaar-ded:hover{background:rgba(var(--zf-rgb3),.2)}.ashaar-foot{gap:.5rem}'; document.head.appendChild(st); })();
   function card(x){
     var L = sherLines(x.g, x.i), a = el('div', 'ashaar-card'); a.tabIndex = 0; a.setAttribute('role', 'button');
     a.style.backgroundImage = 'linear-gradient(180deg,rgba(14,14,14,.6),rgba(14,14,14,.72)),url(' + PHOTOS[x.n % PHOTOS.length] + ')';

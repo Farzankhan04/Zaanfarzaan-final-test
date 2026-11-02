@@ -144,6 +144,7 @@
     document.body.classList.remove('zf-shell-open');
   }
   window.addEventListener('popstate', function(){ if(open) closeShell(); });
+  window.addEventListener('zf-sleep', function(){ try{ if(P){ P.pause(); P.volume = 1; } }catch(e){} });
 
   document.addEventListener('click', function(e){
     if(e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;

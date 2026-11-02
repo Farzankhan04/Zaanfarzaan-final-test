@@ -1100,3 +1100,49 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
     document.addEventListener('click', function(e){ if(e.target.closest && e.target.closest('.lang-opt, #lang-toggle')) setTimeout(fit, 350); });
   }catch(e){}
 })();
+
+/* v47: Kagaz (light) theme toggle - remembered in localStorage 'zf-theme' ('light' | absent = dark). */
+(function(){
+  var root = document.documentElement;
+  function saved(){ try{ return localStorage.getItem('zf-theme') === 'light' ? 'light' : 'dark'; }catch(e){ return 'dark'; } }
+  function apply(t){
+    if(t === 'light') root.setAttribute('data-theme', 'light'); else root.removeAttribute('data-theme');
+    try{
+      var m = document.querySelector('meta[name="theme-color"]');
+      if(m) m.setAttribute('content', t === 'light' ? '#f5f0e4' : '#151515');
+    }catch(e){}
+  }
+  apply(saved());
+  var SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></svg>';
+  var MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z"/></svg>';
+  function label(t){
+    var L = window.ZF_LANG;
+    if(t === 'light') return L === 'en' ? 'Switch to dark theme' : (L === 'ur' ? 'ڈارک تھیم پر جائیں' : 'डार्क थीम पर जाएँ');
+    return L === 'en' ? 'Switch to paper (light) theme' : (L === 'ur' ? 'کاغذی (لائٹ) تھیم پر جائیں' : 'काग़ज़ी (लाइट) थीम पर जाएँ');
+  }
+  function build(){
+    if(window.self !== window.top) return;
+    var right = document.querySelector('nav .nav-right'); var lt = document.getElementById('lang-toggle');
+    if(!right || document.getElementById('zf-theme-btn')) return;
+    var b = document.createElement('button'); b.type = 'button'; b.id = 'zf-theme-btn'; b.className = 'zf-theme-btn';
+    function paint(){ var t = saved(); b.innerHTML = t === 'light' ? MOON : SUN; var l = label(t); b.setAttribute('aria-label', l); b.title = l; }
+    paint();
+    b.addEventListener('click', function(){
+      var n = saved() === 'light' ? 'dark' : 'light';
+      try{ if(n === 'light') localStorage.setItem('zf-theme', 'light'); else localStorage.removeItem('zf-theme'); }catch(e){}
+      apply(n); paint();
+    });
+    if(lt) right.insertBefore(b, lt); else right.insertBefore(b, right.firstChild);
+    document.addEventListener('click', function(e){ if(e.target.closest && e.target.closest('.lang-opt')) setTimeout(paint, 300); });
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', build); else build();
+  window.addEventListener('storage', function(e){ if(e.key === 'zf-theme') apply(saved()); });
+})();
+
+/* v47: reading options (A-/A+), "ye bhi padhein" and the sleep timer live in reader-tools.js */
+(function(){
+  try{
+    if(/admin-comments|offline/.test(location.pathname)) return;
+    var s = document.createElement('script'); s.src = 'reader-tools.js?v=1'; s.defer = true; document.body.appendChild(s);
+  }catch(e){}
+})();

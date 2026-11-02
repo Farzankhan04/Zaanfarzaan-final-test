@@ -44,16 +44,16 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
 .ashaar-page{max-width:1080px;margin:0 auto;padding:0 5vw 10vh;text-align:center}
 .ashaar-lead{color:#cfcfc8;line-height:1.8;margin:.2rem auto 1.2rem;max-width:560px}
 .ashaar-chips{display:flex;flex-wrap:wrap;gap:.55rem;justify-content:center;margin-bottom:.8rem}
-.zf-chip{font:inherit;cursor:pointer;padding:.5rem 1rem;min-height:40px;border-radius:999px;border:1px solid rgba(220,220,214,.5);background:transparent;color:#f2f1ec}
-.zf-chip.on{background:#f2f1ec;color:#151515;border-color:#f2f1ec;font-weight:700}
+.zf-chip{font:inherit;cursor:pointer;padding:.5rem 1rem;min-height:40px;border-radius:999px;border:1px solid rgba(var(--zf-rgb),.5);background:transparent;color:var(--gold-soft)}
+.zf-chip.on{background:var(--gold-soft);color:var(--ink);border-color:var(--gold-soft);font-weight:700}
 .ashaar-count{color:#b4b4ad;font-size:.88rem;margin-bottom:1rem}
 .ashaar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:.9rem}
-.ashaar-card{position:relative;aspect-ratio:1/1;border-radius:12px;border:1px solid rgba(220,220,214,.28);background-size:cover;background-position:center;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:1.2rem 1rem 2.6rem;cursor:pointer;overflow:hidden;transition:transform .25s ease,border-color .25s}
-.ashaar-card:hover,.ashaar-card:focus-visible{transform:translateY(-3px);border-color:rgba(242,241,236,.7);outline:none}
+.ashaar-card{position:relative;aspect-ratio:1/1;border-radius:12px;border:1px solid rgba(var(--zf-rgb),.28);background-size:cover;background-position:center;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:1.2rem 1rem 2.6rem;cursor:pointer;overflow:hidden;transition:transform .25s ease,border-color .25s}
+.ashaar-card:hover,.ashaar-card:focus-visible{transform:translateY(-3px);border-color:rgba(var(--zf-rgb2),.7);outline:none}
 .ashaar-text{color:#f5f4ee;line-height:1.9;text-shadow:0 2px 10px rgba(0,0,0,.7)}
 .ashaar-text.rtl{direction:rtl}
 .ashaar-foot{position:absolute;left:12px;right:12px;bottom:9px;display:flex;justify-content:space-between;align-items:center;font-size:.76rem;color:#cfcfc8}
-.ashaar-foot a{color:#f2f1ec;text-decoration:underline;text-underline-offset:3px}
+.ashaar-foot a{color:var(--gold-soft);text-decoration:underline;text-underline-offset:3px}
 .ashaar-more,.ashaar-end{min-height:40px;margin-top:1.2rem;color:#b4b4ad}
 </style>
 </head>
