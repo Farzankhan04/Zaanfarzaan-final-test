@@ -1393,3 +1393,8 @@ html[dir="rtl"] .zf-fact dd, .lang-ur .zf-fact dd{text-align:left;}
 .zf-c.bl{left:-9px; bottom:-9px; transform:scaleY(-1);}
 .zf-c.br{right:-9px; bottom:-9px; transform:scale(-1,-1);}
 body:not(.lang-en) .zf-sher-lines{font-style:normal;}
+
+/* v45b: English sher in a finer italic, each line on a single line; about paragraphs justified */
+.lang-en .zf-sher-lines{font-family:'Cormorant Garamond','Lora',serif; font-size:clamp(1.1rem,5.3vw,1.5rem) !important; font-weight:500; letter-spacing:.01em; line-height:1.75;}
+.lang-en .zf-sher-lines .zf-sl{white-space:nowrap;}
+.about-page > p{text-align:justify; text-justify:inter-word; hyphens:none; text-align-last:start;}
