@@ -1348,3 +1348,48 @@ html.zf-splash-off #zf-splash{display:none !important;}
 }
 .seo-cta a{display:inline-block; border:0 !important; background:none !important; padding:.4rem .2rem !important; font-size:.9rem; color:var(--text-muted,#9c9c95); text-decoration:underline; text-underline-offset:4px;}
 .seo-cta a:hover{color:var(--gold-soft,#dcdcd6) !important;} .seo-cta a::before{display:none !important;}
+
+/* ===== v45: page-header duplicate grey tag removed (the big title says it already) ===== */
+.page-header .tag{display:none !important;}
+.page-header h1{margin-top:0;}
+
+/* ===== v45: About page - ornamented photos, sher, facts ===== */
+.zf-orn-round{position:relative; width:min(300px,86vw); aspect-ratio:1/1; margin:1.2rem auto 1.1rem;}
+.zf-orn-round .zf-orn-ring{position:absolute; inset:0; width:100%; height:100%; overflow:visible;}
+.zf-orn-ring circle.o1{fill:none; stroke:var(--gold); stroke-width:.8; opacity:.75;}
+.zf-orn-ring circle.o2{fill:none; stroke:var(--gold); stroke-width:.4; opacity:.45;}
+.zf-orn-ring circle.od{fill:none; stroke:var(--gold); stroke-width:1.5; stroke-dasharray:.1 5.2; stroke-linecap:round; opacity:.7;}
+.zf-orn-ring .stem{fill:none; stroke:var(--gold); stroke-width:.9; opacity:.7;}
+.zf-orn-ring .lf ellipse{fill:var(--gold); opacity:.62;}
+.zf-orn-ring .dm{fill:var(--gold); opacity:.9;}
+.zf-orn-round .about-photo{position:absolute; left:50%; top:50%; width:66.67%; height:auto; aspect-ratio:1/1; margin:0; transform:translate(-50%,-50%);}
+.about-page .zf-orn-round .about-photo{margin:0;}
+
+.zf-sher-box{max-width:460px; margin:.3rem auto 1.6rem; text-align:center; padding:1.1rem 1rem 1rem; position:relative;}
+.zf-sher-box::before,.zf-sher-box::after{content:""; display:block; width:56px; height:1px; margin:0 auto; background:linear-gradient(90deg,transparent,var(--gold),transparent); opacity:.6;}
+.zf-sher-box::before{margin-bottom:.9rem;}
+.zf-sher-box::after{margin-top:.9rem;}
+.zf-sher-lines{margin:0 !important; color:var(--paper) !important; font-size:1.2rem !important; line-height:1.9; font-style:italic;}
+.zf-sher-lines .zf-sl{display:block;}
+html[lang="ur"] .zf-sher-lines, .lang-ur .zf-sher-lines{font-style:normal; line-height:2.2;}
+.zf-sher-link{display:inline-block; margin-top:.55rem; font-size:.88rem; color:var(--text-muted); text-decoration:none; border-bottom:1px solid rgba(220,220,214,.3); padding-bottom:1px; letter-spacing:.02em;}
+.zf-sher-link:hover{color:var(--gold-soft); border-bottom-color:var(--gold);}
+
+.zf-facts{max-width:430px; margin:0 auto 2.2rem; padding:.3rem 0; border-top:1px solid rgba(220,220,214,.16); border-bottom:1px solid rgba(220,220,214,.16);}
+.zf-fact{display:flex; justify-content:space-between; align-items:baseline; gap:1rem; padding:.65rem .2rem; border-bottom:1px dashed rgba(220,220,214,.1);}
+.zf-fact:last-child{border-bottom:0;}
+.zf-fact dt{color:var(--text-muted); font-size:.82rem; letter-spacing:.1em; text-transform:uppercase; flex:0 0 auto;}
+.zf-fact dd{color:var(--paper); font-size:1.02rem; text-align:right; margin:0;}
+html[dir="rtl"] .zf-fact dd, .lang-ur .zf-fact dd{text-align:left;}
+.lang-ur .zf-fact dt{letter-spacing:0; text-transform:none; font-size:.95rem;}
+
+.about-event-photo{margin:1rem auto 2.6rem;}
+.zf-orn-sq{position:relative; display:block; width:min(300px,78%); margin:0 auto; padding:14px; border:1px solid rgba(220,220,214,.5);}
+.zf-orn-sq::before{content:""; position:absolute; inset:5px; border:1px solid rgba(220,220,214,.22); pointer-events:none;}
+.zf-orn-sq img{max-width:none !important; width:100% !important; border-radius:0 !important; border:0 !important; box-shadow:0 12px 28px rgba(0,0,0,.45) !important;}
+.zf-c{position:absolute; width:26px; height:26px; background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26' fill='none' stroke='%23dcdcd6' stroke-width='1.2'%3E%3Cpath d='M1 25V9C1 4.5 4.5 1 9 1h16'/%3E%3Cpath d='M6 20V11a5 5 0 0 1 5-5h9' opacity='.6'/%3E%3Cpath d='M13 13l3-3 3 3-3 3z' fill='%23dcdcd6' stroke='none'/%3E%3C/svg%3E");}
+.zf-c.tl{left:-9px; top:-9px;}
+.zf-c.tr{right:-9px; top:-9px; transform:scaleX(-1);}
+.zf-c.bl{left:-9px; bottom:-9px; transform:scaleY(-1);}
+.zf-c.br{right:-9px; bottom:-9px; transform:scale(-1,-1);}
+body:not(.lang-en) .zf-sher-lines{font-style:normal;}
