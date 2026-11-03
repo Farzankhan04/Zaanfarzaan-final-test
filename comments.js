@@ -65,25 +65,25 @@
     '.zf-cm-body{color:var(--text-light);font-size:1rem;line-height:1.75;margin-top:.15rem;white-space:pre-wrap;word-wrap:break-word;}' +
     '.zf-cm-empty,.zf-cm-msg{color:var(--text-muted);font-size:.95rem;line-height:1.7;margin:0 0 1rem;}' +
     '.zf-cm-form{display:flex;flex-direction:column;gap:.6rem;}' +
-    '.zf-cm-form input[type=text],.zf-cm-form textarea{width:100%;box-sizing:border-box;padding:.7rem .9rem;border-radius:8px;border:1px solid rgba(var(--zf-rgb),.35);background:var(--ink-deep,#101010);color:var(--text-light,#f2f1ec);font-size:1rem;font-family:inherit;}' +
+    '.zf-cm-form input[type=text],.zf-cm-form textarea{width:100%;box-sizing:border-box;padding:.7rem .9rem;border-radius:8px;border:1px solid rgba(var(--zf-rgb),.35);background:var(--ink-deep,var(--zf-field));color:var(--text-light,var(--gold-soft));font-size:1rem;font-family:inherit;}' +
     '.zf-cm-form textarea{min-height:96px;resize:vertical;line-height:1.6;}' +
-    '.zf-cm-form input:focus,.zf-cm-form textarea:focus{outline:2px solid var(--gold,#cfcfc8);outline-offset:1px;}' +
-    '.zf-cm-form button{align-self:flex-start;padding:.7rem 1.4rem;border-radius:8px;border:0;cursor:pointer;background:var(--gold-soft,#dcdcd6);color:var(--ink,#151515);font-weight:700;font-size:.95rem;font-family:inherit;}' +
+    '.zf-cm-form input:focus,.zf-cm-form textarea:focus{outline:2px solid var(--gold,var(--zf-soft));outline-offset:1px;}' +
+    '.zf-cm-form button{align-self:flex-start;padding:.7rem 1.4rem;border-radius:8px;border:0;cursor:pointer;background:var(--gold-soft,var(--gold));color:var(--ink,#151515);font-weight:700;font-size:.95rem;font-family:inherit;}' +
     '.zf-cm-form button:hover{background:#fff;} .zf-cm-form button:disabled{opacity:.6;cursor:default;}' +
     '.zf-cm-hp{position:absolute !important;left:-9999px !important;width:1px;height:1px;opacity:0;}' +
     '.zf-cm-note{font-size:.78rem;color:var(--text-muted);margin:.7rem 0 0;opacity:.85;}' +
     '.zf-cm-thanks{color:var(--gold-soft);line-height:1.7;margin:.2rem 0 0;}' +
-    '.zf-cm-err{color:#e3a0a0;font-size:.9rem;margin:0;}' +
+    '.zf-cm-err{color:var(--zf-bad);font-size:.9rem;margin:0;}' +
     /* audio cards */
     '.zf-cm-toggle{display:inline-block;margin-top:.9rem;margin-inline-end:1.4rem;font:inherit;font-size:.95rem;cursor:pointer;color:#4a4a46;background:none;border:0;border-bottom:1px solid rgba(74,74,70,.4);padding:0 0 1px;}' +
     '.zf-cm-toggle:hover{color:#000;border-bottom-color:#000;}' +
     '.audio-track .zf-comments{margin:1rem 0 0;max-width:none;}' +
     '.audio-track .zf-cm-box{background:rgba(var(--zf-rgb3),.04);border-color:rgba(var(--zf-rgb),.22);padding:1.1rem 1rem;}' +
-    '.audio-track .zf-cm-name{color:#f2f1ec;} .audio-track .zf-cm-date,.audio-track .zf-cm-empty,.audio-track .zf-cm-msg,.audio-track .zf-cm-note{color:#a8a8a1;}' +
-    '.audio-track .zf-cm-body{color:#e6e5e0;} .audio-track .zf-cm-item{border-color:rgba(var(--zf-rgb),.25);}' +
-    '.audio-track .zf-cm-thanks{color:#f2f1ec;} .audio-track .zf-cm-err{color:#e3a0a0;}' +
-    '.audio-track .zf-cm-form input[type=text],.audio-track .zf-cm-form textarea{background:#151515;color:#f2f1ec;border-color:rgba(var(--zf-rgb),.3);}' +
-    '.audio-track .zf-cm-form button{background:#f2f1ec;color:#151515;} .audio-track .zf-cm-form button:hover{background:#fff;}';
+    '.audio-track .zf-cm-name{color:var(--gold-soft);} .audio-track .zf-cm-date,.audio-track .zf-cm-empty,.audio-track .zf-cm-msg,.audio-track .zf-cm-note{color:#a8a8a1;}' +
+    '.audio-track .zf-cm-body{color:var(--zf-text2);} .audio-track .zf-cm-item{border-color:rgba(var(--zf-rgb),.25);}' +
+    '.audio-track .zf-cm-thanks{color:var(--gold-soft);} .audio-track .zf-cm-err{color:var(--zf-bad);}' +
+    '.audio-track .zf-cm-form input[type=text],.audio-track .zf-cm-form textarea{background:#151515;color:var(--gold-soft);border-color:rgba(var(--zf-rgb),.3);}' +
+    '.audio-track .zf-cm-form button{background:var(--gold-soft);color:var(--ink);} .audio-track .zf-cm-form button:hover{background:#fff;}';
   document.head.appendChild(css);
 
   /* ---------- one comment block (list + form) for a page key ---------- */

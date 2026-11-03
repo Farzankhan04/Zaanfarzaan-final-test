@@ -1,5 +1,6 @@
 :root{
   --zf-rgb:220,220,214; --zf-rgb2:247,247,244; --zf-rgb3:255,255,255; --zf-ink-rgb:21,21,21;
+  --zf-mute:#b4b4ad; --zf-soft:#cfcfc8; --zf-text2:#e6e6df; --zf-ok:#9fd3a6; --zf-bad:#e3a0a0; --zf-warn:#ffd9a8; --zf-field:#101010;
   --ink: #151515;
   --ink-deep: #0a0a0a;
   --gold: #dcdcd6;
@@ -1474,5 +1475,40 @@ html[data-theme="light"] audio{color-scheme:light;}
 .zf-theme-btn{width:34px; height:34px; flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; background:transparent; border:0; color:var(--gold-soft); cursor:pointer; border-radius:50%; margin-right:2px; -webkit-tap-highlight-color:transparent;}
 .zf-theme-btn svg{width:20px; height:20px;}
 .zf-theme-btn:hover{background:rgba(var(--zf-rgb),.12);}
-/* hero stays on its photo: keep its own light-on-dark colours inside the light theme */
-html[data-theme="light"] .hero{--gold:#dcdcd6; --gold-soft:#f2f1ec; --paper:#f7f7f4; --text-light:#f0f0ec; --text-muted:#b9b9b2; --rose:#a8a8a0; --zf-rgb:220,220,214; --zf-rgb2:247,247,244; --zf-rgb3:255,255,255; --zf-ink-rgb:21,21,21; color:#f0f0ec;}
+
+/* ===== v48: Kagaz theme - complete pass ===== */
+html[data-theme="light"]{
+  --zf-mute:#6d685b; --zf-soft:#3d3a31; --zf-text2:#2a2822; --zf-ok:#2c7a38; --zf-bad:#a8322d; --zf-warn:#9a5200; --zf-field:#fffdf7;
+}
+/* surfaces that are dark in BOTH themes (photo cards, audio cards, player bar): give them the dark palette back */
+html[data-theme="light"] .audio-track, html[data-theme="light"] .zf-shellbar, html[data-theme="light"] .sher-gallery-card,
+html[data-theme="light"] .sgc, html[data-theme="light"] .audio-card:not(.nav-card), html[data-theme="light"] .export-body{
+  --gold:#dcdcd6; --gold-soft:#f2f1ec; --paper:#f7f7f4; --text-light:#f0f0ec; --text-muted:#b4b4ad; --rose:#a8a8a0;
+  --zf-rgb:220,220,214; --zf-rgb2:247,247,244; --zf-rgb3:255,255,255; --zf-ink-rgb:21,21,21;
+  --zf-mute:#b4b4ad; --zf-soft:#cfcfc8; --zf-text2:#e6e6df; --zf-ok:#9fd3a6; --zf-bad:#e3a0a0; --zf-warn:#ffd9a8; --zf-field:#151515; --ink:#151515;
+}
+/* home hero: no night photo in the paper theme - a quiet cream page with a soft glow and a fine frame instead */
+html[data-theme="light"] .hero{
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 18%, rgba(255,253,246,.95) 0%, rgba(255,253,246,0) 70%),
+    radial-gradient(ellipse 90% 60% at 50% 100%, rgba(214,201,170,.35) 0%, rgba(214,201,170,0) 70%),
+    var(--ink);
+}
+html[data-theme="light"] .hero h1, html[data-theme="light"] .hero .sher{text-shadow:none;}
+html[data-theme="light"] .hero .attribution{color:var(--text-muted);}
+html[data-theme="light"] .hero::after{
+  content:""; position:absolute; inset:clamp(14px,3vw,28px); border:1px solid rgba(var(--zf-rgb),.22); pointer-events:none; z-index:0;
+  background:
+    linear-gradient(var(--gold),var(--gold)) top left/22px 1px no-repeat, linear-gradient(var(--gold),var(--gold)) top left/1px 22px no-repeat,
+    linear-gradient(var(--gold),var(--gold)) top right/22px 1px no-repeat, linear-gradient(var(--gold),var(--gold)) top right/1px 22px no-repeat,
+    linear-gradient(var(--gold),var(--gold)) bottom left/22px 1px no-repeat, linear-gradient(var(--gold),var(--gold)) bottom left/1px 22px no-repeat,
+    linear-gradient(var(--gold),var(--gold)) bottom right/22px 1px no-repeat, linear-gradient(var(--gold),var(--gold)) bottom right/1px 22px no-repeat;
+  opacity:.7;
+}
+html[data-theme="light"] .zf-greet{background:rgba(255,253,246,.8); color:var(--text-light);}
+html[data-theme="light"] .hero .btn-primary, html[data-theme="light"] .hero .btn{border-color:var(--gold);}
+/* opening splash in the paper theme: cream, dark logo, dark name */
+html[data-theme="light"]::before{background:#f5f0e4 url(logo-dark.png?v=1) no-repeat; background-size:var(--zfw) auto; background-position:center calc(50% - 20px - var(--zfw)*.17);}
+html[data-theme="light"]::after{color:#1e1c17;}
+html[data-theme="light"] .brand-logo{filter:none; content:url(logo-dark.png?v=1);}
+html[data-theme="light"] img.brand-logo{filter:none;}

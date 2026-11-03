@@ -1101,10 +1101,10 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
   }catch(e){}
 })();
 
-/* v47: Kagaz (light) theme toggle - remembered in localStorage 'zf-theme' ('light' | absent = dark). */
+/* v47/v49: Kagaz (light) theme is the DEFAULT; the toggle switches to dark and remembers it in localStorage 'zf-theme' = 'dark'. */
 (function(){
   var root = document.documentElement;
-  function saved(){ try{ return localStorage.getItem('zf-theme') === 'light' ? 'light' : 'dark'; }catch(e){ return 'dark'; } }
+  function saved(){ try{ return localStorage.getItem('zf-theme') === 'dark' ? 'dark' : 'light'; }catch(e){ return 'light'; } }
   function apply(t){
     if(t === 'light') root.setAttribute('data-theme', 'light'); else root.removeAttribute('data-theme');
     try{
@@ -1129,7 +1129,7 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
     paint();
     b.addEventListener('click', function(){
       var n = saved() === 'light' ? 'dark' : 'light';
-      try{ if(n === 'light') localStorage.setItem('zf-theme', 'light'); else localStorage.removeItem('zf-theme'); }catch(e){}
+      try{ if(n === 'dark') localStorage.setItem('zf-theme', 'dark'); else localStorage.removeItem('zf-theme'); }catch(e){}
       apply(n); paint();
     });
     if(lt) right.insertBefore(b, lt); else right.insertBefore(b, right.firstChild);
