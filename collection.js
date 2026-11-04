@@ -184,9 +184,9 @@
     st.textContent =
       '.zf-share-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:.6rem .8rem;margin:1.6rem 0 0}' +
       '.zf-share-label{flex-basis:100%;text-align:center;color:var(--text-muted);font-size:.9rem;margin:0 0 .1rem}' +
-      '.zf-share-row a{color:var(--gold-soft);border:1px solid rgba(220,220,214,.35);border-radius:999px;padding:.38rem .95rem;' +
+      '.zf-share-row a{color:var(--gold-soft);border:1.5px solid rgba(var(--zf-rgb),.5);border-radius:999px;padding:.38rem .95rem;' +
         'font-size:.88rem;text-decoration:none;font-family:"Lora",sans-serif}' +
-      '.zf-share-row a:hover{border-color:var(--gold-soft);background:rgba(255,255,255,.06)}';
+      '.zf-share-row a:hover{border-color:var(--gold-soft);background:rgba(var(--zf-rgb),.12)}';
     document.head.appendChild(st);
   }
   function plainLines(html){

@@ -37,6 +37,19 @@
   '.zf-sleep button{font:inherit;cursor:pointer;margin:.15rem;padding:.4rem .95rem;min-height:38px;border-radius:999px;border:1px solid rgba(var(--zf-rgb),.4);background:transparent;color:var(--gold-soft);font-size:.9rem}' +
   '.zf-sleep button.on{background:var(--gold-soft);color:var(--ink);border-color:var(--gold-soft);font-weight:700}' +
   '.zf-sleep-left{display:block;margin-top:.4rem;font-size:.85rem;color:var(--text-muted);min-height:1.2em}';
+  css +=
+  '.zf-fm{position:fixed;inset:0;z-index:10050;background:radial-gradient(ellipse at 50% 38%,var(--ink) 0%,var(--ink-deep) 100%);color:var(--text-light);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4rem 8vw 5rem;text-align:center;touch-action:pan-y;user-select:none;-webkit-user-select:none}' +
+  '.zf-fm-t{width:100%;max-width:820px;transition:opacity .28s ease,transform .28s ease}' +
+  '.zf-fm-t.out{opacity:0;transform:translateY(8px)}' +
+  '.zf-fm-l{font-size:clamp(1.5rem,5.6vw,2.6rem);line-height:1.75;margin:.15rem 0;font-family:inherit;font-weight:500;color:var(--gold-soft)}' +
+  'body.lang-ur .zf-fm-l{font-family:"Noto Nastaliq Urdu",serif;line-height:2.4}' +
+  '.zf-fm-l+.zf-fm-l{margin-top:.5rem}' +
+  '.zf-fm-x{position:absolute;top:max(.8rem,env(safe-area-inset-top));right:.9rem;width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(var(--zf-rgb),.5);background:transparent;color:var(--gold-soft);font-size:1.5rem;line-height:1;cursor:pointer}' +
+  '.zf-fm-n{position:absolute;bottom:max(1.2rem,env(safe-area-inset-bottom));left:0;right:0;display:flex;justify-content:center;align-items:center;gap:1.2rem;color:var(--text-muted);font-size:.9rem;font-family:"Lora",serif}' +
+  '.zf-fm-n button{width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(var(--zf-rgb),.5);background:transparent;color:var(--gold-soft);font-size:1.1rem;cursor:pointer}' +
+  '.zf-fm-n button[disabled]{opacity:.3;cursor:default}' +
+  '.zf-fm-h{position:absolute;bottom:4.6rem;left:0;right:0;font-size:.75rem;color:var(--text-muted);opacity:.7}' +
+  '.zf-rt .zf-rt-fm{font-size:.8rem;letter-spacing:.02em;padding:0 .8rem}';
   var st = doc.createElement('style'); st.id = 'zf-rt-css'; st.textContent = css; (doc.head || root).appendChild(st);
 
   /* ---------- 1) reading options ---------- */
@@ -52,6 +65,13 @@
   var LBL = {
     sm:{hi:'अक्षर छोटे करें',en:'Smaller text',ur:'حروف چھوٹے کریں'},
     lg:{hi:'अक्षर बड़े करें',en:'Larger text',ur:'حروف بڑے کریں'},
+    fm:{hi:'एक शेर एक बार',en:'One sher at a time',ur:'ایک شعر ایک بار'},
+    fmb:{hi:'एक-एक शेर',en:'Focus',ur:'ایک شعر'},
+    fmn:{hi:'एक-एक पंक्ति-जोड़ी',en:'Focus',ur:'ایک جوڑا'},
+    cl:{hi:'बंद करें',en:'Close',ur:'بند کریں'},
+    pv:{hi:'पिछला',en:'Previous',ur:'پچھلا'},
+    nx:{hi:'अगला',en:'Next',ur:'اگلا'},
+    hint:{hi:'स्वाइप करें या तीर दबाएँ',en:'Swipe or use arrow keys',ur:'سوائپ کریں یا تیر دبائیں'},
     sp:{hi:'पंक्तियों के बीच जगह बदलें',en:'Change line spacing',ur:'سطروں کا فاصلہ بدلیں'}
   };
   var SPACE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h12M8 12h12M8 20h12M4 7V4M4 20v-3M4 4l-1.6 1.8M4 4l1.6 1.8M4 20l-1.6-1.8M4 20l1.6-1.8"/></svg>';
@@ -59,9 +79,11 @@
     var bar = doc.createElement('div'); bar.className = 'zf-rt'; bar.setAttribute('role', 'group');
     bar.innerHTML = '<button type="button" class="zf-rt-a" data-k="sm"><span>A</span><small>−</small></button>' +
                     '<button type="button" class="zf-rt-a zf-rt-ap" data-k="lg"><span>A</span><small>+</small></button>' +
-                    '<button type="button" data-k="sp">' + SPACE + '</button>';
+                    '<button type="button" data-k="sp">' + SPACE + '</button>' +
+                    '<button type="button" class="zf-rt-fm" data-k="fm"></button>';
     function paint(){
       var l = lang();
+      bar.querySelector('[data-k="fm"]').textContent = '◐ ' + LBL.fmb[l];
       [].forEach.call(bar.querySelectorAll('button'), function(b){ var t = LBL[b.getAttribute('data-k')][l]; b.setAttribute('aria-label', t); b.title = t; });
       bar.querySelector('[data-k="sm"]').disabled = getSi() === 0;
       bar.querySelector('[data-k="lg"]').disabled = getSi() === SCALES.length - 1;
@@ -69,6 +91,7 @@
     bar.addEventListener('click', function(e){
       var b = e.target.closest && e.target.closest('button'); if(!b || b.disabled) return;
       var k = b.getAttribute('data-k');
+      if(k === 'fm'){ openFocus(b.closest('.zf-rt').parentNode.querySelector(':scope > .card.manuscript[id]')); return; }
       if(k === 'sm') lsSet('zf-read-size', String(Math.max(0, getSi() - 1)));
       else if(k === 'lg') lsSet('zf-read-size', String(Math.min(SCALES.length - 1, getSi() + 1)));
       else lsSet('zf-read-ls', String(getLs() === 3 ? 1 : getLs() + 1));
@@ -76,6 +99,55 @@
       [].forEach.call(doc.querySelectorAll('.zf-rt'), function(x){ if(x._paint) x._paint(); });
     });
     bar._paint = paint; paint(); return bar;
+  }
+
+  /* ---------- focus mode: one sher (nazm: two lines) per screen ---------- */
+  function focusPages(card){
+    var pages = [], flat = [], nazm = false;
+    [].forEach.call(card.querySelectorAll('.verse'), function(v){
+      var sp = v.querySelectorAll('.line'), L = [];
+      if(sp.length) [].forEach.call(sp, function(x){ var t = x.textContent.trim(); if(t) L.push(t); });
+      else { var t = v.textContent.trim(); if(t) L.push(t); }
+      if(v.classList.contains('nazm-line')){ nazm = true; flat = flat.concat(L); } else if(L.length) pages.push(L);
+    });
+    if(nazm) for(var i = 0; i < flat.length; i += 2) pages.push(flat.slice(i, i + 2));
+    return pages;
+  }
+  function openFocus(card){
+    if(!card || doc.querySelector('.zf-fm')) return;
+    var pages = focusPages(card); if(!pages.length) return;
+    var l = lang(), i = 0, ov = doc.createElement('div'); ov.className = 'zf-fm'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true'); ov.setAttribute('aria-label', LBL.fm[l]);
+    if(l === 'ur') ov.dir = 'rtl';
+    ov.innerHTML = '<button type="button" class="zf-fm-x" aria-label="' + LBL.cl[l] + '">×</button><div class="zf-fm-t"></div><div class="zf-fm-h">' + LBL.hint[l] + '</div>' +
+      '<div class="zf-fm-n" dir="ltr"><button type="button" data-d="-1" aria-label="' + LBL.pv[l] + '">‹</button><span></span><button type="button" data-d="1" aria-label="' + LBL.nx[l] + '">›</button></div>';
+    var box = ov.querySelector('.zf-fm-t'), cnt = ov.querySelector('.zf-fm-n span'), bp = ov.querySelector('[data-d="-1"]'), bn = ov.querySelector('[data-d="1"]');
+    function show(animate){
+      function fill(){
+        box.innerHTML = ''; pages[i].forEach(function(t){ var p = doc.createElement('div'); p.className = 'zf-fm-l'; p.textContent = t; box.appendChild(p); });
+        cnt.textContent = (i + 1) + ' / ' + pages.length; bp.disabled = i === 0; bn.disabled = i === pages.length - 1; box.classList.remove('out');
+      }
+      if(animate){ box.classList.add('out'); setTimeout(fill, 180); } else fill();
+    }
+    function go(d){ var n = i + d; if(n < 0 || n >= pages.length) return; i = n; show(true); }
+    function close(){ ov.remove(); doc.removeEventListener('keydown', key); doc.body.style.overflow = prevOv; }
+    function key(e){
+      if(e.key === 'Escape') close();
+      else if(e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); go(l === 'ur' ? -1 : 1); }
+      else if(e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); go(l === 'ur' ? 1 : -1); }
+    }
+    var prevOv = doc.body.style.overflow, x0 = null, y0 = 0;
+    ov.addEventListener('touchstart', function(e){ var t = e.touches[0]; x0 = t.clientX; y0 = t.clientY; }, {passive:true});
+    ov.addEventListener('touchend', function(e){
+      if(x0 === null) return; var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
+      if(Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) go((dx < 0) !== (l === 'ur') ? 1 : -1);
+    }, {passive:true});
+    ov.addEventListener('click', function(e){
+      if(e.target.closest('.zf-fm-x')) return close();
+      var b = e.target.closest('[data-d]'); if(b) return go(parseInt(b.getAttribute('data-d'), 10));
+      if(e.target === ov || e.target === box){ var r = e.clientX / window.innerWidth; go((r > .5) !== (l === 'ur') ? 1 : -1); }
+    });
+    doc.addEventListener('keydown', key); doc.body.style.overflow = 'hidden'; doc.body.appendChild(ov); show(false);
+    ov.querySelector('.zf-fm-x').focus();
   }
 
   /* ---------- 2) related poems ---------- */

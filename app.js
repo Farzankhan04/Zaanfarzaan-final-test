@@ -566,15 +566,15 @@ document.addEventListener('play', function(e){
 
 
 /* NEWSLETTER — "new ghazal/nazm in your inbox" box. Uses Buttondown's plain HTML form endpoint
-   (no tracking script, no API key). Shown on: home, about, ghazals, nazms, ebook and every
-   ghazal-N / nazm-N page. It needs window.ZF_NEWSLETTER_USERNAME (top of this file); with it
+   (no tracking script, no API key). Shown on: home, and under a ghazal / nazm while it is being read
+   (ghazal-N / nazm-N pages and the open poem on the list pages) — nowhere else. It needs window.ZF_NEWSLETTER_USERNAME (top of this file); with it
    empty nothing is added. Text follows the site language via the same data-en/data-ur
    mechanism as the rest of the site (i18n.js). */
 (function(){
   var USER = String(window.ZF_NEWSLETTER_USERNAME || '').trim();
   if(!/^[A-Za-z0-9._-]+$/.test(USER)) return;
   var page = document.body && document.body.getAttribute('data-page');
-  if(['home','about','ghazals','nazms','ebook'].indexOf(page) === -1) return;
+  if(['home','ghazals','nazms'].indexOf(page) === -1) return;
   var main = document.querySelector('main');
   if(!main || document.getElementById('zf-newsletter')) return;
 
@@ -594,24 +594,24 @@ document.addEventListener('play', function(e){
   var css = document.createElement('style');
   css.textContent =
     '.zf-newsletter{max-width:640px;margin:4vh auto 6vh;padding:0 6vw;}' +
-    '.zf-nl-box{border:1px solid rgba(220,220,214,.28);border-radius:10px;padding:2.2rem 1.8rem;text-align:center;' +
-      'background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,.015));box-shadow:0 14px 34px rgba(0,0,0,.35);}' +
+    '.zf-nl-box{border:1.5px solid rgba(var(--zf-rgb),.5);border-radius:10px;padding:2.2rem 1.8rem;text-align:center;' +
+      'background:linear-gradient(160deg,rgba(var(--zf-rgb),.08),rgba(var(--zf-rgb),.03));box-shadow:0 14px 34px rgba(var(--zf-rgb2),.18);}' +
     '.zf-nl-tag{color:var(--rose);text-transform:uppercase;letter-spacing:.3em;font-size:.72rem;font-family:"Lora",serif;font-weight:600;margin-bottom:.5rem;}' +
     '.zf-nl-box h2{color:var(--gold-soft);font-size:clamp(1.35rem,3.6vw,1.75rem);font-weight:700;line-height:1.45;margin-bottom:.6rem;' +
       'font-family:"Cormorant Garamond","Noto Serif Devanagari",serif;}' +
     'body.lang-ur .zf-nl-box h2{font-family:"Noto Nastaliq Urdu",serif;line-height:1.9;}' +
     '.zf-nl-box p{color:var(--text-muted);font-size:.98rem;line-height:1.7;margin:0 auto 1.2rem;max-width:480px;}' +
     '.zf-nl-form{display:flex;gap:.6rem;max-width:480px;margin:0 auto;}' +
-    '.zf-nl-form input[type=email]{flex:1;min-width:0;padding:.75rem .95rem;border-radius:8px;border:1px solid rgba(220,220,214,.35);' +
+    '.zf-nl-form input[type=email]{flex:1;min-width:0;padding:.75rem .95rem;border-radius:8px;border:1.5px solid rgba(var(--zf-rgb),.5);' +
       'background:var(--ink-deep);color:var(--text-light);font-size:1rem;font-family:inherit;}' +
     '.zf-nl-form input[type=email]:focus{outline:2px solid var(--gold);outline-offset:1px;}' +
     '.zf-nl-form button{padding:.75rem 1.3rem;border-radius:8px;border:0;cursor:pointer;background:var(--gold-soft);color:var(--ink);' +
       'font-weight:700;font-size:.95rem;font-family:inherit;white-space:nowrap;}' +
-    '.zf-nl-form button:hover{background:#fff;}' +
+    '.zf-nl-form button:hover{opacity:.85;}' +
     '.zf-nl-box .zf-nl-note{font-size:.8rem;color:var(--text-muted);margin:.9rem auto 0;opacity:.85;}' +
     '.zf-nl-thanks{color:var(--gold-soft);font-size:1.05rem;line-height:1.7;margin:.4rem auto 0;}' +
-    '.zf-nl-share{display:inline-block;margin-top:.9rem;color:var(--gold-soft);font-size:.88rem;text-decoration:none;border:1px solid rgba(220,220,214,.35);border-radius:999px;padding:.38rem 1rem;}' +
-    '.zf-nl-share:hover{border-color:var(--gold-soft);background:rgba(255,255,255,.06);}' +
+    '.zf-nl-share{display:inline-block;margin-top:.9rem;color:var(--gold-soft);font-size:.88rem;text-decoration:none;border:1.5px solid rgba(var(--zf-rgb),.5);border-radius:999px;padding:.38rem 1rem;}' +
+    '.zf-nl-share:hover{border-color:var(--gold-soft);background:rgba(var(--zf-rgb),.12);}' +
     '@media (max-width:520px){.zf-nl-form{flex-direction:column;}.zf-nl-box{padding:1.8rem 1.2rem;}}';
   document.head.appendChild(css);
 
@@ -635,8 +635,29 @@ document.addEventListener('play', function(e){
       '<a class="zf-nl-share" href="#" rel="noopener" '+d('share')+'>'+T.share.hi+'</a>' +
     '</div>';
 
-  var anchor = main.querySelector('.meet-poet');   // home: sit just above "Meet the Poet"
-  if(anchor) main.insertBefore(sec, anchor); else main.appendChild(sec);
+  /* placement: home = above "Meet the Poet"; ghazal/nazm pages = under the open poem (after related list);
+     list pages with no poem open = not shown */
+  function place(){
+    if(page === 'home'){
+      if(sec.parentNode) return;
+      var anchor = main.querySelector('.meet-poet');
+      if(anchor) main.insertBefore(sec, anchor); else main.appendChild(sec);
+      return;
+    }
+    var card = main.querySelector('.poem-detail.open .card.manuscript[id]');
+    if(!card){ if(sec.parentNode) sec.remove(); return; }
+    var par = card.parentNode, last = card, n = card.nextElementSibling;
+    while(n && (n.classList.contains('manuscript') || n.classList.contains('zf-meanings') || n.classList.contains('zf-rel'))){ last = n; n = n.nextElementSibling; }
+    if(sec.parentNode === par && sec.previousElementSibling === last) return;
+    par.insertBefore(sec, last.nextSibling);
+  }
+  place();
+  if(page !== 'home' && window.MutationObserver){
+    var pt = null;
+    new MutationObserver(function(ms){
+      for(var i = 0; i < ms.length; i++){ if(ms[i].target && ms[i].target.closest && ms[i].target.closest('#zf-newsletter')) continue; clearTimeout(pt); pt = setTimeout(place, 120); break; }
+    }).observe(main, {childList:true, subtree:true, attributes:true, attributeFilter:['class']});
+  }
 
   var form = sec.querySelector('.zf-nl-form'), thanks = sec.querySelector('.zf-nl-thanks');
   form.addEventListener('submit', function(){
@@ -777,7 +798,7 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
     if(window.self !== window.top || /admin-comments/.test(location.pathname)) return;
     var p = document.body && document.body.getAttribute('data-page');
     if(p === 'home' || p === 'ashaar' || p === 'ghazals' || p === 'nazms' || /\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(location.pathname) || /(^|\/)(index[^\/]*\.html)?$/.test(location.pathname)){
-      var s = document.createElement('script'); s.src = 'sher-image.js?v=1'; s.defer = true; document.body.appendChild(s);
+      var s = document.createElement('script'); s.src = 'sher-image.js?v=2'; s.defer = true; document.body.appendChild(s);
     }
   }catch(e){}
 })();
@@ -1143,6 +1164,6 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
 (function(){
   try{
     if(/admin-comments|offline/.test(location.pathname)) return;
-    var s = document.createElement('script'); s.src = 'reader-tools.js?v=1'; s.defer = true; document.body.appendChild(s);
+    var s = document.createElement('script'); s.src = 'reader-tools.js?v=2'; s.defer = true; document.body.appendChild(s);
   }catch(e){}
 })();

@@ -1512,3 +1512,14 @@ html[data-theme="light"]::before{background:#f5f0e4 url(logo-dark.png?v=1) no-re
 html[data-theme="light"]::after{color:#1e1c17;}
 html[data-theme="light"] .brand-logo{filter:none; content:url(logo-dark.png?v=1);}
 html[data-theme="light"] img.brand-logo{filter:none;}
+
+/* v50: kagaz (light) theme — borders that were too faint on cream (share row, card buttons, cards, footer, small boxes) */
+html[data-theme="light"] .zf-share-row a,
+html[data-theme="light"] .zf-script button,
+html[data-theme="light"] .zf-audio-share{border-color:rgba(var(--zf-rgb),.5)}
+html[data-theme="light"] .zf-share-row a{border-width:1.5px}
+html[data-theme="light"] .share-btn,html[data-theme="light"] .download-btn,html[data-theme="light"] .favorite-btn,html[data-theme="light"] .copy-btn{border-color:rgba(var(--zf-rgb),.5)}
+html[data-theme="light"] .zf-mrow{border-top-color:rgba(var(--zf-rgb),.2)}
+html[data-theme="light"] .zf-snip{border-inline-start-color:rgba(var(--zf-rgb),.45)}
+html[data-theme="light"] .card,html[data-theme="light"] .zf-badge,html[data-theme="light"] .zf-streak,html[data-theme="light"] .zf-facts,html[data-theme="light"] .poem-item,html[data-theme="light"] .zf-cm-box,html[data-theme="light"] .sher-source{border-color:rgba(var(--zf-rgb),.38)}
+html[data-theme="light"] .site-footer{border-top-color:rgba(var(--zf-rgb),.3)}
