@@ -213,20 +213,18 @@
   }
   /* "Dedicate" card under every ghazal and nazm: pick any sher (or a few nazm lines), write a name, send the card */
   function addDedicate(row){
+    if(row.querySelector('.zf-share-ded')) return;
     var scope = row.closest('.poem-detail') || document, card = scope.querySelector('.card.manuscript') || document.querySelector('.card.manuscript');
     if(!card) return;
-    if(row.parentNode.querySelector('.zf-dedicate')) return;
-    addCss();
-    var isNazm = /^nazm-/.test(card.id || '') || !!card.querySelector('.nazm-line');
-    if(isNazm) return;   /* no dedicate card for nazms */
-    var box = el('div', 'zf-dedicate'); box.setAttribute('data-nazm', isNazm ? '1' : '0');
-    box.appendChild(el('div', 'zf-ded-h', t('dh'))); box.appendChild(el('p', 'zf-ded-s', t(isNazm ? 'dsn' : 'dsg')));
-    var b = el('button', 'zf-ded-b', t('dbtn')); b.type = 'button'; box.appendChild(b);
-    b.addEventListener('click', function(){
+    if(/^nazm-/.test(card.id || '') || card.querySelector('.nazm-line')) return;   /* no dedicate for nazms */
+    var a = el('a', 'zf-share-ded', t('dbtn')); a.href = '#'; a.setAttribute('role', 'button');
+    a.addEventListener('click', function(e){
+      e.preventDefault();
       var sc = row.closest('.poem-detail') || document, c = sc.querySelector('.card.manuscript') || document.querySelector('.card.manuscript');
       if(c) openPic(pagesFromCard(c), {dedicate: true});
     });
-    row.parentNode.insertBefore(box, row.nextSibling);
+    var pic = row.querySelector('.zf-share-pic');
+    row.insertBefore(a, pic ? pic.nextSibling : (row.children[1] || null));
   }
   function addHome(){
     var bar = document.querySelector('.sher-actions'); if(!bar || bar.querySelector('.zf-home-pic')) return;
@@ -243,5 +241,5 @@
   var tm = null;
   new MutationObserver(function(){ clearTimeout(tm); tm = setTimeout(scan, 40); }).observe(document.body, {childList: true, subtree: true});
   var prev = window.ZF_rerenderCollection;
-  window.ZF_rerenderCollection = function(){ if(typeof prev === 'function') prev(); [].forEach.call(document.querySelectorAll('.zf-share-pic,.zf-home-pic'), function(n){ n.textContent = t('btn'); }); [].forEach.call(document.querySelectorAll('.zf-dedicate'), function(n){ n.remove(); }); scan(); };
+  window.ZF_rerenderCollection = function(){ if(typeof prev === 'function') prev(); [].forEach.call(document.querySelectorAll('.zf-share-pic,.zf-home-pic'), function(n){ n.textContent = t('btn'); }); [].forEach.call(document.querySelectorAll('.zf-dedicate,.zf-share-ded'), function(n){ n.remove(); }); scan(); };
 })();

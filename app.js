@@ -647,7 +647,10 @@ document.addEventListener('play', function(e){
     var card = main.querySelector('.poem-detail.open .card.manuscript[id]');
     if(!card){ if(sec.parentNode) sec.remove(); return; }
     var par = card.parentNode, last = card, n = card.nextElementSibling;
-    while(n && (n.classList.contains('manuscript') || n.classList.contains('zf-meanings') || n.classList.contains('zf-rel'))){ last = n; n = n.nextElementSibling; }
+    while(n && (n.classList.contains('manuscript') || n.classList.contains('zf-meanings') || n.classList.contains('zf-rel') || n.classList.contains('zf-nzaudio') || n.classList.contains('poem-nav-buttons'))){ last = n; n = n.nextElementSibling; }
+    /* newsletter goes last: after share row and the comments block */
+    var sr = par.querySelector(':scope > .zf-share-row');
+    if(sr){ last = sr; var cm = par.querySelector(':scope > .zf-comments'); if(cm) last = cm; }
     if(sec.parentNode === par && sec.previousElementSibling === last) return;
     par.insertBefore(sec, last.nextSibling);
   }
@@ -798,7 +801,7 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
     if(window.self !== window.top || /admin-comments/.test(location.pathname)) return;
     var p = document.body && document.body.getAttribute('data-page');
     if(p === 'home' || p === 'ashaar' || p === 'ghazals' || p === 'nazms' || /\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(location.pathname) || /(^|\/)(index[^\/]*\.html)?$/.test(location.pathname)){
-      var s = document.createElement('script'); s.src = 'sher-image.js?v=2'; s.defer = true; document.body.appendChild(s);
+      var s = document.createElement('script'); s.src = 'sher-image.js?v=3'; s.defer = true; document.body.appendChild(s);
     }
   }catch(e){}
 })();
@@ -1164,6 +1167,6 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
 (function(){
   try{
     if(/admin-comments|offline/.test(location.pathname)) return;
-    var s = document.createElement('script'); s.src = 'reader-tools.js?v=2'; s.defer = true; document.body.appendChild(s);
+    var s = document.createElement('script'); s.src = 'reader-tools.js?v=3'; s.defer = true; document.body.appendChild(s);
   }catch(e){}
 })();
