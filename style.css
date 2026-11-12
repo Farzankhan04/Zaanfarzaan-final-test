@@ -1588,3 +1588,106 @@ html.zf-menu-open, html.zf-menu-open body{overflow:hidden;}
 body .zf-nl-box{border:1px solid rgba(var(--zf-rgb),0.12); box-shadow:0 14px 34px rgba(0,0,0,0.18);}
 body .zf-nl-form input[type=email]{border:1px solid rgba(var(--zf-rgb),0.18);}
 body .zf-nl-share{border:1px solid rgba(var(--zf-rgb),0.2);}
+
+/* =====================================================================
+   v55 — menu font sizes, justified text, and the "manuscript card" polish
+   ===================================================================== */
+
+/* ---- menu: calmer type sizes that match the rest of the site ---- */
+@media (max-width:1100px){
+  .navlinks > a{font-size:1.2rem; padding:.9rem 0; letter-spacing:.01em;}
+  .navlinks .nav-more-menu a{font-size:.98rem; padding:.8rem 0;}
+  body.lang-ur .navlinks > a{font-size:1.4rem; line-height:1.75;}
+  body.lang-ur .navlinks .nav-more-menu a{font-size:1.1rem; line-height:1.8;}
+  body.lang-hi .navlinks > a{font-size:1.25rem;}
+}
+
+/* ---- justified paragraphs on text pages (about already was; poem pages deliberately untouched) ---- */
+.about-page p, .about-page li, .book-about p, .faq-item p, .app-box li, .app-box p, .legal-en li{
+  text-align:justify; text-justify:inter-word; hyphens:auto; -webkit-hyphens:auto;
+}
+
+/* ---- section heads: little rules beside the label, an ornament under the heading ---- */
+.sher-widget-head .tag, .sher-gallery-head .tag, .zf-mood .zf-k, .zf-lafz .zf-k, .zf-voices .tag,
+.zf-game .zf-k, .zf-badges .zf-k, .zf-idea .zf-k, .zf-favs .zf-k, .meet-poet .tag, .zf-explore-band .tag{
+  display:inline-flex; align-items:center; gap:.85rem;
+}
+.sher-widget-head .tag::before, .sher-gallery-head .tag::before, .zf-mood .zf-k::before, .zf-lafz .zf-k::before, .zf-voices .tag::before,
+.zf-game .zf-k::before, .zf-badges .zf-k::before, .zf-idea .zf-k::before, .zf-favs .zf-k::before, .meet-poet .tag::before, .zf-explore-band .tag::before,
+.sher-widget-head .tag::after, .sher-gallery-head .tag::after, .zf-mood .zf-k::after, .zf-lafz .zf-k::after, .zf-voices .tag::after,
+.zf-game .zf-k::after, .zf-badges .zf-k::after, .zf-idea .zf-k::after, .zf-favs .zf-k::after, .meet-poet .tag::after, .zf-explore-band .tag::after{
+  content:""; width:26px; height:1px; flex:none; background:linear-gradient(90deg, transparent, rgba(var(--zf-rgb),0.55));
+}
+.sher-widget-head .tag::after, .sher-gallery-head .tag::after, .zf-mood .zf-k::after, .zf-lafz .zf-k::after, .zf-voices .tag::after,
+.zf-game .zf-k::after, .zf-badges .zf-k::after, .zf-idea .zf-k::after, .zf-favs .zf-k::after, .meet-poet .tag::after, .zf-explore-band .tag::after{
+  transform:scaleX(-1);
+}
+.sher-widget-head h2::after, .sher-gallery-head h2::after, .zf-mood h2::after, .zf-lafz h2::after, .zf-voices h2::after,
+.zf-game h2::after, .zf-badges h2::after, .zf-idea h2::after, .zf-favs h2::after, .meet-poet h2::after, .zf-explore-band h2::after{
+  content:""; display:block; width:96px; height:10px; margin:.9rem auto 0; opacity:.9;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='10' viewBox='0 0 96 10'%3E%3Cpath d='M2 5h34M60 5h34' stroke='%23a89a6f' stroke-width='1' stroke-linecap='round' opacity='.75'/%3E%3Cpath d='M48 .8 52.2 5 48 9.2 43.8 5z' fill='%23a89a6f'/%3E%3Ccircle cx='39' cy='5' r='1.1' fill='%23a89a6f'/%3E%3Ccircle cx='57' cy='5' r='1.1' fill='%23a89a6f'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+/* ---- manuscript cards: one family for new-audio / mood / word-of-the-day / game / idea / voices / continue / explore band ---- */
+main .zf-new-card, main .zf-mood-card, main .zf-game-card, main .zf-idea-card, main .zf-lafz-card, main .zf-voice,
+main .zf-continue a.zf-cont-card, main .zf-explore-band{
+  position:relative; border-radius:4px;
+  border:1px solid rgba(var(--zf-rgb),0.2);
+  background:linear-gradient(165deg, rgba(var(--zf-rgb),0.085) 0%, rgba(var(--zf-rgb),0.03) 100%);
+  box-shadow:inset 0 1px 0 rgba(var(--zf-rgb3),0.05), 0 2px 4px rgba(0,0,0,0.1), 0 22px 40px -24px rgba(0,0,0,0.45);
+  outline:1px solid rgba(var(--zf-rgb),0.09); outline-offset:-6px;
+}
+main .zf-new-card::before, main .zf-mood-card::before, main .zf-game-card::before, main .zf-idea-card::before, main .zf-lafz-card::before,
+main .zf-voice::before, main .zf-continue a.zf-cont-card::before, main .zf-explore-band::before{
+  content:""; position:absolute; left:16px; right:16px; top:-1px; height:2px; pointer-events:none;
+  background:linear-gradient(90deg, transparent, var(--gold) 30%, var(--gold-soft) 50%, var(--gold) 70%, transparent); opacity:0.7;
+}
+main .zf-new-card{border-inline-start:3px solid var(--gold); padding:1.3rem 1.4rem;}
+main .zf-new .zf-k{display:inline-flex; align-items:center;}
+main .zf-new .zf-k::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--gold); box-shadow:0 0 0 4px rgba(var(--zf-rgb),0.12); margin-inline-end:.7rem; flex:none;}
+main .zf-mood-card::after, main .zf-lafz-card::after{
+  content:"\2766"; position:absolute; right:14px; bottom:8px; font-size:1.3rem; line-height:1; opacity:0.13; color:var(--rose); pointer-events:none; font-family:'Cormorant Garamond',serif;
+}
+main .zf-mood-card .zf-ml:first-child::before{
+  content:"\201C"; display:block; font-family:'Cormorant Garamond',Georgia,serif; font-size:3.2rem; line-height:0.55; height:1.4rem; color:var(--gold); opacity:0.55;
+}
+main .zf-lafz-w{letter-spacing:0.01em;}
+main .zf-lafz-sep{width:64px; background:linear-gradient(90deg, transparent, rgba(var(--zf-rgb),0.55), transparent);}
+main .zf-lafz-s{border-inline-start:2px solid rgba(var(--zf-rgb),0.25); padding:.1rem 1rem; margin:0 auto; max-width:30rem;}
+main .zf-voice{padding:1.3rem 1.3rem 1.1rem;}
+main .zf-voice::after{content:"\201D"; position:absolute; right:14px; bottom:-2px; font-size:4.2rem; line-height:1; opacity:0.1; color:var(--gold); font-family:'Cormorant Garamond',Georgia,serif; pointer-events:none;}
+
+/* chips & small buttons: lighter, they fill in on hover */
+main .zf-chip, main .zf-more, main .zf-lafz-card .zf-more{
+  border:1px solid rgba(var(--zf-rgb),0.32); background:rgba(var(--zf-rgb),0.035); font-size:0.95rem; letter-spacing:0.02em; min-height:40px;
+  transition:background .25s ease, border-color .25s ease, color .25s ease, transform .25s ease;
+}
+main .zf-chip.on{background:var(--gold-soft); color:var(--ink); border-color:var(--gold-soft);}
+.zf-chip:focus-visible, .zf-more:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+@media (hover:hover){
+  main .zf-chip:not(.on):not(.bad):hover, main .zf-more:hover{background:rgba(var(--zf-rgb),0.14); border-color:rgba(var(--zf-rgb),0.6); transform:translateY(-1px);}
+  main .zf-new-card, main .zf-voice, main .zf-continue a.zf-cont-card{transition:transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s ease, border-color .35s ease;}
+  main .zf-new-card:hover, main .zf-voice:hover, main .zf-continue a.zf-cont-card:hover{
+    transform:translateY(-3px); border-color:rgba(var(--zf-rgb),0.4);
+    box-shadow:inset 0 1px 0 rgba(var(--zf-rgb3),0.06), 0 4px 8px rgba(0,0,0,0.12), 0 30px 50px -24px rgba(0,0,0,0.5);
+  }
+}
+main .zf-badge{border-radius:6px;}
+
+/* cards that "open" (mood / word of the day / game) arrive with a soft settle */
+@keyframes zfCardIn{from{opacity:0; transform:translateY(10px)}to{opacity:1; transform:none}}
+@media (prefers-reduced-motion:no-preference){
+  main .zf-mood-card, main .zf-lafz-card, main .zf-game-card{animation:zfCardIn .5s cubic-bezier(.2,.7,.2,1) both;}
+}
+
+/* Today's Sher: a faint opening quote behind the lines */
+.sher-card::after{content:"\201C"; position:absolute; top:.9rem; left:1.5rem; font:700 4.6rem/1 'Cormorant Garamond',Georgia,serif; color:var(--gold); opacity:0.13; pointer-events:none;}
+
+/* Five-daily-shers photo cards: inner frame + pill-shaped active dot */
+.sher-carousel-slide{outline:1px solid rgba(255,255,255,0.22); outline-offset:-10px;}
+.sher-carousel-dot{transition:width .3s ease, background .2s ease;}
+.sher-carousel-dot.active{width:22px; border-radius:999px; transform:none;}
+
+/* Newsletter + Explore band: same paper family, with side margins on small screens */
+body .zf-nl-box{position:relative; border-radius:4px; background:linear-gradient(165deg, rgba(var(--zf-rgb),0.085), rgba(var(--zf-rgb),0.03)); outline:1px solid rgba(var(--zf-rgb),0.07); outline-offset:-6px;}
+.zf-explore-band{width:calc(100% - 12vw); max-width:760px; margin:3rem auto;}

@@ -683,6 +683,14 @@ document.addEventListener('play', function(e){
 
   /* placement: home = above "Meet the Poet"; ghazal/nazm pages = under the open poem (after related list);
      list pages with no poem open = not shown */
+  /* v55: poem pages insert this box AFTER the page has loaded (when a poem opens), so it must be translated at that moment too —
+     otherwise it stays in the default Hindi even when English/Urdu is selected. */
+  function applyNl(){
+    var L = (window.ZF_LANG === 'en' || window.ZF_LANG === 'ur') ? window.ZF_LANG : 'hi';
+    Array.prototype.forEach.call(sec.querySelectorAll('[data-hi]'), function(el){ var v = el.getAttribute('data-' + L); if(v !== null) el.innerHTML = v; });
+    var inp = sec.querySelector('input[type=email]');
+    if(inp){ var ph = T.ph[L] || T.ph.hi; inp.setAttribute('placeholder', ph); inp.setAttribute('aria-label', ph); }
+  }
   function place(){
     if(page === 'home'){
       if(sec.parentNode) return;
@@ -699,6 +707,7 @@ document.addEventListener('play', function(e){
     if(sr){ last = sr; var cm = par.querySelector(':scope > .zf-comments'); if(cm) last = cm; }
     if(sec.parentNode === par && sec.previousElementSibling === last) return;
     par.insertBefore(sec, last.nextSibling);
+    applyNl();
   }
   place();
   if(page !== 'home' && window.MutationObserver){
