@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-<script>(function(){var t=null;try{t=localStorage.getItem('zf-theme');}catch(e){}if(t!=='dark')document.documentElement.setAttribute('data-theme','light');})();</script>
+<script>(function(){var t=null;try{t=localStorage.getItem('zf-theme');}catch(e){}if(t!=='dark')document.documentElement.setAttribute('data-theme','light');try{if(sessionStorage.getItem('zf-splash')){document.documentElement.classList.add('zf-splash-off');}else{sessionStorage.setItem('zf-splash','1');}}catch(e){}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
@@ -29,7 +29,8 @@ button:disabled{opacity:.5}
 </style>
 </head>
 <body>
-<main>
+<a class="skip-link" href="#main-content" data-en="Skip to content" data-hi="सामग्री पर जाएँ" data-ur="مواد پر جائیں">Skip to content</a>
+<main id="main-content">
   <h1>Comments — Admin</h1>
   <div id="app"><p class="msg">Loading…</p></div>
 </main>

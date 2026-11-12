@@ -301,7 +301,12 @@
     ];
   }
   function renderBadges(){
-    var box = document.getElementById('zf-badges'); if(!box) return;
+    var box = document.getElementById('zf-badges');
+    if(!box){   /* v53: badges now live on the Explore page — home keeps only the little streak chip next to the greeting */
+      var g0 = document.getElementById('zf-greet');
+      if(g0){ var st0 = streak(); if(st0.now >= 2 && g0.textContent.indexOf('🔥') === -1) g0.textContent += '  🔥' + st0.now; }
+      return;
+    }
     var st = streak(), s = stats(), list = badgeList(s), got = 0;
     list.forEach(function(b){ if(b[2] >= b[3]) got++; });
     box.textContent = '';

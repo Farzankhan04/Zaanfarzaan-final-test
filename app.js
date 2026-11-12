@@ -96,6 +96,38 @@ window.ZF_NEWSLETTER_USERNAME = 'Zaanfarzaan';
       aud.parentNode.insertBefore(a, aud);
     }
   })();
+  /* v53: "More" dropdown. The 5 secondary links (+ Explore) tuck into one menu so the top bar stays short.
+     Built here so no page needs its nav edited. In the hamburger menu (<=1100px) CSS shows them as a flat list again. */
+  (function(){
+    var nl = document.getElementById('nav-links'); if(!nl || nl.querySelector('.nav-more')) return;
+    var cur = window.ZF_LANG, suf = cur === 'en' ? '-en' : (cur === 'ur' ? '-ur' : '');
+    var items = [];
+    ['ebook','profiles','feedback','contact','support'].forEach(function(p){
+      var a = nl.querySelector(':scope > a[data-page="' + p + '"]'); if(a) items.push(a);
+    });
+    if(items.length < 2) return;
+    var ex = document.createElement('a');
+    ex.href = 'explore' + suf + '.html'; ex.setAttribute('data-page', 'explore');
+    ex.setAttribute('data-hi-href', 'explore.html'); ex.setAttribute('data-en-href', 'explore-en.html'); ex.setAttribute('data-ur-href', 'explore-ur.html');
+    ex.setAttribute('data-hi', 'एक्सप्लोर'); ex.setAttribute('data-en', 'Explore'); ex.setAttribute('data-ur', 'ایکسپلور');
+    ex.textContent = cur === 'en' ? 'Explore' : (cur === 'ur' ? 'ایکسپلور' : 'एक्सप्लोर');
+    var wrap = document.createElement('div'); wrap.className = 'nav-more';
+    var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'nav-more-btn';
+    btn.setAttribute('aria-haspopup', 'true'); btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('data-hi', 'और'); btn.setAttribute('data-en', 'More'); btn.setAttribute('data-ur', 'مزید');
+    btn.textContent = cur === 'en' ? 'More' : (cur === 'ur' ? 'مزید' : 'और');
+    var menu = document.createElement('div'); menu.className = 'nav-more-menu';
+    wrap.appendChild(btn); wrap.appendChild(menu);
+    nl.insertBefore(wrap, items[0]);
+    menu.appendChild(ex);
+    items.forEach(function(a){ menu.appendChild(a); });
+    function setOpen(v){ wrap.classList.toggle('open', v); btn.setAttribute('aria-expanded', v ? 'true' : 'false'); }
+    btn.addEventListener('click', function(e){ e.stopPropagation(); setOpen(!wrap.classList.contains('open')); });
+    document.addEventListener('click', function(e){ if(!wrap.contains(e.target)) setOpen(false); });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') setOpen(false); });
+    var here0 = document.body.getAttribute('data-page');
+    if(here0 === 'explore' || items.some(function(a){ return a.getAttribute('data-page') === here0; })) btn.classList.add('active');
+  })();
   const here = document.body.getAttribute('data-page');
   document.querySelectorAll('.navlinks a').forEach(function(a){
     if(a.getAttribute('data-page') === here) a.classList.add('active');
@@ -471,7 +503,7 @@ document.addEventListener('play', function(e){
     if(url.pathname === window.location.pathname && url.hash) return;
     e.preventDefault();
     document.documentElement.classList.add('zf-transitioning');
-    window.setTimeout(function(){ window.location.href = url.href; }, 200);
+    window.setTimeout(function(){ window.location.href = url.href; }, 150);
   });
   window.addEventListener('pageshow', function(e){
     if(e.persisted){

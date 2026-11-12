@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<style>/* Critical splash CSS, inlined so it paints instantly (no flash of
+Hindi text while style.css/fonts are still loading on a slow connection).
+Mirrors the #zf-splash rules in style.css -- keep both in sync. */
+@font-face{font-family:'ZF Brand';font-style:normal;font-weight:600;font-display:block;src:url('playfair-display-600.woff2') format('woff2')}
+#zf-splash{position:fixed;inset:0;z-index:9999;visibility:visible;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.1rem;background:#151515;animation:zfSplashOut .5s ease forwards 2s}
+#zf-splash img{width:min(44vw,200px);height:auto;opacity:0;animation:zfSplashLogoIn .7s ease forwards .05s}
+@keyframes zfSplashLogoIn{0%{opacity:0;transform:translateY(8px) scale(.96)}100%{opacity:1;transform:none}}
+#zf-splash span{font-family:'ZF Brand','Playfair Display',Georgia,serif;font-weight:600;font-size:clamp(1.6rem,6.4vw,2.4rem);color:#f2f1ec;opacity:0;animation:zfSplashTextIn .5s ease forwards .08s}
+@keyframes zfSplashTextIn{0%{opacity:0;letter-spacing:.3em}100%{opacity:1;letter-spacing:.05em}}
+@keyframes zfSplashOut{0%{opacity:1;visibility:visible}99%{opacity:0;visibility:visible}100%{opacity:0;visibility:hidden;pointer-events:none}}
+html.zf-en-init body,html.zf-ur-init body{visibility:hidden}html.zf-splash-off #zf-splash{display:none!important}
+@media (prefers-reduced-motion:reduce){#zf-splash{animation-duration:.01s;animation-delay:0s}#zf-splash span,#zf-splash img{animation:none;opacity:1;letter-spacing:.05em}}html[data-theme=light] #zf-splash{background:#f5f0e4}html[data-theme=light] #zf-splash span{color:#1e1c17}html[data-theme=light] #zf-splash img{filter:invert(1)}/*zf-theme-early*/</style>
+<script>(function(){var t=null;try{t=localStorage.getItem('zf-theme');}catch(e){}if(t!=='dark')document.documentElement.setAttribute('data-theme','light');})();</script>
+<script>(function(){try{var l=localStorage.getItem('zf-lang');if(l==='en'){document.documentElement.classList.add('zf-en-init');}else if(l==='ur'){document.documentElement.classList.add('zf-ur-init');}}catch(e){}})();</script>
+<link rel="preload" as="image" href="logo.png?v=2">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-en="Zaan Farzaan — Urdu Ghazals, Nazms &amp; Shayari" data-ur="زان فرزان — غزلیں، نظمیں اور شاعری">ज़ान फ़रज़ान (Zaan Farzaan) — ग़ज़लें, नज़्में और शायरी</title>
+<meta name="description" content="शेर पूरा कीजिए का खेल, पढ़ने की लय और बैज, पसंदीदा रचनाएँ और आने वाली नज़्म के लिए अपना ख़याल भेजने की जगह।">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://zaanfarzaan.site/explore.html">
+
+<meta property="og:title" content="एक्सप्लोर — खेल, बैज और पसंद | Zaan Farzaan">
+<meta property="og:description" content="शेर पूरा कीजिए का खेल, पढ़ने की लय और बैज, पसंदीदा रचनाएँ और आने वाली नज़्म के लिए अपना ख़याल भेजने की जगह।">
+<meta property="og:image" content="https://zaanfarzaan.site/share-home.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Zaan Farzaan — ग़ज़लें और नज़्में">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:url" content="https://zaanfarzaan.site/explore.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Zaan Farzaan">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href="playfair-display-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css?v=16">
+<link rel="icon" type="image/x-icon" href="favicon.ico?v=3">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=3">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png?v=3">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=3">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=3">
+<script>setTimeout(function(){document.documentElement.classList.remove('zf-en-init','zf-ur-init');},4000);</script>
+<style>
+.zf-all-link{display:inline-block;margin:.2rem .6rem;padding:.5rem 1rem;border:1px solid rgba(var(--zf-rgb),.3);border-radius:999px;color:inherit;text-decoration:none;font-size:.88rem;opacity:.9}.zf-all-link:hover{border-color:var(--text-muted)}
+/* HOME: "Meet the poet" — photo section at the bottom of the home page (kept inline so style.css does not change). */
+.meet-poet{max-width:560px; margin:0 auto; padding:0 6vw 12vh; text-align:center; display:flex; flex-direction:column; align-items:center; gap:.5rem;}
+.meet-poet-photo{width:128px; height:128px; border-radius:50%; object-fit:cover; object-position:50% 22%; display:block;
+  border:2px solid rgba(var(--zf-rgb),.45); box-shadow:0 8px 22px rgba(0,0,0,.45); background:#e9e9e4; margin-bottom:.6rem;}
+.meet-poet .tag{color:var(--rose); text-transform:uppercase; letter-spacing:.3em; font-size:.72rem; font-family:'Lora'; font-weight:600;}
+.meet-poet h2{font-size:clamp(1.5rem,4vw,1.9rem); color:var(--gold-soft); font-weight:700; font-family:'Cormorant Garamond','Noto Serif Devanagari',serif; line-height:1.4;}
+body.lang-ur .meet-poet h2{font-family:'Noto Nastaliq Urdu',serif; line-height:1.9;}
+.meet-poet-name{color:var(--text-light); font-size:1.1rem; font-weight:600; letter-spacing:.04em;}
+.meet-poet-line{color:var(--text-muted); font-size:1rem; line-height:1.7;}
+.meet-poet-link{margin-top:.5rem; color:var(--gold-soft); text-decoration:none; font-size:.9rem; letter-spacing:.06em; font-weight:600; border-bottom:1px solid rgba(var(--zf-rgb),.4); padding-bottom:2px;}
+.meet-poet-link:hover{border-bottom-color:var(--gold-soft);}
+/* HOME v25: hero buttons, compact search, new strip, continue card, reader voices, compact phone cards, better contrast */
+.hero-cta{display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; margin-top:1.8rem;}
+.hero-btn{display:inline-block; padding:.8rem 1.6rem; border-radius:999px; border:1px solid rgba(var(--zf-rgb),.55); color:var(--gold-soft); text-decoration:none; font-weight:600; font-size:1rem; letter-spacing:.02em; min-height:46px; transition:background .25s,color .25s,transform .25s;}
+.hero-btn:hover,.hero-btn:focus-visible{background:rgba(var(--zf-rgb),.14); transform:translateY(-2px);}
+.hero-btn-main{background:var(--gold-soft); color:var(--ink); border-color:var(--gold-soft);}
+.hero-btn-main:hover,.hero-btn-main:focus-visible{background:#fff;}
+.hero .attribution{color:var(--zf-mute);}
+.site-search-compact{padding:2.2vh 6vw 1vh;}
+.zf-continue,.zf-new{max-width:640px; margin:1.4rem auto 0; padding:0 6vw;}
+.zf-continue a.zf-cont-card{display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1rem 1.2rem; border-radius:10px; border:1px solid rgba(var(--zf-rgb),.4); background:rgba(var(--zf-rgb),.07); color:var(--gold-soft); text-decoration:none;}
+.zf-continue .zf-k,.zf-new .zf-k{font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; color:var(--zf-mute); font-family:'Lora',serif; font-weight:600;}
+.zf-continue .zf-t{font-size:1.15rem; margin-top:.2rem;}
+.zf-continue .zf-go{white-space:nowrap; font-weight:600; color:var(--gold-soft);}
+.zf-new-card{padding:1.1rem 1.2rem; border-radius:10px; border:1px solid rgba(var(--zf-rgb),.4); background:rgba(var(--zf-rgb),.07);}
+.zf-new-card .zf-t{font-size:1.25rem; margin:.25rem 0 .7rem; color:var(--gold-soft);}
+.zf-new-card .zf-credit{font-size:.88rem; margin:-.4rem 0 .7rem; opacity:.82}.zf-new-card .zf-credit a{color:inherit; text-decoration:underline; text-underline-offset:3px; font-weight:600}
+.zf-new-card audio{width:100%; height:40px;}
+.zf-new-card .zf-links{display:flex; gap:1.2rem; flex-wrap:wrap; margin-top:.7rem; font-size:.92rem;}
+.zf-new-card .zf-links a{color:var(--gold-soft); text-decoration:underline; text-underline-offset:3px;}
+.zf-voices{max-width:1080px; margin:0 auto; padding:0 0 6vh; text-align:center;}
+.zf-voices .tag{color:var(--zf-mute); text-transform:uppercase; letter-spacing:.3em; font-size:.72rem; font-family:'Lora',serif; font-weight:600;}
+.zf-voices h2{font-size:clamp(1.5rem,4vw,2rem); color:var(--gold-soft); font-weight:700; margin:.5rem 0 1.4rem;}
+.zf-voices-track{display:flex; gap:1rem; overflow-x:auto; scroll-snap-type:x mandatory; padding:.3rem 6vw 1rem; -webkit-overflow-scrolling:touch; direction:ltr; text-align:left;}
+.zf-voice{flex:0 0 min(300px,80vw); scroll-snap-align:center; padding:1.1rem 1.2rem; border-radius:10px; border:1px solid rgba(var(--zf-rgb),.35); background:rgba(var(--zf-rgb),.07); font-family:'Lora',serif; display:flex; flex-direction:column; gap:.7rem;}
+.zf-voice q{quotes:"\201C" "\201D"; font-size:1rem; line-height:1.6; color:var(--gold-soft); display:-webkit-box; -webkit-line-clamp:6; -webkit-box-orient:vertical; overflow:hidden; white-space:pre-line; word-break:break-word;}
+.zf-voice .zf-by{font-size:.82rem; color:var(--zf-mute); margin-top:auto;}
+.zf-voice .zf-by a{color:var(--gold-soft);}
+.nav-card .nav-card-arrow{color:#4a4a47;}
+.nav-card .nav-card-tag{color:#5c5c58;}
+@media (max-width:600px){
+  .nav-cards{grid-template-columns:1fr 1fr; gap:.8rem; padding:2vh 4vw 6vh;}
+  .nav-card{padding:1.2rem 1rem; min-height:0;}
+  .nav-card h3{font-size:1.25rem;}
+  .nav-card p{font-size:.82rem; line-height:1.5; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;}
+  .nav-card-preview{display:none !important;}
+  .nav-card .nav-card-arrow{font-size:.82rem;}
+  .nav-card:last-child:nth-child(odd){grid-column:1 / -1;}
+}
+.zf-mood{max-width:640px; margin:2.5rem auto 0; padding:0 6vw; text-align:center;}
+.zf-mood .zf-k{font-size:.72rem; letter-spacing:.3em; text-transform:uppercase; color:var(--zf-mute); font-family:'Lora',serif; font-weight:600;}
+.zf-mood h2{font-size:clamp(1.5rem,4vw,2rem); color:var(--gold-soft); font-weight:700; margin:.5rem 0 1.1rem;}
+.zf-chips{display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center;}
+.zf-chip,.zf-more{font:inherit; cursor:pointer; padding:.55rem 1.1rem; min-height:42px; border-radius:999px; border:1px solid rgba(var(--zf-rgb),.5); background:transparent; color:var(--gold-soft);}
+.zf-chip.on{background:var(--gold-soft); color:var(--ink); border-color:var(--gold-soft); font-weight:700;}
+.zf-mood-card{margin-top:1.3rem; padding:1.4rem 1.2rem; border-radius:10px; border:1px solid rgba(var(--zf-rgb),.4); background:rgba(var(--zf-rgb),.07);}
+.zf-mood-card .zf-ml{font-size:1.2rem; line-height:1.9; color:var(--gold-soft);}
+.zf-mood-card.rtl{direction:rtl;}
+.zf-mood-card .zf-links{display:flex; gap:1rem; justify-content:center; align-items:center; flex-wrap:wrap; margin-top:1rem; font-size:.92rem;}
+.zf-mood-card .zf-links a{color:var(--gold-soft); text-decoration:underline; text-underline-offset:3px;}
+.hero-app{display:inline-block;margin-top:1.1rem;color:var(--zf-soft);font-size:.92rem;text-decoration:underline;text-underline-offset:4px}
+.zf-game,.zf-favs{max-width:640px; margin:2.5rem auto 0; padding:0 6vw; text-align:center;}
+.zf-game .zf-k,.zf-favs .zf-k{font-size:.72rem; letter-spacing:.3em; text-transform:uppercase; color:var(--zf-mute); font-family:'Lora',serif; font-weight:600;}
+.zf-game h2,.zf-favs h2{font-size:clamp(1.5rem,4vw,2rem); color:var(--gold-soft); font-weight:700; margin:.5rem 0 1.1rem;}
+.zf-game-card{padding:1.4rem 1.2rem; border-radius:10px; border:1px solid rgba(var(--zf-rgb),.4); background:rgba(var(--zf-rgb),.07);}
+.zf-game-card .zf-ml{font-size:1.2rem; line-height:1.9; color:var(--gold-soft);}
+.zf-game-card.rtl{direction:rtl;}
+.zf-game-card .zf-chips{margin-top:1rem;}
+.zf-fill{display:inline-block; min-width:3.5em; white-space:pre; text-align:center; border-bottom:2px dashed rgba(242,241,236,.7); color:var(--zf-mute);}
+.zf-fill.ok{border-bottom:2px solid var(--zf-ok); color:var(--zf-ok); font-weight:700;}
+.zf-chip.bad{opacity:.45; text-decoration:line-through;}
+.zf-hint{margin-top:.8rem; color:var(--zf-bad);} .zf-hint.ok{color:var(--zf-ok);}
+.zf-game-card .zf-links{display:flex; gap:1rem; justify-content:center; align-items:center; flex-wrap:wrap; margin-top:1rem; font-size:.92rem;}
+.zf-game-card .zf-links a{color:var(--gold-soft); text-decoration:underline; text-underline-offset:3px;}
+.zf-favs{max-width:1080px; padding:0;}
+.zf-fav-track{display:flex; gap:.9rem; overflow-x:auto; scroll-snap-type:x mandatory; padding:.3rem 6vw 1rem; -webkit-overflow-scrolling:touch;}
+.zf-fav{flex:0 0 min(230px,70vw); scroll-snap-align:start; display:flex; flex-direction:column; gap:.4rem; padding:1rem 1.1rem; text-align:start; border-radius:10px; border:1px solid rgba(var(--zf-rgb),.35); background:rgba(var(--zf-rgb),.07); color:var(--gold-soft); text-decoration:none;}
+.zf-fav .zf-fk{font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:var(--zf-mute); font-family:'Lora',serif;}
+.zf-fav .zf-ft{font-size:1.05rem; line-height:1.5;}
+.zf-fav-all{display:inline-block; margin-top:.4rem; color:var(--gold-soft); text-decoration:underline; text-underline-offset:3px;}
+.hero{background:linear-gradient(180deg,rgba(var(--zf-ink-rgb),.62) 0%,rgba(var(--zf-ink-rgb),.50) 45%,rgba(var(--zf-ink-rgb),.78) 85%,#151515 100%),url(sher-2.jpg) 62% 28%/cover no-repeat;}
+.hero h1{text-shadow:0 2px 18px rgba(0,0,0,.65);} .hero .sher{text-shadow:0 2px 14px rgba(0,0,0,.7);}
+.zf-greet{position:absolute;left:14px;top:12px;z-index:2;margin:0;padding:.2rem .65rem;border:1px solid rgba(var(--zf-rgb),.3);border-radius:999px;background:rgba(var(--zf-ink-rgb),.45);color:var(--zf-text2);font-size:.8rem;line-height:1.5;text-align:left;direction:ltr}
+.zf-badges,.zf-idea{max-width:640px; margin:2.5rem auto 0; padding:0 6vw; text-align:center;}
+.zf-badges .zf-k,.zf-idea .zf-k{font-size:.72rem; letter-spacing:.3em; text-transform:uppercase; color:var(--zf-mute); font-family:'Lora',serif; font-weight:600;}
+.zf-badges h2,.zf-idea h2{font-size:clamp(1.5rem,4vw,2rem); color:var(--gold-soft); font-weight:700; margin:.5rem 0 .8rem;}
+.zf-streak{display:inline-block; margin:0 0 .6rem; padding:.4rem 1rem; border-radius:999px; border:1px solid rgba(255,170,80,.55); background:rgba(255,170,80,.1); color:var(--zf-warn); font-weight:600;}
+.zf-bcount{color:var(--zf-mute); font-size:.9rem; margin-bottom:.9rem;}
+.zf-bgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:.6rem;}
+@media (min-width:560px){.zf-bgrid{grid-template-columns:repeat(4,1fr);}}
+.zf-badge{padding:.8rem .4rem; border-radius:10px; border:1px solid rgba(var(--zf-rgb),.2); background:rgba(var(--zf-rgb),.04); opacity:.5; filter:grayscale(1);}
+.zf-badge.on{opacity:1; filter:none; border-color:rgba(242,241,236,.6); background:rgba(var(--zf-rgb),.12);}
+.zf-badge .zf-be{font-size:1.6rem; line-height:1.2;} .zf-badge .zf-bn{font-size:.82rem; color:var(--gold-soft); margin-top:.25rem; line-height:1.3;} .zf-badge .zf-bp{font-size:.75rem; color:var(--zf-mute); margin-top:.2rem;}
+.zf-idea-p{color:var(--zf-soft); line-height:1.8; margin:0 0 1rem;}
+.zf-idea-card{padding:1.2rem; border-radius:10px; border:1px solid rgba(var(--zf-rgb),.4); background:rgba(var(--zf-rgb),.07); display:flex; flex-direction:column; gap:.7rem; position:relative; text-align:start;}
+.zf-idea-card textarea,.zf-idea-card input[type=text]{font:inherit; width:100%; padding:.7rem .8rem; border-radius:8px; border:1px solid rgba(var(--zf-rgb),.35); background:var(--zf-field); color:var(--gold-soft);}
+.zf-idea-card textarea{resize:vertical; min-height:110px;}
+.zf-idea-card .zf-chip{align-self:center;}
+.zf-idea-note{font-size:.8rem; color:var(--zf-mute); text-align:center;}
+.hero .sher{display:flex; flex-direction:column; align-items:center;}
+.hero .sher .line{display:inline-block; opacity:1; animation:zfWrite 2.6s steps(34,end) .5s both;}
+.hero .sher .line:nth-of-type(2){animation-delay:3.2s;}
+@keyframes zfWrite{from{clip-path:inset(-10% 100% -10% 0);} to{clip-path:inset(-10% -2% -10% 0);}}
+body.lang-ur .hero .sher .line{animation-name:zfWriteRtl;}
+@keyframes zfWriteRtl{from{clip-path:inset(-10% 0 -10% 100%);} to{clip-path:inset(-10% 0 -10% -2%);}}
+.hero .attribution{animation-delay:5.8s;}
+@media (prefers-reduced-motion:reduce){.hero .sher .line{animation:none; clip-path:none;}}
+</style>
+</head>
+<body data-page="explore">
+<a class="skip-link" href="#main-content" data-en="Skip to content" data-hi="सामग्री पर जाएँ" data-ur="مواد پر جائیں">Skip to content</a>
+  
+<nav>
+  <div class="brand-group">
+    <a href="index.html" data-en-href="index-en.html" data-ur-href="index-ur.html" class="brand-logo-link"><img src="logo.png?v=2" alt="Zaan Farzaan" class="brand-logo" width="55" height="38"></a>
+    <a href="index.html" data-en-href="index-en.html" data-ur-href="index-ur.html" class="brand" lang="en">Zaan Farzaan</a>
+  </div>
+  <div class="nav-right">
+    <div class="navlinks" id="nav-links">
+      <a href="index.html" data-en-href="index-en.html" data-ur-href="index-ur.html" data-page="home" data-en="Home" data-ur="ہوم">होम</a>
+      <a href="about.html" data-en-href="about-en.html" data-ur-href="about-ur.html" data-page="about" data-en="About" data-ur="تعارف">परिचय</a>
+      <a href="ghazals.html" data-en-href="ghazals-en.html" data-ur-href="ghazals-ur.html" data-page="ghazals" data-en="Ghazals" data-ur="غزلیں">ग़ज़लें</a>
+      <a href="nazms.html" data-en-href="nazms-en.html" data-ur-href="nazms-ur.html" data-page="nazms" data-en="Nazms" data-ur="نظمیں">नज़्में</a>
+      <a href="audios.html" data-en-href="audios-en.html" data-ur-href="audios-ur.html" data-page="audios" data-en="Audio" data-ur="آڈیو">ऑडियो</a>
+      <a href="ebook.html" data-en-href="ebook-en.html" data-ur-href="ebook-ur.html" data-page="ebook" data-en="Book" data-ur="کتاب">किताब</a>
+      <a href="profiles.html" data-en-href="profiles-en.html" data-ur-href="profiles-ur.html" data-page="profiles" data-en="Profiles" data-ur="پروفائل">प्रोफ़ाइल</a>
+      <a href="feedback.html" data-en-href="feedback-en.html" data-ur-href="feedback-ur.html" data-page="feedback" data-en="Feedback" data-ur="فیڈبیک">फ़ीडबैक</a>
+      <a href="contact.html" data-en-href="contact-en.html" data-ur-href="contact-ur.html" data-page="contact" data-en="Contact" data-ur="رابطہ">संपर्क</a>
+      <a href="support.html" data-en-href="support-en.html" data-ur-href="support-ur.html" data-page="support" data-en="Nazrana" data-ur="نذرانہ">नज़राना</a>
+      <a href="favorites.html" data-en-href="favorites-en.html" data-ur-href="favorites-ur.html" data-page="favorites" class="nav-fav" title="Favourites"><svg class="nav-fav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.3l7.8-7.8 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg><span class="nav-fav-label" data-en="Favourites" data-ur="پسند">पसंद</span></a>
+    </div>
+    <button type="button" class="lang-toggle" id="lang-toggle" role="group" aria-label="Switch to English / अंग्रेज़ी में बदलें">
+      <span class="lang-thumb"></span>
+      <span class="lang-opt active" data-lang-option="hi" aria-selected="true">हिं</span>
+      <span class="lang-opt" data-lang-option="en" aria-selected="false">EN</span>
+      <span class="lang-opt" data-lang-option="ur" aria-selected="false">اردو</span>
+    </button>
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="मेन्यू खोलें" data-en-aria-label="Open menu" data-ur-aria-label="مینو کھولیں">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<main id="main-content">
+<div class="page-header">
+  <div class="tag" data-hi="एक्सप्लोर" data-en="Explore" data-ur="ایکسپلور">एक्सप्लोर</div>
+  <h1 data-hi="खेलिए, सहेजिए, बाँटिए" data-en="Play, collect, share" data-ur="کھیلیں، سنبھالیں، بانٹیں">खेलिए, सहेजिए, बाँटिए</h1>
+  <p class="explore-sub" data-hi="यहाँ सब कुछ आपके अपने फ़ोन में रहता है — खेल के नतीजे, बैज और पसंद।" data-en="Everything here stays on your own device — game results, badges and favourites." data-ur="یہاں سب کچھ آپ کے اپنے فون میں رہتا ہے — کھیل کے نتیجے، بیجز اور پسند۔">यहाँ सब कुछ आपके अपने फ़ोन में रहता है — खेल के नतीजे, बैज और पसंद।</p>
+</div>
+
+<section class="zf-game" id="zf-game" hidden></section>
+
+<section class="zf-badges" id="zf-badges" hidden></section>
+
+<section class="zf-favs" id="zf-favs" hidden></section>
+
+<section class="zf-idea" id="zf-idea" hidden></section>
+
+<div class="explore-install"><a class="hero-app" href="app.html" data-hi-href="app.html" data-en-href="app-en.html" data-ur-href="app-ur.html" data-hi="ऐप की तरह इंस्टॉल करें" data-en="Install as an app" data-ur="ایپ کی طرح انسٹال کریں">ऐप की तरह इंस्टॉल करें</a></div>
+</main>
+
+<footer class="site-footer" lang="en" dir="ltr">
+  <div class="fineprint">© 2026 Zaan Farzaan. All rights reserved.</div>
+  <div class="foot-links">
+    <a href="mailto:zaanfarzaan1@gmail.com">Email</a>
+    <a href="https://instagram.com/zaanfarzaan" target="_blank" rel="noopener">Instagram</a>
+    <a href="terms.html">Terms</a>
+    <a href="refund-policy.html">Refund Policy</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</footer>
+
+<script src="ghazals-data.js"></script>
+<script src="nazms-data.js"></script>
+<script src="ur-translit.js"></script>
+<script src="i18n.js?v=4"></script>
+<script src="app.js?v=6"></script>
+<script src="mood-data.js?v=1"></script>
+<script src="home-extras.js?v=7"></script>
+</body>
+</html>
