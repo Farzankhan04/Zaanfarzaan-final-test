@@ -173,16 +173,21 @@ html.is-scrolling nav{
 
 @media (max-width:1100px){   /* hamburger menu below this width (v53: nav is now 6 links + a "More" dropdown, so the full bar fits down to 1101px) */
   .brand{font-size:1.5rem;}
+  /* v54: full-screen menu panel — covers the rest of the screen below the header (no page peeking through), list scrolls inside itself if short screen */
   .navlinks{
     display:none; position:absolute; top:100%; left:0; right:0;
-    flex-direction:column; gap:0; background:var(--ink-deep);
+    flex-direction:column; align-items:stretch; gap:0;
+    height:calc(100vh - 76px); height:calc(100dvh - 76px);
+    padding:1.2rem 8vw 2.6rem; overflow-y:auto; overscroll-behavior:contain;
+    background-color:var(--ink-deep);
+    background-image:radial-gradient(120% 55% at 50% 0%, rgba(var(--zf-rgb),0.07), transparent 70%);
     border-bottom:1px solid rgba(var(--zf-rgb),0.15);
-    max-height:calc(100vh - 72px); max-height:calc(100dvh - 72px); overflow-y:auto; /* pinned header: a tall menu must scroll inside itself */
   }
-  .navlinks.open{display:flex;}
-  .navlinks a{padding:1rem 6vw; border-top:1px solid rgba(var(--zf-rgb),0.08);}
-  .navlinks a.active::after{display:none;}
-  .navlinks a.active{background:rgba(var(--zf-rgb),0.08);}
+  .navlinks.open{display:flex; animation:zfMenuIn .25s ease both;}
+  .navlinks > a{display:flex; align-items:center; justify-content:space-between; padding:.95rem 0; font-size:1.5rem; line-height:1.25; color:var(--text-light); border-bottom:1px solid rgba(var(--zf-rgb),0.1);}
+  .navlinks > a:hover, .navlinks > a.active{color:var(--gold-soft); background:none;}
+  .navlinks > a.active::after{content:""; position:static; display:block; left:auto; right:auto; bottom:auto; width:.5rem; height:.5rem; border-radius:50%; background:var(--gold);}
+  .navlinks.open > a, .navlinks.open > .nav-more{animation:zfMenuItem .5s cubic-bezier(.2,.7,.2,1) both; animation-delay:calc(var(--i,0) * 45ms + 70ms);}
   .nav-toggle{display:flex; align-items:center; justify-content:center;}
   nav{gap:0.6rem;}
   .nav-right{gap:0.9rem;}
@@ -1537,16 +1542,6 @@ html[data-theme="light"] .site-footer{border-top-color:rgba(var(--zf-rgb),.3)}
 .navlinks .nav-more-menu a{padding:.6rem 1.15rem; white-space:nowrap;}
 .navlinks .nav-more-menu a:hover, .navlinks .nav-more-menu a.active{background:rgba(var(--zf-rgb),0.08);}
 .navlinks .nav-more-menu a.active::after{display:none;}
-@media (max-width:1100px){   /* hamburger menu: "More" is a tap-to-open section so the list stays short */
-  .nav-more{display:block; width:100%;}
-  .nav-more-btn{display:flex; width:100%; justify-content:space-between; align-items:center; padding:1rem 6vw; border-top:1px solid rgba(var(--zf-rgb),0.08); text-align:start;}
-  .nav-more-btn.active::before{display:none;}
-  .nav-more-btn.active{background:rgba(var(--zf-rgb),0.08);}
-  .nav-more.open .nav-more-btn::after{transform:rotate(-135deg) translateY(-2px);}
-  .nav-more-menu{position:static; display:none; min-width:0; padding:0; border:0; border-radius:0; box-shadow:none; background:rgba(var(--zf-rgb),0.05);}
-  .nav-more.open .nav-more-menu{display:flex;}
-  .nav-more-menu::before{display:none;}
-}
 
 /* ---- v53: skip-to-content link (visible only when focused with the keyboard) ---- */
 .skip-link{position:absolute; top:0; inset-inline-start:0; z-index:100002; background:var(--gold); color:var(--ink-deep); padding:.7rem 1.1rem; font-weight:600; text-decoration:none; border-radius:0 0 10px 0; transform:translateY(-130%);}
@@ -1564,4 +1559,32 @@ html[data-theme="light"] .site-footer{border-top-color:rgba(var(--zf-rgb),.3)}
 .legal-en ul{margin:0 0 1.2rem; padding-left:1.5rem; color:var(--text-muted);}
 .legal-en li{margin-bottom:.45rem; line-height:1.8;}
 .legal-en li strong{color:var(--text-light);}
-@media (max-width:1100px){ .navlinks .nav-more-menu a{padding:.9rem 6vw; padding-inline-start:calc(6vw + 1rem);} }
+
+/* ---- v54: menu polish ---- */
+/* Favourites now lives inside "More": show its label there (the top bar used to show the heart only) */
+.navlinks .nav-more-menu .nav-fav-label{position:static; width:auto; height:auto; margin:0; overflow:visible; clip:auto; clip-path:none; white-space:nowrap;}
+/* hamburger turns into a cross while the menu is open */
+.nav-toggle svg line{transition:transform .3s ease, opacity .2s ease; transform-box:view-box;}
+.nav-toggle.is-open svg line:nth-child(1){transform-origin:12px 6px; transform:translateY(6px) rotate(45deg);}
+.nav-toggle.is-open svg line:nth-child(2){opacity:0;}
+.nav-toggle.is-open svg line:nth-child(3){transform-origin:12px 18px; transform:translateY(-6px) rotate(-45deg);}
+html.zf-menu-open, html.zf-menu-open body{overflow:hidden;}
+@keyframes zfMenuIn{from{opacity:0}to{opacity:1}}
+@keyframes zfMenuItem{from{opacity:0; transform:translateY(14px)}to{opacity:1; transform:none}}
+@media (prefers-reduced-motion:reduce){ .navlinks.open, .navlinks.open > *{animation:none !important;} }
+@media (max-width:1100px){   /* inside the full-screen menu "More" is a small heading + a 2-column grid (always open) */
+  .nav-more{display:block; width:100%; margin-top:1.8rem;}
+  .nav-more-btn{display:block; width:auto; padding:0; margin:0 0 .3rem; border:0; background:none; pointer-events:none; cursor:default; font-size:.72rem; letter-spacing:.3em; text-transform:uppercase; color:var(--rose); font-family:'Lora',serif; font-weight:600; text-align:start;}
+  body:not(.lang-en) .nav-more-btn{letter-spacing:.04em; text-transform:none; font-size:.9rem;}
+  .nav-more-btn::after, .nav-more-btn::before{display:none !important;}
+  .nav-more-menu, .nav-more:hover .nav-more-menu{position:static; display:grid !important; grid-template-columns:1fr 1fr; column-gap:1.4rem; min-width:0; padding:0; border:0; border-radius:0; box-shadow:none; background:none;}
+  .nav-more-menu::before{display:none;}
+  .navlinks .nav-more-menu a{padding:.85rem 0; font-size:1.05rem; color:var(--text-muted); background:none; border-bottom:1px solid rgba(var(--zf-rgb),0.08);}
+  .navlinks .nav-more-menu a:hover, .navlinks .nav-more-menu a.active{color:var(--gold-soft); background:none;}
+  body.lang-ur .navlinks{direction:rtl; text-align:right;}   /* Urdu menu reads right-to-left */
+}
+
+/* ---- v54: newsletter box — softer borders / no glow (stronger selectors so they win over the box's own injected style) ---- */
+body .zf-nl-box{border:1px solid rgba(var(--zf-rgb),0.12); box-shadow:0 14px 34px rgba(0,0,0,0.18);}
+body .zf-nl-form input[type=email]{border:1px solid rgba(var(--zf-rgb),0.18);}
+body .zf-nl-share{border:1px solid rgba(var(--zf-rgb),0.2);}
