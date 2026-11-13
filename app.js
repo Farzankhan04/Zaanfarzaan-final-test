@@ -505,7 +505,6 @@ document.addEventListener('play', function(e){
    content in place rather than navigating). */
 (function(){
   if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var inkEl = document.createElement('div'); inkEl.id = 'zf-ink'; inkEl.setAttribute('aria-hidden', 'true'); document.body.appendChild(inkEl);
   document.addEventListener('click', function(e){
     if(e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     var a = e.target.closest('a[href]');
@@ -518,18 +517,12 @@ document.addEventListener('play', function(e){
     if(url.origin !== window.location.origin) return;
     if(url.pathname === window.location.pathname && url.hash) return;
     e.preventDefault();
-    /* v56: "siyahi" — ink spreads from the tap point (same colour as the opening splash), then the next page loads */
-    var x = e.clientX, y = e.clientY;
-    if(!x && !y){ var rc = a.getBoundingClientRect(); x = rc.left + rc.width / 2; y = rc.top + rc.height / 2; }
-    var R = Math.ceil(Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y))) + 40;
-    inkEl.style.setProperty('--zf-ink-x', x + 'px'); inkEl.style.setProperty('--zf-ink-y', y + 'px'); inkEl.style.setProperty('--zf-ink-R', R + 'px');
-    inkEl.classList.add('go');
-    window.setTimeout(function(){ window.location.href = url.href; }, 480);
+    document.documentElement.classList.add('zf-transitioning');
+    window.setTimeout(function(){ window.location.href = url.href; }, 200);
   });
   window.addEventListener('pageshow', function(e){
     if(e.persisted){
       document.documentElement.classList.remove('zf-transitioning');
-      inkEl.classList.remove('go');
       var s = document.getElementById('zf-splash');
       if(s && s.parentNode) s.parentNode.removeChild(s);
     }
