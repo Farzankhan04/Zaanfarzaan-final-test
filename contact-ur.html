@@ -34,7 +34,7 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="preload" href="playfair-display-600.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=16">
+<link rel="stylesheet" href="style.css?v=17">
 <link rel="icon" type="image/x-icon" href="favicon.ico?v=3">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=3">
 <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png?v=3">
@@ -77,23 +77,79 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
 
 <main id="main-content">
 <div class="page-header">
-  <div class="tag">Contact</div>
-  <h1 data-en="Contact" data-hi="संपर्क करें" data-ur="رابطہ">رابطہ</h1>
+  <div class="tag" data-hi="ख़त लिखिए" data-en="Write to Me" data-ur="خط لکھیے">خط لکھیے</div>
+  <h1 data-hi="ख़त लिखिए" data-en="Write to Me" data-ur="خط لکھیے">خط لکھیے</h1>
+  <p data-hi="मुशायरे, साथ काम करने, राय देने या बस सलाम कहने के लिए — एक ख़त भेजिए।" data-en="For readings, collaborations, feedback, or simply to say salaam — send me a letter." data-ur="مشاعرے، ساتھ کام کرنے، رائے دینے یا بس سلام کہنے کے لیے — ایک خط بھیجیے۔">مشاعرے، ساتھ کام کرنے، رائے دینے یا بس سلام کہنے کے لیے — ایک خط بھیجیے۔</p>
 </div>
 
-<div class="contact-page">
-  <p data-en="For readings, collaborations, or just to talk poetry — get in touch." data-hi="रीडिंग्स, कोलैबोरेशन या बस शायरी पे बात करने के लिए — सम्पर्क करें।" data-ur="قرأت، تعاون یا محض شاعری پر بات کرنے کے لیے — رابطہ کریں۔">قرأت، تعاون یا محض شاعری پر بات کرنے کے لیے — رابطہ کریں۔</p>
-  <div class="contact-links">
-    <a href="mailto:zaanfarzaan1@gmail.com">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
-      Email
-    </a>
-    <a href="https://instagram.com/zaanfarzaan" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" stroke="none"/></svg>
-      Instagram
-    </a>
-  </div>
+<div class="contact-wrap">
+  <section class="khat" aria-labelledby="khat-title">
+    <div class="khat-postmark" aria-hidden="true"><svg viewBox="0 0 200 100"><defs><path id="pm-path" d="M150,50 m-34,0 a34,34 0 1,1 68,0 a34,34 0 1,1 -68,0"/></defs><circle cx="150" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="150" cy="50" r="27" fill="none" stroke="currentColor" stroke-width="1"/><text font-size="8.6" letter-spacing="2.2" fill="currentColor" font-family="Lora, serif"><textPath href="#pm-path">ZAAN FARZAAN • KHAT • SALAAM •</textPath></text><path d="M2 30c12-8 20 8 32 0s20 8 32 0 20 8 32 0M2 50c12-8 20 8 32 0s20 8 32 0 20 8 32 0M2 70c12-8 20 8 32 0s20 8 32 0 20 8 32 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="khat-stamp" aria-hidden="true"></div>
+    <p class="khat-to" id="khat-title" data-hi="प्रति, ज़ान फ़रज़ान" data-en="To, Zaan Farzaan" data-ur="بخدمت، زان فرزان">بخدمت، زان فرزان</p>
+
+    <form class="khat-form" id="khat-form" action="https://formspree.io/f/xdenerqe" method="POST">
+      <input type="hidden" name="_subject" value="Contact letter — zaanfarzaan.site">
+      <input type="text" name="_gotcha" class="khat-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <fieldset class="khat-reasons">
+        <legend data-hi="किस सिलसिले में?" data-en="What is this about?" data-ur="کس سلسلے میں؟">کس سلسلے میں؟</legend>
+        <label><input type="radio" name="reason" value="Mushaira / Event"><span data-hi="मुशायरा / कार्यक्रम" data-en="Mushaira / Event" data-ur="مشاعرہ / تقریب">مشاعرہ / تقریب</span></label>
+        <label><input type="radio" name="reason" value="Collaboration"><span data-hi="साथ काम" data-en="Collaboration" data-ur="ساتھ کام">ساتھ کام</span></label>
+        <label><input type="radio" name="reason" value="Ebook help"><span data-hi="ईबुक में मदद" data-en="Ebook help" data-ur="ای بک میں مدد">ای بک میں مدد</span></label>
+        <label><input type="radio" name="reason" value="Feedback"><span data-hi="राय" data-en="Feedback" data-ur="رائے">رائے</span></label>
+        <label><input type="radio" name="reason" value="Just salaam" checked><span data-hi="बस सलाम" data-en="Just salaam" data-ur="بس سلام">بس سلام</span></label>
+      </fieldset>
+      <div class="khat-event" id="khat-event" hidden>
+        <div class="form-group"><label for="kh-date" data-hi="तारीख़ (अगर तय हो)" data-en="Date (if fixed)" data-ur="تاریخ (اگر طے ہو)">تاریخ (اگر طے ہو)</label><input type="text" id="kh-date" name="event_date"></div>
+        <div class="form-group"><label for="kh-city" data-hi="शहर" data-en="City" data-ur="شہر">شہر</label><input type="text" id="kh-city" name="event_city"></div>
+      </div>
+      <div class="khat-two">
+        <div class="form-group"><label for="kh-name" data-hi="आपका नाम" data-en="Your name" data-ur="آپ کا نام">آپ کا نام</label><input type="text" id="kh-name" name="name" autocomplete="name"></div>
+        <div class="form-group"><label for="kh-email" data-hi="आपका ईमेल" data-en="Your email" data-ur="آپ کا ای میل">آپ کا ای میل</label><input type="email" id="kh-email" name="email" autocomplete="email" required></div>
+      </div>
+      <p class="khat-help" data-hi="जवाब इसी पते पर आएगा।" data-en="Your reply will come to this address." data-ur="جواب اسی پتے پر آئے گا۔">جواب اسی پتے پر آئے گا۔</p>
+      <div class="form-group khat-lined"><label for="kh-msg" data-hi="आपका ख़त" data-en="Your letter" data-ur="آپ کا خط">آپ کا خط</label><textarea id="kh-msg" name="message" rows="6" required data-hi-placeholder="प्रिय ज़ान फ़रज़ान, …" data-en-placeholder="Dear Zaan Farzaan, …" data-ur-placeholder="محترم زان فرزان، …" placeholder="محترم زان فرزان، …"></textarea></div>
+      <button type="submit" class="khat-send" id="khat-send"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="m3.5 7 8.5 6.3L20.5 7"/></svg><span data-hi="ख़त भेजिए" data-en="Send the letter" data-ur="خط بھیجیے">خط بھیجیے</span></button>
+      <p class="form-note khat-error" id="khat-error" hidden><span data-hi="कुछ गड़बड़ हो गई। दोबारा कोशिश करें, या सीधे ईमेल करें:" data-en="Something went wrong. Please try again, or email directly:" data-ur="کچھ گڑبڑ ہو گئی۔ دوبارہ کوشش کریں، یا سیدھے ای میل کریں:">کچھ گڑبڑ ہو گئی۔ دوبارہ کوشش کریں، یا سیدھے ای میل کریں:</span> <a href="mailto:zaanfarzaan1@gmail.com">zaanfarzaan1@gmail.com</a></p>
+    </form>
+
+    <div class="khat-success" id="khat-success" hidden>
+      <div class="khat-seal" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7.2"/></svg></div>
+      <h2 data-hi="आपका ख़त पहुँच गया" data-en="Your letter has reached" data-ur="آپ کا خط پہنچ گیا">آپ کا خط پہنچ گیا</h2>
+      <p data-hi="शुक्रिया। अगर आपने जवाब चाहा है तो वह आपके ईमेल पर आएगा — इसमें कुछ दिन लग सकते हैं।" data-en="Thank you. If you asked for a reply it will come to your email — it may take a few days." data-ur="شکریہ۔ اگر آپ نے جواب چاہا ہے تو وہ آپ کے ای میل پر آئے گا — اس میں کچھ دن لگ سکتے ہیں۔">شکریہ۔ اگر آپ نے جواب چاہا ہے تو وہ آپ کے ای میل پر آئے گا — اس میں کچھ دن لگ سکتے ہیں۔</p>
+      <button type="button" class="khat-again" id="khat-again" data-hi="एक और ख़त लिखें" data-en="Write another" data-ur="ایک اور خط لکھیں">ایک اور خط لکھیں</button>
+    </div>
+  </section>
+
+  <aside class="khat-side">
+    <h2 class="khat-side-h" data-hi="कोई और तरीक़ा?" data-en="Prefer another way?" data-ur="کوئی اور طریقہ؟">کوئی اور طریقہ؟</h2>
+    <div class="khat-channels" id="khat-channels">
+      <div class="khat-ch">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="m3.5 7 8.5 6.3L20.5 7"/></svg>
+        <div class="khat-ch-t"><b>Email</b><span>zaanfarzaan1@gmail.com</span></div>
+        <button type="button" class="khat-copy" id="khat-copy" data-email="zaanfarzaan1@gmail.com" data-hi="पता कॉपी करें" data-en="Copy address" data-ur="پتہ کاپی کریں">پتہ کاپی کریں</button>
+      </div>
+      <a class="khat-ch" href="https://instagram.com/zaanfarzaan" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="3.9"/><circle cx="17.2" cy="6.8" r="0.9" fill="currentColor" stroke="none"/></svg>
+        <div class="khat-ch-t"><b>Instagram</b><span data-hi="इंस्टाग्राम पर संदेश" data-en="Message on Instagram" data-ur="انسٹاگرام پر پیغام">انسٹاگرام پر پیغام</span></div>
+        <i class="khat-go" aria-hidden="true">↗</i>
+      </a>
+      <a class="khat-ch" href="profiles.html" data-hi-href="profiles.html" data-en-href="profiles-en.html" data-ur-href="profiles-ur.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 19.5c1-3.6 3.8-5.4 7.2-5.4s6.2 1.8 7.2 5.4"/></svg>
+        <div class="khat-ch-t"><b>Rekhta</b><span data-hi="रेख़्ता और दूसरी जगह" data-en="Rekhta and elsewhere" data-ur="ریختہ اور دوسری جگہیں">ریختہ اور دوسری جگہیں</span></div>
+        <i class="khat-go" aria-hidden="true">→</i>
+      </a>
+    </div>
+    <p class="khat-note" data-hi="जवाब आने में कुछ दिन लग सकते हैं — आपके सब्र का शुक्रिया।" data-en="Replies can take a few days — thank you for your patience." data-ur="جواب آنے میں کچھ دن لگ سکتے ہیں — آپ کے صبر کا شکریہ۔">جواب آنے میں کچھ دن لگ سکتے ہیں — آپ کے صبر کا شکریہ۔</p>
+  </aside>
 </div>
+
+<section class="khat-faq">
+  <h2 class="khat-faq-h" data-hi="लिखने से पहले" data-en="Before you write" data-ur="لکھنے سے پہلے">لکھنے سے پہلے</h2>
+  <details class="khat-q"><summary data-hi="क्या मैं आपकी शायरी साझा या इस्तेमाल कर सकता/सकती हूँ?" data-en="Can I share or use your poetry?" data-ur="کیا میں آپ کی شاعری شیئر یا استعمال کر سکتا/سکتی ہوں؟">کیا میں آپ کی شاعری شیئر یا استعمال کر سکتا/سکتی ہوں؟</summary><p data-hi="ज़ान फ़रज़ान के नाम और इस वेबसाइट के लिंक के साथ कोई भी शेर साझा करना बिल्कुल ठीक है। पूरी ग़ज़ल छपवाने, मंच पर या वीडियो में पढ़ने, व्यावसायिक इस्तेमाल या साझा करने से आगे की किसी भी बात के लिए पहले मुझे लिखिए।" data-en="Sharing a sher with credit to Zaan Farzaan and a link to this website is welcome. For printing a whole ghazal, reciting it on stage or in a video, commercial use, or anything beyond sharing, please write to me first." data-ur="زان فرزان کے نام اور اس ویب سائٹ کے لنک کے ساتھ کوئی بھی شعر شیئر کرنا بالکل ٹھیک ہے۔ پوری غزل چھپوانے، اسٹیج یا ویڈیو میں پڑھنے، تجارتی استعمال یا شیئر کرنے سے آگے کی کسی بھی بات کے لیے پہلے مجھے لکھیے۔">زان فرزان کے نام اور اس ویب سائٹ کے لنک کے ساتھ کوئی بھی شعر شیئر کرنا بالکل ٹھیک ہے۔ پوری غزل چھپوانے، اسٹیج یا ویڈیو میں پڑھنے، تجارتی استعمال یا شیئر کرنے سے آگے کی کسی بھی بات کے لیے پہلے مجھے لکھیے۔</p></details>
+  <details class="khat-q"><summary data-hi="मुशायरे या किसी कार्यक्रम में बुलाना है।" data-en="I would like to invite you to a mushaira or event." data-ur="مشاعرے یا کسی تقریب میں بلانا ہے۔">مشاعرے یا کسی تقریب میں بلانا ہے۔</summary><p data-hi="ऊपर 'मुशायरा / कार्यक्रम' चुनिए और तारीख़, शहर और महफ़िल का ब्योरा लिखिए। इससे मैं ठीक से जवाब दे पाऊँगा।" data-en="Choose 'Mushaira / Event' above and mention the date, the city and the kind of gathering. It helps me reply properly." data-ur="اوپر 'مشاعرہ / تقریب' چنیے اور تاریخ، شہر اور محفل کی تفصیل لکھیے۔ اس سے میں ٹھیک سے جواب دے سکوں گا۔">اوپر 'مشاعرہ / تقریب' چنیے اور تاریخ، شہر اور محفل کی تفصیل لکھیے۔ اس سے میں ٹھیک سے جواب دے سکوں گا۔</p></details>
+  <details class="khat-q"><summary data-hi="ईबुक का पैसा दे दिया पर किताब नहीं मिली।" data-en="I paid for the ebook but did not get it." data-ur="ای بک کے پیسے دے دیے مگر کتاب نہیں ملی۔">ای بک کے پیسے دے دیے مگر کتاب نہیں ملی۔</summary><p data-hi="'ईबुक में मदद' चुनिए और भुगतान का स्क्रीनशॉट या UTR नंबर के साथ वह ईमेल पता भेजिए जिस पर किताब चाहिए।" data-en="Choose 'Ebook help' and send the payment screenshot or UTR number along with the email address you want the book on." data-ur="'ای بک میں مدد' چنیے اور ادائیگی کا اسکرین شاٹ یا UTR نمبر کے ساتھ وہ ای میل پتہ بھیجیے جس پر کتاب چاہیے۔">'ای بک میں مدد' چنیے اور ادائیگی کا اسکرین شاٹ یا UTR نمبر کے ساتھ وہ ای میل پتہ بھیجیے جس پر کتاب چاہیے۔</p></details>
+</section>
 </main>
 
 <footer class="site-footer" lang="en" dir="ltr">
@@ -108,6 +164,7 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
 </footer>
 
 <script src="i18n.js?v=4"></script>
-<script src="app.js?v=6"></script>
+<script src="app.js?v=7"></script>
+<script src="contact.js?v=1"></script>
 </body>
 </html>
