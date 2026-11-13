@@ -94,6 +94,7 @@ window.ZF_NEWSLETTER_USERNAME = 'Zaanfarzaan';
     document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && links.classList.contains('open')) setMenu(false); });
     window.addEventListener('resize', function(){ if(window.innerWidth > 1100) setMenu(false); else sizeMenu(); });
     window.addEventListener('pageshow', function(){ if(links.classList.contains('open')) setMenu(false); });
+    document.addEventListener('touchmove', function(e){ if(links.classList.contains('open') && !links.contains(e.target)) e.preventDefault(); }, {passive:false});
   }
   /* Sher Wall link — added here so none of the 50+ pages has to be edited. */
   (function(){
@@ -504,6 +505,7 @@ document.addEventListener('play', function(e){
    content in place rather than navigating). */
 (function(){
   if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var inkEl = document.createElement('div'); inkEl.id = 'zf-ink'; inkEl.setAttribute('aria-hidden', 'true'); document.body.appendChild(inkEl);
   document.addEventListener('click', function(e){
     if(e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     var a = e.target.closest('a[href]');
@@ -516,16 +518,57 @@ document.addEventListener('play', function(e){
     if(url.origin !== window.location.origin) return;
     if(url.pathname === window.location.pathname && url.hash) return;
     e.preventDefault();
-    document.documentElement.classList.add('zf-transitioning');
-    window.setTimeout(function(){ window.location.href = url.href; }, 200);
+    /* v56: "siyahi" — ink spreads from the tap point (same colour as the opening splash), then the next page loads */
+    var x = e.clientX, y = e.clientY;
+    if(!x && !y){ var rc = a.getBoundingClientRect(); x = rc.left + rc.width / 2; y = rc.top + rc.height / 2; }
+    var R = Math.ceil(Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y))) + 40;
+    inkEl.style.setProperty('--zf-ink-x', x + 'px'); inkEl.style.setProperty('--zf-ink-y', y + 'px'); inkEl.style.setProperty('--zf-ink-R', R + 'px');
+    inkEl.classList.add('go');
+    window.setTimeout(function(){ window.location.href = url.href; }, 480);
   });
   window.addEventListener('pageshow', function(e){
     if(e.persisted){
       document.documentElement.classList.remove('zf-transitioning');
+      inkEl.classList.remove('go');
       var s = document.getElementById('zf-splash');
       if(s && s.parentNode) s.parentNode.removeChild(s);
     }
   });
+})();
+
+
+/* v56: APP-STYLE BOTTOM BAR (phones) — Home / Ghazals / Nazms / Audio. Built from the header links so hrefs and languages always match. */
+(function(){
+  if(/admin-comments/.test(location.pathname)) return;
+  var nl = document.getElementById('nav-links'); if(!nl) return;
+  var S = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">';
+  var ICON = {
+    home:    S + '<path class="f" d="M4 11.4 12 4.2l8 7.2V19a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19z"/><path class="cut" d="M10 20.5v-5h4v5"/></svg>',
+    ghazals: S + '<path class="f" d="M12 6.6C10.3 5.4 8 5.1 4.5 5.1v12.4c3.5 0 5.8.4 7.5 1.7 1.7-1.3 4-1.7 7.5-1.7V5.1c-3.5 0-5.8.3-7.5 1.5z"/><path class="cut" d="M12 6.6v12.6"/></svg>',
+    nazms:   S + '<path class="f" d="M19.6 4.4c-6.6-.5-11.1 3-11.8 9.3L6 19.6l5.4-1.8c5.2-1.3 8.2-5.7 8.2-13.4z"/><path class="cut" d="M6 19.6l6.6-7.7"/></svg>',
+    audios:  S + '<path d="M4.5 14v-2a7.5 7.5 0 0 1 15 0v2"/><rect class="f" x="3.4" y="13.4" width="4.2" height="6.8" rx="1.7"/><rect class="f" x="16.4" y="13.4" width="4.2" height="6.8" rx="1.7"/></svg>'
+  };
+  var DICT = { home:{hi:'होम',en:'Home',ur:'ہوم'}, ghazals:{hi:'ग़ज़लें',en:'Ghazals',ur:'غزلیں'}, nazms:{hi:'नज़्में',en:'Nazms',ur:'نظمیں'}, audios:{hi:'ऑडियो',en:'Audio',ur:'آڈیو'} };
+  var bar = document.createElement('div'); bar.className = 'zf-bn'; bar.setAttribute('role', 'navigation'); bar.setAttribute('aria-label', 'Primary');
+  var cur = document.body.getAttribute('data-page'), n = 0;
+  ['home','ghazals','nazms','audios'].forEach(function(p){
+    var src = nl.querySelector('a[data-page="' + p + '"]'); if(!src) return;
+    var a = document.createElement('a'); a.href = src.getAttribute('href'); a.setAttribute('data-page', p);
+    ['data-hi-href','data-en-href','data-ur-href'].forEach(function(k){ if(src.hasAttribute(k)) a.setAttribute(k, src.getAttribute(k)); });
+    a.innerHTML = ICON[p] + '<span></span>';
+    var sp = a.querySelector('span');
+    ['hi','en','ur'].forEach(function(l){ sp.setAttribute('data-' + l, src.getAttribute('data-' + l) || DICT[p][l]); });
+    sp.textContent = (src.textContent || '').trim() || DICT[p].en;
+    if(p === cur){ a.classList.add('active'); a.setAttribute('aria-current', 'page'); }
+    bar.appendChild(a); n++;
+  });
+  if(!n) return;
+  document.body.appendChild(bar);
+  document.documentElement.classList.add('zf-has-bn');
+  /* hide the bar while the on-screen keyboard is open (comment / email boxes) */
+  function isText(t){ return t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName) && !/^(range|checkbox|radio|button|submit)$/.test(t.type || ''); }
+  document.addEventListener('focusin', function(e){ if(isText(e.target)) document.documentElement.classList.add('zf-kb'); });
+  document.addEventListener('focusout', function(){ setTimeout(function(){ if(!isText(document.activeElement)) document.documentElement.classList.remove('zf-kb'); }, 80); });
 })();
 
 /* NAV CARDS — gentle tilt toward the cursor, desktop/mouse only. */
@@ -927,7 +970,7 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
   function toast(t){
     var old = document.getElementById('zf-ig-toast'); if(old) old.remove();
     var d = document.createElement('div'); d.id = 'zf-ig-toast'; d.textContent = t; d.setAttribute('role', 'status');
-    d.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:10001;max-width:90vw;padding:.7rem 1.1rem;border-radius:10px;background:#f2f1ec;color:#151515;font-size:.95rem;line-height:1.5;box-shadow:0 8px 24px rgba(0,0,0,.4);text-align:center';
+    d.style.cssText = 'position:fixed;left:50%;bottom:calc(24px + var(--zf-bn-h,0px));transform:translateX(-50%);z-index:10001;max-width:90vw;padding:.7rem 1.1rem;border-radius:10px;background:#f2f1ec;color:#151515;font-size:.95rem;line-height:1.5;box-shadow:0 8px 24px rgba(0,0,0,.4);text-align:center';
     document.body.appendChild(d); setTimeout(function(){ if(d.parentNode) d.remove(); }, 3500);
   }
   function copy(text){
@@ -992,7 +1035,7 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
     };
     function L(){ var l = window.ZF_LANG; return (l === 'en' || l === 'ur') ? l : 'hi'; }
     var css = document.createElement('style');
-    css.textContent = '.zf-install{position:fixed;left:12px;right:12px;bottom:12px;z-index:9000;max-width:520px;margin:0 auto;display:flex;align-items:center;gap:.8rem;padding:.8rem .9rem;border-radius:12px;background:#1d1d1d;color:#f2f1ec;border:1px solid rgba(220,220,214,.3);box-shadow:0 10px 30px rgba(0,0,0,.5);font-size:.92rem;line-height:1.5}' +
+    css.textContent = '.zf-install{position:fixed;left:12px;right:12px;bottom:calc(12px + var(--zf-bn-h,0px));z-index:9000;max-width:520px;margin:0 auto;display:flex;align-items:center;gap:.8rem;padding:.8rem .9rem;border-radius:12px;background:#1d1d1d;color:#f2f1ec;border:1px solid rgba(220,220,214,.3);box-shadow:0 10px 30px rgba(0,0,0,.5);font-size:.92rem;line-height:1.5}' +
       'body.zf-bar-on .zf-install{bottom:92px}.zf-install img{width:40px;height:40px;border-radius:9px;flex:none}.zf-install .zf-i-t{flex:1;min-width:0}.zf-install strong{display:block;font-size:.98rem}' +
       '.zf-install small{display:block;color:#9c9c95;font-size:.78rem}.zf-install button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid rgba(220,220,214,.35);background:transparent;color:#f2f1ec;min-height:38px;padding:0 .9rem;flex:none}' +
       '.zf-install .zf-i-go{background:#f2f1ec;color:#151515;border-color:#f2f1ec;font-weight:700}.zf-install .zf-i-x{padding:0;width:34px;font-size:1.2rem;line-height:1}';
@@ -1060,7 +1103,7 @@ window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र',
       var t = TX[L()] || TX.hi;
       el = document.createElement('div');
       el.setAttribute('role','status');
-      el.style.cssText = 'position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:99999;display:flex;align-items:center;gap:.7rem;padding:.55rem .6rem .55rem 1rem;border-radius:999px;background:#1b1b1b;color:#f2f1ec;border:1px solid rgba(220,220,214,.35);box-shadow:0 8px 24px rgba(0,0,0,.5);font-size:.88rem;max-width:92vw';
+      el.style.cssText = 'position:fixed;left:50%;bottom:calc(14px + var(--zf-bn-h,0px));transform:translateX(-50%);z-index:99999;display:flex;align-items:center;gap:.7rem;padding:.55rem .6rem .55rem 1rem;border-radius:999px;background:#1b1b1b;color:#f2f1ec;border:1px solid rgba(220,220,214,.35);box-shadow:0 8px 24px rgba(0,0,0,.5);font-size:.88rem;max-width:92vw';
       var s = document.createElement('span'); s.textContent = t.m; s.style.whiteSpace = 'nowrap';
       var a = document.createElement('a'); a.href = '/offline.html'; a.textContent = t.b;
       a.style.cssText = 'background:#f2f1ec;color:#151515;text-decoration:none;font-weight:600;padding:.4rem .9rem;border-radius:999px;white-space:nowrap';

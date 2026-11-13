@@ -41,7 +41,7 @@
 .zf-eq.paused i{animation-play-state:paused; transform:scaleY(.35);}\
 @keyframes zfEq{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}\
 @media (prefers-reduced-motion:reduce){.zf-eq i{animation:none; transform:scaleY(.6);}}\
-.zf-bar{position:fixed; left:0; right:0; bottom:0; z-index:10000; display:none; align-items:center; gap:.8rem; padding:.55rem .9rem .75rem; background:#1b1b1b; color:#f2f1ec; border-top:1px solid rgba(220,220,214,.3); box-shadow:0 -8px 24px rgba(0,0,0,.45);}\
+.zf-bar{position:fixed; left:0; right:0; bottom:var(--zf-bn-h,0px); z-index:10000; display:none; align-items:center; gap:.8rem; padding:.55rem .9rem .75rem; background:#1b1b1b; color:#f2f1ec; border-top:1px solid rgba(220,220,214,.3); box-shadow:0 -8px 24px rgba(0,0,0,.45);}\
 .zf-bar.on{display:flex;}\
 .zf-bar .zf-eq{color:var(--gold-soft,#dcdcd6); height:18px; flex:none;}\
 .zf-bar-text{flex:1; min-width:0; display:flex; flex-direction:column; line-height:1.35;}\
@@ -83,7 +83,7 @@ html[dir="rtl"] .audio-track .audio-track-dl,html[dir="rtl"] .audio-track .audio
   /* ---------- per-card Share button: shares the link of that audio's own page (ghazal-8.html / nazm-3.html, which has the player under it) ---------- */
   var toastEl = null, toastT = null;
   function toast(msg){
-    if(!toastEl){ toastEl = document.createElement('div'); toastEl.style.cssText = 'position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:10100;background:#f2f1ec;color:#151515;padding:.55rem 1.1rem;border-radius:999px;font-size:.9rem;box-shadow:0 6px 20px rgba(0,0,0,.4);pointer-events:none;transition:opacity .2s'; document.body.appendChild(toastEl); }
+    if(!toastEl){ toastEl = document.createElement('div'); toastEl.style.cssText = 'position:fixed;left:50%;bottom:calc(90px + var(--zf-bn-h,0px));transform:translateX(-50%);z-index:10100;background:#f2f1ec;color:#151515;padding:.55rem 1.1rem;border-radius:999px;font-size:.9rem;box-shadow:0 6px 20px rgba(0,0,0,.4);pointer-events:none;transition:opacity .2s'; document.body.appendChild(toastEl); }
     toastEl.textContent = msg; toastEl.style.opacity = '1'; clearTimeout(toastT); toastT = setTimeout(function(){ toastEl.style.opacity = '0'; }, 1800);
   }
   function copyText(txt){
