@@ -8,7 +8,7 @@
 
   var lang = function(){ var l = window.ZF_LANG; return (l === 'en' || l === 'ur') ? l : 'hi'; };
   var MSG = {
-    sending: {hi:'भेज रहा हूँ…', en:'Sending…', ur:'بھیج رہا ہوں…'},
+    sending: {hi:'भेजा जा रहा है…', en:'Sending…', ur:'بھیجا جا رہا ہے…'},
     copied:  {hi:'कॉपी हो गया ✓', en:'Copied ✓', ur:'کاپی ہو گیا ✓'},
     wa:      {hi:'व्हाट्सऐप पर संदेश', en:'Message on WhatsApp', ur:'واٹس ایپ پر پیغام'},
     waText:  {hi:'सलाम ज़ान फ़रज़ान, आपकी वेबसाइट से लिख रहा/रही हूँ।', en:'Salaam Zaan Farzaan, I am writing from your website.', ur:'سلام زان فرزان، آپ کی ویب سائٹ سے لکھ رہا/رہی ہوں۔'}

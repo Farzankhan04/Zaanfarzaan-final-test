@@ -154,7 +154,9 @@
   function renderGreet(){
     var g = document.getElementById('zf-greet'); if(!g) return;
     var h = new Date().getHours(), k = h >= 5 && h < 12 ? 'morning' : (h >= 12 && h < 17 ? 'noon' : (h >= 17 && h < 21 ? 'evening' : 'night'));
-    g.textContent = tr(GREET[k][0], GREET[k][1], GREET[k][2]);
+    g.textContent = '';
+    var gt = document.createElement('span'); gt.className = 'zf-g-t'; gt.textContent = tr(GREET[k][0], GREET[k][1], GREET[k][2]);
+    g.appendChild(gt);
     g.hidden = false;
   }
 
@@ -304,7 +306,7 @@
     var box = document.getElementById('zf-badges');
     if(!box){   /* v53: badges now live on the Explore page — home keeps only the little streak chip next to the greeting */
       var g0 = document.getElementById('zf-greet');
-      if(g0){ var st0 = streak(); if(st0.now >= 2 && g0.textContent.indexOf('🔥') === -1) g0.textContent += '  🔥' + st0.now; }
+      if(g0){ var st0 = streak(); if(st0.now >= 2 && !g0.querySelector('.zf-g-s')){ var gs0 = document.createElement('span'); gs0.className = 'zf-g-s'; gs0.textContent = '🔥 ' + st0.now; g0.appendChild(gs0); } }
       return;
     }
     var st = streak(), s = stats(), list = badgeList(s), got = 0;
@@ -336,8 +338,8 @@
           'اپنا احساس یا خیال لکھیے — جسے آپ شعر میں دیکھنا چاہتے ہیں۔ ہو سکتا ہے اگلی غزل یا نظم اسی سے بنے۔'],
     ta:  ['यहाँ अपना ख़याल लिखिए…', 'Write your thought here…', 'یہاں اپنا خیال لکھیے…'],
     nm:  ['आपका नाम (ज़रूरी नहीं)', 'Your name (optional)', 'آپ کا نام (ضروری نہیں)'],
-    go:  ['ख़याल भेजें', 'Send my thought', 'خیال بھیجیں'],
-    ok:  ['शुक्रिया! आपका ख़याल पहुँच गया 🙏', 'Thank you! Your thought has reached me 🙏', 'شکریہ! آپ کا خیال پہنچ گیا 🙏'],
+    go:  ['ख़याल भेजें', 'Send your thought', 'خیال بھیجیں'],
+    ok:  ['शुक्रिया! आपका ख़याल ज़ान फ़रज़ान तक पहुँच गया 🙏', 'Thank you! Your thought has reached Zaan Farzaan 🙏', 'شکریہ! آپ کا خیال زان فرزان تک پہنچ گیا 🙏'],
     bad: ['नहीं जा सका, थोड़ी देर बाद फिर कोशिश कीजिए।', 'Could not send, please try again in a little while.', 'نہیں جا سکا، تھوڑی دیر بعد دوبارہ کوشش کیجیے۔'],
     short: ['कृपया कम से कम कुछ शब्द लिखिए।', 'Please write at least a few words.', 'براہ کرم کم از کم چند الفاظ لکھیے۔'],
     note:['आपका ख़याल सिर्फ़ शायर को दिखता है, सबके सामने नहीं छपता।', 'Your thought is seen only by the poet; it is not shown publicly.', 'آپ کا خیال صرف شاعر کو نظر آتا ہے، سب کے سامنے نہیں چھپتا۔']

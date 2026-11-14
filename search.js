@@ -24,7 +24,7 @@
     { title:{hi:'परिचय', en:'About', ur:'تعارف'}, url:{hi:'about.html', en:'about-en.html', ur:'about-ur.html'}, kw:'about parichay' },
     { title:{hi:'संपर्क करें', en:'Contact', ur:'رابطہ'}, url:{hi:'contact.html', en:'contact-en.html', ur:'contact-ur.html'}, kw:'contact email instagram sampark' },
     { title:{hi:'एहसासात — ई-बुक', en:'Ehsasaat — eBook', ur:'احساسات — ای بک'}, url:{hi:'ebook.html', en:'ebook-en.html', ur:'ebook-ur.html'}, kw:'ebook book kitab buy khareed ehsasaat' },
-    { title:{hi:'मेरी पसंद', en:'My Favourites', ur:'میری پسند'}, url:{hi:'favorites.html', en:'favorites-en.html', ur:'favorites-ur.html'}, kw:'favourites favorites pasand saved liked' },
+    { title:{hi:'आपकी पसंद', en:'Your Favourites', ur:'آپ کی پسند'}, url:{hi:'favorites.html', en:'favorites-en.html', ur:'favorites-ur.html'}, kw:'favourites favorites pasand saved liked' },
     { title:{hi:'फ़ीडबैक', en:'Feedback', ur:'فیڈبیک'}, url:{hi:'feedback.html', en:'feedback-en.html', ur:'feedback-ur.html'}, kw:'feedback suggestion sujhav' },
     { title:{hi:'अन्य प्रोफ़ाइल', en:'Other Profiles', ur:'دیگر پروفائل'}, url:{hi:'profiles.html', en:'profiles-en.html', ur:'profiles-ur.html'}, kw:'profiles rekhta poetistic' },
     { title:{hi:'नज़राना पेश करें', en:'Nazrana', ur:'نذرانہ'}, url:{hi:'support.html', en:'support-en.html', ur:'support-ur.html'}, kw:'nazrana donate support upi payment daan' },

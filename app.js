@@ -668,8 +668,8 @@ document.addEventListener('play', function(e){
     btn:   {hi:"सब्सक्राइब करें", en:"Subscribe", ur:"سبسکرائب کریں"},
     note:  {hi:"आपका ईमेल सिर्फ़ नई रचनाओं और ऑडियो की सूचना भेजने के लिए इस्तेमाल होगा। जब चाहें अनसब्सक्राइब कर सकते हैं।", en:"Your email is used only to tell you about new poems and audios. Unsubscribe any time.", ur:"آپ کا ای میل صرف نئی تخلیقات اور آڈیو کی اطلاع بھیجنے کے لیے استعمال ہوگا۔ جب چاہیں ان سبسکرائب کر سکتے ہیں۔"},
     share: {hi:"WhatsApp पर शेयर करें", en:"Share on WhatsApp", ur:"WhatsApp پر شیئر کریں"},
-    msg:   {hi:"नमस्ते! मेरी नई ग़ज़लें, नज़्में और ऑडियो अब सीधे आपके ईमेल पर भी। जैसे ही कुछ नया आए, सबसे पहले आपको मिलेगा। यहाँ से सब्सक्राइब करें:", en:"Hello! My new ghazals, nazms and audios now also reach you directly by email. As soon as something new is out, you get it first. Subscribe here:", ur:"السلام علیکم! میری نئی غزلیں، نظمیں اور آڈیو اب سیدھے آپ کے ای میل پر بھی۔ جیسے ہی کچھ نیا آئے، سب سے پہلے آپ کو ملے گا۔ یہاں سے سبسکرائب کریں:"},
-    thanks:{hi:"शुक्रिया! पुष्टि के लिए अपने ईमेल में भेजे गए लिंक पर क्लिक कर दें।", en:"Thank you! Please click the link we just emailed you to confirm.", ur:"شکریہ! تصدیق کے لیے اپنے ای میل میں بھیجے گئے لنک پر کلک کر دیں۔"}
+    msg:   {hi:"नमस्ते! ज़ान फ़रज़ान की नई ग़ज़लें, नज़्में और ऑडियो अब सीधे आपके ईमेल पर भी। जैसे ही कुछ नया आए, सबसे पहले आपको मिलेगा। यहाँ से सब्सक्राइब करें:", en:"Hello! Zaan Farzaan’s new ghazals, nazms and audios now also reach you directly by email. As soon as something new is out, you get it first. Subscribe here:", ur:"السلام علیکم! زان فرزان کی نئی غزلیں، نظمیں اور آڈیو اب سیدھے آپ کے ای میل پر بھی۔ جیسے ہی کچھ نیا آئے، سب سے پہلے آپ کو ملے گا۔ یہاں سے سبسکرائب کریں:"},
+    thanks:{hi:"शुक्रिया! पुष्टि के लिए अपने ईमेल में भेजे गए लिंक पर क्लिक कर दें।", en:"Thank you! Please click the link that was just emailed to you to confirm.", ur:"شکریہ! تصدیق کے لیے اپنے ای میل میں بھیجے گئے لنک پر کلک کر دیں۔"}
   };
   function d(k){ return 'data-en="'+T[k].en+'" data-ur="'+T[k].ur+'"'; }
 
