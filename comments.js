@@ -90,6 +90,9 @@
   function fmtDate(iso){
     try{ return new Date(iso).toLocaleDateString('en-IN', {day:'numeric', month:'short', year:'numeric'}); }catch(e){ return ''; }
   }
+  var NAME_KEY = 'zf-cname';
+  function savedName(){ try{ return localStorage.getItem(NAME_KEY) || ''; }catch(e){ return ''; } }
+  function saveName(n){ try{ if(n) localStorage.setItem(NAME_KEY, n); else localStorage.removeItem(NAME_KEY); }catch(e){} }
   function build(key, withHeading){
     var sec = document.createElement('section'); sec.className = 'zf-comments'; sec.setAttribute('data-key', key);
     sec.innerHTML =
@@ -108,6 +111,12 @@
       '</div>';
     var listEl = sec.querySelector('.zf-cm-list'), form = sec.querySelector('form'), errEl = sec.querySelector('.zf-cm-err'),
         thanks = sec.querySelector('.zf-cm-thanks'), btn = sec.querySelector('button[type=submit]');
+
+    /* v61: remember the commenter's name in this browser (localStorage — no login, nothing sent anywhere) and pre-fill it next time */
+    form.name.value = savedName();
+    var nameTouched = false;
+    form.name.addEventListener('input', function(){ nameTouched = true; });
+    form.name.addEventListener('focus', function(){ if(!nameTouched && !form.name.value){ var sv = savedName(); if(sv) form.name.value = sv; } });
 
     function render(rows){
       listEl.innerHTML = '';
@@ -138,7 +147,8 @@
       if(body.length < 2){ showErr('short'); return; }
       btn.disabled = true; btn.textContent = tx('sending');
       postComment(key, name, body).then(function(){
-                form.hidden = true; thanks.hidden = false;
+        saveName(form.name.value.trim().slice(0, 60));   // empty = the reader chose to be anonymous, so forget the old name
+        form.hidden = true; thanks.hidden = false;
       }).catch(function(e){
         btn.disabled = false; btn.textContent = tx('send'); showErr('err');
       });
