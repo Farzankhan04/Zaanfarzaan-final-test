@@ -723,7 +723,13 @@ document.addEventListener('play', function(e){
      otherwise it stays in the default Hindi even when English/Urdu is selected. */
   function applyNl(){
     var L = (window.ZF_LANG === 'en' || window.ZF_LANG === 'ur') ? window.ZF_LANG : 'hi';
-    Array.prototype.forEach.call(sec.querySelectorAll('[data-hi]'), function(el){ var v = el.getAttribute('data-' + L); if(v !== null) el.innerHTML = v; });
+    /* same rule as i18n.js: the markup is written in Hindi, so remember it as data-hi first, then pick the language */
+    Array.prototype.forEach.call(sec.querySelectorAll('[data-en]'), function(el){
+      if(el.querySelector('[data-en]')) return;
+      if(el.getAttribute('data-hi') === null) el.setAttribute('data-hi', el.innerHTML);
+      var v = (L === 'en') ? el.getAttribute('data-en') : ((L === 'ur' && el.getAttribute('data-ur') !== null) ? el.getAttribute('data-ur') : el.getAttribute('data-hi'));
+      if(v !== null) el.innerHTML = v;
+    });
     var inp = sec.querySelector('input[type=email]');
     if(inp){ var ph = T.ph[L] || T.ph.hi; inp.setAttribute('placeholder', ph); inp.setAttribute('aria-label', ph); }
   }

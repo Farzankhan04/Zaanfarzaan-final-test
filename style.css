@@ -1902,3 +1902,51 @@ body.lang-ur .hero h1{padding-top:.65em; padding-bottom:1em; margin-top:-.65em; 
 .zf-greet .zf-g-s{unicode-bidi:isolate; padding-inline-start:.5rem; border-inline-start:1px solid rgba(var(--zf-rgb),.3); font-variant-numeric:tabular-nums;}
 body.lang-ur .hero .zf-greet{direction:rtl;}
 body.lang-ur .zf-greet .zf-g-t{font-size:.9rem; line-height:1.6;}
+
+/* =====================================================================
+   v62 — AUDIO page: record-disc cards with a waveform player (audio-skin.js)
+   ===================================================================== */
+html body .audio-track, html[data-theme="light"] body .audio-track{
+  position:relative; border-radius:6px; padding:1.35rem 1.3rem 1.15rem; margin-bottom:1.4rem; color:#f2f1ec;
+  background:linear-gradient(165deg, #262623 0%, #171715 100%);
+  border:1px solid rgba(255,255,255,0.1);
+  box-shadow:0 2px 4px rgba(0,0,0,0.25), 0 26px 42px -24px rgba(0,0,0,0.65);
+  outline:1px solid rgba(255,255,255,0.06); outline-offset:-6px;
+  transition:box-shadow .4s ease, border-color .4s ease;
+}
+html body .audio-track::before{background:linear-gradient(90deg, transparent, #c9ad6a 30%, #ecd9a2 50%, #c9ad6a 70%, transparent); opacity:.8; left:16px; right:16px; top:-1px; height:2px;}
+html body .audio-track.zf-on, html body .audio-track.is-playing{border-color:rgba(216,189,124,0.55); box-shadow:0 0 0 1px rgba(216,189,124,0.25), 0 2px 4px rgba(0,0,0,0.25), 0 30px 50px -22px rgba(216,189,124,0.28);}
+.audio-track h3{color:#f4f3ee;}
+.audio-track .audio-track-no{color:#cdb77f;}
+.audio-track .audio-credit{color:#b4b4ad;}
+.zf-head{display:flex; align-items:center; gap:1rem; margin-bottom:1.1rem;}
+.zf-head .audio-track-top{margin:0; flex:1; min-width:0;}
+.zf-disc{position:relative; flex:none; width:72px; height:72px; border-radius:50%; background-size:cover; background-position:center;
+  box-shadow:0 0 0 3px #0f0f0e, 0 0 0 4px rgba(216,189,124,0.6), 0 12px 22px -8px rgba(0,0,0,0.85);}
+.zf-disc::before{content:""; position:absolute; inset:0; border-radius:50%; background:repeating-radial-gradient(circle at center, transparent 0 3px, rgba(0,0,0,0.2) 3px 4px);}
+.zf-disc::after{content:""; position:absolute; left:50%; top:50%; width:15px; height:15px; margin:-7.5px 0 0 -7.5px; border-radius:50%; background:#141412; box-shadow:0 0 0 2px rgba(216,189,124,0.75);}
+.audio-track.zf-on .zf-disc{animation:zfSpin 16s linear infinite;}
+@keyframes zfSpin{to{transform:rotate(360deg)}}
+
+.zf-pl{display:grid; grid-template-columns:auto minmax(0,1fr); grid-template-areas:"play wave" ". meta"; gap:.55rem 1rem; align-items:center; direction:ltr; margin-bottom:.4rem;}
+.zf-play{grid-area:play; width:56px; height:56px; border-radius:50%; border:0; cursor:pointer; display:grid; place-items:center; color:#17150f; background:linear-gradient(160deg, #ecd9a2, #cdb06a);
+  box-shadow:0 10px 20px -8px rgba(216,189,124,0.55), inset 0 1px 0 rgba(255,255,255,0.5); transition:transform .15s ease, box-shadow .25s;}
+.zf-play:active{transform:scale(0.93);}
+.zf-play svg{width:22px; height:22px; fill:currentColor;}
+.zf-play .i-play{margin-left:2px;}
+.zf-play .i-pause{display:none;}
+.zf-pl.playing .zf-play .i-play{display:none;} .zf-pl.playing .zf-play .i-pause{display:block;}
+.zf-wave{grid-area:wave; display:flex; align-items:center; gap:2px; height:56px; cursor:pointer; touch-action:none; user-select:none; -webkit-user-select:none; border-radius:4px;}
+.zf-wave i{flex:1; min-width:2px; height:var(--h); border-radius:2px; background:rgba(255,255,255,0.2); transition:background .15s ease;}
+.zf-wave i.on{background:#d8bd7c;}
+.zf-wave:focus-visible{outline:2px solid #d8bd7c; outline-offset:3px;}
+.zf-meta{grid-area:meta; display:flex; align-items:center; justify-content:space-between; gap:.6rem; color:#b4b4ad; font-size:.8rem; font-variant-numeric:tabular-nums;}
+.zf-time b{color:#f2f1ec; font-weight:600;}
+.zf-extra{display:inline-flex; gap:.4rem;}
+.zf-skip, .zf-speed{background:none; border:1px solid rgba(255,255,255,0.24); color:#e4e3dc; border-radius:999px; padding:.22rem .7rem; font:inherit; font-size:.78rem; cursor:pointer; transition:background .2s, border-color .2s;}
+@media (hover:hover){ .zf-skip:hover, .zf-speed:hover{background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.5);} }
+.zf-skip:focus-visible, .zf-speed:focus-visible, .zf-play:focus-visible{outline:2px solid #d8bd7c; outline-offset:2px;}
+@media (max-width:420px){ .zf-disc{width:60px; height:60px;} .zf-play{width:50px; height:50px;} .zf-wave{height:50px;} }
+@media (prefers-reduced-motion:reduce){ .audio-track.zf-on .zf-disc{animation:none;} }
+.zf-time{white-space:nowrap;}
+@media (max-width:420px){ .zf-meta{gap:.4rem;} .zf-extra{gap:.3rem;} .zf-skip, .zf-speed{padding:.2rem .5rem; font-size:.74rem;} }
