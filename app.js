@@ -878,8 +878,10 @@ document.addEventListener('play', function(e){
 window.ZF_AUDIO_COUNT = 10;
 /* Ghazal audios that exist (audio-ghazal-N.mp3) -> add the ghazal number here when a new one is added. Newest audio (home "New audio" card):
    ZF_NEWEST_AUDIO. Recitation credits: ghazal 8 is recited by Farheen Nazar (Instagram link below); every nazm is recited by Zaan Farzaan. */
-window.ZF_GHAZAL_AUDIOS = [8];
-window.ZF_NEWEST_AUDIO = {kind: 'ghazal', n: 8};
+window.ZF_GHAZAL_AUDIOS = [2, 4, 7, 8, 10, 24];
+/* the recently added audios (home "New audio" strip + the NEW tag on the Audio page), newest first */
+window.ZF_NEW_AUDIOS = [{kind: 'ghazal', n: 2}, {kind: 'ghazal', n: 4}, {kind: 'ghazal', n: 7}, {kind: 'ghazal', n: 10}, {kind: 'ghazal', n: 24}];
+window.ZF_NEWEST_AUDIO = window.ZF_NEW_AUDIOS[0];
 window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र', 'Farheen Nazar', 'فرحین نظر'], url: 'https://www.instagram.com/ehsaas_sukhan'}}};
 
 /* NAZM AUDIO — loads nazm-audio.js (audio player under each nazm) */

@@ -1950,3 +1950,130 @@ html body .audio-track.zf-on, html body .audio-track.is-playing{border-color:rgb
 @media (prefers-reduced-motion:reduce){ .audio-track.zf-on .zf-disc{animation:none;} }
 .zf-time{white-space:nowrap;}
 @media (max-width:420px){ .zf-meta{gap:.4rem;} .zf-extra{gap:.3rem;} .zf-skip, .zf-speed{padding:.2rem .5rem; font-size:.74rem;} }
+
+/* v63: home "New audio" — several recent audios in a swipeable row */
+.zf-new-track.many{display:flex; gap:1rem; overflow-x:auto; scroll-snap-type:x mandatory; padding:.4rem .2rem 1.2rem; -webkit-overflow-scrolling:touch; scrollbar-width:thin;}
+.zf-new-track.many .zf-new-card{flex:0 0 min(86%, 420px); scroll-snap-align:center;}
+
+/* =====================================================================
+   v63 — AUDIO page as a music library (audio-library.js): tabs, rows, full-screen now-playing view
+   ===================================================================== */
+:root{--zf-acc:#e3c98a;}
+html[data-theme="light"]{--zf-acc:#8d6d20;}
+
+.audio-list.zl-lib-on > .audio-track:not(.zl-open){display:none;}
+.zl-lib-ui{max-width:760px; margin:0 auto 2rem; padding:0 5vw; text-align:start;}
+.zl-tabs{text-align:center;}
+
+/* tabs */
+.zl-tabs{display:flex; gap:.6rem; justify-content:center; margin:.4rem 0 1.5rem;}
+.zl-tab{font:inherit; font-size:1rem; cursor:pointer; padding:.55rem 1.35rem; border-radius:999px; background:transparent; color:var(--text-light); border:1px solid rgba(var(--zf-rgb),0.3); transition:background .2s, color .2s, border-color .2s;}
+.zl-tab small{margin-inline-start:.5rem; opacity:.65; font-size:.78rem;}
+@media (hover:hover){ .zl-tab:not(.on):hover{background:rgba(var(--zf-rgb),0.1); border-color:rgba(var(--zf-rgb),0.55);} }
+.zl-tab.on{background:var(--gold-soft); color:var(--ink); border-color:var(--gold-soft); font-weight:600;}
+.zl-tab:focus-visible, .zl-row:focus-visible, .zl-playall:focus-visible{outline:2px solid var(--zf-acc); outline-offset:2px;}
+
+/* pane head + rows */
+.zl-pane-head{display:flex; align-items:center; gap:1rem; padding:0 .3rem 1.1rem;}
+.zl-pane-head h2{margin:0; font-size:1.55rem; color:var(--text-light);}
+.zl-pane-head p{margin:.15rem 0 0; font-size:.9rem; color:var(--text-muted);}
+.zl-playall{flex:none; width:58px; height:58px; border-radius:50%; border:0; cursor:pointer; display:grid; place-items:center; color:#17150f; background:linear-gradient(160deg,#ecd9a2,#cdb06a); box-shadow:0 12px 22px -10px rgba(160,125,45,0.7), inset 0 1px 0 rgba(255,255,255,0.5); transition:transform .15s;}
+.zl-playall:active{transform:scale(.94);}
+.zl-playall svg{width:24px; height:24px; fill:currentColor; margin-left:2px;}
+.zl-rows{list-style:none; margin:0; padding:0;}
+.zl-row{display:flex; align-items:center; gap:.95rem; width:100%; padding:.65rem .55rem; border:0; background:transparent; border-radius:10px; cursor:pointer; text-align:start; font:inherit; color:var(--text-light); border-bottom:1px solid rgba(var(--zf-rgb),0.09); border-bottom-left-radius:0; border-bottom-right-radius:0; transition:background .2s;}
+@media (hover:hover){ .zl-row:hover{background:rgba(var(--zf-rgb),0.07);} }
+.zl-row:active{background:rgba(var(--zf-rgb),0.12);}
+.zl-cv{flex:none; width:56px; height:56px; border-radius:7px; background-size:cover; background-position:center; box-shadow:0 8px 16px -9px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.1);}
+.zl-rt{flex:1; min-width:0; display:flex; flex-direction:column; align-items:flex-start; gap:.1rem; text-align:start;}
+.zl-r-t{font-size:1.02rem; line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
+.zl-r-s{font-size:.82rem; color:var(--text-muted);}
+.zl-newtag{font-style:normal; font-size:.62rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-inline-end:.5rem; padding:.12rem .45rem; border-radius:999px; background:rgba(var(--zf-rgb),0.14); color:var(--zf-acc); vertical-align:middle;}
+body:not(.lang-en) .zl-newtag{letter-spacing:0; text-transform:none; font-size:.7rem;}
+.zl-r-end{flex:none; display:flex; align-items:center; gap:.65rem; color:var(--text-muted); font-size:.82rem; font-variant-numeric:tabular-nums;}
+.zl-row .zf-eq{display:none; color:var(--zf-acc); height:14px;}
+.zl-row.playing .zf-eq{display:inline-flex;}
+.zl-row.current .zl-r-t{color:var(--zf-acc);}
+
+/* settings under the lists */
+.zl-settings{margin-top:1.6rem; border:1px solid rgba(var(--zf-rgb),0.18); border-radius:8px; background:rgba(var(--zf-rgb),0.03);}
+.zl-settings summary{cursor:pointer; padding:.9rem 1.1rem; font-size:.95rem; color:var(--text-light); list-style:none; position:relative;}
+.zl-settings summary::-webkit-details-marker{display:none;}
+.zl-settings summary::after{content:"+"; position:absolute; inset-inline-end:1.1rem; top:50%; transform:translateY(-50%); font-size:1.3rem; color:var(--zf-acc);}
+.zl-settings[open] summary::after{content:"–";}
+.zl-settings-body{padding:.2rem 1rem 1rem; display:flex; flex-direction:column; gap:.4rem;}
+.zl-settings-body .audio-modes{margin:.3rem 0 .6rem;}
+.zl-settings-body .zf-sleep{margin:0;}
+
+/* ---------- the now-playing view ---------- */
+html.zl-view-open{overflow:hidden;}
+html body .audio-track.zl-open, html[data-theme="light"] body .audio-track.zl-open{
+  position:fixed; inset:0; z-index:10002; margin:0; border-radius:0; border:0; outline:0; box-shadow:none;
+  display:flex; flex-wrap:wrap; justify-content:center; align-content:flex-start; gap:0;
+  overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch;
+  padding:0 1.2rem calc(2.4rem + env(safe-area-inset-bottom, 0px));
+  background:#121211; isolation:isolate; color:#f2f1ec;
+  animation:zfViewIn .35s cubic-bezier(.2,.7,.2,1) both;
+}
+@keyframes zfViewIn{from{opacity:0; transform:translateY(24px)} to{opacity:1; transform:none}}
+@media (prefers-reduced-motion:reduce){ html body .audio-track.zl-open{animation:none;} }
+html body .audio-track.zl-open::before{
+  content:""; position:fixed; inset:0; left:0; right:0; top:0; height:auto; z-index:-1; pointer-events:none; opacity:.7;
+  background:var(--zf-cover) center/cover no-repeat; filter:blur(46px) saturate(1.25) brightness(.42); transform:scale(1.25);
+}
+.audio-track.zl-open{--zl-pad:max(1.2rem, calc((100vw - 540px) / 2)); padding-left:var(--zl-pad) !important; padding-right:var(--zl-pad) !important;}   /* a centred 540px column on wide screens */
+.audio-track.zl-open > *{flex:0 0 100%; max-width:100%; min-width:0;}
+.audio-track.zl-open > .audio-track-dl, .audio-track.zl-open > .audio-track-read, .audio-track.zl-open > .zf-cm-toggle{flex:0 0 auto;}
+.audio-track.zl-open > .zf-card-now, .audio-track.zl-open > audio{display:none !important;}
+
+.zl-view-top{display:none;}
+.audio-track.zl-open > .zl-view-top{display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:5; flex:0 0 auto; width:calc(100% + 2 * var(--zl-pad)); max-width:none; margin:0 calc(-1 * var(--zl-pad)); padding:calc(.7rem + env(safe-area-inset-top, 0px)) var(--zl-pad) .7rem; order:-5;
+  background:linear-gradient(180deg, rgba(18,18,17,0.92), rgba(18,18,17,0));}
+.zl-view-close{width:42px; height:42px; border-radius:50%; border:0; cursor:pointer; display:grid; place-items:center; color:#f2f1ec; background:rgba(255,255,255,0.1);}
+.zl-view-close svg{width:24px; height:24px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
+.zl-view-ctx{display:flex; flex-direction:column; align-items:center; line-height:1.3; text-align:center;}
+.zl-view-ctx small{font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:#b4b4ad;}
+body:not(.lang-en) .zl-view-ctx small{letter-spacing:0; text-transform:none; font-size:.8rem;}
+.zl-view-ctx b{font-size:.98rem; font-weight:600;}
+.zl-view-sp{width:42px;}
+
+.audio-track.zl-open > .zf-head{order:-4; flex-direction:column; text-align:center; margin:.6rem auto 1.1rem; gap:0;}
+.audio-track.zl-open .zf-disc{width:min(62vw, 270px); height:min(62vw, 270px); margin:.4rem auto 1.4rem; box-shadow:0 0 0 5px #0f0f0e, 0 0 0 6px rgba(216,189,124,0.6), 0 26px 44px -14px rgba(0,0,0,0.9);}
+.audio-track.zl-open .zf-disc::after{width:26px; height:26px; margin:-13px 0 0 -13px;}
+.audio-track.zl-open .audio-track-top{text-align:center; flex:none;}
+.audio-track.zl-open .audio-track-no{margin-bottom:.35rem;}
+.audio-track.zl-open h3{font-size:1.6rem; line-height:1.4; margin:0;}
+.audio-track.zl-open > .zf-pl{order:-3; display:grid; grid-template-columns:repeat(6, 1fr); grid-template-areas:"wave wave wave wave wave wave" "time time time time time time" "speed back prev play next fwd"; gap:.5rem .15rem; align-items:center; justify-items:center; margin-bottom:.4rem;}
+.audio-track.zl-open .zf-wave{grid-area:wave; width:100%; height:62px;}
+.audio-track.zl-open .zf-meta, .audio-track.zl-open .zf-extra{display:contents;}
+.audio-track.zl-open .zf-time{grid-area:time; justify-self:center; font-size:.85rem;}
+.audio-track.zl-open .zf-play{grid-area:play; width:70px; height:70px;}
+.audio-track.zl-open .zf-play svg{width:28px; height:28px;}
+.audio-track.zl-open .zf-skip[data-d="-10"]{grid-area:back;} .audio-track.zl-open .zf-skip[data-d="15"]{grid-area:fwd;} .audio-track.zl-open .zf-speed{grid-area:speed;}
+.zl-prev, .zl-next{display:none;}
+.audio-track.zl-open .zl-prev, .audio-track.zl-open .zl-next{display:grid; place-items:center; width:48px; height:48px; border:0; border-radius:50%; background:transparent; color:#f2f1ec; cursor:pointer; transition:background .2s, transform .15s;}
+.audio-track.zl-open .zl-prev{grid-area:prev;} .audio-track.zl-open .zl-next{grid-area:next;}
+.audio-track.zl-open .zl-prev svg, .audio-track.zl-open .zl-next svg{width:28px; height:28px; fill:currentColor;}
+.audio-track.zl-open .zl-prev:active, .audio-track.zl-open .zl-next:active{transform:scale(.9);}
+@media (hover:hover){ .audio-track.zl-open .zl-prev:hover, .audio-track.zl-open .zl-next:hover{background:rgba(255,255,255,0.1);} }
+.audio-track.zl-open > .audio-credit{order:-2; text-align:center; margin:1rem 0 .2rem;}
+.audio-track.zl-open > .audio-track-dl, .audio-track.zl-open > .audio-track-read, .audio-track.zl-open > .zf-cm-toggle{margin:.7rem .3rem 0;}
+.audio-track.zl-open > .zf-comments{order:10; margin-top:1.2rem;}
+.zl-view-settings{display:none;}
+.audio-track.zl-open > .zl-view-settings{display:block; order:20; margin-top:1.8rem; padding-top:1rem; border-top:1px solid rgba(255,255,255,0.12);}
+.zl-view-settings h4{margin:0 0 .6rem; font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:#b4b4ad; font-weight:600;}
+body:not(.lang-en) .zl-view-settings h4{letter-spacing:0; text-transform:none; font-size:.85rem;}
+.zl-view-settings .audio-modes{margin:0 0 .8rem; justify-content:flex-start;}
+.zl-view-settings .zf-sleep{margin:0; text-align:start;}
+.zl-more-audios{display:none;}
+.audio-track.zl-open > .zl-more-audios{display:block; order:30; margin-top:2rem; flex:0 0 auto; max-width:none; width:calc(100% + 2 * var(--zl-pad)); margin-left:calc(-1 * var(--zl-pad)); margin-right:calc(-1 * var(--zl-pad)); padding:0 var(--zl-pad);}
+.zl-more-audios h3{font-size:1.15rem; margin:0 0 .9rem; text-align:start; color:#f2f1ec;}
+.zl-more-track{display:flex; gap:.9rem; overflow-x:auto; padding:.2rem 0 1rem; scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch; max-width:100%;}
+.zl-mini{flex:0 0 138px; display:flex; flex-direction:column; gap:.3rem; text-align:start; border:0; background:transparent; color:#f2f1ec; cursor:pointer; font:inherit; scroll-snap-align:start; padding:0;}
+.zl-mini-cv{display:block; width:138px; height:138px; border-radius:8px; background-size:cover; background-position:center; box-shadow:0 12px 20px -12px rgba(0,0,0,0.9), inset 0 0 0 1px rgba(255,255,255,0.1);}
+.zl-mini-t{font-size:.88rem; line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
+.zl-mini-s{font-size:.76rem; color:#b4b4ad;}
+@media (hover:hover){ .zl-mini:hover .zl-mini-cv{transform:translateY(-3px);} .zl-mini-cv{transition:transform .25s;} }
+@media (min-width:900px){ .audio-track.zl-open .zf-disc{width:300px; height:300px;} }
+/* the page wrappers (main, .audio-list) are z-index:1 stacking contexts; while the player view is open they must not trap it below the header / bars */
+html.zl-view-open main, html.zl-view-open .audio-list{z-index:auto !important;}

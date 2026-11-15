@@ -50,23 +50,30 @@
   var audioEl = null;
   function renderNew(){
     var box = document.getElementById('zf-new'); if(!box) return;
-    var nw = window.ZF_NEWEST_AUDIO || {kind: 'nazm', n: ZF_AUDIO_COUNT}, n = nw.n, isG = nw.kind === 'ghazal', id = nw.kind + '-' + n;
-    if(!audioEl){ audioEl = document.createElement('audio'); audioEl.controls = true; audioEl.controlsList = 'nodownload'; audioEl.preload = 'none'; audioEl.src = 'audio-' + nw.kind + '-' + n + '.mp3'; }
+    var items = (window.ZF_NEW_AUDIOS && window.ZF_NEW_AUDIOS.length) ? window.ZF_NEW_AUDIOS : [window.ZF_NEWEST_AUDIO || {kind: 'nazm', n: ZF_AUDIO_COUNT}];
     box.textContent = '';
-    var card = el('div', 'zf-new-card');
-    card.appendChild(el('div', 'zf-k', tr('नया ऑडियो','New audio','نیا آڈیو')));
-    card.appendChild(el('div', 'zf-t', (isG ? poemTitle(id) : nazmTitle(n)) || id));
-    /* recitation credit */
-    var cr = el('div', 'zf-credit'), who = isG && window.ZF_AUDIO_CREDIT && window.ZF_AUDIO_CREDIT.ghazal && window.ZF_AUDIO_CREDIT.ghazal[n];
-    cr.appendChild(document.createTextNode(tr('पाठ: ','Recited by ','آواز: ')));
-    if(who){ var wa = link(who.url, null, tr(who.name[0], who.name[1], who.name[2])); wa.setAttribute('target', '_blank'); wa.setAttribute('rel', 'noopener'); cr.appendChild(wa); }
-    else cr.appendChild(document.createTextNode(tr('ज़ान फ़रज़ान','Zaan Farzaan','زان فرزان')));
-    card.appendChild(cr);
-    card.appendChild(audioEl);
-    var links = el('div', 'zf-links');
-    links.appendChild(link(id + '.html', null, isG ? tr('ग़ज़ल पढ़ें','Read the ghazal','غزل پڑھیں') : tr('नज़्म पढ़ें','Read the nazm','نظم پڑھیں')));
-    links.appendChild(link(pg('audios'), null, tr('सभी ऑडियो','All audios','تمام آڈیو')));
-    card.appendChild(links); box.appendChild(card); box.hidden = false;
+    var track = el('div', 'zf-new-track' + (items.length > 1 ? ' many' : '')), players = [];
+    items.forEach(function(nw){
+      var n = nw.n, isG = nw.kind === 'ghazal', id = nw.kind + '-' + n;
+      var a = document.createElement('audio'); a.controls = true; a.controlsList = 'nodownload'; a.preload = 'none'; a.src = 'audio-' + nw.kind + '-' + n + '.mp3';
+      players.push(a);
+      a.addEventListener('play', function(){ players.forEach(function(o){ if(o !== a && !o.paused) o.pause(); }); });
+      var card = el('div', 'zf-new-card');
+      card.appendChild(el('div', 'zf-k', tr('नया ऑडियो','New audio','نیا آڈیو')));
+      card.appendChild(el('div', 'zf-t', (isG ? poemTitle(id) : nazmTitle(n)) || id));
+      /* recitation credit */
+      var cr = el('div', 'zf-credit'), who = isG && window.ZF_AUDIO_CREDIT && window.ZF_AUDIO_CREDIT.ghazal && window.ZF_AUDIO_CREDIT.ghazal[n];
+      cr.appendChild(document.createTextNode(tr('पाठ: ','Recited by ','آواز: ')));
+      if(who){ var wa = link(who.url, null, tr(who.name[0], who.name[1], who.name[2])); wa.setAttribute('target', '_blank'); wa.setAttribute('rel', 'noopener'); cr.appendChild(wa); }
+      else cr.appendChild(document.createTextNode(tr('ज़ान फ़रज़ान','Zaan Farzaan','زان فرزان')));
+      card.appendChild(cr);
+      card.appendChild(a);
+      var links = el('div', 'zf-links');
+      links.appendChild(link(id + '.html', null, isG ? tr('ग़ज़ल पढ़ें','Read the ghazal','غزل پڑھیں') : tr('नज़्म पढ़ें','Read the nazm','نظم پڑھیں')));
+      links.appendChild(link(pg('audios') + '#' + id, null, tr('सभी ऑडियो','All audios','تمام آڈیو')));
+      card.appendChild(links); track.appendChild(card);
+    });
+    box.appendChild(track); box.hidden = false;
   }
 
   /* ---- 3. readers' voices ---- */

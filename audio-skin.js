@@ -121,7 +121,7 @@
       entries.forEach(function(en){
         if(!en.isIntersecting) return; io.unobserve(en.target);
         var a = en.target.querySelector('audio');
-        if(a && a.readyState === 0 && a.preload === 'none'){ a.preload = 'metadata'; try{ a.load(); }catch(e){} }
+        if(a && a.readyState === 0 && a.preload === 'none' && a.paused){ a.preload = 'metadata'; try{ a.load(); }catch(e){} }   /* never reload an element that is already starting to play */
       });
     }, {rootMargin:'200px'});
     cards.forEach(function(c){ io.observe(c); });
