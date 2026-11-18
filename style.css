@@ -2077,3 +2077,23 @@ body:not(.lang-en) .zl-view-settings h4{letter-spacing:0; text-transform:none; f
 @media (min-width:900px){ .audio-track.zl-open .zf-disc{width:300px; height:300px;} }
 /* the page wrappers (main, .audio-list) are z-index:1 stacking contexts; while the player view is open they must not trap it below the header / bars */
 html.zl-view-open main, html.zl-view-open .audio-list{z-index:auto !important;}
+
+/* v64: home "New audio" — own small player (play/pause, seek bar, time); the native <audio> is hidden */
+.zf-new-card audio{display:none;}
+.zf-mp{display:flex; align-items:center; gap:.7rem; direction:ltr; margin:.1rem 0 0; padding:.4rem .8rem .4rem .45rem; border-radius:999px; border:1px solid rgba(var(--zf-rgb),0.3); background:rgba(var(--zf-rgb),0.06);}
+.zf-mp-btn{flex:none; width:40px; height:40px; border-radius:50%; border:0; background:var(--gold); color:#151515; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; padding:0; transition:transform .2s ease, filter .2s ease;}
+.zf-mp-btn svg{display:block;}
+.zf-mp-btn:active{transform:scale(.94);}
+.zf-mp-btn:focus-visible, .zf-mp-seek:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+@media (hover:hover){ .zf-mp-btn:hover{filter:brightness(1.1);} }
+.zf-mp-seek{--p:0%; flex:1 1 auto; min-width:0; height:22px; margin:0; background:transparent; -webkit-appearance:none; appearance:none; cursor:pointer; touch-action:pan-y;}
+.zf-mp-seek::-webkit-slider-runnable-track{height:4px; border-radius:4px; background:linear-gradient(90deg, var(--gold) var(--p), rgba(var(--zf-rgb),0.25) var(--p));}
+.zf-mp-seek::-moz-range-track{height:4px; border-radius:4px; background:rgba(var(--zf-rgb),0.25);}
+.zf-mp-seek::-moz-range-progress{height:4px; border-radius:4px; background:var(--gold);}
+.zf-mp-seek::-webkit-slider-thumb{-webkit-appearance:none; width:14px; height:14px; margin-top:-5px; border-radius:50%; background:var(--gold); border:2px solid #151515; box-shadow:0 0 0 1px var(--gold);}
+.zf-mp-seek::-moz-range-thumb{width:10px; height:10px; border-radius:50%; background:var(--gold); border:2px solid #151515;}
+.zf-mp-time{flex:none; font-size:.8rem; letter-spacing:.02em; font-variant-numeric:tabular-nums; white-space:nowrap; min-width:2.6rem; text-align:end; opacity:.85;}
+.zf-mp.bad{border-color:rgba(200,90,90,.5);}
+html[data-theme="light"] .zf-mp-btn{color:#f7f2e6;}
+html[data-theme="light"] .zf-mp-seek::-webkit-slider-thumb{border-color:#f7f2e6;}
+html[data-theme="light"] .zf-mp-seek::-moz-range-thumb{border-color:#f7f2e6;}

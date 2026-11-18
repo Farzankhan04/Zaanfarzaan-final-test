@@ -46,6 +46,44 @@
     box.appendChild(a); box.hidden = false;
   }
 
+
+  /* v64: our own small player for the home "New audio" cards (play/pause + seek bar + time). The browser's native <audio controls> collapsed to a tiny
+     pill in the 2nd card of the swipe row (it is half off-screen when the page loads), so the native controls are not used here at all.
+     The hidden <audio> element stays in the card, so the "heard" counter and the bottom now-playing bar keep working. */
+  function fmtT(t){ if(!isFinite(t) || t < 0) t = 0; t = Math.floor(t); var m = Math.floor(t / 60), s = t % 60; return m + ':' + (s < 10 ? '0' : '') + s; }
+  function miniPlayer(a){
+    var ICON_P = '<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+    var ICON_S = '<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+    var wrap = el('div', 'zf-mp'); wrap.setAttribute('dir', 'ltr');
+    var btn = el('button', 'zf-mp-btn'); btn.type = 'button';
+    var seek = el('input', 'zf-mp-seek'); seek.type = 'range'; seek.min = '0'; seek.max = '1000'; seek.step = '1'; seek.value = '0';
+    var time = el('span', 'zf-mp-time', '0:00');
+    function lbl(){ btn.setAttribute('aria-label', a.paused ? tr('चलाएँ', 'Play', 'چلائیں') : tr('रोकें', 'Pause', 'روکیں')); seek.setAttribute('aria-label', tr('ऑडियो में आगे-पीछे', 'Seek', 'آگے پیچھے')); }
+    function paint(){
+      var d = a.duration, c = a.currentTime || 0, ok = isFinite(d) && d > 0, p = ok ? Math.min(1000, Math.round(c / d * 1000)) : 0;
+      if(!seeking){ seek.value = String(p); }
+      seek.style.setProperty('--p', (seeking ? seek.value / 10 : p / 10) + '%');
+      time.textContent = fmtT(c) + (ok ? ' / ' + fmtT(d) : '');
+    }
+    function icon(){ btn.innerHTML = a.paused ? ICON_P : ICON_S; wrap.classList.toggle('on', !a.paused); lbl(); }
+    var seeking = false;
+    btn.addEventListener('click', function(){
+      if(a.paused || a.ended){ if(a.ended) a.currentTime = 0; var pr = a.play(); if(pr && pr.catch) pr.catch(function(){ wrap.classList.add('bad'); time.textContent = tr('ऑडियो नहीं खुला', 'Could not play', 'آڈیو نہیں کھلا'); }); }
+      else a.pause();
+    });
+    function seekTo(){ var d = a.duration; if(isFinite(d) && d > 0){ a.currentTime = d * seek.value / 1000; } paint(); }
+    seek.addEventListener('pointerdown', function(){ seeking = true; if(a.readyState === 0 && a.paused){ a.preload = 'metadata'; try{ a.load(); }catch(e){} } });
+    seek.addEventListener('input', function(){ seeking = true; seek.style.setProperty('--p', (seek.value / 10) + '%'); var d = a.duration; if(isFinite(d) && d > 0) time.textContent = fmtT(d * seek.value / 1000) + ' / ' + fmtT(d); });
+    seek.addEventListener('change', function(){ seekTo(); seeking = false; paint(); });
+    ['loadedmetadata', 'durationchange', 'timeupdate', 'ended', 'seeked'].forEach(function(ev){ a.addEventListener(ev, paint); });
+    ['play', 'pause', 'ended'].forEach(function(ev){ a.addEventListener(ev, function(){ icon(); paint(); }); });
+    a.addEventListener('playing', function(){ wrap.classList.remove('bad'); });
+    a.addEventListener('error', function(){ wrap.classList.add('bad'); time.textContent = tr('ऑडियो नहीं मिला', 'Audio not found', 'آڈیو نہیں ملا'); });
+    wrap.appendChild(btn); wrap.appendChild(seek); wrap.appendChild(time);
+    icon(); paint();
+    return wrap;
+  }
+
   /* ---- 2. newest audio ---- */
   var audioEl = null;
   function renderNew(){
@@ -55,7 +93,7 @@
     var track = el('div', 'zf-new-track' + (items.length > 1 ? ' many' : '')), players = [];
     items.forEach(function(nw){
       var n = nw.n, isG = nw.kind === 'ghazal', id = nw.kind + '-' + n;
-      var a = document.createElement('audio'); a.controls = true; a.controlsList = 'nodownload'; a.preload = 'none'; a.src = 'audio-' + nw.kind + '-' + n + '.mp3';
+      var a = document.createElement('audio'); a.controls = false; a.preload = 'none'; a.src = 'audio-' + nw.kind + '-' + n + '.mp3';
       players.push(a);
       a.addEventListener('play', function(){ players.forEach(function(o){ if(o !== a && !o.paused) o.pause(); }); });
       var card = el('div', 'zf-new-card');
@@ -68,6 +106,7 @@
       else cr.appendChild(document.createTextNode(tr('ज़ान फ़रज़ान','Zaan Farzaan','زان فرزان')));
       card.appendChild(cr);
       card.appendChild(a);
+      card.appendChild(miniPlayer(a));
       var links = el('div', 'zf-links');
       links.appendChild(link(id + '.html', null, isG ? tr('ग़ज़ल पढ़ें','Read the ghazal','غزل پڑھیں') : tr('नज़्म पढ़ें','Read the nazm','نظم پڑھیں')));
       links.appendChild(link(pg('audios') + '#' + id, null, tr('सभी ऑडियो','All audios','تمام آڈیو')));
