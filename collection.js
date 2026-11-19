@@ -189,7 +189,7 @@
   }
 
   const LT = (function(){
-    const st = {audio:false, fav:false, len:'', urdu:'', sort:'num', open:false};
+    const st = {audio:false, fav:false, len:'', urdu:'', mood:'', sort:'num', open:false};
     let counts = null, countsErr = false, countsBusy = false, urReady = false, urLoading = false, bar = null;
 
     function hasAudio(item){
@@ -198,6 +198,11 @@
     }
     function isFav(item){ return typeof window.ZF_isFavorite === 'function' && window.ZF_isFavorite(item.id); }
     function count(item){ return (item.versesHtml || []).length; }
+    /* v66 — MOOD: mood-data.js tags every sher of a ghazal with one mood letter. A ghazal "has" a mood when at least MOOD_MIN of its shers carry it;
+       with a mood chosen the ghazals are listed with the most such shers first. */
+    const MOOD_MIN = 2;
+    function moodList(){ return (!IS_NAZM && window.ZF_MOOD && window.ZF_MOODS) ? window.ZF_MOODS : null; }
+    function moodCount(item, L){ const letters = window.ZF_MOOD && window.ZF_MOOD[item.num]; return letters ? letters.split(L).length - 1 : 0; }
     function lenKey(item){ const n = count(item); return n <= LEN_CUT.s ? 's' : (n >= LEN_CUT.l ? 'l' : 'm'); }
 
     /* ---- Urdu level ---- */
@@ -259,16 +264,18 @@
     function cc(item){ return (counts && counts[item.id]) || 0; }
 
     /* ---- filter + sort ---- */
-    function active(){ return (st.audio ? 1 : 0) + (st.fav ? 1 : 0) + (st.len ? 1 : 0) + (st.urdu ? 1 : 0); }
+    function active(){ return (st.audio ? 1 : 0) + (st.fav ? 1 : 0) + (st.len ? 1 : 0) + (st.urdu ? 1 : 0) + (st.mood ? 1 : 0); }
     function pass(item){
       if(st.audio && !hasAudio(item)) return false;
       if(st.fav && !isFav(item)) return false;
       if(st.len && lenKey(item) !== st.len) return false;
+      if(st.mood && moodCount(item, st.mood) < MOOD_MIN) return false;
       if(st.urdu && urReady && item._zfUrL !== st.urdu) return false;
       return true;
     }
     function sortRows(rows){
       const k = st.sort;
+      if(k === 'num' && st.mood && moodList()) return rows.slice().sort(function(a, b){ return moodCount(b.item, st.mood) - moodCount(a.item, st.mood) || a.item.num - b.item.num; });
       if(k === 'num') return rows;
       const by = {
         comments: function(a, b){ return cc(b.item) - cc(a.item) || a.item.num - b.item.num; },
@@ -287,6 +294,11 @@
       return '<span class="zf-abadge" title="' + ltT('badgeT') + '"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4.5" height="7" rx="1.6" fill="currentColor"/><rect x="16.5" y="14" width="4.5" height="7" rx="1.6" fill="currentColor"/></svg>' + ltT('badge') + '</span>';
     }
     function extraMeta(item){
+      if(st.mood && moodList()){
+        const n = moodCount(item, st.mood), tot = count(item), m = moodList().filter(function(x){ return x[0] === st.mood; })[0], i = lang() === 'en' ? 2 : (lang() === 'ur' ? 3 : 1);
+        const t = lang() === 'en' ? (n + ' of ' + tot + ' couplets \u00B7 ' + m[i]) : (lang() === 'ur' ? (tot + ' \u0645\u06CC\u06BA \u0633\u06D2 ' + n + ' \u0627\u0634\u0639\u0627\u0631 \u00B7 ' + m[i]) : (tot + ' \u092E\u0947\u0902 \u0938\u0947 ' + n + ' \u0936\u0947\u0930 \u00B7 ' + m[i]));
+        return '<div class="poem-item-meta zf-cc">' + t + '</div>';
+      }
       if(st.sort !== 'comments' || !counts) return '';
       const n = cc(item); if(!n) return '';
       return '<div class="poem-item-meta zf-cc">' + n + (lang() === 'en' ? (n === 1 ? ' comment' : ' comments') : (lang() === 'ur' ? ' تبصرے' : ' टिप्पणियाँ')) + '</div>';
@@ -346,9 +358,16 @@
     function moodRow(){
       if(IS_NAZM) return '';
       const i = lang() === 'en' ? 2 : (lang() === 'ur' ? 3 : 1);
-      const lab = lang() === 'en' ? 'Read by mood' : (lang() === 'ur' ? '\u0645\u0648\u0688 \u06A9\u06D2 \u0645\u0637\u0627\u0628\u0642 \u067E\u0691\u06BE\u06CC\u06BA' : '\u092E\u0942\u0921 \u0938\u0947 \u092A\u0922\u093C\u0947\u0902');
+      const lab = lang() === 'en' ? 'Read shers by mood' : (lang() === 'ur' ? '\u0627\u0634\u0639\u0627\u0631 \u0645\u0648\u0688 \u06A9\u06D2 \u0645\u0637\u0627\u0628\u0642 \u067E\u0691\u06BE\u06CC\u06BA' : '\u0936\u0947\u0930 \u092E\u0942\u0921 \u0938\u0947 \u092A\u0922\u093C\u0947\u0902');
       return '<div class="zf-lt-moods"><span class="zf-lt-k">' + lab + '</span><div class="zf-lt-chips">' +
         MOOD_LINKS.map(function(m){ return '<a class="zf-lt-chip" href="mood-' + m[0] + '.html">' + m[i] + '</a>'; }).join('') + '</div></div>';
+    }
+    function moodGroup(){
+      const list = moodList(); if(!list) return '';
+      const i = lang() === 'en' ? 2 : (lang() === 'ur' ? 3 : 1);
+      const lab = lang() === 'en' ? 'Ghazals with this mood' : (lang() === 'ur' ? '\u0627\u0633 \u0645\u0648\u0688 \u06A9\u06CC \u063A\u0632\u0644\u06CC\u06BA' : '\u0907\u0938 \u092E\u0942\u0921 \u0935\u093E\u0932\u0940 \u0917\u093C\u091C\u093C\u0932\u0947\u0902');
+      return '<div class="zf-lt-g"><span class="zf-lt-k">' + lab + '</span><div class="zf-lt-chips">' +
+        list.map(function(m){ return chip('mood-' + m[0], m[i], st.mood === m[0], nCount(function(it){ return moodCount(it, m[0]) >= MOOD_MIN; })); }).join('') + '</div></div>';
     }
     function render(shown){
       if(!bar) return;
@@ -370,6 +389,7 @@
           '<div class="zf-lt-g"><span class="zf-lt-k">' + ltT('show') + '</span><div class="zf-lt-chips">' +
             chip('audio', ltT('audio'), st.audio, nCount(hasAudio)) + chip('fav', '\u2665 ' + ltT('fav'), st.fav, nCount(isFav)) + '</div></div>' +
           '<div class="zf-lt-g"><span class="zf-lt-k">' + (lang() === 'en' ? 'Length' : (lang() === 'ur' ? 'طوالت' : 'लंबाई')) + ' (' + LT_UNIT[lang()] + ')</span><div class="zf-lt-chips">' + lens + '</div></div>' +
+          moodGroup() +
           '<div class="zf-lt-g"><span class="zf-lt-k">' + ltT('lang') + '</span><div class="zf-lt-chips">' +
             chip('urdu-more', ltT('more'), st.urdu === 'more', urReady ? nCount(function(it){ return it._zfUrL === 'more'; }) : null) +
             chip('urdu-simple', ltT('simple'), st.urdu === 'simple', urReady ? nCount(function(it){ return it._zfUrL === 'simple'; }) : null) +
@@ -382,7 +402,7 @@
       wire();
       if(fk){ const t = document.getElementById(fk) || bar.querySelector('[data-k="' + fk + '"]'); if(t && t.focus) t.focus({preventScroll: true}); }
     }
-    function reset(){ st.audio = st.fav = false; st.len = st.urdu = ''; st.sort = 'num'; changed(); }
+    function reset(){ st.audio = st.fav = false; st.len = st.urdu = st.mood = ''; st.sort = 'num'; changed(); }
     function wire(){
       const btn = document.getElementById('zf-lt-btn');
       btn.addEventListener('click', function(){
@@ -403,6 +423,7 @@
           const k = c.getAttribute('data-k');
           if(k === 'audio') st.audio = !st.audio;
           else if(k === 'fav') st.fav = !st.fav;
+          else if(k.indexOf('mood-') === 0){ const v = k.slice(5); st.mood = (st.mood === v ? '' : v); }
           else if(k.indexOf('len-') === 0){ const v = k.slice(4); st.len = (st.len === v ? '' : v); }
           else if(k.indexOf('urdu-') === 0){
             const v = k.slice(5); const nv = (st.urdu === v ? '' : v);

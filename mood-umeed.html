@@ -114,6 +114,11 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
 .zm-card .zm-go{font-size:.88rem;color:var(--gold-soft);text-decoration:underline;text-underline-offset:3px}
 .lang-ur .zm-card .zm-sample{direction:rtl;font-family:'Noto Nastaliq Urdu',serif;line-height:2.3}
 .zm-back{text-align:center;margin:0 0 2.4rem}.zm-back a{color:var(--gold-soft)}
+.zm-tools{text-align:center;margin:-.6rem 0 1.4rem}
+.zm-rand{font:inherit;font-size:.95rem;line-height:1.4;padding:.6rem 1.3rem;border-radius:999px;border:1px solid var(--gold);background:var(--gold-soft);color:var(--ink);cursor:pointer;min-height:42px}
+.zm-rand:hover{filter:brightness(1.08)}.zm-rand:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.zm-sher{border-radius:6px;transition:background .5s,box-shadow .5s}
+.zm-sher.zm-flash{background:rgba(var(--zf-rgb),.14);box-shadow:0 0 0 2px var(--gold)}
 </style>
 </head>
 <body data-page="moods">
@@ -157,6 +162,7 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
   <h1><span data-en="Umeed shayari" data-hi="उम्मीद की शायरी · Umeed Shayari" data-ur="امید کی شاعری">उम्मीद की शायरी · Umeed Shayari</span></h1>
   <p><span data-en="28 couplets from Zaan Farzaan&#x27;s ghazals that speak of hope. Tap any to read the whole ghazal." data-hi="ज़ान फ़रज़ान की ग़ज़लों के 28 अश्आर, जिनमें उम्मीद का रंग है। किसी पर भी टैप करके पूरी ग़ज़ल पढ़ें।" data-ur="زان فرزان کی غزلوں کے 28 اشعار جن میں امید کا رنگ ہے۔ کسی پر بھی ٹیپ کر کے پوری غزل پڑھیں۔">ज़ान फ़रज़ान की ग़ज़लों के 28 अश्आर, जिनमें उम्मीद का रंग है। किसी पर भी टैप करके पूरी ग़ज़ल पढ़ें।</span></p>
 </div>
+<div class="zm-tools"><button type="button" class="zm-rand" id="zm-rand"><span data-en="🎲 Show me a sher" data-hi="🎲 कोई एक शेर दिखाइए" data-ur="🎲 کوئی ایک شعر دکھائیے">🎲 कोई एक शेर दिखाइए</span></button></div>
 <nav class="zm-moods" aria-label="Moods">
 <a href="mood-ishq.html"><span data-en="Love" data-hi="इश्क़" data-ur="عشق">इश्क़</span></a>
 <a href="mood-judai.html"><span data-en="Separation" data-hi="जुदाई" data-ur="جدائی">जुदाई</span></a>
@@ -329,6 +335,22 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
 <script src="ur-translit.js"></script>
 <script src="i18n.js?v=4"></script>
 <script src="app.js?v=7"></script>
+<script>
+/* "Show me a sher": jump to a random sher of this mood and flash it (never the same one twice in a row) */
+(function(){
+  var btn = document.getElementById('zm-rand'); if(!btn) return;
+  var last = -1, timer = null;
+  btn.addEventListener('click', function(){
+    var all = document.querySelectorAll('.zm-sher'); if(!all.length) return;
+    var i; do { i = Math.floor(Math.random() * all.length); } while(all.length > 1 && i === last);
+    last = i; var el = all[i];
+    [].forEach.call(document.querySelectorAll('.zm-flash'), function(x){ x.classList.remove('zm-flash'); });
+    var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    el.scrollIntoView({behavior: calm ? 'auto' : 'smooth', block: 'center'});
+    el.classList.add('zm-flash'); clearTimeout(timer); timer = setTimeout(function(){ el.classList.remove('zm-flash'); }, 2600);
+  });
+})();
+</script>
 <script>
 /* Urdu script for the Hindi lines: the site's ur-translit.js does it live (same as the poem pages) */
 (function(){

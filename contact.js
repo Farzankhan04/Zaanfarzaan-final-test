@@ -27,6 +27,26 @@
     r.addEventListener('change', function(){ eventBox.hidden = (form.querySelector('input[name="reason"]:checked').value !== 'Mushaira / Event'); });
   });
 
+  /* v66: the e-mail subject tells an event invitation apart in the inbox */
+  var subject = form.querySelector('input[name="_subject"]');
+  function setSubject(){
+    if(!subject) return;
+    var ev = form.querySelector('input[name="reason"]:checked').value === 'Mushaira / Event';
+    subject.value = ev ? 'Mushaira / Event invitation \u2014 zaanfarzaan.site' : 'Contact letter \u2014 zaanfarzaan.site';
+  }
+  Array.prototype.forEach.call(form.querySelectorAll('input[name="reason"]'), function(r){ r.addEventListener('change', setSubject); });
+  setSubject();
+
+  /* v66: contact.html#mushaira (links on About and Home) opens the form with "Mushaira / Event" already chosen */
+  function openEvent(){
+    if(location.hash !== '#mushaira') return;
+    var r = form.querySelector('input[name="reason"][value="Mushaira / Event"]'); if(!r) return;
+    r.checked = true; eventBox.hidden = false; setSubject();
+    var card = form.closest('.khat'); if(card && card.scrollIntoView) card.scrollIntoView({behavior:'smooth', block:'start'});
+    var first = form.querySelector('input[name="event_type"]'); if(first) setTimeout(function(){ try{ first.focus({preventScroll:true}); }catch(x){} }, 400);
+  }
+  openEvent(); window.addEventListener('hashchange', openEvent);
+
   form.addEventListener('submit', function(e){
     e.preventDefault();
     errorNote.hidden = true;
@@ -47,7 +67,7 @@
   });
 
   if(again) again.addEventListener('click', function(){
-    form.reset(); eventBox.hidden = true; success.hidden = true; form.hidden = false;
+    form.reset(); eventBox.hidden = true; success.hidden = true; form.hidden = false; setSubject();
   });
 
   /* copy the email address */

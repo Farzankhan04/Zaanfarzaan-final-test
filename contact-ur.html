@@ -101,8 +101,19 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
         <label><input type="radio" name="reason" value="Just salaam" checked><span data-hi="बस सलाम" data-en="Just salaam" data-ur="بس سلام">بس سلام</span></label>
       </fieldset>
       <div class="khat-event" id="khat-event" hidden>
-        <div class="form-group"><label for="kh-date" data-hi="तारीख़ (अगर तय हो)" data-en="Date (if fixed)" data-ur="تاریخ (اگر طے ہو)">تاریخ (اگر طے ہو)</label><input type="text" id="kh-date" name="event_date"></div>
+        <fieldset class="khat-reasons khat-etype">
+          <legend data-hi="किस तरह का कार्यक्रम?" data-en="What kind of event?" data-ur="کس طرح کی تقریب؟">کس طرح کی تقریب؟</legend>
+          <label><input type="radio" name="event_type" value="Mushaira"><span data-hi="मुशायरा" data-en="Mushaira" data-ur="مشاعرہ">مشاعرہ</span></label>
+          <label><input type="radio" name="event_type" value="Kavi sammelan"><span data-hi="कवि सम्मेलन" data-en="Kavi sammelan" data-ur="کوی سمیلن">کوی سمیلن</span></label>
+          <label><input type="radio" name="event_type" value="College / school"><span data-hi="कॉलेज / स्कूल" data-en="College / school" data-ur="کالج / اسکول">کالج / اسکول</span></label>
+          <label><input type="radio" name="event_type" value="Private / family"><span data-hi="निजी / पारिवारिक" data-en="Private / family" data-ur="نجی / خاندانی">نجی / خاندانی</span></label>
+          <label><input type="radio" name="event_type" value="Online"><span data-hi="ऑनलाइन" data-en="Online" data-ur="آن لائن">آن لائن</span></label>
+          <label><input type="radio" name="event_type" value="Something else"><span data-hi="और कुछ" data-en="Something else" data-ur="کچھ اور">کچھ اور</span></label>
+        </fieldset>
+        <div class="form-group khat-wide"><label for="kh-evname" data-hi="कार्यक्रम / आयोजक का नाम" data-en="Event or organiser name" data-ur="تقریب / منتظم کا نام">تقریب / منتظم کا نام</label><input type="text" id="kh-evname" name="event_name"></div>
         <div class="form-group"><label for="kh-city" data-hi="शहर" data-en="City" data-ur="شہر">شہر</label><input type="text" id="kh-city" name="event_city"></div>
+        <div class="form-group"><label for="kh-date" data-hi="तारीख़ (अगर तय हो)" data-en="Date (if fixed)" data-ur="تاریخ (اگر طے ہو)">تاریخ (اگر طے ہو)</label><input type="text" id="kh-date" name="event_date"></div>
+        <div class="form-group khat-wide"><label for="kh-venue" data-hi="जगह (हॉल / संस्था)" data-en="Venue / hall" data-ur="جگہ (ہال / ادارہ)">جگہ (ہال / ادارہ)</label><input type="text" id="kh-venue" name="event_venue"></div>
       </div>
       <div class="khat-two">
         <div class="form-group"><label for="kh-name" data-hi="आपका नाम" data-en="Your name" data-ur="آپ کا نام">آپ کا نام</label><input type="text" id="kh-name" name="name" autocomplete="name"></div>
@@ -166,6 +177,6 @@ html.zf-en-init body,html.zf-ur-init body{visibility:hidden}
 
 <script src="i18n.js?v=4"></script>
 <script src="app.js?v=7"></script>
-<script src="contact.js?v=1"></script>
+<script src="contact.js?v=2"></script>
 </body>
 </html>

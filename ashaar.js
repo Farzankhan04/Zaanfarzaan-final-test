@@ -5,7 +5,9 @@
   var PHOTOS = ['sher-1.jpg', 'sher-2.jpg', 'sher-3.jpg', 'sher-4.jpg', 'sher-5.jpg'];
   var MOODS = window.ZF_MOODS || [], MOOD = window.ZF_MOOD || {};
   var T = {ded: ['💌 समर्पित करें', '💌 Dedicate', '💌 منسوب کریں'], all: ['सब', 'All', 'سب'], shuffle: ['🔀 फेंटें', '🔀 Shuffle', '🔀 پھینٹیں'], of: ['शेर', 'shers', 'اشعار'], gh: ['ग़ज़ल', 'Ghazal', 'غزل'],
-           end: ['बस, इतने ही — फिर से फेंटकर देखिए', 'That is all — shuffle to see them again', 'بس اتنے ہی — دوبارہ پھینٹ کر دیکھیے']};
+           end: ['बस, इतने ही — फिर से फेंटकर देखिए', 'That is all — shuffle to see them again', 'بس اتنے ہی — دوبارہ پھینٹ کر دیکھیے'],
+           moodAll: ['इस मूड के सारे शेर एक पन्ने पर →', 'All shers of this mood on one page →', 'اس موڈ کے سب اشعار ایک صفحے پر ←'], moodGo: ['इस मूड के सारे शेर', 'All shers of this mood', 'اس موڈ کے سب اشعار']};
+  var SLUG = {I: 'ishq', J: 'judai', T: 'tanhai', U: 'umeed', Z: 'zindagi'};   /* mood-<slug>.html, built by tools-DO-NOT-UPLOAD/build_mood_pages.py */
   function lang(){ var l = window.ZF_LANG; return l === 'en' ? 1 : (l === 'ur' ? 2 : 0); }
   function tr(k){ return T[k][lang()]; }
   function el(tag, cls, text){ var e = document.createElement(tag); if(cls) e.className = cls; if(text != null) e.textContent = text; return e; }
@@ -31,7 +33,7 @@
   }
   function dailySeed(){ var d = new Date(); return d.getFullYear() * 400 + (d.getMonth() + 1) * 31 + d.getDate(); }
   var seed = dailySeed();
-  (function(){ var st = document.createElement('style'); st.textContent = '.ashaar-ded{font:inherit;font-size:.76rem;cursor:pointer;color:#f2f1ec;background:rgba(255,255,255,.1);border:1px solid rgba(242,241,236,.4);border-radius:999px;padding:.28rem .7rem;min-height:30px}.ashaar-ded:hover{background:rgba(255,255,255,.2)}.ashaar-foot{gap:.5rem}'; document.head.appendChild(st); })();
+  (function(){ var st = document.createElement('style'); st.textContent = '.ashaar-ded{font:inherit;font-size:.76rem;cursor:pointer;color:#f2f1ec;background:rgba(255,255,255,.1);border:1px solid rgba(242,241,236,.4);border-radius:999px;padding:.28rem .7rem;min-height:30px}.ashaar-ded:hover{background:rgba(255,255,255,.2)}.ashaar-foot{gap:.5rem}a.ashaar-mood{color:inherit;text-decoration:underline;text-underline-offset:3px}.ashaar-moodlink{display:inline-block;margin-inline-start:.8rem;color:var(--gold-soft);text-decoration:underline;text-underline-offset:3px}'; document.head.appendChild(st); })();
   function card(x){
     var L = sherLines(x.g, x.i), a = el('div', 'ashaar-card'); a.tabIndex = 0; a.setAttribute('role', 'button');
     a.style.backgroundImage = 'linear-gradient(180deg,rgba(14,14,14,.6),rgba(14,14,14,.72)),url(' + PHOTOS[x.n % PHOTOS.length] + ')';
@@ -43,7 +45,11 @@
     var foot = el('div', 'ashaar-foot'), lnk = el('a', null, tr('gh') + ' ' + x.g.num + ' →'); lnk.href = x.g.id + '.html';
     lnk.addEventListener('click', function(e){ e.stopPropagation(); });
     var mm = MOODS.filter(function(m){ return m[0] === x.m; })[0];
-    if(mm) foot.appendChild(el('span', 'ashaar-mood', mm[lang() === 1 ? 2 : (lang() === 2 ? 3 : 1)]));
+    if(mm){
+      var ml = el(SLUG[mm[0]] ? 'a' : 'span', 'ashaar-mood', mm[lang() === 1 ? 2 : (lang() === 2 ? 3 : 1)]);
+      if(SLUG[mm[0]]){ ml.href = 'mood-' + SLUG[mm[0]] + '.html'; ml.title = tr('moodGo'); ml.addEventListener('click', function(e){ e.stopPropagation(); }); ml.addEventListener('keydown', function(e){ e.stopPropagation(); }); }
+      foot.appendChild(ml);
+    }
     var db = el('button', 'ashaar-ded', tr('ded')); db.type = 'button';
     db.addEventListener('click', function(e){ e.stopPropagation(); if(typeof window.ZF_openPhotoCard === 'function') window.ZF_openPhotoCard([L], {dedicate: true}); });
     db.addEventListener('keydown', function(e){ e.stopPropagation(); });
@@ -61,6 +67,7 @@
   function rebuild(){
     grid.textContent = ''; shown = 0; order = shuffle(seed);
     count.textContent = order.length + ' ' + tr('of');
+    if(filter !== 'ALL' && SLUG[filter]){ var ml2 = el('a', 'ashaar-moodlink', tr('moodAll')); ml2.href = 'mood-' + SLUG[filter] + '.html'; count.appendChild(ml2); }
     loadMore();
   }
   function chips(){
