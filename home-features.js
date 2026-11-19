@@ -149,8 +149,17 @@
   }
 
   function downloadHomeSher(btn){
-    if(typeof html2canvas === 'undefined' || !currentEntry) return;
+    if(!currentEntry) return;
     if(btn) btn.classList.add('loading');
+    /* v65: html2canvas is fetched on the first tap (app.js ZF_loadH2C), not with every page */
+    if(typeof html2canvas === 'undefined' && typeof window.ZF_loadH2C === 'function'){
+      window.ZF_loadH2C(function(ok){
+        if(!ok){ if(btn) btn.classList.remove('loading'); if(typeof showToast === 'function' && typeof window.ZF_T === 'function') showToast(window.ZF_T('downloadFailed')); return; }
+        downloadHomeSher(btn);
+      });
+      return;
+    }
+    if(typeof html2canvas === 'undefined'){ if(btn) btn.classList.remove('loading'); return; }
     var stage = document.createElement('div');
     stage.className = 'export-stage';
     var exportCard = buildHomeExportCard();

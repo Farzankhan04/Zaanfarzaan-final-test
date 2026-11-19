@@ -2097,3 +2097,28 @@ html.zl-view-open main, html.zl-view-open .audio-list{z-index:auto !important;}
 html[data-theme="light"] .zf-mp-btn{color:#f7f2e6;}
 html[data-theme="light"] .zf-mp-seek::-webkit-slider-thumb{border-color:#f7f2e6;}
 html[data-theme="light"] .zf-mp-seek::-moz-range-thumb{border-color:#f7f2e6;}
+
+/* v65 — PRINT / "Save as PDF": when a ghazal or nazm is open, print only the poem itself (and its word meanings) — black on white,
+   no menu, buttons, audio, comments, footer or the decorative frames. Other pages print as before. */
+@media print {
+  body:has(.poem-detail.open){background:#fff !important; color:#000 !important;}
+  body:has(.poem-detail.open) > *:not(main){display:none !important;}
+  body:has(.poem-detail.open) .poem-detail > *:not(.card){display:none !important;}
+  body:has(.poem-detail.open) main{padding:0 !important; margin:0 !important; max-width:none !important;}
+  body:has(.poem-detail.open) .poem-detail{padding:0 !important; margin:0 auto !important; max-width:none !important;}
+  body:has(.poem-detail.open) *{animation:none !important; transition:none !important; text-shadow:none !important; box-shadow:none !important;}
+  body:has(.poem-detail.open) .reveal, body:has(.poem-detail.open) .verse, body:has(.poem-detail.open) .verse *{opacity:1 !important; transform:none !important; visibility:visible !important;}
+  body:has(.poem-detail.open) .card .share-btn, body:has(.poem-detail.open) .card .download-btn, body:has(.poem-detail.open) .card .copy-btn,
+  body:has(.poem-detail.open) .card .favorite-btn, body:has(.poem-detail.open) .card .lz-hint, body:has(.poem-detail.open) .card button{display:none !important;}
+  body:has(.poem-detail.open) .lz{border:0 !important; text-decoration:none !important; background:none !important;}
+  body:has(.poem-detail.open) .card{background:#fff !important; color:#000 !important; border:0 !important; padding:0 0 1.2rem !important; margin:0 auto 1rem !important; max-width:none !important; break-inside:auto;}
+  body:has(.poem-detail.open) .card::before, body:has(.poem-detail.open) .card::after,
+  body:has(.poem-detail.open) .card i, body:has(.poem-detail.open) .zf-orn-sq > i{display:none !important;}
+  body:has(.poem-detail.open) .card *{color:#000 !important; background:transparent !important;}
+  body:has(.poem-detail.open) .card .kind{font-size:10pt !important; letter-spacing:.12em; text-transform:uppercase; margin-bottom:.8rem;}
+  body:has(.poem-detail.open) .card h3, body:has(.poem-detail.open) .card h2{font-size:18pt !important; margin:0 0 1rem !important;}
+  body:has(.poem-detail.open) .verse{font-size:14pt !important; line-height:1.9 !important; break-inside:avoid; page-break-inside:avoid; margin:0 0 .7rem !important;}
+  body:has(.poem-detail.open) .zf-meanings{display:none !important;}   /* the long word-meaning list stays on screen only */
+  body:has(.poem-detail.open) .poem-detail::after{content:"Zaan Farzaan \00B7 zaanfarzaan.site"; display:block; margin-top:1.2rem; padding-top:.6rem; border-top:1px solid #999; font-size:9pt; color:#555; text-align:center;}
+  @page{margin:16mm 14mm;}
+}

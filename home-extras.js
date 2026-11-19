@@ -149,6 +149,7 @@
   var MOOD = window.ZF_MOOD || {};
   var MOODS = window.ZF_MOODS || [];
   var curMood = null, curPick = null;
+  var MOOD_SLUG = {I: 'ishq', J: 'judai', T: 'tanhai', U: 'umeed', Z: 'zindagi'};   /* -> mood-<slug>.html (built by tools-DO-NOT-UPLOAD/build_mood_pages.py) */
   function lines(html){
     var doc = new DOMParser().parseFromString(html, 'text/html'), ls = doc.querySelectorAll('.line'), out = [];
     if(ls.length){ for(var i=0;i<ls.length;i++) out.push(ls[i].textContent); }
@@ -185,8 +186,10 @@
       more.addEventListener('click', function(){ curPick = pickSher(curMood); renderMood(); });
       row.appendChild(more);
       row.appendChild(link(g.id + '.html', null, tr('पूरी ग़ज़ल पढ़ें', 'Read the full ghazal', 'پوری غزل پڑھیں')));
+      if(MOOD_SLUG[curMood]) row.appendChild(link('mood-' + MOOD_SLUG[curMood] + '.html', null, tr('इस मूड के सारे शेर', 'All shers of this mood', 'اس موڈ کے سب اشعار')));
       card.appendChild(row); box.appendChild(card);
     }
+    var allRow = el('div', 'zf-links'); allRow.appendChild(link('moods.html', null, tr('सारे मूड देखें', 'Browse all moods', 'تمام موڈ دیکھیں'))); box.appendChild(allRow);   /* v65: mood pages */
     box.hidden = false;
   }
 
