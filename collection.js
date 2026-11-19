@@ -331,6 +331,7 @@
         '.zf-lt-none{text-align:center;color:var(--text-muted);font-style:italic;padding:1.4rem 6vw .6rem}' +
         '.zf-lt-none button{display:block;margin:.6rem auto 0;font-style:normal}' +
         '.poem-item-meta.zf-cc{margin-top:.15rem;color:var(--gold)}' +
+        '.zf-lt-moods{margin-top:1rem}.zf-lt-chip{text-decoration:none;display:inline-flex;align-items:center}' +
         '@media (max-width:520px){.zf-lt{margin-top:-1.8rem}.zf-lt-sel{max-width:none}}';
       document.head.appendChild(el);
     }
@@ -338,6 +339,17 @@
       return '<button type="button" class="zf-lt-chip" data-k="' + key + '" aria-pressed="' + (on ? 'true' : 'false') + '">' + label + (n != null ? '<small>' + n + '</small>' : '') + '</button>';
     }
     function nCount(fn){ let n = 0; ITEMS.forEach(function(it){ if(fn(it)) n++; }); return n; }
+    /* v65: "read by mood" row — links to the mood pages (ghazals only; built by tools-DO-NOT-UPLOAD/build_mood_pages.py) */
+    const MOOD_LINKS = [['ishq', '\u0907\u0936\u094D\u0915\u093C', 'Love', '\u0639\u0634\u0642'], ['judai', '\u091C\u0941\u0926\u093E\u0908', 'Separation', '\u062C\u062F\u0627\u0626\u06CC'],
+      ['tanhai', '\u0924\u0928\u094D\u0939\u093E\u0908', 'Loneliness', '\u062A\u0646\u06C1\u0627\u0626\u06CC'], ['umeed', '\u0909\u092E\u094D\u092E\u0940\u0926', 'Hope', '\u0627\u0645\u06CC\u062F'],
+      ['zindagi', '\u091C\u093C\u093F\u0902\u0926\u0917\u0940 \u00B7 \u0908\u092E\u093E\u0928', 'Life & Faith', '\u0632\u0646\u062F\u06AF\u06CC \u00B7 \u0627\u06CC\u0645\u0627\u0646']];
+    function moodRow(){
+      if(IS_NAZM) return '';
+      const i = lang() === 'en' ? 2 : (lang() === 'ur' ? 3 : 1);
+      const lab = lang() === 'en' ? 'Read by mood' : (lang() === 'ur' ? '\u0645\u0648\u0688 \u06A9\u06D2 \u0645\u0637\u0627\u0628\u0642 \u067E\u0691\u06BE\u06CC\u06BA' : '\u092E\u0942\u0921 \u0938\u0947 \u092A\u0922\u093C\u0947\u0902');
+      return '<div class="zf-lt-moods"><span class="zf-lt-k">' + lab + '</span><div class="zf-lt-chips">' +
+        MOOD_LINKS.map(function(m){ return '<a class="zf-lt-chip" href="mood-' + m[0] + '.html">' + m[i] + '</a>'; }).join('') + '</div></div>';
+    }
     function render(shown){
       if(!bar) return;
       const total = ITEMS.length, a = active();
@@ -365,6 +377,7 @@
           ((st.sort === 'comments' && (countsBusy || countsErr || (counts && !Object.keys(counts).length))) ? '<p class="zf-lt-note">' + (countsBusy ? ltT('wait') : (countsErr ? ltT('ccErr') : ltT('ccNone'))) + '</p>' : '') +
           ((filtersOn || st.sort !== 'num') ? '<div class="zf-lt-foot"><button type="button" class="zf-lt-clear" id="zf-lt-clear">' + ltT('clear') + '</button></div>' : '') +
         '</div>' +
+        moodRow() +
         (nothing ? '<div class="zf-lt-none">' + ltNone() + '<button type="button" class="zf-lt-clear" id="zf-lt-clear2">' + ltT('clear') + '</button></div>' : '');
       wire();
       if(fk){ const t = document.getElementById(fk) || bar.querySelector('[data-k="' + fk + '"]'); if(t && t.focus) t.focus({preventScroll: true}); }

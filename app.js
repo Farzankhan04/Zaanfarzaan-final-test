@@ -341,11 +341,31 @@ function buildExportCard(card){
   return wrap;
 }
 
+/* v65: html2canvas (~200 KB, only needed for the "download as image" buttons) is no longer loaded with every page — it is fetched the first
+   time someone taps a download button. cb(true) when it is ready, cb(false) if it could not be loaded (offline etc.). */
+window.ZF_loadH2C = (function(){
+  var waiting = null;
+  return function(cb){
+    if(typeof window.html2canvas !== 'undefined') return cb(true);
+    if(waiting){ waiting.push(cb); return; }
+    waiting = [cb];
+    var done = function(ok){ var q = waiting; waiting = null; q.forEach(function(f){ f(ok); }); };
+    var s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    s.onload = function(){ done(typeof window.html2canvas !== 'undefined'); };
+    s.onerror = function(){ done(false); };
+    document.head.appendChild(s);
+  };
+})();
+
 function downloadCard(card, btn){
-  /* html2canvas is loaded async (so it can never block the page); if someone taps
-     Download before it has arrived, fail politely instead of throwing. */
-  if(typeof html2canvas === 'undefined'){ showToast(window.ZF_T('downloadFailed')); return; }
   if(btn) btn.classList.add('loading');
+  window.ZF_loadH2C(function(ok){
+    if(!ok){ if(btn) btn.classList.remove('loading'); showToast(window.ZF_T('downloadFailed')); return; }
+    downloadCardNow(card, btn);
+  });
+}
+function downloadCardNow(card, btn){
 
   const stage = document.createElement('div');
   stage.className = 'export-stage';
@@ -873,16 +893,29 @@ document.addEventListener('play', function(e){
 })();
 
 
-/* AUDIO COUNT — number of nazm audios that exist (audio-nazm-1.mp3 ... audio-nazm-N.mp3). Change ONLY this number when a new audio is added;
-   the home page and the nazm pages read it from here. */
-window.ZF_AUDIO_COUNT = 10;
-/* Ghazal audios that exist (audio-ghazal-N.mp3) -> add the ghazal number here when a new one is added. Newest audio (home "New audio" card):
-   ZF_NEWEST_AUDIO. Recitation credits: ghazal 8 is recited by Farheen Nazar (Instagram link below); every nazm is recited by Zaan Farzaan. */
-window.ZF_GHAZAL_AUDIOS = [2, 4, 7, 8, 10, 24];
-/* the recently added audios (home "New audio" strip + the NEW tag on the Audio page), newest first */
-window.ZF_NEW_AUDIOS = [{kind: 'ghazal', n: 2}, {kind: 'ghazal', n: 4}, {kind: 'ghazal', n: 7}, {kind: 'ghazal', n: 10}, {kind: 'ghazal', n: 24}];
-window.ZF_NEWEST_AUDIO = window.ZF_NEW_AUDIOS[0];
+/* ===== AUDIO LIST — the ONE place to edit when an audio is added or removed (v65) =====
+   One line per audio: {k: 'ghazal' | 'nazm', n: <number>, isNew: 1 (optional)}.  Newest first: the "isNew" ones, in this order, make the home "New audio" strip
+   and the NEW tag on the Audio page.  Recitation credits (other than Zaan Farzaan) go in ZF_AUDIO_CREDIT below.
+   After editing: run  python3 tools-DO-NOT-UPLOAD/build_audio_pages.py  (Claude does this) — it rewrites the three Audio pages from this list.
+   Everything else (home, ghazal / nazm lists badges, nazm pages, offline list) is derived from it automatically. */
+/* ZF_AUDIOS:start */
+window.ZF_AUDIOS = [
+  {k: 'ghazal', n: 2,  isNew: 1},
+  {k: 'ghazal', n: 4,  isNew: 1},
+  {k: 'ghazal', n: 7,  isNew: 1},
+  {k: 'ghazal', n: 10, isNew: 1},
+  {k: 'ghazal', n: 24, isNew: 1},
+  {k: 'ghazal', n: 8},
+  {k: 'nazm', n: 1}, {k: 'nazm', n: 2}, {k: 'nazm', n: 3}, {k: 'nazm', n: 4}, {k: 'nazm', n: 5},
+  {k: 'nazm', n: 6}, {k: 'nazm', n: 7}, {k: 'nazm', n: 8}, {k: 'nazm', n: 9}, {k: 'nazm', n: 10}
+];
 window.ZF_AUDIO_CREDIT = {ghazal: {8: {name: ['फ़रहीन नज़र', 'Farheen Nazar', 'فرحین نظر'], url: 'https://www.instagram.com/ehsaas_sukhan'}}};
+/* ZF_AUDIOS:end */
+/* derived (do not edit): nazm audios exist for 1..ZF_AUDIO_COUNT; ghazal audio numbers; the "new" strip */
+window.ZF_AUDIO_COUNT = window.ZF_AUDIOS.filter(function(o){ return o.k === 'nazm'; }).reduce(function(m, o){ return Math.max(m, o.n); }, 0);
+window.ZF_GHAZAL_AUDIOS = window.ZF_AUDIOS.filter(function(o){ return o.k === 'ghazal'; }).map(function(o){ return o.n; }).sort(function(a, b){ return a - b; });
+window.ZF_NEW_AUDIOS = window.ZF_AUDIOS.filter(function(o){ return o.isNew; }).map(function(o){ return {kind: o.k, n: o.n}; });
+window.ZF_NEWEST_AUDIO = window.ZF_NEW_AUDIOS[0];
 
 /* NAZM AUDIO — loads nazm-audio.js (audio player under each nazm) */
 (function(){
