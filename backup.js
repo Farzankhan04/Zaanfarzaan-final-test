@@ -8,7 +8,7 @@
    - The admin session key is never included. */
 (function(){
   var page = document.body && document.body.getAttribute('data-page');
-  if(page !== 'favorites' && page !== 'explore') return;
+  if(page !== 'favorites' && page !== 'play') return;
   var main = document.getElementById('main-content'); if(!main) return;
 
   var ALLOW = {

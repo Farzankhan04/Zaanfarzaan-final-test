@@ -96,6 +96,19 @@ window.ZF_NEWSLETTER_USERNAME = 'Zaanfarzaan';
     window.addEventListener('pageshow', function(){ if(links.classList.contains('open')) setMenu(false); });
     document.addEventListener('touchmove', function(e){ if(links.classList.contains('open') && !links.contains(e.target)) e.preventDefault(); }, {passive:false});
   }
+  /* v68: EXPLORE (the Instagram-style feed) — added right after Home; the bottom bar below is built from this link too. */
+  (function(){
+    var home = document.querySelector('.navlinks a[data-page="home"]');
+    if(home && !document.querySelector('.navlinks a[data-page="explore"]')){
+      var cur = window.ZF_LANG, suf = cur === 'en' ? '-en' : (cur === 'ur' ? '-ur' : '');
+      var a = document.createElement('a');
+      a.href = 'explore' + suf + '.html'; a.setAttribute('data-page', 'explore');
+      a.setAttribute('data-hi-href', 'explore.html'); a.setAttribute('data-en-href', 'explore-en.html'); a.setAttribute('data-ur-href', 'explore-ur.html');
+      a.setAttribute('data-hi', 'एक्सप्लोर'); a.setAttribute('data-en', 'Explore'); a.setAttribute('data-ur', 'ایکسپلور');
+      a.textContent = cur === 'en' ? 'Explore' : (cur === 'ur' ? 'ایکسپلور' : 'एक्सप्लोर');
+      home.parentNode.insertBefore(a, home.nextSibling);
+    }
+  })();
   /* Sher Wall link — added here so none of the 50+ pages has to be edited. */
   (function(){
     var aud = document.querySelector('.navlinks a[data-page="audios"]');
@@ -121,10 +134,10 @@ window.ZF_NEWSLETTER_USERNAME = 'Zaanfarzaan';
     var favA = nl.querySelector(':scope > a.nav-fav'); if(favA) items.push(favA);
     if(items.length < 2) return;
     var ex = document.createElement('a');
-    ex.href = 'explore' + suf + '.html'; ex.setAttribute('data-page', 'explore');
-    ex.setAttribute('data-hi-href', 'explore.html'); ex.setAttribute('data-en-href', 'explore-en.html'); ex.setAttribute('data-ur-href', 'explore-ur.html');
-    ex.setAttribute('data-hi', 'एक्सप्लोर'); ex.setAttribute('data-en', 'Explore'); ex.setAttribute('data-ur', 'ایکسپلور');
-    ex.textContent = cur === 'en' ? 'Explore' : (cur === 'ur' ? 'ایکسپلور' : 'एक्सप्लोर');
+    ex.href = 'play' + suf + '.html'; ex.setAttribute('data-page', 'play');      /* v68: the old "Explore" page (game, quiz, badges, favourites) is now "Play"; Explore is the new feed */
+    ex.setAttribute('data-hi-href', 'play.html'); ex.setAttribute('data-en-href', 'play-en.html'); ex.setAttribute('data-ur-href', 'play-ur.html');
+    ex.setAttribute('data-hi', 'खेल'); ex.setAttribute('data-en', 'Play'); ex.setAttribute('data-ur', 'کھیل');
+    ex.textContent = cur === 'en' ? 'Play' : (cur === 'ur' ? 'کھیل' : 'खेल');
     var wrap = document.createElement('div'); wrap.className = 'nav-more';
     var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'nav-more-btn';
     btn.setAttribute('aria-haspopup', 'true'); btn.setAttribute('aria-expanded', 'false');
@@ -141,7 +154,7 @@ window.ZF_NEWSLETTER_USERNAME = 'Zaanfarzaan';
     document.addEventListener('click', function(e){ if(!wrap.contains(e.target)) setOpen(false); });
     document.addEventListener('keydown', function(e){ if(e.key === 'Escape') setOpen(false); });
     var here0 = document.body.getAttribute('data-page');
-    if(here0 === 'explore' || items.some(function(a){ return a.getAttribute('data-page') === here0; })) btn.classList.add('active');
+    if(here0 === 'play' || items.some(function(a){ return a.getAttribute('data-page') === here0; })) btn.classList.add('active');
   })();
   const here = document.body.getAttribute('data-page');
   document.querySelectorAll('.navlinks a').forEach(function(a){
@@ -550,7 +563,7 @@ document.addEventListener('play', function(e){
 })();
 
 
-/* v56: APP-STYLE BOTTOM BAR (phones) — Home / Ghazals / Nazms / Audio. Built from the header links so hrefs and languages always match. */
+/* v56: APP-STYLE BOTTOM BAR (phones) — Home / Explore / Ghazals / Nazms / Audio. Built from the header links so hrefs and languages always match. */
 (function(){
   if(/admin-comments/.test(location.pathname)) return;
   var nl = document.getElementById('nav-links'); if(!nl) return;
@@ -559,12 +572,13 @@ document.addEventListener('play', function(e){
     home:    S + '<path class="f" d="M4 11.4 12 4.2l8 7.2V19a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19z"/><path class="cut" d="M10 20.5v-5h4v5"/></svg>',
     ghazals: S + '<path class="f" d="M12 6.6C10.3 5.4 8 5.1 4.5 5.1v12.4c3.5 0 5.8.4 7.5 1.7 1.7-1.3 4-1.7 7.5-1.7V5.1c-3.5 0-5.8.3-7.5 1.5z"/><path class="cut" d="M12 6.6v12.6"/></svg>',
     nazms:   S + '<path class="f" d="M19.6 4.4c-6.6-.5-11.1 3-11.8 9.3L6 19.6l5.4-1.8c5.2-1.3 8.2-5.7 8.2-13.4z"/><path class="cut" d="M6 19.6l6.6-7.7"/></svg>',
+    explore: S + '<circle class="f" cx="12" cy="12" r="8.3"/><path class="cut" d="M15.9 8.1l-2.1 5.7-5.7 2.1 2.1-5.7z"/></svg>',
     audios:  S + '<path d="M4.5 14v-2a7.5 7.5 0 0 1 15 0v2"/><rect class="f" x="3.4" y="13.4" width="4.2" height="6.8" rx="1.7"/><rect class="f" x="16.4" y="13.4" width="4.2" height="6.8" rx="1.7"/></svg>'
   };
-  var DICT = { home:{hi:'होम',en:'Home',ur:'ہوم'}, ghazals:{hi:'ग़ज़लें',en:'Ghazals',ur:'غزلیں'}, nazms:{hi:'नज़्में',en:'Nazms',ur:'نظمیں'}, audios:{hi:'ऑडियो',en:'Audio',ur:'آڈیو'} };
+  var DICT = { home:{hi:'होम',en:'Home',ur:'ہوم'}, explore:{hi:'एक्सप्लोर',en:'Explore',ur:'ایکسپلور'}, ghazals:{hi:'ग़ज़लें',en:'Ghazals',ur:'غزلیں'}, nazms:{hi:'नज़्में',en:'Nazms',ur:'نظمیں'}, audios:{hi:'ऑडियो',en:'Audio',ur:'آڈیو'} };
   var bar = document.createElement('div'); bar.className = 'zf-bn'; bar.setAttribute('role', 'navigation'); bar.setAttribute('aria-label', 'Primary');
   var cur = document.body.getAttribute('data-page'), n = 0;
-  ['home','ghazals','nazms','audios'].forEach(function(p){
+  ['home','explore','ghazals','nazms','audios'].forEach(function(p){
     var src = nl.querySelector('a[data-page="' + p + '"]'); if(!src) return;
     var a = document.createElement('a'); a.href = src.getAttribute('href'); a.setAttribute('data-page', p);
     ['data-hi-href','data-en-href','data-ur-href'].forEach(function(k){ if(src.hasAttribute(k)) a.setAttribute(k, src.getAttribute(k)); });
@@ -932,7 +946,7 @@ window.ZF_NEWEST_AUDIO = window.ZF_NEW_AUDIOS[0];
   try{
     if(window.self !== window.top || /admin-comments/.test(location.pathname)) return;
     var p = document.body && document.body.getAttribute('data-page');
-    if(p === 'home' || p === 'ashaar' || p === 'ghazals' || p === 'nazms' || /\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(location.pathname) || /(^|\/)(index[^\/]*\.html)?$/.test(location.pathname)){
+    if(p === 'home' || p === 'ashaar' || p === 'explore' || p === 'ghazals' || p === 'nazms' || /\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(location.pathname) || /(^|\/)(index[^\/]*\.html)?$/.test(location.pathname)){
       var s = document.createElement('script'); s.src = 'sher-image.js?v=4'; s.defer = true; document.body.appendChild(s);
     }
   }catch(e){}

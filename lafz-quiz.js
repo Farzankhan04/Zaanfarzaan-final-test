@@ -5,7 +5,7 @@
    The glossary and the search helper (zf-find.js) are loaded only when the reader presses Start, so the Explore page stays light. */
 (function(){
   var page = document.body && document.body.getAttribute('data-page');
-  if(page !== 'explore') return;
+  if(page !== 'play') return;
   var main = document.getElementById('main-content'); if(!main) return;
 
   var KNOWN = 'zf-lafz-known', BEST = 'zf-lafz-best', QN = 10;
@@ -204,7 +204,7 @@
     var row = el('div', 'zl-row');
     row.appendChild(btn(tr('again'), 'go', startQuiz));
     var share = btn(tr('share'), '', function(){
-      var url = location.origin + '/explore.html', msg = {hi: 'मैंने ज़ान फ़रज़ान के लफ़्ज़ क्विज़ में ' + score + '/' + QN + ' लिए — आप भी आज़माइए: ', en: 'I scored ' + score + '/' + QN + ' on the Zaan Farzaan word quiz — try it: ', ur: 'میں نے زان فرزان کے لفظ کوئز میں ' + score + '/' + QN + ' لیے — آپ بھی آزمائیے: '}[lang()];
+      var url = location.origin + '/play.html', msg = {hi: 'मैंने ज़ान फ़रज़ान के लफ़्ज़ क्विज़ में ' + score + '/' + QN + ' लिए — आप भी आज़माइए: ', en: 'I scored ' + score + '/' + QN + ' on the Zaan Farzaan word quiz — try it: ', ur: 'میں نے زان فرزان کے لفظ کوئز میں ' + score + '/' + QN + ' لیے — آپ بھی آزمائیے: '}[lang()];
       if(navigator.share){ navigator.share({text: msg + url}).catch(function(){}); }
       else { try{ navigator.clipboard.writeText(msg + url); share.textContent = tr('copied'); }catch(x){} }
     });
