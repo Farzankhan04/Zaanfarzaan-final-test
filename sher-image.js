@@ -162,7 +162,10 @@
     var dl = el('button', 'zf-pic-b go', t('dl')); dl.type = 'button'; rowA.appendChild(dl);
     var sh = null;
     function blobOf(cb){ cv.toBlob(function(b){ cb(b); }, 'image/png'); }
+    /* v67 usage count: only the sher's first line is noted (never the name written on the card) */
+    function noteCard(){ try{ var pg = pages[st.p], f = typeof pg === 'string' ? pg : (Array.isArray(pg) ? pg[0] : (pg && pg.lines ? pg.lines[0] : '')); if(window.ZF_stat && f) window.ZF_stat('photocard', String(f).slice(0, 80)); }catch(e){} }
     dl.addEventListener('click', function(){
+      noteCard();
       blobOf(function(b){
         if(!b){ alert(t('fail')); return; }
         var a = document.createElement('a'), u = URL.createObjectURL(b); a.href = u; a.download = (st.name ? 'for-' + st.name.replace(/[^\w\u0900-\u097F\u0600-\u06FF]+/g, '-') + '-' : '') + 'zaan-farzaan-sher.png'; document.body.appendChild(a); a.click(); a.remove();
@@ -172,6 +175,7 @@
     if(navigator.canShare && navigator.share){
       sh = el('button', 'zf-pic-b', t('share')); sh.type = 'button'; rowA.appendChild(sh);
       sh.addEventListener('click', function(){
+        noteCard();
         blobOf(function(b){
           if(!b) return;
           var f = new File([b], 'zaan-farzaan-sher.png', {type: 'image/png'});

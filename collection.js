@@ -88,7 +88,7 @@
   let lastQuery = '';
   function loadFind(){
     if(window.ZFS){ window.ZFS.ready(function(){ if(searchInput && searchInput.value) renderList(searchInput.value); }); return; }
-    const sc = document.createElement('script'); sc.src = 'zf-find.js?v=1';
+    const sc = document.createElement('script'); sc.src = 'zf-find.js?v=2';
     sc.onload = function(){ window.ZFS.ready(function(){ if(searchInput && searchInput.value) renderList(searchInput.value); }); };
     document.head.appendChild(sc);
   }
@@ -503,6 +503,7 @@
       listEl.appendChild(a);
     });
     noResultsEl.classList.toggle('show', q !== '' && rows.length === 0 && !LT.active());
+    if(q !== '' && rows.length === 0 && !LT.active() && window.ZF_stat) window.ZF_stat('search_miss', q);      /* v67: what people look for and do not find */
     LT.afterRender(rows.length);
   }
 

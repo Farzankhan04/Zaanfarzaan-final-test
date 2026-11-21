@@ -12,8 +12,8 @@
   var main = document.getElementById('main-content'); if(!main) return;
 
   var ALLOW = {
-    'zf-favorite-poems': 'list', 'zf-read-poems': 'list', 'zf-heard-audio': 'list', 'zf-visit-days': 'list',
-    'zf-best-streak': 'max', 'zf-game-wins': 'max', 'zf-star-best': 'max',
+    'zf-favorite-poems': 'list', 'zf-read-poems': 'list', 'zf-heard-audio': 'list', 'zf-visit-days': 'list', 'zf-lafz-known': 'list',
+    'zf-best-streak': 'max', 'zf-game-wins': 'max', 'zf-star-best': 'max', 'zf-lafz-best': 'max',
     'zf-last-read': 'last',
     'zf-poem-script': 'pref', 'zf-theme': 'pref', 'zf-lang': 'pref', 'zf-cname': 'pref'
   };
@@ -40,6 +40,10 @@
     saved:   {hi: 'फ़ाइल सहेज ली गई ✓', en: 'File saved ✓', ur: 'فائل محفوظ ہو گئی ✓'},
     empty:   {hi: 'अभी सहेजने लायक़ कुछ नहीं है — पहले कोई शेर पसंद कीजिए या कुछ पढ़िए।', en: 'There is nothing to save yet — like a sher or read something first.', ur: 'ابھی محفوظ کرنے کے لیے کچھ نہیں — پہلے کوئی شعر پسند کیجیے یا کچھ پڑھیے۔'},
     bad:     {hi: 'ये बैकअप पहचाना नहीं गया। पूरा कोड चिपकाइए या वही फ़ाइल चुनिए जो यहीं से सहेजी थी।', en: 'That backup was not recognised. Paste the whole code, or choose the file saved from here.', ur: 'یہ بیک اپ پہچانا نہیں گیا۔ پورا کوڈ چسپاں کیجیے یا وہی فائل چنیے جو یہیں سے محفوظ کی تھی۔'},
+    stats:   {hi: 'मेरे इस्तेमाल को गुमनाम गिनती में शामिल रखिए (कौन-सा शेर या ऑडियो पसंद आ रहा है) — नाम, ईमेल या कोई पहचान नहीं ली जाती।',
+              en: 'Count my visit anonymously (which sher or audio is popular) — no name, e-mail or ID is ever taken.',
+              ur: 'میرے استعمال کو گمنام گنتی میں شامل رکھیے (کون سا شعر یا آڈیو پسند آ رہا ہے) — نام، ای میل یا کوئی شناخت نہیں لی جاتی۔'},
+    statsDnt:{hi: 'आपके ब्राउज़र में “Do Not Track” चालू है, इसलिए कुछ भी गिना नहीं जा रहा।', en: 'Your browser has “Do Not Track” on, so nothing is counted.', ur: 'آپ کے براؤزر میں “Do Not Track” چالو ہے، اس لیے کچھ بھی گنا نہیں جا رہا۔'},
     none:    {hi: 'कुछ नया जुड़ने को नहीं मिला — सब पहले से यहाँ है।', en: 'Nothing new to add — everything was already here.', ur: 'کچھ نیا جوڑنے کو نہیں ملا — سب پہلے سے یہاں ہے۔'}
   };
   function tr(k){ return T[k][lang()]; }
@@ -152,6 +156,7 @@
     '.zf-bk textarea{width:100%;box-sizing:border-box;min-height:84px;padding:.6rem .7rem;border-radius:4px;border:1px solid rgba(var(--zf-rgb),.35);background:var(--ink-deep,#0a0a0a);color:var(--text-light);font:.8rem/1.5 monospace;direction:ltr}' +
     '.zf-bk-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;margin-top:.6rem}' +
     '.zf-bk .zf-bk-pick{position:relative;display:inline-flex;align-items:center}.zf-bk .zf-bk-pick input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}' +
+    '.zf-bk .zf-bk-stat{display:flex;gap:.55rem;align-items:flex-start;margin-top:1.1rem;font-size:.8rem;line-height:1.6;color:var(--text-muted);cursor:pointer}.zf-bk .zf-bk-stat input{margin-top:.25rem;flex:none}' +
     '.zf-bk .zf-bk-msg{margin-top:.9rem;font-size:.88rem;color:var(--gold-soft);min-height:1.2em}.zf-bk .zf-bk-msg.bad{color:#d98a8a}';
   document.head.appendChild(css);
 
@@ -159,6 +164,8 @@
   main.appendChild(box);
   var open = false, msg = '', bad = false;
 
+  function dnt(){ return navigator.doNotTrack === '1' || window.doNotTrack === '1' || navigator.msDoNotTrack === '1' || navigator.globalPrivacyControl === true; }
+  function statsOn(){ return !dnt() && get('zf-no-stats') !== '1'; }
   function counts(){
     var f = arr('zf-favorite-poems').length, r = arr('zf-read-poems').length, d = arr('zf-visit-days').length;
     return f + ' ' + tr('fav') + ' · ' + r + ' ' + tr('read') + ' · ' + d + ' ' + tr('days');
@@ -173,6 +180,7 @@
         '<div class="zf-bk-actions"><button type="button" class="zf-bk-go" data-a="apply">' + tr('apply') + '</button>' +
         '<label class="zf-bk-pick">' + tr('orFile') + '<input type="file" id="zf-bk-file" accept=".json,.txt,application/json,text/plain"></label></div>' +
         '<p>' + tr('note') + '</p></div>' +
+      '<label class="zf-bk-stat"><input type="checkbox" id="zf-bk-stats"' + (statsOn() ? ' checked' : '') + (dnt() ? ' disabled' : '') + '> <span>' + (dnt() ? tr('statsDnt') : tr('stats')) + '</span></label>' +
       '<p class="zf-bk-msg' + (bad ? ' bad' : '') + '" role="status" aria-live="polite">' + msg + '</p>';
     wire();
   }
@@ -187,6 +195,8 @@
     setTimeout(function(){ location.reload(); }, 1600);      /* so favourites / streak on this page show the restored data */
   }
   function wire(){
+    var st = box.querySelector('#zf-bk-stats');
+    if(st) st.addEventListener('change', function(){ try{ if(st.checked) localStorage.removeItem('zf-no-stats'); else localStorage.setItem('zf-no-stats', '1'); }catch(e){} });
     box.querySelector('[data-a=file]').addEventListener('click', function(){
       var d = collect(); if(!hasAnything(d)) return say(tr('empty'), true);
       try{

@@ -56,6 +56,80 @@
     document.head.appendChild(s);
   }
 
+  /* ---- Roman spelling tolerance (v67) ----
+     People type the same Urdu word many ways: tanhai / tanhayi / tanhaee, mohabbat / muhabbat, zindagi / zindagee, khwab / khawab / khvab.
+     Every Roman word that really occurs in the ghazals and nazms is given a "sound key" (skel). A typed word is compared with those keys:
+     same key, or a key one letter away (only for words of 5+ letters) — and the REAL spellings found that way are searched too (and highlighted),
+     next to what was typed. Nothing is ever removed from the normal search, so exact searches behave exactly as before. */
+  function skel(w){
+    w = String(w).toLowerCase().replace(/[^a-z]/g, '');
+    w = w.replace(/ph/g, 'f').replace(/gh/g, 'g').replace(/q/g, 'k').replace(/w/g, 'v');
+    w = w.replace(/([aeiou])h$/, '$1');                       /* wajah = waja, allah = alla */
+    w = w.replace(/ee|ii|ie/g, 'i').replace(/oo|uu/g, 'u').replace(/aa/g, 'a');
+    w = w.replace(/([aeiou])y(?=[aeiou]|$)/g, '$1');          /* tanhayi = tanhai, hay = ha */
+    w = w.replace(/ai|ae|ei|ey/g, 'e').replace(/au|ou/g, 'o');
+    w = w.replace(/(.)\1+/g, '$1');                           /* doubled letters: mohabbat = mohabat */
+    return w;
+  }
+  /* same consonants; the two keys differ only by ONE vowel added/dropped (khwab / khawab) or an o <-> u swap (muhabbat / mohabbat).
+     e <-> i and a <-> e swaps are NOT allowed: dekha / dikha and khuda / khada are different words. */
+  function vowelEdit1(a, b){
+    var la = a.length, lb = b.length;
+    if(la === lb){
+      var d = -1;
+      for(var i = 0; i < la; i++){ if(a[i] !== b[i]){ if(d >= 0) return false; d = i; } }
+      return d >= 0 && ((a[d] === 'o' && b[d] === 'u') || (a[d] === 'u' && b[d] === 'o'));
+    }
+    if(Math.abs(la - lb) !== 1) return false;
+    var s = la > lb ? a : b, t = la > lb ? b : a;                 /* s is the longer one: dropping one VOWEL from it must give t */
+    for(var j = 1; j < s.length - 1; j++){ if('aeiou'.indexOf(s[j]) >= 0 && s.slice(0, j) + s.slice(j + 1) === t) return true; }      /* inner vowels only: mujhe / mujh, dekha / dekh are different words */
+    return false;
+  }
+  var vocab = null;        /* {bySkel: {key: [words]}, keys: [key...]} */
+  function buildVocab(){
+    var by = {}, seen = {}, texts = [];
+    function addItems(items){
+      (items || []).forEach(function(it){
+        [it.title, it.titleEn, it.firstLineEn].forEach(function(t){ if(t) texts.push(String(t)); });
+        (it.versesHtmlEn || []).forEach(function(h){ texts.push(linesOf(h).join(' ')); });     /* lines joined with a space, so words never stick together across a line break */
+      });
+    }
+    try{ if(typeof GHAZAL_ITEMS !== 'undefined') addItems(GHAZAL_ITEMS); }catch(e){}
+    try{ if(typeof NAZM_ITEMS !== 'undefined') addItems(NAZM_ITEMS); }catch(e){}
+    texts.forEach(function(t){
+      t.replace(/[-'’ʼ`]/g, ' ').split(/\s+/).forEach(function(raw){
+        var w = norm(raw); if(w.length < 4 || w.length > 14 || !/^[a-z]+$/.test(w) || seen[w]) return;
+        seen[w] = 1; var k = skel(w); (by[k] = by[k] || []).push(w);
+      });
+    });
+    vocab = {bySkel: by, keys: Object.keys(by)};
+  }
+  function similarWords(token){
+    if(token.length < 3 || !/^[a-z]+$/.test(token)) return [];
+    if(!vocab) buildVocab();
+    var k = skel(token), out = [];
+    /* an alternative that merely contains the typed word (dost -> dosti) is already found by the normal substring search, so it is skipped */
+    function take(list){ list.forEach(function(w){ if(w !== token && w.indexOf(token) < 0 && out.indexOf(w) < 0 && out.length < 8) out.push(w); }); }
+    if(vocab.bySkel[k]) take(vocab.bySkel[k]);
+    if(k.length >= 5){      /* one vowel off (khwab / khawab, khush / khosh): only keys with exactly the same consonants, so kharaab never stands in for khwab */
+      var kc = k.replace(/[aeiou]/g, '');
+      for(var i = 0; i < vocab.keys.length && out.length < 10; i++){ var kk = vocab.keys[i]; if(kk !== k && kk.replace(/[aeiou]/g, '') === kc && vowelEdit1(k, kk)) take(vocab.bySkel[kk]); }
+    }
+    return out;
+  }
+  function addSimilar(qn, vars){
+    if(!qn || !/^[a-z0-9 ]+$/.test(qn)) return 0;
+    var toks = qn.split(' '), added = 0;
+    toks.forEach(function(tok, ti){
+      similarWords(tok).forEach(function(alt){
+        if(added >= 24) return;
+        var v = toks.length === 1 ? alt : toks.map(function(x, i){ return i === ti ? alt : x; }).join(' ');
+        if(vars.indexOf(v) < 0){ vars.push(v); added++; }
+      });
+    });
+    return added;
+  }
+
   /* ---- query ---- */
   function parse(q){
     var qn = norm(q), vars = qn ? [qn] : [], g = [];
@@ -67,7 +141,8 @@
         if(hit){ g.push(x.e); x.vars.forEach(function(v){ if(v.length >= 2 && vars.indexOf(v) < 0) vars.push(v); }); }
       });
     }
-    return {qn: qn, vars: vars, gloss: g, raw: q};
+    var similar = addSimilar(qn, vars);      /* v67: other spellings of the same Roman word */
+    return {qn: qn, vars: vars, gloss: g, raw: q, similar: similar};
   }
   function hasAny(text, vars){ for(var i = 0; i < vars.length; i++) if(text.indexOf(vars[i]) !== -1) return true; return false; }
 
@@ -187,5 +262,5 @@
     '.zf-snip-more,.zf-snip-gl{margin-top:.3rem;font-size:.76rem;opacity:.6}';
   document.head.appendChild(st);
 
-  window.ZFS = {norm: norm, parse: parse, match: match, snippets: snippets, highlightHtml: highlightHtml, highlightIn: highlightIn, ready: ready, cache: cache};
+  window.ZFS = {skel: skel, norm: norm, parse: parse, match: match, snippets: snippets, highlightHtml: highlightHtml, highlightIn: highlightIn, ready: ready, cache: cache};
 })();

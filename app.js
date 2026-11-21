@@ -431,7 +431,7 @@ function attachCardActions(root){
     shareBtn.className = 'share-btn';
     shareBtn.setAttribute('aria-label', window.ZF_T('shareAria'));
     shareBtn.innerHTML = shareIconSvg;
-    shareBtn.addEventListener('click', function(e){ e.stopPropagation(); shareCard(card); });
+    shareBtn.addEventListener('click', function(e){ e.stopPropagation(); if(window.ZF_stat) window.ZF_stat('share', card.id); shareCard(card); });
     card.appendChild(shareBtn);
 
     const dlBtn = document.createElement('button');
@@ -439,7 +439,7 @@ function attachCardActions(root){
     dlBtn.className = 'download-btn';
     dlBtn.setAttribute('aria-label', window.ZF_T('downloadAria'));
     dlBtn.innerHTML = downloadIconSvg;
-    dlBtn.addEventListener('click', function(e){ e.stopPropagation(); downloadCard(card, dlBtn); });
+    dlBtn.addEventListener('click', function(e){ e.stopPropagation(); if(window.ZF_stat) window.ZF_stat('download', card.id); downloadCard(card, dlBtn); });
     card.appendChild(dlBtn);
 
     const copyBtn = document.createElement('button');
@@ -447,7 +447,7 @@ function attachCardActions(root){
     copyBtn.className = 'copy-btn';
     copyBtn.setAttribute('aria-label', window.ZF_T('copyAria'));
     copyBtn.innerHTML = copyIconSvg;
-    copyBtn.addEventListener('click', function(e){ e.stopPropagation(); copyCardText(card, copyBtn); });
+    copyBtn.addEventListener('click', function(e){ e.stopPropagation(); if(window.ZF_stat) window.ZF_stat('copy', card.id); copyCardText(card, copyBtn); });
     card.appendChild(copyBtn);
 
     if(card.id){
@@ -465,7 +465,7 @@ function attachCardActions(root){
         e.stopPropagation();
         var justFavorited = zfToggleFavorite(card.id);
         syncFavBtn();
-        if(justFavorited) zfSealPop(favBtn);
+        if(justFavorited){ zfSealPop(favBtn); if(window.ZF_stat) window.ZF_stat('fav', card.id); }
       });
       card.appendChild(favBtn);
     }
@@ -933,7 +933,7 @@ window.ZF_NEWEST_AUDIO = window.ZF_NEW_AUDIOS[0];
     if(window.self !== window.top || /admin-comments/.test(location.pathname)) return;
     var p = document.body && document.body.getAttribute('data-page');
     if(p === 'home' || p === 'ashaar' || p === 'ghazals' || p === 'nazms' || /\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(location.pathname) || /(^|\/)(index[^\/]*\.html)?$/.test(location.pathname)){
-      var s = document.createElement('script'); s.src = 'sher-image.js?v=3'; s.defer = true; document.body.appendChild(s);
+      var s = document.createElement('script'); s.src = 'sher-image.js?v=4'; s.defer = true; document.body.appendChild(s);
     }
   }catch(e){}
 })();
@@ -957,7 +957,7 @@ window.ZF_NEWEST_AUDIO = window.ZF_NEW_AUDIOS[0];
     var m = /[?&]q=([^&]+)/.exec(location.search);
     if(!m || !/\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(location.pathname)) return;
     var q = decodeURIComponent(m[1].replace(/\+/g, ' ')), vm = /[?&]v=(\d+)/.exec(location.search), vi = vm ? +vm[1] : null;
-    var s = document.createElement('script'); s.src = 'zf-find.js?v=1';
+    var s = document.createElement('script'); s.src = 'zf-find.js?v=2';
     s.onload = function(){
       window.ZFS.ready(function(){
         var go = function(){ var c = document.querySelector('.card.manuscript'); if(c) window.ZFS.highlightIn(c, window.ZFS.parse(q), true, vi); };
@@ -1301,4 +1301,60 @@ window.ZF_NEWEST_AUDIO = window.ZF_NEW_AUDIOS[0];
     if(/admin-comments|offline/.test(location.pathname)) return;
     var s = document.createElement('script'); s.src = 'reader-tools.js?v=3'; s.defer = true; document.body.appendChild(s);
   }catch(e){}
+})();
+
+/* =====================================================================================================
+   ANONYMOUS USAGE COUNTS (v67) — private to the site owner; nothing is shown to visitors.
+   window.ZF_stat(kind, key) sends one small row {kind, key, lang} to the Supabase table zf_events (see tools-DO-NOT-UPLOAD/supabase-insights.sql).
+   NOT collected: no name, e-mail, phone, IP, device id, cookie or user id. A row is only "which poem / audio / word was used, in which language, when".
+   Kinds: audio_play, audio_done, fav, share, download, copy, photocard, search_miss, offline_save, quiz_done.
+   Switched off for a visitor by: Do-Not-Track / Global Privacy Control in the browser, or the "usage counts" tick on the Backup & Restore card (zf-no-stats).
+   Each kind+key is counted once per visit (session) and at most 60 rows are sent per visit, so nobody can inflate the numbers by tapping.
+   Read it on admin-insights.html (login with the admin e-mail, like admin-comments.html). Remove this whole block to stop collecting.
+   ===================================================================================================== */
+(function(){
+  var URL_ = 'https://silqtikgdywjzebdehai.supabase.co/rest/v1/zf_events', KEY_ = 'sb_publishable_2GYkJE2I5Qtl2eSbDFcDvg_JI9Ha4t5';
+  var KINDS = {audio_play: 1, audio_done: 1, fav: 1, share: 1, download: 1, copy: 1, photocard: 1, search_miss: 1, offline_save: 1, quiz_done: 1};
+  var MAX_PER_VISIT = 60, queue = [], flushTimer = null, missTimer = null, seen = null, count = null;
+  function optedOut(){
+    try{ if(localStorage.getItem('zf-no-stats') === '1') return true; }catch(e){}
+    return navigator.doNotTrack === '1' || window.doNotTrack === '1' || navigator.msDoNotTrack === '1' || navigator.globalPrivacyControl === true;
+  }
+  function load(){ if(seen) return; try{ seen = JSON.parse(sessionStorage.getItem('zf-stat-seen') || '{}'); count = parseInt(sessionStorage.getItem('zf-stat-n') || '0', 10) || 0; }catch(e){ seen = {}; count = 0; } }
+  function save(){ try{ sessionStorage.setItem('zf-stat-seen', JSON.stringify(seen)); sessionStorage.setItem('zf-stat-n', String(count)); }catch(e){} }
+  function clean(kind, key){
+    key = String(key == null ? '' : key).replace(/\s+/g, ' ').trim();
+    if(kind === 'search_miss'){
+      key = key.toLowerCase();
+      if(key.length < 3 || /@/.test(key) || /\d{7,}/.test(key.replace(/[\s-]/g, '')) || /https?:|www\./.test(key)) return null;     /* anything that looks like an e-mail, phone number or link is never stored */
+    }
+    return key.slice(0, 80);
+  }
+  function flush(){
+    flushTimer = null; if(!queue.length) return;
+    var rows = queue; queue = [];
+    try{ fetch(URL_, {method: 'POST', keepalive: true, headers: {'apikey': KEY_, 'Content-Type': 'application/json', 'Prefer': 'return=minimal'}, body: JSON.stringify(rows)}).catch(function(){}); }catch(e){}
+  }
+  function push(kind, key){
+    load(); var id = kind + '|' + key;
+    if(seen[id] || count >= MAX_PER_VISIT) return;
+    seen[id] = 1; count++; save();
+    queue.push({kind: kind, key: key, lang: (window.ZF_LANG === 'en' || window.ZF_LANG === 'ur' || window.ZF_LANG === 'hi') ? window.ZF_LANG : ''});
+    if(!flushTimer) flushTimer = setTimeout(flush, 2500);
+  }
+  window.ZF_stat = function(kind, key){
+    try{
+      if(!KINDS[kind] || optedOut()) return;
+      var k = clean(kind, key); if(k === null) return;
+      if(kind === 'search_miss'){ clearTimeout(missTimer); missTimer = setTimeout(function(){ push(kind, k); }, 1600); return; }     /* only the final query of a typing burst */
+      push(kind, k);
+    }catch(e){}
+  };
+  window.addEventListener('pagehide', flush);
+  document.addEventListener('visibilitychange', function(){ if(document.visibilityState === 'hidden') flush(); });
+
+  /* every recording played on any page (home cards, Audio page, poem pages): started / listened to the end */
+  function audioKey(a){ var m = /(audio-(?:ghazal|nazm)-\d{1,3})\.mp3/.exec((a && (a.currentSrc || a.src)) || ''); return m ? m[1] : null; }
+  document.addEventListener('play', function(e){ var k = e.target && e.target.tagName === 'AUDIO' && audioKey(e.target); if(k) window.ZF_stat('audio_play', k); }, true);
+  document.addEventListener('ended', function(e){ var k = e.target && e.target.tagName === 'AUDIO' && audioKey(e.target); if(k) window.ZF_stat('audio_done', k); }, true);
 })();

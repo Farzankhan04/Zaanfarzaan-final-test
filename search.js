@@ -100,7 +100,7 @@
   /* ZFS (zf-find.js) does the real matching: any word or sher, in Hindi/Roman/Urdu spelling, plus meanings from the glossary. */
   function loadFind(cb){
     if(window.ZFS){ cb(); return; }
-    var s = document.createElement('script'); s.src = 'zf-find.js?v=1'; s.onload = cb; document.head.appendChild(s);
+    var s = document.createElement('script'); s.src = 'zf-find.js?v=2'; s.onload = cb; document.head.appendChild(s);
   }
   loadFind(function(){ window.ZFS.ready(function(){ if(input.value) render(input.value); }); });
 
@@ -151,6 +151,7 @@
     var all = pageHits.concat(titleHits.map(function(x){ return x.row; }), bodyHits.map(function(x){ return x.row; })).slice(0, MAX_RESULTS);
     all.forEach(function(row){ resultsEl.appendChild(row); });
     noResultsEl.classList.toggle('show', all.length === 0);
+    if(all.length === 0 && window.ZF_stat) window.ZF_stat('search_miss', query);      /* v67: what people look for and do not find */
   }
 
   input.addEventListener('input', function(e){ render(e.target.value); });
