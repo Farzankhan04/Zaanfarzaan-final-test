@@ -2131,3 +2131,8 @@ html[data-theme="light"] .zf-mp-seek::-moz-range-thumb{border-color:#f7f2e6;}
 .about-cta-link{display:inline-block; padding:.65rem 1.3rem; border:1px solid rgba(var(--zf-rgb),.5); border-radius:999px; color:var(--text-light); text-decoration:none; font-size:.95rem; transition:background .2s,border-color .2s;}
 .about-cta-link:hover{background:rgba(var(--zf-rgb),.12); border-color:var(--gold);}
 .meet-poet-invite{display:inline-block; margin-top:.7rem;}
+
+/* v69 — About page: the sher in the middle stays centred in every language and size.
+   (.about-page p is justified; a justified one-line block sits against the left edge, so the sher lines are centred explicitly.) */
+.about-page .zf-sher-box, .about-page .zf-sher-lines, .about-page .zf-sher-lines .zf-sl{text-align:center !important; text-align-last:center !important;}
+.about-page .zf-sher-box a, .about-page .zf-sher-box .zf-sher-read{display:inline-block;}
