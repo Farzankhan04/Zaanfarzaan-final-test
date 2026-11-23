@@ -2136,3 +2136,8 @@ html[data-theme="light"] .zf-mp-seek::-moz-range-thumb{border-color:#f7f2e6;}
    (.about-page p is justified; a justified one-line block sits against the left edge, so the sher lines are centred explicitly.) */
 .about-page .zf-sher-box, .about-page .zf-sher-lines, .about-page .zf-sher-lines .zf-sl{text-align:center !important; text-align-last:center !important;}
 .about-page .zf-sher-box a, .about-page .zf-sher-box .zf-sher-read{display:inline-block;}
+
+
+/* v70 — home gallery: the 5 night photos no longer all load with the page. home-carousel.js adds html.zf-lazy-sgc, lights the FIRST slide at once (.zf-lit)
+   and the other four a moment after the page has loaded. Without that class (old script) everything works as before. */
+html.zf-lazy-sgc .sher-carousel-slide:not(.zf-lit){background-image:none !important; background-color:#1b1a18;}

@@ -9,14 +9,19 @@
    WHAT IT NEVER TOUCHES: Supabase (comments, stats), Buttondown, the admin pages, anything that is not GET.
    WHEN YOU CHANGE FILES: pages and files update by themselves while online. Only change CACHE below (zf-v1 -> zf-v2) if you also
    change the PRECACHE list or want every phone to throw away all saved copies. */
-var CACHE = 'zf-v2';
+var CACHE = 'zf-v3';
 var AUDIO = 'zf-audio-v1';      /* saved-for-offline recordings (filled by audio-offline.js; never deleted by an update) */
-var PRECACHE = ['/', '/index.html', '/index-en.html', '/index-ur.html', '/ghazals.html', '/ghazals-en.html', '/ghazals-ur.html',
-  '/nazms.html', '/nazms-en.html', '/nazms-ur.html', '/audios.html', '/audios-en.html', '/audios-ur.html', '/about.html', '/offline.html',
-  '/style.css', '/app.js', '/i18n.js', '/collection.js', '/search.js', '/home-features.js', '/home-carousel.js', '/home-extras.js', '/mood-data.js', '/sher-image.js', '/lafz.js', '/zf-find.js', '/lafz-data.js', '/lafz-today.js', '/audio-shell.js', '/reader-tools.js', '/logo-dark.png', '/related-data.js', '/ashaar.js', '/audios.js', '/audio-skin.js', '/audio-library.js', '/audio-offline.js', '/comments.js',
-  '/ghazals-data.js', '/nazms-data.js', '/playfair-display-600.woff2', '/logo.png', '/favicon.ico', '/icon-192.png', '/manifest.json'];
-for(var i = 1; i <= 40; i++) PRECACHE.push('/ghazal-' + i + '.html');
-for(var j = 1; j <= 10; j++) PRECACHE.push('/nazm-' + j + '.html');
+/* v70 — FIRST VISIT STAYS LIGHT. Install only saves the ~25 things the app needs to open and to say "you are offline".
+   Everything else (all 50 poem pages, the data / feature scripts) is saved LATER by warm(): the page asks for it ~6 s after it has finished loading (app.js),
+   3 files at a time, skipped on slow / data-saver connections. Before this, ~95 files were downloaded at once on the first visit, in competition with the page itself. */
+var PRECACHE = ['/', '/index.html', '/index-en.html', '/index-ur.html', '/ghazals.html', '/ghazals-en.html', '/ghazals-ur.html', '/nazms.html', '/nazms-en.html', '/nazms-ur.html',
+  '/audios.html', '/audios-en.html', '/audios-ur.html', '/about.html', '/offline.html', '/style.css', '/app.js', '/i18n.js', '/logo.png', '/logo-dark.png', '/playfair-display-600.woff2',
+  '/favicon.ico', '/icon-192.png', '/manifest.json'];
+var WARM = ['/collection.js', '/search.js', '/home-features.js', '/home-carousel.js', '/home-extras.js', '/mood-data.js', '/sher-image.js', '/lafz.js', '/zf-find.js', '/lafz-data.js', '/lafz-today.js',
+  '/audio-shell.js', '/reader-tools.js', '/related-data.js', '/ashaar.js', '/audios.js', '/audio-skin.js', '/audio-library.js', '/audio-offline.js', '/comments.js', '/ur-translit.js',
+  '/ghazals-data.js', '/nazms-data.js'];
+for(var i2 = 1; i2 <= 40; i2++) WARM.push('/ghazal-' + i2 + '.html');
+for(var j2 = 1; j2 <= 10; j2++) WARM.push('/nazm-' + j2 + '.html');
 
 self.addEventListener('install', function(e){
   e.waitUntil(caches.open(CACHE).then(function(c){
@@ -32,6 +37,25 @@ self.addEventListener('activate', function(e){
 });
 
 function isFontHost(u){ return u.hostname === 'fonts.googleapis.com' || u.hostname === 'fonts.gstatic.com'; }
+
+var warming = false;
+function warm(){
+  if(warming) return Promise.resolve(); warming = true;
+  return caches.open(CACHE).then(function(c){
+    return c.keys().then(function(ks){
+      var have = {}; ks.forEach(function(r){ have[new URL(r.url).pathname] = 1; });
+      var todo = WARM.filter(function(u){ return !have[u]; }), k = 0;
+      function next(){
+        if(k >= todo.length) return;
+        var batch = todo.slice(k, k + 3); k += 3;
+        return Promise.all(batch.map(function(u){ return c.add(new Request(u, {cache: 'reload'})).catch(function(){}); }))
+          .then(function(){ return new Promise(function(r){ setTimeout(r, 300); }); }).then(next);
+      }
+      return next();
+    });
+  }).then(function(){ warming = false; }, function(){ warming = false; });
+}
+self.addEventListener('message', function(e){ if(e.data && e.data.type === 'warm') e.waitUntil(warm()); });
 
 /* A saved recording: answer from the audio cache (whole, or the byte range the player asked for). Not saved: ask the network, untouched. */
 function serveAudio(req){
