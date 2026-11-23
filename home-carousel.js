@@ -160,14 +160,26 @@
     syncDots();
   }
 
+  /* v70: first photo at once; the other four a moment after the page (and its fonts) have finished loading, so they never compete with it. */
+  var litTimer = null;
+  function lightSlides(){
+    var slides = track.querySelectorAll('.sher-carousel-slide');
+    [].forEach.call(slides, function(s, n){ if(n === 0) s.classList.add('zf-lit'); });
+    clearTimeout(litTimer);
+    function rest(){ litTimer = setTimeout(function(){ [].forEach.call(track.querySelectorAll('.sher-carousel-slide'), function(s){ s.classList.add('zf-lit'); }); }, 1200); }
+    if(document.readyState === 'complete') rest(); else window.addEventListener('load', rest, {once: true});
+  }
+
   function renderSlides(){
     if(!track) return;
+    document.documentElement.classList.add('zf-lazy-sgc');      /* v70: photos are lit one by one (see style.css) */
     track.innerHTML = '';
     slidesData.forEach(function(entry, i){
       track.appendChild(buildSlide(entry, i));
     });
     updateTrackPosition();
     fitSlides();
+    lightSlides();
   }
 
   function restartAutoplay(){

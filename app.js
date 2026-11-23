@@ -132,6 +132,10 @@ window.ZF_NEWSLETTER_USERNAME = 'Zaanfarzaan';
       var a = nl.querySelector(':scope > a[data-page="' + p + '"]'); if(a) items.push(a);
     });
     var favA = nl.querySelector(':scope > a.nav-fav'); if(favA) items.push(favA);
+    /* v70: Explore and Moods live in "More" (not in the main menu) — they come first in the list */
+    var first = [];
+    ['explore','moods'].forEach(function(p){ var a = nl.querySelector(':scope > a[data-page="' + p + '"]'); if(a) first.push(a); });
+    items = items.concat(first);
     if(items.length < 2) return;
     var ex = document.createElement('a');
     ex.href = 'play' + suf + '.html'; ex.setAttribute('data-page', 'play');      /* v68: the old "Explore" page (game, quiz, badges, favourites) is now "Play"; Explore is the new feed */
@@ -147,8 +151,9 @@ window.ZF_NEWSLETTER_USERNAME = 'Zaanfarzaan';
     wrap.appendChild(btn); wrap.appendChild(menu);
     var contactA = nl.querySelector(':scope > a[data-page="contact"]');
     if(contactA){ if(contactA.nextSibling) nl.insertBefore(wrap, contactA.nextSibling); else nl.appendChild(wrap); } else { nl.insertBefore(wrap, items[0]); }
+    first.forEach(function(a){ menu.appendChild(a); });
     menu.appendChild(ex);
-    items.forEach(function(a){ menu.appendChild(a); });
+    items.forEach(function(a){ if(first.indexOf(a) < 0) menu.appendChild(a); });
     function setOpen(v){ wrap.classList.toggle('open', v); btn.setAttribute('aria-expanded', v ? 'true' : 'false'); }
     btn.addEventListener('click', function(e){ e.stopPropagation(); setOpen(!wrap.classList.contains('open')); });
     document.addEventListener('click', function(e){ if(!wrap.contains(e.target)) setOpen(false); });
@@ -1371,4 +1376,14 @@ window.ZF_NEWEST_AUDIO = window.ZF_NEW_AUDIOS[0];
   function audioKey(a){ var m = /(audio-(?:ghazal|nazm)-\d{1,3})\.mp3/.exec((a && (a.currentSrc || a.src)) || ''); return m ? m[1] : null; }
   document.addEventListener('play', function(e){ var k = e.target && e.target.tagName === 'AUDIO' && audioKey(e.target); if(k) window.ZF_stat('audio_play', k); }, true);
   document.addEventListener('ended', function(e){ var k = e.target && e.target.tagName === 'AUDIO' && audioKey(e.target); if(k) window.ZF_stat('audio_done', k); }, true);
+})();
+
+/* v70: after the page has finished loading and the phone is idle, ask the service worker to save the rest of the site for offline reading (poem pages, scripts).
+   Never on a slow or data-saver connection, and never in competition with the page the reader is looking at. */
+(function(){
+  if(!('serviceWorker' in navigator)) return;
+  var c = navigator.connection;
+  if(c && (c.saveData || /(^|-)2g$/.test(c.effectiveType || '') || c.effectiveType === '3g')) return;
+  function go(){ navigator.serviceWorker.ready.then(function(r){ if(r && r.active) r.active.postMessage({type: 'warm'}); }).catch(function(){}); }
+  window.addEventListener('load', function(){ setTimeout(function(){ (window.requestIdleCallback || function(f){ setTimeout(f, 500); })(go, {timeout: 10000}); }, 6000); });
 })();

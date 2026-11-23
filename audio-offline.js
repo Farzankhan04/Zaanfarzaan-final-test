@@ -94,11 +94,13 @@
     '.zl-off ul{list-style:none;margin:.6rem 0 0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:.4rem}.zl-off li{min-width:0;display:flex;align-items:center;justify-content:space-between;gap:.6rem;font-size:.88rem;padding:.35rem 0;border-bottom:1px solid rgba(var(--zf-rgb),.12)}' +
     '.zl-off li span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.zl-off li button{flex:none;padding:.3rem .8rem;min-height:34px;font-size:.82rem}' +
     '.zl-off .zl-off-msg{font-size:.86rem;color:var(--gold-soft);min-height:1.2em;margin-top:.5rem}';
+  css.textContent += '.audio-list .audio-more{margin-bottom:1.6rem}';
   document.head.appendChild(css);
 
   var box = el('section', 'zl-off'); box.setAttribute('aria-labelledby', 'zl-off-t');
-  var ui = list.querySelector('.zl-lib-ui'), head = list.querySelector('.audio-list-head');
-  if(ui) ui.parentNode.insertBefore(box, ui); else if(head && head.nextSibling) head.parentNode.insertBefore(box, head.nextSibling); else list.insertBefore(box, list.firstChild);
+  /* below the recordings (and their "more audios are coming" note), never above them */
+  var ui = list.querySelector('.zl-lib-ui'), more = list.querySelector('.audio-more');
+  if(more) more.parentNode.insertBefore(box, more.nextSibling); else if(ui) ui.parentNode.insertBefore(box, ui.nextSibling); else list.appendChild(box);
   var detailsOpen = false;
 
   function render(){
