@@ -2141,3 +2141,9 @@ html[data-theme="light"] .zf-mp-seek::-moz-range-thumb{border-color:#f7f2e6;}
 /* v70 — home gallery: the 5 night photos no longer all load with the page. home-carousel.js adds html.zf-lazy-sgc, lights the FIRST slide at once (.zf-lit)
    and the other four a moment after the page has loaded. Without that class (old script) everything works as before. */
 html.zf-lazy-sgc .sher-carousel-slide:not(.zf-lit){background-image:none !important; background-color:#1b1a18;}
+
+/* v71 — no browser tap flash. Android Chrome paints a light blue / grey rectangle on whatever is tapped unless told not to; only the language toggle,
+   theme button and bottom bar had switched it off. Now it is off everywhere, and the big tappable cards get a quiet pressed look instead. */
+*, *::before, *::after{-webkit-tap-highlight-color:transparent;}
+.poem-item:active, .nav-card:active, .zl-row:active, .audio-track-read:active, .xf-chip:active, .xf-sher:active, .xf-poem a.xf-open:active{opacity:.82;}
+@media (prefers-reduced-motion:no-preference){ .poem-item, .nav-card, .zl-row, .xf-chip, .xf-sher{transition:opacity .12s ease;} }
