@@ -93,6 +93,7 @@
     });
   }
 
+  (function(){ var st = document.createElement('style'); st.textContent = '.sgc-mean{font-size:.72rem;line-height:1.45;opacity:.9;margin:.4rem 0 .2rem;text-align:center;text-shadow:0 1px 6px rgba(0,0,0,.55)}.sgc-mean:empty{display:none}'; document.head.appendChild(st); })();
   function buildSlide(entry, idx){
     var texts = slideText(entry);
     var a = document.createElement('a');
@@ -114,6 +115,10 @@
     readEl.textContent = texts.readLabel;
 
     body.appendChild(lines);
+    /* v72: meanings of the hard words, one short line each (2 words on the small slides) */
+    var mean = document.createElement('div'); mean.className = 'sgc-mean'; body.appendChild(mean);
+    (function(){ var out = [], re = /<span class="line"[^>]*>([\s\S]*?)<\/span>/g, m, src = entry.item.versesHtml[entry.verseIdx]; while((m = re.exec(src))){ out.push(m[1].replace(/<[^>]+>/g, '').trim()); }
+      (function fill(n){ if(typeof window.ZF_meaningsFor === 'function'){ window.ZF_meaningsFor(out, {max: 2}, function(list){ window.ZF_meaningText(list).forEach(function(t){ var d = document.createElement('div'); d.textContent = t; mean.appendChild(d); }); fitSlides(); }); } else if(n < 20){ setTimeout(function(){ fill(n + 1); }, 400); } })(0); })();
     body.appendChild(readEl);
     a.appendChild(body);
 

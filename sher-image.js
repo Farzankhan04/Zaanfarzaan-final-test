@@ -14,6 +14,7 @@
     dl:    ['⬇ डाउनलोड', '⬇ Download', '⬇ ڈاؤن لوڈ'], share: ['शेयर करें', 'Share', 'شیئر کریں'],
     close: ['बंद करें', 'Close', 'بند کریں'], bg: ['पीछे की तस्वीर', 'Background', 'پس منظر'],
     plain: ['सादा', 'Plain', 'سادہ'],
+    mean:  ['मायने', 'Meanings', 'معنی'], letter: ['✉ ख़त की तरह भेजें', '✉ Send as a letter', '✉ خط کی طرح بھیجیں'],
     dbtn:  ['💌 समर्पित करें', '💌 Dedicate', '💌 منسوب کریں'],
     dtitle: ['समर्पण कार्ड', 'Dedication card', 'منسوب کارڈ'],
     dh:    ['किसी अपने के नाम', 'For someone you love', 'کسی اپنے کے نام'],
@@ -54,9 +55,10 @@
     if(/[ऀ-ॿ]/.test(text)) return {fam: '"Noto Serif Devanagari","Tiro Devanagari Hindi",serif', rtl: false, lh: 1.75, style: ''};
     return {fam: '"Lora","Cormorant Garamond",Georgia,serif', rtl: false, lh: 1.7, style: 'italic '};
   }
-  function draw(canvas, lines, bgSrc, fmt, cb, name){
+  function draw(canvas, lines, bgSrc, fmt, cb, name, mean){
     var d = FMT[fmt], W = d[0], H = d[1]; canvas.width = W; canvas.height = H;
-    var ctx = canvas.getContext('2d'), sample = lines.join(' '), F = fontFor(sample);
+    mean = mean || []; var mh = mean.length ? mean.length * 54 + 34 : 0;       /* v72: room for the meanings of the hard words, under the sher */
+    var ctx = canvas.getContext('2d'), sample = lines.join(' '), F = fontFor(sample), MF = mean.length ? fontFor(mean.join(' ')) : F;
     function go(img){
       ctx.clearRect(0, 0, W, H);
       ctx.fillStyle = '#151515'; ctx.fillRect(0, 0, W, H);
@@ -73,7 +75,7 @@
       /* frame */
       ctx.strokeStyle = 'rgba(242,241,236,.35)'; ctx.lineWidth = 2; ctx.strokeRect(36, 36, W - 72, H - 72);
       /* text fit */
-      var maxW = W - 220, availH = H - (name ? 700 : 560), size = 74, widest;
+      var maxW = W - 220, availH = H - (name ? 700 : 560) - mh, size = 74, widest;
       for(; size > 28; size -= 2){
         ctx.font = F.style + size + 'px ' + F.fam; widest = 0;
         lines.forEach(function(l){ widest = Math.max(widest, ctx.measureText(l).width); });
@@ -82,7 +84,7 @@
       ctx.font = F.style + size + 'px ' + F.fam; ctx.fillStyle = '#f5f4ee'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.direction = F.rtl ? 'rtl' : 'ltr';
       ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 14;
-      var lh = size * F.lh, total = lines.length * lh, y0 = H / 2 - total / 2 + lh / 2 - 20;
+      var lh = size * F.lh, total = lines.length * lh, y0 = H / 2 - total / 2 + lh / 2 - 20 - mh / 2;
       lines.forEach(function(l, i){ ctx.fillText(l, W / 2, y0 + i * lh); });
       ctx.shadowBlur = 0; ctx.direction = 'ltr';
       /* ornament + brand */
@@ -97,6 +99,16 @@
         ctx.fillStyle = '#e9e7de'; ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 12;
         ctx.fillText('\u2661  ' + lab, W / 2, ny); ctx.shadowBlur = 0; ctx.direction = 'ltr';
       }
+      if(mean.length){
+        var my = H - 215 - mh + 30;
+        ctx.strokeStyle = 'rgba(242,241,236,.35)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(W / 2 - 40, my - 34); ctx.lineTo(W / 2 + 40, my - 34); ctx.stroke();
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.direction = MF.rtl ? 'rtl' : 'ltr'; ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 8; ctx.fillStyle = 'rgba(245,244,238,.9)';
+        mean.forEach(function(line, i){
+          var ms = 38; for(; ms > 24; ms -= 2){ ctx.font = MF.style + ms + 'px ' + MF.fam; if(ctx.measureText(line).width <= W - 220) break; }
+          ctx.fillText(line, W / 2, my + 12 + i * 54);
+        });
+        ctx.shadowBlur = 0; ctx.direction = 'ltr';
+      }
       ctx.textBaseline = 'alphabetic'; ctx.fillStyle = '#f5f4ee';
       ctx.font = 'italic 54px "Lora",Georgia,serif'; ctx.fillText('Zaan Farzaan', W / 2, H - 150);
       ctx.font = '30px "Lora",Georgia,serif'; ctx.fillStyle = 'rgba(245,244,238,.75)'; ctx.fillText('zaanfarzaan.site', W / 2, H - 100);
@@ -104,7 +116,7 @@
     }
     var fams = ['"Noto Nastaliq Urdu"', '"Noto Serif Devanagari"', '"Lora"'];
     var p = (document.fonts && document.fonts.load) ? Promise.all([
-        document.fonts.load((F.style + '40px ' + F.fam), sample), document.fonts.load('italic 54px "Lora"', 'Zaan Farzaan')].concat(name ? [document.fonts.load('40px ' + fontFor(name + sample).fam, name + ' \u0915\u0947 \u0932\u093f\u090f')] : [])).catch(function(){}) : Promise.resolve();
+        document.fonts.load((F.style + '40px ' + F.fam), sample), document.fonts.load('italic 54px "Lora"', 'Zaan Farzaan')].concat(mean.length ? [document.fonts.load(MF.style + '38px ' + MF.fam, mean.join(' '))] : []).concat(name ? [document.fonts.load('40px ' + fontFor(name + sample).fam, name + ' \u0915\u0947 \u0932\u093f\u090f')] : [])).catch(function(){}) : Promise.resolve();
     p.then(function(){ getImg(bgSrc, go); });
   }
 
@@ -136,7 +148,7 @@
     if(!pages || !pages.length) return;
     opts = opts || {};
     addCss();
-    var st = {p: 0, bg: 1, fmt: 'post', name: ''};
+    var st = {p: 0, bg: 1, fmt: 'post', name: '', mean: true, tok: 0};
     var ov = el('div', 'zf-pic-ov'), box = el('div', 'zf-pic-box'); ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true');
     var top = el('div', 'zf-pic-top'); top.appendChild(el('span', null, t(opts.dedicate ? 'dtitle' : 'title')));
     var x = el('button', 'zf-pic-x', '✕'); x.type = 'button'; x.setAttribute('aria-label', t('close')); top.appendChild(x);
@@ -148,6 +160,8 @@
     var rowF = el('div', 'zf-pic-row'), rowP = el('div', 'zf-pic-row'), rowB = el('div', 'zf-pic-row'), rowA = el('div', 'zf-pic-row');
     var fb = {};
     ['post', 'story'].forEach(function(k){ var b = el('button', 'zf-pic-b', t(k)); b.type = 'button'; b.addEventListener('click', function(){ st.fmt = k; sync(); }); fb[k] = b; rowF.appendChild(b); });
+    var mb = el('button', 'zf-pic-b', t('mean')); mb.type = 'button'; mb.setAttribute('aria-pressed', 'true');
+    mb.addEventListener('click', function(){ st.mean = !st.mean; sync(); }); rowF.appendChild(mb);
     var pn = el('span', 'zf-pic-pn'); var prev = el('button', 'zf-pic-b', '◀'), next = el('button', 'zf-pic-b', '▶'); prev.type = next.type = 'button';
     prev.addEventListener('click', function(){ st.p = (st.p - 1 + pages.length) % pages.length; sync(); });
     next.addEventListener('click', function(){ st.p = (st.p + 1) % pages.length; sync(); });
@@ -160,6 +174,14 @@
       b.addEventListener('click', function(){ st.bg = i; sync(); }); th.push(b); rowB.appendChild(b);
     });
     var dl = el('button', 'zf-pic-b go', t('dl')); dl.type = 'button'; rowA.appendChild(dl);
+    /* v72: "send as a letter" — opens the letter page with this sher already chosen (by id when the caller knows it, else the lines themselves) */
+    var lt = el('a', 'zf-pic-b', t('letter')); lt.style.display = 'inline-flex'; lt.style.alignItems = 'center'; lt.style.textDecoration = 'none';
+    function letterHref(){
+      var s2 = opts.sher && opts.sher[st.p] ? opts.sher[st.p] : (opts.sher && !Array.isArray(opts.sher) ? opts.sher : null);
+      if(s2 && s2.g){ return 'khat.html#new=' + (s2.n ? 'n' : 'g') + s2.g + '.' + s2.i; }
+      try{ return 'khat.html#new=t' + btoa(unescape(encodeURIComponent(JSON.stringify(pages[st.p].slice(0, 4).map(function(x){ return String(x).slice(0, 90); }))))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }catch(e){ return 'khat.html'; }
+    }
+    lt.addEventListener('click', function(){ lt.href = letterHref(); }); lt.href = 'khat.html'; rowA.appendChild(lt);
     var sh = null;
     function blobOf(cb){ cv.toBlob(function(b){ cb(b); }, 'image/png'); }
     /* v67 usage count: only the sher's first line is noted (never the name written on the card) */
@@ -188,7 +210,12 @@
       ['post', 'story'].forEach(function(k){ fb[k].className = 'zf-pic-b' + (st.fmt === k ? ' on' : ''); });
       th.forEach(function(b, i){ b.className = 'zf-pic-th' + (st.bg === i ? ' on' : ''); });
       pn.textContent = (st.p + 1) + ' / ' + pages.length;
+      mb.className = 'zf-pic-b' + (st.mean ? ' on' : ''); mb.setAttribute('aria-pressed', st.mean ? 'true' : 'false');
+      var my = ++st.tok, srcLines = (opts.src && opts.src[st.p]) || pages[st.p];
       draw(cv, pages[st.p], BGS[st.bg], st.fmt, null, st.name);
+      if(st.mean && typeof window.ZF_meaningsFor === 'function'){
+        window.ZF_meaningsFor(srcLines, {max: 3}, function(list){ if(my !== st.tok || !list.length) return; draw(cv, pages[st.p], BGS[st.bg], st.fmt, null, st.name, window.ZF_meaningText(list)); });
+      }
     }
     [top, nameRow, cv, rowF, rowP, rowB, rowA].forEach(function(n){ box.appendChild(n); });
     ov.appendChild(box); document.body.appendChild(ov);
@@ -236,7 +263,7 @@
     b.addEventListener('click', function(){
       var ls = document.querySelectorAll('#sher-lines .line'), L = [];
       [].forEach.call(ls, function(s){ var x = s.textContent.trim(); if(x) L.push(x); });
-      if(L.length) openPic([L]);
+      if(L.length) openPic([L], window.ZF_homeSherMeta);
     });
     bar.appendChild(b);
   }

@@ -36,7 +36,7 @@
   }
   function gTitle(g){ var l = li(); return l === 1 ? (g.firstLineEn || g.firstLine) : (l === 2 ? urT(g.firstLine) : g.firstLine); }
   function zTitle(z){ var l = li(); return l === 1 ? (z.titleEn || z.title) : (l === 2 ? urT(z.title) : z.title); }
-  function openPhoto(L){ if(typeof window.ZF_openPhotoCard === 'function') window.ZF_openPhotoCard([L]); }
+  function openPhoto(L, meta){ if(typeof window.ZF_openPhotoCard === 'function') window.ZF_openPhotoCard([L], meta); }
 
   var T = {
     all:   ['सब', 'All', 'سب'], shers: ['शेर', 'Shers', 'اشعار'], audio: ['ऑडियो', 'Audio', 'آڈیو'], ghazals: ['ग़ज़लें', 'Ghazals', 'غزلیں'], nazms: ['नज़्में', 'Nazms', 'نظمیں'],
@@ -45,7 +45,7 @@
     recited: ['पाठ: ज़ान फ़रज़ान', 'Recited by Zaan Farzaan', 'آواز: زان فرزان'], play: ['चलाएँ', 'Play', 'چلائیں'], pause: ['रोकें', 'Pause', 'روکیں'], seek: ['आगे-पीछे', 'Seek', 'آگے پیچھے'],
     fav: ['पसंद में जोड़ें', 'Add to favourites', 'پسند میں شامل کریں'], badge: ['ऑडियो', 'Audio', 'آڈیو'], photo: ['फ़ोटो कार्ड बनाएँ', 'Make a photo card', 'فوٹو کارڈ بنائیں'],
     end: ['बस, इतना ही — फिर से फेंटकर देखिए', 'That is everything — shuffle to see it again', 'بس اتنا ہی — دوبارہ پھینٹ کر دیکھیے'], shuffle: ['फिर से फेंटें', 'Shuffle again', 'دوبارہ پھینٹیں'],
-    wall: ["अश'आर", "Ash'aar", 'اشعار'], quiz: ['लफ़्ज़', 'Words', 'لفظ'], aud: ['ऑडियो', 'Audio', 'آڈیو']
+    wall: ["अश'आर", "Ash'aar", 'اشعار'], khat: ['ख़त', 'Letter', 'خط'], quiz: ['लफ़्ज़', 'Words', 'لفظ'], aud: ['ऑडियो', 'Audio', 'آڈیو']
   };
 
   /* ---------- style ---------- */
@@ -68,6 +68,7 @@
     /* ---- sher card ---- */
     '.xf-sher{aspect-ratio:var(--r,1);background-size:cover;background-position:center;color:#f6f4ee;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:2.4rem 1.5rem 3.2rem;text-align:center}' +
     '.xf-sher:focus-visible{outline:3px solid var(--gold);outline-offset:2px}.xf-sher .xf-tx{width:100%;line-height:1.6;text-wrap:balance;word-break:break-word;text-shadow:0 1px 10px rgba(0,0,0,.5)}.xf-sher .xf-tx div{margin:.1rem 0}.xf-sher.rtl .xf-tx{direction:rtl;line-height:2.1}' +
+    '.xf-mean{width:100%;margin-top:.9rem;padding-top:.7rem;border-top:1px solid rgba(246,244,238,.25);font-size:.86rem;line-height:1.55;opacity:.9;text-shadow:0 1px 6px rgba(0,0,0,.5)}.xf-mean:empty{display:none}.xf-sher.rtl .xf-mean{direction:rtl}' +
     '.xf-cam{position:absolute;top:.7rem;inset-inline-end:.7rem;width:42px;height:42px;border-radius:50%;border:0;background:rgba(10,10,10,.45);color:#f6f4ee;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;backdrop-filter:blur(4px)}' +
     '.xf-cam svg{width:22px;height:22px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.xf-cam:focus-visible{outline:2px solid var(--gold);outline-offset:2px}' +
     '.xf-sher .xf-cap{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:center;gap:.6rem;padding:.9rem 1.1rem;font-size:.84rem;letter-spacing:.03em;background:linear-gradient(0deg,rgba(10,10,10,.55),transparent)}' +
@@ -151,15 +152,21 @@
     t.style.backgroundImage = DARK + ',url(' + PHOTOS[(x.g.num * 7 + x.i) % PHOTOS.length] + ')';
     var tx = el('div', 'xf-tx'); tx.style.fontSize = fs + 'px'; L.forEach(function(s){ tx.appendChild(el('div', null, s)); }); t.appendChild(tx);
     var cam = el('button', 'xf-cam'); cam.type = 'button'; cam.innerHTML = CAM; cam.setAttribute('aria-label', tr(T.photo)); t.appendChild(cam);
+    var mean = el('div', 'xf-mean'); t.appendChild(mean);            /* v72: meanings of the hard words, filled in as soon as the glossary is ready */
+    var hiSrc = linesOf(x.g.versesHtml[x.i]);
     var cap = el('div', 'xf-cap'), mm = MOODS.filter(function(m){ return m[0] === x.m; })[0];
     cap.appendChild(el('span', null, mm ? mm[li() === 1 ? 2 : (li() === 2 ? 3 : 1)] : ''));
     var a = el('a', null, tr(T.ghazal) + ' ' + x.g.num + ARROW()); a.href = x.g.id + '.html'; a.addEventListener('click', function(e){ e.stopPropagation(); });
     cap.appendChild(a); t.appendChild(cap);
-    function open(){ openPhoto(L); }
+    function open(){ openPhoto(L, {src: [hiSrc], sher: [{g: x.g.num, i: x.i}]}); }
     cam.addEventListener('click', function(e){ e.stopPropagation(); open(); });
     t.addEventListener('click', open); t.addEventListener('keydown', function(e){ if(e.target === t && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); open(); } });
     /* after it is in the page: shrink the text if it would not fit the card */
-    return {node: t, fit: function(){ var f = fs; while(f > 13 && tx.scrollHeight > t.clientHeight - 96){ f -= 1; tx.style.fontSize = f + 'px'; } }};
+    function fit(){ var f = parseFloat(tx.style.fontSize) || fs; var room = t.clientHeight - 96 - (mean.offsetHeight || 0); while(f > 13 && tx.scrollHeight > room){ f -= 1; tx.style.fontSize = f + 'px'; } }
+    if(typeof window.ZF_meaningsFor === 'function'){
+      window.ZF_meaningsFor(hiSrc, {max: 3}, function(list){ if(!list.length || !t.isConnected && !t.parentNode) return; window.ZF_meaningText(list).forEach(function(s){ mean.appendChild(el('div', null, s)); }); fit(); });
+    } else { var tries = 0, iv = setInterval(function(){ if(typeof window.ZF_meaningsFor === 'function' || ++tries > 20){ clearInterval(iv); if(typeof window.ZF_meaningsFor === 'function') window.ZF_meaningsFor(hiSrc, {max: 3}, function(list){ if(!list.length) return; window.ZF_meaningText(list).forEach(function(s){ mean.appendChild(el('div', null, s)); }); fit(); }); } }, 400); }
+    return {node: t, fit: fit};
   }
 
   function audioTile(x){
@@ -258,7 +265,7 @@
   function renderStories(){
     storiesEl.textContent = '';
     var base = [
-      {g: '\u2726', l: T.wall, h: 'ashaar' + suf() + '.html'}, {g: '\u266B', l: T.aud, h: 'audios' + suf() + '.html'}, {g: '\u0905', l: T.quiz, h: 'play' + suf() + '.html#zf-lafz'}
+      {g: '\u2726', l: T.wall, h: 'ashaar' + suf() + '.html'}, {g: '\u2709', l: T.khat, h: 'khat.html'}, {g: '\u266B', l: T.aud, h: 'audios' + suf() + '.html'}, {g: '\u0905', l: T.quiz, h: 'play' + suf() + '.html#zf-lafz'}
     ], glyph = {I: '\u2661', J: '\u263E', T: '\u2727', U: '\u2600', Z: '\u2766'};
     base.forEach(function(s){ add(s.g, tr(s.l), s.h); });
     MOODS.forEach(function(m){ if(SLUG[m[0]]) add(glyph[m[0]] || '\u2726', m[li() === 1 ? 2 : (li() === 2 ? 3 : 1)], 'mood-' + SLUG[m[0]] + '.html'); });

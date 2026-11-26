@@ -63,8 +63,16 @@
       firstLine = window.ZF_UR_transliterateText(firstLine);
     }
 
+    function hiLinesOf(){ var out = [], re = /<span class="line"[^>]*>([\s\S]*?)<\/span>/g, m, src = item.versesHtml[entry.verseIdx]; while((m = re.exec(src))){ out.push(m[1].replace(/<[^>]+>/g, '').trim()); } return out; }
     function apply(){
       linesEl.innerHTML = verseHtml;
+      /* v72: meanings of the hard words under the sher (and handed to the photo card) */
+      var hi = hiLinesOf(); window.ZF_homeSherMeta = {src: [hi], sher: [{g: item.num, i: entry.verseIdx, n: /nazm/i.test(String(item.id || '')) ? 1 : 0}]};
+      var meanEl = document.getElementById('sher-mean');
+      if(!meanEl){ meanEl = document.createElement('div'); meanEl.id = 'sher-mean'; meanEl.className = 'sher-mean'; linesEl.parentNode.insertBefore(meanEl, linesEl.nextSibling);
+        var st = document.createElement('style'); st.textContent = '.sher-mean{font-size:.86rem;line-height:1.6;opacity:.85;margin:.7rem auto 0;padding-top:.6rem;border-top:1px solid rgba(var(--zf-rgb),.3);max-width:34rem;text-align:center;color:var(--text-muted)}.sher-mean:empty{display:none}'; document.head.appendChild(st); }
+      meanEl.textContent = ''; var tok = (apply.tok = (apply.tok || 0) + 1);
+      (function fill(n){ if(typeof window.ZF_meaningsFor === 'function'){ window.ZF_meaningsFor(hi, {max: 3}, function(list){ if(tok !== apply.tok) return; window.ZF_meaningText(list).forEach(function(t){ var d = document.createElement('div'); d.textContent = t; meanEl.appendChild(d); }); }); } else if(n < 20){ setTimeout(function(){ fill(n + 1); }, 400); } })(0);
       sourceLabel.textContent = firstLine;
       try{
         var pre = sourceLink.querySelector('.sher-source-prefix'), isN = /nazm/i.test(String(item.id||'') + String(item.kind||''));

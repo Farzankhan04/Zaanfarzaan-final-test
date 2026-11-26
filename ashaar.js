@@ -33,7 +33,7 @@
   }
   function dailySeed(){ var d = new Date(); return d.getFullYear() * 400 + (d.getMonth() + 1) * 31 + d.getDate(); }
   var seed = dailySeed();
-  (function(){ var st = document.createElement('style'); st.textContent = '.ashaar-ded{font:inherit;font-size:.76rem;cursor:pointer;color:#f2f1ec;background:rgba(255,255,255,.1);border:1px solid rgba(242,241,236,.4);border-radius:999px;padding:.28rem .7rem;min-height:30px}.ashaar-ded:hover{background:rgba(255,255,255,.2)}.ashaar-foot{gap:.5rem}a.ashaar-mood{color:inherit;text-decoration:underline;text-underline-offset:3px}.ashaar-moodlink{display:inline-block;margin-inline-start:.8rem;color:var(--gold-soft);text-decoration:underline;text-underline-offset:3px}'; document.head.appendChild(st); })();
+  (function(){ var st = document.createElement('style'); st.textContent = '.ashaar-ded{font:inherit;font-size:.76rem;cursor:pointer;color:#f2f1ec;background:rgba(255,255,255,.1);border:1px solid rgba(242,241,236,.4);border-radius:999px;padding:.28rem .7rem;min-height:30px}.ashaar-ded:hover{background:rgba(255,255,255,.2)}.ashaar-foot{gap:.5rem}.ashaar-mean{font-size:.76rem;line-height:1.55;opacity:.88;margin:.45rem .9rem .2rem;padding-top:.45rem;border-top:1px solid rgba(242,241,236,.25);text-align:center;color:#f2f1ec}.ashaar-mean:empty{display:none}.ashaar-mean.rtl{direction:rtl}a.ashaar-mood{color:inherit;text-decoration:underline;text-underline-offset:3px}.ashaar-moodlink{display:inline-block;margin-inline-start:.8rem;color:var(--gold-soft);text-decoration:underline;text-underline-offset:3px}'; document.head.appendChild(st); })();
   function card(x){
     var L = sherLines(x.g, x.i), a = el('div', 'ashaar-card'); a.tabIndex = 0; a.setAttribute('role', 'button');
     a.style.backgroundImage = 'linear-gradient(180deg,rgba(14,14,14,.6),rgba(14,14,14,.72)),url(' + PHOTOS[x.n % PHOTOS.length] + ')';
@@ -42,6 +42,10 @@
     var body = el('div', 'ashaar-text' + (lang() === 2 ? ' rtl' : '')); body.style.fontSize = fs + 'px';
     L.forEach(function(s){ body.appendChild(el('div', null, s)); });
     a.appendChild(body);
+    var hiSrc = lines(x.g.versesHtml[x.i]), meta = {src: [hiSrc], sher: [{g: x.g.num, i: x.i}]};
+    var mean = el('div', 'ashaar-mean' + (lang() === 2 ? ' rtl' : '')); a.appendChild(mean);      /* v72: meanings of the hard words */
+    function fillMeans(){ if(typeof window.ZF_meaningsFor !== 'function') return false; window.ZF_meaningsFor(hiSrc, {max: 3}, function(list){ window.ZF_meaningText(list).forEach(function(t){ mean.appendChild(el('div', null, t)); }); }); return true; }
+    if(!fillMeans()){ var tries = 0, iv = setInterval(function(){ if(fillMeans() || ++tries > 20) clearInterval(iv); }, 400); }
     var foot = el('div', 'ashaar-foot'), lnk = el('a', null, tr('gh') + ' ' + x.g.num + ' →'); lnk.href = x.g.id + '.html';
     lnk.addEventListener('click', function(e){ e.stopPropagation(); });
     var mm = MOODS.filter(function(m){ return m[0] === x.m; })[0];
@@ -51,10 +55,10 @@
       foot.appendChild(ml);
     }
     var db = el('button', 'ashaar-ded', tr('ded')); db.type = 'button';
-    db.addEventListener('click', function(e){ e.stopPropagation(); if(typeof window.ZF_openPhotoCard === 'function') window.ZF_openPhotoCard([L], {dedicate: true}); });
+    db.addEventListener('click', function(e){ e.stopPropagation(); if(typeof window.ZF_openPhotoCard === 'function') window.ZF_openPhotoCard([L], {dedicate: true, src: meta.src, sher: meta.sher}); });
     db.addEventListener('keydown', function(e){ e.stopPropagation(); });
     foot.appendChild(db); foot.appendChild(lnk); a.appendChild(foot);
-    function open(){ if(typeof window.ZF_openPhotoCard === 'function') window.ZF_openPhotoCard([L]); }
+    function open(){ if(typeof window.ZF_openPhotoCard === 'function') window.ZF_openPhotoCard([L], meta); }
     a.addEventListener('click', open); a.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); open(); } });
     return a;
   }

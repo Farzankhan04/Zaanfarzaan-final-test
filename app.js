@@ -109,6 +109,17 @@ window.ZF_NEWSLETTER_USERNAME = 'Zaanfarzaan';
       home.parentNode.insertBefore(a, home.nextSibling);
     }
   })();
+  /* v72: KHAT (a sher as a letter) — one page for all three languages, so every language's link goes to khat.html. It sits in the "More" group. */
+  (function(){
+    var anchor = document.querySelector('.navlinks a[data-page="explore"]') || document.querySelector('.navlinks a[data-page="home"]');
+    if(anchor && !document.querySelector('.navlinks a[data-page="khat"]')){
+      var cur = window.ZF_LANG, a = document.createElement('a');
+      a.href = 'khat.html'; a.setAttribute('data-page', 'khat'); a.setAttribute('data-hi-href', 'khat.html'); a.setAttribute('data-en-href', 'khat.html'); a.setAttribute('data-ur-href', 'khat.html');
+      a.setAttribute('data-hi', 'ख़त'); a.setAttribute('data-en', 'Letter'); a.setAttribute('data-ur', 'خط');
+      a.textContent = cur === 'en' ? 'Letter' : (cur === 'ur' ? 'خط' : 'ख़त');
+      anchor.parentNode.insertBefore(a, anchor.nextSibling);
+    }
+  })();
   /* Sher Wall link — added here so none of the 50+ pages has to be edited. */
   (function(){
     var aud = document.querySelector('.navlinks a[data-page="audios"]');
@@ -134,7 +145,7 @@ window.ZF_NEWSLETTER_USERNAME = 'Zaanfarzaan';
     var favA = nl.querySelector(':scope > a.nav-fav'); if(favA) items.push(favA);
     /* v70: Explore and Moods live in "More" (not in the main menu) — they come first in the list */
     var first = [];
-    ['explore','moods'].forEach(function(p){ var a = nl.querySelector(':scope > a[data-page="' + p + '"]'); if(a) first.push(a); });
+    ['explore','khat','moods'].forEach(function(p){ var a = nl.querySelector(':scope > a[data-page="' + p + '"]'); if(a) first.push(a); });
     items = items.concat(first);
     if(items.length < 2) return;
     var ex = document.createElement('a');
@@ -951,8 +962,9 @@ window.ZF_NEWEST_AUDIO = window.ZF_NEW_AUDIOS[0];
   try{
     if(window.self !== window.top || /admin-comments/.test(location.pathname)) return;
     var p = document.body && document.body.getAttribute('data-page');
-    if(p === 'home' || p === 'ashaar' || p === 'explore' || p === 'ghazals' || p === 'nazms' || /\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(location.pathname) || /(^|\/)(index[^\/]*\.html)?$/.test(location.pathname)){
-      var s = document.createElement('script'); s.src = 'sher-image.js?v=4'; s.defer = true; document.body.appendChild(s);
+    if(p === 'home' || p === 'ashaar' || p === 'explore' || p === 'khat' || p === 'moods' || p === 'ghazals' || p === 'nazms' || /\/(ghazal|nazm)-\d{1,3}(\.html)?$/.test(location.pathname) || /(^|\/)(index[^\/]*\.html)?$/.test(location.pathname)){
+      var s = document.createElement('script'); s.src = 'sher-image.js?v=5'; s.defer = true; document.body.appendChild(s);
+      var m = document.createElement('script'); m.src = 'sher-meanings.js?v=1'; m.defer = true; document.body.appendChild(m);      /* v72: meanings of hard words on every sher card */
     }
   }catch(e){}
 })();
