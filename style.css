@@ -2147,3 +2147,36 @@ html.zf-lazy-sgc .sher-carousel-slide:not(.zf-lit){background-image:none !import
 *, *::before, *::after{-webkit-tap-highlight-color:transparent;}
 .poem-item:active, .nav-card:active, .zl-row:active, .audio-track-read:active, .xf-chip:active, .xf-sher:active, .xf-poem a.xf-open:active{opacity:.82;}
 @media (prefers-reduced-motion:no-preference){ .poem-item, .nav-card, .zl-row, .xf-chip, .xf-sher{transition:opacity .12s ease;} }
+
+/* v73 PROFILES + NAZRANA (built by tools-DO-NOT-UPLOAD/build_profiles_nazrana.py — edit there, not here) */
+.pf-lead{max-width:34rem; margin:.6rem auto 0; line-height:1.8; color:var(--text-muted);}
+.pf-grid{max-width:920px; margin:0 auto; padding:1.4rem 6vw 14vh; display:grid; gap:1.2rem; grid-template-columns:repeat(auto-fit,minmax(290px,1fr));}
+.pf-card{display:flex; flex-direction:column; gap:.85rem; text-align:start; padding:1.5rem 1.35rem 1.3rem; border:1px solid rgba(var(--zf-rgb),.3); border-radius:14px; background:rgba(var(--zf-rgb),.05); transition:transform .25s ease, border-color .25s ease, background .25s ease;}
+.pf-card:hover{transform:translateY(-4px); border-color:var(--gold); background:rgba(var(--zf-rgb),.09);}
+.pf-top{display:flex; align-items:center; gap:.95rem}
+.pf-mono{flex:none; width:58px; height:58px; border-radius:50%; display:flex; align-items:center; justify-content:center; font:600 1.35rem/1 'Playfair Display',Georgia,serif; color:var(--text-light);
+  background:linear-gradient(var(--ink-deep,#111),var(--ink-deep,#111)) padding-box,conic-gradient(from 210deg,var(--gold-soft),rgba(var(--zf-rgb),.25),var(--gold-soft)) border-box; border:2.5px solid transparent;}
+.pf-tag{font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:var(--rose); font-weight:600}.lang-hi .pf-tag,.lang-ur .pf-tag{letter-spacing:.02em; text-transform:none; font-size:.85rem}
+.pf-card h3{margin:.15rem 0 0; font-size:1.4rem}.pf-desc{margin:0; line-height:1.75; color:var(--text-muted); font-size:.95rem}
+.pf-handle{font-size:.78rem; color:var(--text-muted); opacity:.8; letter-spacing:.02em; word-break:break-all; text-align:start}
+.pf-chips{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:.4rem}.pf-chips li{font-size:.76rem; padding:.22rem .7rem; border:1px solid rgba(var(--zf-rgb),.35); border-radius:999px; color:var(--text-light)}
+.pf-actions{display:flex; flex-wrap:wrap; gap:.6rem; margin-top:auto; padding-top:.3rem}
+.pf-go{display:inline-flex; align-items:center; padding:.6rem 1.2rem; min-height:44px; border-radius:999px; background:var(--gold-soft); color:var(--ink); text-decoration:none; font-weight:600; font-size:.92rem}.pf-go:hover{filter:brightness(1.1)}
+.pf-copy{font:inherit; font-size:.88rem; padding:.55rem 1.05rem; min-height:44px; border-radius:999px; border:1px solid rgba(var(--zf-rgb),.45); background:transparent; color:var(--text-light); cursor:pointer}.pf-copy:hover,.pf-copy.done{border-color:var(--gold); background:rgba(var(--zf-rgb),.12)}
+.pf-go:focus-visible,.pf-copy:focus-visible,.np-amt:focus-visible,.np-way:focus-visible,.np-own input:focus-visible{outline:2px solid var(--gold); outline-offset:2px}
+.np{max-width:640px}.np-orn{font-size:1.5rem; opacity:.6; margin:.2rem 0 .4rem; color:var(--gold-soft)}.np-intro{line-height:1.85; margin:0 0 1.4rem}
+.np-sher{margin:1.2rem auto 1.8rem; padding:1.1rem 1rem; max-width:26rem; border-block:1px solid rgba(var(--zf-rgb),.3); font-size:1.12rem; line-height:1.9; font-style:italic}.lang-hi .np-sher,.lang-ur .np-sher{font-style:normal; font-size:1.2rem}
+.np-src{display:block; margin-top:.5rem; font-size:.78rem; font-style:normal; color:var(--gold-soft); text-decoration:underline; text-underline-offset:3px}
+.np-card{border:1px solid rgba(var(--zf-rgb),.3); border-radius:14px; background:rgba(var(--zf-rgb),.05); padding:1.5rem 1.2rem 1.3rem; margin:0 0 2rem}.np-card h2,.np-free h2{font-size:1.02rem; color:var(--gold-soft); margin:0 0 .9rem}
+.np-amts{display:flex; flex-wrap:wrap; gap:.55rem; justify-content:center; margin:0 0 1.4rem}
+.np-amt{font:inherit; font-size:1rem; min-width:64px; min-height:44px; padding:.45rem 1rem; border-radius:999px; border:1px solid rgba(var(--zf-rgb),.45); background:transparent; color:var(--text-light); cursor:pointer}
+.np-amt:hover{border-color:var(--gold)}.np-amt[aria-pressed="true"]{background:var(--gold-soft); color:var(--ink); border-color:var(--gold-soft); font-weight:600}
+.np-own{display:inline-flex; align-items:center; gap:.3rem; min-height:44px; padding:0 .9rem; border-radius:999px; border:1px solid rgba(var(--zf-rgb),.45); color:var(--text-muted)}.np-own input{width:6.2rem; font:inherit; font-size:1rem; background:transparent; border:0; color:var(--text-light); padding:.4rem 0; -moz-appearance:textfield}.np-own input::-webkit-outer-spin-button,.np-own input::-webkit-inner-spin-button{-webkit-appearance:none; margin:0}
+.np-payamt{white-space:pre}.np-thanks{margin:1rem auto 0; padding:.8rem 1rem; border-radius:10px; background:rgba(var(--zf-rgb),.12); border:1px dashed rgba(var(--zf-rgb),.5); color:var(--text-light)}.np-thanks[hidden]{display:none}
+.np-free{margin:0 0 1.6rem; text-align:start}.np-grid{display:grid; gap:.7rem; grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.np-way{display:flex; gap:.85rem; align-items:flex-start; text-align:start; padding:1rem 1rem; border:1px solid rgba(var(--zf-rgb),.3); border-radius:12px; background:rgba(var(--zf-rgb),.04); color:var(--text-light); text-decoration:none; font:inherit; cursor:pointer; transition:border-color .2s, background .2s, transform .2s}
+.np-way:hover{border-color:var(--gold); background:rgba(var(--zf-rgb),.1); transform:translateY(-2px)}.np-gl{flex:none; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.15rem; background:rgba(var(--zf-rgb),.14); color:var(--gold-soft)}
+.np-wt{display:flex; flex-direction:column; gap:.2rem; min-width:0}.np-wt b{font-size:.98rem; font-weight:600}.np-wt small{font-size:.8rem; line-height:1.55; color:var(--text-muted)}
+.np-fine{font-size:.8rem; color:var(--text-muted); opacity:.85}.np-fine a{color:inherit}
+@media (prefers-reduced-motion:reduce){.pf-card,.np-way{transition:none}.pf-card:hover,.np-way:hover{transform:none}}
+/* end v73 PROFILES + NAZRANA */
